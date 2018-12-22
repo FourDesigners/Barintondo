@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +33,23 @@ public class MainActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        switch(menuItem.getItemId()) {
+                            case R.id.profile:
+                                Toast.makeText(MainActivity.this, "prova", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.interests:
+                                Toast.makeText(MainActivity.this, "prova", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.coupon:
+                                Toast.makeText(MainActivity.this, "prova", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.settings:
+                                Toast.makeText(MainActivity.this, "prova", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.logout:
+                                Toast.makeText(MainActivity.this, "prova", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
 
                         return true;
                     }
