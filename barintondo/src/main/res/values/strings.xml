@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">barintondo</string>
+    <string name="app_name">Barintondo</string>
     <!--Navigation Drawer elements-->
     <string name="headerTitle">Nickname</string>
     <string name="myProfile_label">My Profile</string>
