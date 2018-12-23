@@ -7,4 +7,6 @@
     <string name="myCoupon_label">My Coupons</string>
     <string name="app_settings_label">Settings</string>
     <string name="logout_label">Logout</string>
+    <string name="home">Home</string>
+    <string name="contact">Contact</string>
 </resources>
