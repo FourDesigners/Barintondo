@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import it.uniba.di.sms.barintondo.R;
+import it.uniba.di.sms.barintondo.SettingsActivity;
 
 public class MyNavigationDrawer implements Constants{
     private final Activity activity;
@@ -20,9 +22,9 @@ public class MyNavigationDrawer implements Constants{
     private final DrawerLayout mDrawerLayout;
 
     /**
-     * @param activity
-     * @param navigationView
-     * @param mDrawerLayout
+     * @param activity: activity parent in cui apparirà il drawer
+     * @param navigationView: riferimento all'elemento con id R.id.nav_view
+     * @param mDrawerLayout: riferimento al layout con id R.id.drawer_layout
      */
     public MyNavigationDrawer(Activity activity , NavigationView navigationView ,
                               DrawerLayout mDrawerLayout) {
@@ -40,7 +42,7 @@ public class MyNavigationDrawer implements Constants{
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         Log.i(TAG, getClass().getSimpleName() + ":entered onNavigationItemSelected()");
                         // set item as selected to persist highlight
-                        menuItem.setChecked(true);
+                        //menuItem.setChecked(true);
                         Menu m =navigationView.getMenu();
 
                         switch(menuItem.getItemId()) {
@@ -90,6 +92,7 @@ public class MyNavigationDrawer implements Constants{
                             case R.id.settings:
                                 mDrawerLayout.closeDrawers();
                                 Toast.makeText(activity, "Impostazioni", Toast.LENGTH_SHORT).show();
+                                activity.startActivity(new Intent(activity, SettingsActivity.class));
                                 break;
                             case R.id.contact:
                                 mDrawerLayout.closeDrawers();
@@ -125,7 +128,7 @@ public class MyNavigationDrawer implements Constants{
         return navigationView;
     }
 
-    public DrawerLayout getmDrawerLayout() {
+    private DrawerLayout getmDrawerLayout() {
         return mDrawerLayout;
     }
 }
