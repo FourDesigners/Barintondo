@@ -41,4 +41,13 @@
     <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
     <string name="key_vibrate">key_vibrate</string>
     <string name="key_send_feedback">key_send_feedback</string>
+
+    <!--my profile-->
+    <string name="myProfile_header">My Profile</string>
+    <string name="myUser_label">Username</string>
+    <string name="myEmail_label">Email</string>
+    <string name="myPass_label">Password</string>
+    <string name="saveBtnLabel">Save</string>
+    <string name="saveBtnMessage">Changes Saved</string>
+
 </resources>

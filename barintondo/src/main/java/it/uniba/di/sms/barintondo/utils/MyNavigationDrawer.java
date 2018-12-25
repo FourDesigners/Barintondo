@@ -3,6 +3,8 @@ package it.uniba.di.sms.barintondo.utils;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
@@ -12,14 +14,27 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import it.uniba.di.sms.barintondo.MyProfileActivity;
+import it.uniba.di.sms.barintondo.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.R;
 import it.uniba.di.sms.barintondo.SettingsActivity;
 
 public class MyNavigationDrawer implements Constants{
+
+    private static final String DB_NAME = "datiUtente.db";
+    private static final String TABLE_UTENTE = "utenti";
+    private static final String COLUMN_USERNAME = "username";
+
     private final Activity activity;
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
+
+    private TextView username;
 
     /**
      * @param activity: activity parent in cui apparirà il drawer
@@ -36,13 +51,34 @@ public class MyNavigationDrawer implements Constants{
     public MyNavigationDrawer build(){
         Log.i(TAG, getClass().getSimpleName() + ":entered build()");
 
+        //imposto il nome dell'utente
+        /*con support library >= 23.1.1, bisogna fare riferimento all'header navigation view e, da questo, ottenere il riferimento
+        alla textView che mostra l'username dell'utente attuale*/
+        View header = navigationView.getHeaderView(0);
+        username = header.findViewById(R.id.header_nickname);
+        Log.i(TAG, getClass().getSimpleName() + ": username = " + username);
+        //prelevo dati dal db
+        ProfileOpenHelper dbHelper = new ProfileOpenHelper(activity, DB_NAME, null, 1);
+        SQLiteDatabase myDB = dbHelper.getReadableDatabase();
+        //definisco la query
+        String[] columns = {COLUMN_USERNAME};
+        Cursor myCursor;
+        //ottengo il cursore
+        myCursor = myDB.query(TABLE_UTENTE, columns, null, null, null, null, null, null);
+        myCursor.moveToFirst();
+
+        username.setText(myCursor.getString(myCursor.getColumnIndex(COLUMN_USERNAME)));
+
+        myCursor.close();
+        myDB.close();
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         Log.i(TAG, getClass().getSimpleName() + ":entered onNavigationItemSelected()");
                         // set item as selected to persist highlight
-                        //menuItem.setChecked(true);
+                        menuItem.setChecked(true);
                         Menu m =navigationView.getMenu();
 
                         switch(menuItem.getItemId()) {
@@ -80,7 +116,7 @@ public class MyNavigationDrawer implements Constants{
                                 break;
                             case R.id.profile:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText(activity, "Profilo", Toast.LENGTH_SHORT).show();
+                                activity.startActivity(new Intent(activity, MyProfileActivity.class));
                                 break;
                             case R.id.interests:
                                 mDrawerLayout.closeDrawers();
@@ -91,7 +127,6 @@ public class MyNavigationDrawer implements Constants{
                                 break;
                             case R.id.settings:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText(activity, "Impostazioni", Toast.LENGTH_SHORT).show();
                                 activity.startActivity(new Intent(activity, SettingsActivity.class));
                                 break;
                             case R.id.contact:
