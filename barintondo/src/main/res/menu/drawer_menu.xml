@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="Navigazione">
+    <item android:title="@string/navigazione_label">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -13,44 +13,44 @@
                 <item
                     android:id="@+id/categorie"
                     android:icon="@drawable/ic_keyboard_arrow_down"
-                    android:title="Categorie"
+                    android:title="@string/categorie_option"
                     app:showAsAction="withText" />
 
                 <item
                     android:id="@+id/dormire"
                     android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="Dormire"
+                    android:title="@string/dormire_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/mangiare"
                     android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="Mangiare"
+                    android:title="@string/mangiare_option"
                     app:showAsAction="withText"
                     android:visible="false"
                     />
                 <item
                     android:id="@+id/attrazioni"
                     android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="Attrazioni"
+                    android:title="@string/attrazioni_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/eventi"
                     android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="Eventi"
+                    android:title="@string/eventi_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/intorno"
                     android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="Intorno a Bari"
+                    android:title="@string/dintorni_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
             </group>
         </menu>
     </item>
-    <item android:title="Utente">
+    <item android:title="@string/utente_label">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -71,18 +71,23 @@
             </group>
         </menu>
     </item>
-    <item android:title="Settaggi">
+    <item android:title="@string/preferenze_label">
         <menu>
             <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/contact"
+                    android:icon="@drawable/ic_mail_outline"
+                    android:title="@string/contacts_label"
+                    app:showAsAction="withText" />
+                <item
+                    android:id="@+id/feedback"
+                    android:icon="@drawable/ic_feedback"
+                    android:title="@string/title_send_feedback"
+                    app:showAsAction="withText" />
                 <item
                     android:id="@+id/settings"
                     android:icon="@drawable/ic_settings_black_24dp"
                     android:title="@string/app_settings_label"
-                    app:showAsAction="withText" />
-                <item
-                    android:id="@+id/contact"
-                    android:icon="@drawable/ic_mail_outline"
-                    android:title="@string/contact"
                     app:showAsAction="withText" />
                 <item
                     android:id="@+id/logout"

@@ -2,9 +2,12 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
@@ -125,13 +128,16 @@ public class MyNavigationDrawer implements Constants{
                             case R.id.coupon:
                                 Toast.makeText(activity, "Coupon", Toast.LENGTH_SHORT).show();
                                 break;
-                            case R.id.settings:
-                                mDrawerLayout.closeDrawers();
-                                activity.startActivity(new Intent(activity, SettingsActivity.class));
-                                break;
                             case R.id.contact:
                                 mDrawerLayout.closeDrawers();
                                 Toast.makeText(activity, "Contatti", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.feedback:
+                                    sendFeedback(activity);
+                                    break;
+                            case R.id.settings:
+                                mDrawerLayout.closeDrawers();
+                                activity.startActivity(new Intent(activity, SettingsActivity.class));
                                 break;
                             case R.id.logout:
                                 mDrawerLayout.closeDrawers();
@@ -153,6 +159,29 @@ public class MyNavigationDrawer implements Constants{
         }
 
         return false;
+    }
+
+    /**
+     * Email client intent to send support mail
+     * Appends the necessary device information to email body
+     * useful when providing support
+     */
+    private static void sendFeedback(Context context) {
+        String body = null;
+        try {
+            body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+                    Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
+                    "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Package not found");
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"fourdesigners937@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
     }
 
     public Activity getActivity() {
