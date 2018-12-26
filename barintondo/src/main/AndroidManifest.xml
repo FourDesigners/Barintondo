@@ -19,9 +19,13 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/Theme.AppCompat.Light"></activity>
+        <activity
+            android:name=".MyProfileActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".MyProfileActivity"
+        <activity
+            android:name=".ItemShower"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>

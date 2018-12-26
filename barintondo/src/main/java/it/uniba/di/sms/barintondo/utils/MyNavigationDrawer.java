@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import it.uniba.di.sms.barintondo.ItemShower;
 import it.uniba.di.sms.barintondo.MyProfileActivity;
 import it.uniba.di.sms.barintondo.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.R;
@@ -100,6 +101,7 @@ public class MyNavigationDrawer implements Constants{
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();
                                 Toast.makeText(activity, "Dormire", Toast.LENGTH_SHORT).show();
+                                activity.startActivity(new Intent(activity, ItemShower.class));
                                 break;
                             case R.id.mangiare:
                                 mDrawerLayout.closeDrawers();
