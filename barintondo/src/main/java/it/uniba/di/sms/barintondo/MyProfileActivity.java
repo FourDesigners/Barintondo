@@ -38,15 +38,6 @@ public class MyProfileActivity extends AppCompatActivity {
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        //popolamento db
-        /*ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, DB_NAME, null, 1);
-        SQLiteDatabase myDB = dbHelper.getWritableDatabase();
-        ContentValues user = new ContentValues();
-        user.put(COLUMN_USERNAME, "prova1");
-        user.put(COLUMN_EMAIL, "pinco@prova.it");
-        user.put(COLUMN_PASSWORD, "prova1");
-        long newID = myDB.insert(TABLE_UTENTE, null, user);*/
-
         //prelevo dati dal db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();

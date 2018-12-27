@@ -1,5 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +29,15 @@ public class MainActivity extends AppCompatActivity implements Constants {
         Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //popolamento db
+        /*ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, MyProfileActivity.DB_NAME, null, 1);
+        SQLiteDatabase myDB = dbHelper.getWritableDatabase();
+        ContentValues user = new ContentValues();
+        user.put(MyProfileActivity.COLUMN_USERNAME, "prova1");
+        user.put(MyProfileActivity.COLUMN_EMAIL, "pinco@prova.it");
+        user.put(MyProfileActivity.COLUMN_PASSWORD, "prova1");
+        long newID = myDB.insert(MyProfileActivity.TABLE_UTENTE, null, user);*/
 
         myNavigationDrawer =new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
