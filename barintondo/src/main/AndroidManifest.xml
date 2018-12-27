@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.uniba.di.sms.barintondo">
 
+    <!--  Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +22,9 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.AppCompat.Light"></activity>
+            android:theme="@style/Theme.AppCompat.Light">
+
+        </activity>
         <activity
             android:name=".MyProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

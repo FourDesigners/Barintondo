@@ -101,7 +101,6 @@ public class MyNavigationDrawer implements Constants{
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();
                                 Toast.makeText(activity, "Dormire", Toast.LENGTH_SHORT).show();
-                                activity.startActivity(new Intent(activity, ItemShower.class));
                                 break;
                             case R.id.mangiare:
                                 mDrawerLayout.closeDrawers();
@@ -109,7 +108,8 @@ public class MyNavigationDrawer implements Constants{
                                 break;
                             case R.id.attrazioni:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText(activity, "Attrazioni", Toast.LENGTH_SHORT).show();
+                                activity.startActivity(new Intent(activity, ItemShower.class));
+                                //Toast.makeText(activity, "Attrazioni", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.eventi:
                                 mDrawerLayout.closeDrawers();
