@@ -8,12 +8,11 @@
     tools:context=".ItemListActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/itemShowerToolbar"
+        android:id="@+id/main_activity_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
     <ScrollView
         android:layout_width="match_parent"

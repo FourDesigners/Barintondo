@@ -1,26 +1,24 @@
 package it.uniba.di.sms.barintondo;
 
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.json.*;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import it.uniba.di.sms.barintondo.utils.BarintondoContent;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.JSONParser;
@@ -32,24 +30,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
+    private Toolbar myToolbar;
 
-    // Progress Dialog
-    private ProgressDialog pDialog;
 
-    // Creating JSON Parser object
-    JSONParser jParser = new JSONParser();
-
-    // url to get all attractions list
-    private static String url_all_attractions = "http://barintondo.altervista.org/get_all_attrazioni.php";
-
-    // JSON Node names
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_attractions = "attrazioni";
-    private static final String TAG_id = "id";
-    private static final String TAG_NAME = "nome";
-
-    // attractions JSONArray
-    JSONArray attractions = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,16 +40,127 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_item_list );
 
+        myToolbar = findViewById( R.id.main_activity_toolbar );
+        setSupportActionBar( myToolbar );
+        ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+        actionbar.setDisplayHomeAsUpEnabled( true );
+        actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+
 
         // Loading attractions in Background Thread
-        new LoadAllattractions().execute();
+        new LoadBarintondoItem().execute();
 
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate( R.menu.my_profile_menu , menu );
+
+        return (super.onCreateOptionsMenu( menu ));
+    }
+
+    public void setRecyclerView() {
+        Log.i( TAG , getClass().getSimpleName() + ":entered setRecyclerView()" );
+        mRecyclerView = (RecyclerView) findViewById( R.id.item_list_recycler_view );
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize( true );
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager( this );
+        mRecyclerView.setLayoutManager( mLayoutManager );
+
+        // specify an adapter
+        mAdapter = new MyAdapter( BITEMS );
+        mRecyclerView.setAdapter( mAdapter );
+    }
+
+    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+        private List<BarintondoContent.BarintondoItem> mDataset;
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public TextView mItemId;
+            public TextView mItemName;
+
+            public MyViewHolder(View v) {
+                super( v );
+                // Log.i(TAG, getClass().getSimpleName() + ":entered MyViewHolder()");
+                mItemId = v.findViewById( R.id.item_id );
+                mItemName = v.findViewById( R.id.item_name );
+            }
+        }
+
+        // Provide a suitable constructor (depends on the kind of dataset)
+        public MyAdapter(List<BarintondoContent.BarintondoItem> myDataset) {
+            //Log.i(TAG, getClass().getSimpleName() + ":entered MyAdpter()");
+            mDataset = myDataset;
+        }
+
+        // Create new views (invoked by the layout manager)
+        @NonNull
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent , int viewType) {
+            //Log.i( TAG , getClass().getSimpleName() + ":entered onCreateViewHolder()" );
+            // create a new view
+            View v = (View) LayoutInflater.from( parent.getContext() )
+                    .inflate( R.layout.item_list_content , parent , false );
+            MyViewHolder vh = new MyViewHolder( v );
+            return vh;
+        }
+
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(MyViewHolder holder , int position) {
+            //Log.i( TAG , getClass().getSimpleName() + ":entered onBindViewHolder()" );
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            BarintondoContent.BarintondoItem item = mDataset.get( position );
+            holder.mItemId.setText( String.valueOf( item.getId() ) );
+            holder.mItemName.setText( item.getName() );
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            //Log.i(TAG, getClass().getSimpleName() + ":entered getItemCount()");
+            return mDataset.size();
+        }
     }
 
     /**
      * Background Async Task to Load all product by making HTTP Request
      */
-    class LoadAllattractions extends AsyncTask<String, String, String> {
+
+    class LoadBarintondoItem extends AsyncTask<String, String, String> {
+
+        // Progress Dialog
+        private ProgressDialog pDialog;
+
+        // Creating JSON Parser object
+        JSONParser jParser = new JSONParser();
+
+        // url to get all attractions list
+        private  String url_all_attractions = "http://barintondo.altervista.org/get_all_attrazioni.php";
+
+        // JSON Node names
+        private static final String TAG_SUCCESS = "success";
+        private static final String TAG_attractions = "attrazioni";
+        private static final String TAG_id = "id";
+        private static final String TAG_NAME = "nome";
+
+        // attractions JSONArray
+        JSONArray attractions = null;
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -74,6 +168,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            BITEMS.clear();
             pDialog = new ProgressDialog( ItemListActivity.this );
             pDialog.setMessage( "Loading attractions. Please wait..." );
             pDialog.setIndeterminate( false );
@@ -141,87 +236,5 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
 
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate( R.menu.my_profile_menu , menu );
-
-        return (super.onCreateOptionsMenu( menu ));
-    }
-
-    public void setRecyclerView() {
-        Log.i( TAG , getClass().getSimpleName() + ":entered setRecyclerView()" );
-        mRecyclerView = (RecyclerView) findViewById( R.id.item_list_recycler_view );
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize( true );
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager( this );
-        mRecyclerView.setLayoutManager( mLayoutManager );
-
-        // specify an adapter
-        mAdapter = new MyAdapter( BITEMS );
-        mRecyclerView.setAdapter( mAdapter );
-    }
-
-    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-        private List<BarintondoContent.BarintondoItem> mDataset;
-
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public TextView mItemId;
-            public TextView mItemName;
-
-            public MyViewHolder(View v) {
-                super( v );
-                // Log.i(TAG, getClass().getSimpleName() + ":entered MyViewHolder()");
-                mItemId = v.findViewById( R.id.item_id );
-                mItemName = v.findViewById( R.id.item_name );
-            }
-        }
-
-        // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(List<BarintondoContent.BarintondoItem> myDataset) {
-            //Log.i(TAG, getClass().getSimpleName() + ":entered MyAdpter()");
-            mDataset = myDataset;
-        }
-
-        // Create new views (invoked by the layout manager)
-        @NonNull
-        @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent , int viewType) {
-            Log.i( TAG , getClass().getSimpleName() + ":entered onCreateViewHolder()" );
-            // create a new view
-            View v = (View) LayoutInflater.from( parent.getContext() )
-                    .inflate( R.layout.item_list_content , parent , false );
-            MyViewHolder vh = new MyViewHolder( v );
-            return vh;
-        }
-
-
-        // Replace the contents of a view (invoked by the layout manager)
-        @Override
-        public void onBindViewHolder(MyViewHolder holder , int position) {
-            Log.i( TAG , getClass().getSimpleName() + ":entered onBindViewHolder()" );
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            BarintondoContent.BarintondoItem item = mDataset.get( position );
-            holder.mItemId.setText( String.valueOf( item.getId() ) );
-            holder.mItemName.setText( item.getName()  );
-        }
-
-        // Return the size of your dataset (invoked by the layout manager)
-        @Override
-        public int getItemCount() {
-            //Log.i(TAG, getClass().getSimpleName() + ":entered getItemCount()");
-            return mDataset.size();
-        }
     }
 }
