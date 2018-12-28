@@ -12,15 +12,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class MyProfileActivity extends AppCompatActivity {
-
-    public static final String DB_NAME = "datiUtente.db";
-    public static final String TABLE_UTENTE = "utenti";
-    public static final String COLUMN_USERNAME = "username";
-    public static final String COLUMN_EMAIL = "email";
-    public static final String COLUMN_PASSWORD = "password";
 
     private Toolbar myToolbar;
     private EditText username;
@@ -40,21 +35,21 @@ public class MyProfileActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         //prelevo dati dal db
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, DB_NAME, null, 1);
+        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
         //definisco la query
-        String[] columns = {COLUMN_USERNAME, COLUMN_EMAIL, COLUMN_PASSWORD};
+        String[] columns = {Constants.COLUMN_USERNAME, Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
         Cursor myCursor;
         //ottengo il cursore
-        myCursor = myDB.query(TABLE_UTENTE, columns, null, null, null, null, null, null);
+        myCursor = myDB.query(Constants.TABLE_UTENTE, columns, null, null, null, null, null, null);
         myCursor.moveToFirst();
         //popolo campi
         username = findViewById(R.id.myUsernameBox);
-        username.setText(myCursor.getString(myCursor.getColumnIndex(COLUMN_USERNAME)));
+        username.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_USERNAME)));
         email = findViewById(R.id.myEmailBox);
-        email.setText(myCursor.getString(myCursor.getColumnIndex(COLUMN_EMAIL)));
+        email.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_EMAIL)));
         password = findViewById(R.id.myPassBox);
-        password.setText(myCursor.getString(myCursor.getColumnIndex(COLUMN_PASSWORD)));
+        password.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_PASSWORD)));
         //chiudo db e cursore
         myCursor.close();
         myDB.close();
@@ -89,14 +84,14 @@ public class MyProfileActivity extends AppCompatActivity {
         String newEmail = email.getText().toString();
         String newPass = password.getText().toString();
 
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, DB_NAME, null, 1);
+        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
 
         ContentValues newValues= new ContentValues();
-        newValues.put(COLUMN_USERNAME, newUser);
-        newValues.put(COLUMN_EMAIL, newEmail);
-        newValues.put(COLUMN_PASSWORD, newPass);
-        myDB.update(TABLE_UTENTE, newValues,null, null);
+        newValues.put(Constants.COLUMN_USERNAME, newUser);
+        newValues.put(Constants.COLUMN_EMAIL, newEmail);
+        newValues.put(Constants.COLUMN_PASSWORD, newPass);
+        myDB.update(Constants.TABLE_UTENTE, newValues,null, null);
         myDB.close();
     }
 }

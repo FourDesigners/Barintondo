@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -47,22 +46,29 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
 
+        String items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_RISULTATO);
+        String urlToLoad = "";
+        String tag = "";
+        if(items_type.equals(Constants.INTENT_ATTRAZIONI)) {
+            urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
+            tag = Constants.INTENT_ATTRAZIONI;
+        }
 
         // Loading attractions in Background Thread
-        new LoadBarintondoItem().execute();
+        new LoadBarintondoItem(urlToLoad, tag).execute();
 
     }
 
 
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate( R.menu.my_profile_menu , menu );
 
         return (super.onCreateOptionsMenu( menu ));
-    }
+    }*/
 
     public void setRecyclerView() {
         Log.i( TAG , getClass().getSimpleName() + ":entered setRecyclerView()" );
@@ -151,16 +157,23 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         JSONParser jParser = new JSONParser();
 
         // url to get all attractions list
-        private  String url_all_attractions = "http://barintondo.altervista.org/get_all_attrazioni.php";
+        private  String url_all_attractions;
 
         // JSON Node names
         private static final String TAG_SUCCESS = "success";
-        private static final String TAG_attractions = "attrazioni";
         private static final String TAG_id = "id";
         private static final String TAG_NAME = "nome";
 
+        //JSON Node items TAG
+        private String TAG_items;
+
         // attractions JSONArray
         JSONArray attractions = null;
+
+        LoadBarintondoItem(String url, String tag) {
+            url_all_attractions = url;
+            TAG_items = tag;
+        }
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -181,8 +194,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
          */
         protected String doInBackground(String... args) {
             // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params = new ArrayList<>();
             // getting JSON string from URL
+            Log.i(TAG, "URL= " + url_all_attractions);
             JSONObject json = jParser.makeHttpRequest( url_all_attractions , "GET" , params );
 
             // Check your log cat for JSON reponse
@@ -195,7 +209,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
                 if (success == 1) {
                     // attractions found
                     // Getting Array of attractions
-                    attractions = json.getJSONArray( TAG_attractions );
+                    attractions = json.getJSONArray(TAG_items);
 
                     // looping through All attractions
                     for (int i = 0; i < attractions.length(); i++) {

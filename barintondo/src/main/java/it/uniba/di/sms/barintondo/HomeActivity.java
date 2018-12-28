@@ -28,13 +28,13 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_home );
 
         //popolamento db
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, MyProfileActivity.DB_NAME, null, 1);
+        /*ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, MyProfileActivity.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
         ContentValues user = new ContentValues();
         user.put(MyProfileActivity.COLUMN_USERNAME, "prova1");
         user.put(MyProfileActivity.COLUMN_EMAIL, "pinco@prova.it");
         user.put(MyProfileActivity.COLUMN_PASSWORD, "prova1");
-        long newID = myDB.insert(MyProfileActivity.TABLE_UTENTE, null, user);
+        long newID = myDB.insert(MyProfileActivity.TABLE_UTENTE, null, user);*/
 
         myNavigationDrawer =new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),

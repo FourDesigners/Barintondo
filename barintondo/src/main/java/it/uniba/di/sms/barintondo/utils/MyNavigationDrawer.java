@@ -25,10 +25,6 @@ import it.uniba.di.sms.barintondo.SettingsActivity;
 
 public class MyNavigationDrawer implements Constants{
 
-    private static final String DB_NAME = "datiUtente.db";
-    private static final String TABLE_UTENTE = "utenti";
-    private static final String COLUMN_USERNAME = "username";
-
     private final Activity activity;
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
@@ -103,7 +99,9 @@ public class MyNavigationDrawer implements Constants{
                                 break;
                             case R.id.attrazioni:
                                 mDrawerLayout.closeDrawers();
-                                activity.startActivity(new Intent(activity, ItemListActivity.class));
+                                Intent intent = new Intent(activity, ItemListActivity.class);
+                                intent.putExtra(Constants.INTENT_ACTIVITY_RISULTATO, Constants.INTENT_ATTRAZIONI);
+                                activity.startActivity(intent);
                                 //Toast.makeText(activity, "Attrazioni", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.eventi:
