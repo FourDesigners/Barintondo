@@ -1,7 +1,6 @@
 package it.uniba.di.sms.barintondo.utils;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,11 +18,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import it.uniba.di.sms.barintondo.ItemShower;
+import it.uniba.di.sms.barintondo.ItemListActivity;
 import it.uniba.di.sms.barintondo.MyProfileActivity;
-import it.uniba.di.sms.barintondo.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.R;
 import it.uniba.di.sms.barintondo.SettingsActivity;
 
@@ -108,7 +103,7 @@ public class MyNavigationDrawer implements Constants{
                                 break;
                             case R.id.attrazioni:
                                 mDrawerLayout.closeDrawers();
-                                activity.startActivity(new Intent(activity, ItemShower.class));
+                                activity.startActivity(new Intent(activity, ItemListActivity.class));
                                 //Toast.makeText(activity, "Attrazioni", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.eventi:
