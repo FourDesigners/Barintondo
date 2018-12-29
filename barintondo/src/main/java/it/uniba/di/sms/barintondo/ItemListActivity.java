@@ -35,6 +35,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
     private RecyclerView.Adapter mAdapter;
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
+    private String items_type;
 
 
 
@@ -56,7 +57,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
 
-        String items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_RISULTATO);
+        items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
         String urlToLoad = "";
         String tag = "";
         if(items_type.equals(Constants.INTENT_ATTRAZIONI)) {
@@ -67,6 +68,10 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         // Loading attractions in Background Thread
         new LoadBarintondoItem(urlToLoad, tag).execute();
 
+    }
+
+    public String getItems_type(){
+        return items_type;
     }
 
 

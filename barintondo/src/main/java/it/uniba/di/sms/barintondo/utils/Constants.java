@@ -4,7 +4,7 @@ public interface Constants {
     String TAG = "Barintondo";
 
     //intent per ItemListActivity
-    String INTENT_ACTIVITY_RISULTATO = "activity";
+    String INTENT_ACTIVITY_ITEM_TYPE = "item_type";
     String INTENT_ATTRAZIONI = "attrazioni";
 
     //costanti DB

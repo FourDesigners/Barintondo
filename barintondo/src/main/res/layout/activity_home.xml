@@ -7,10 +7,11 @@
     android:fitsSystemWindows="true">
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-    <FrameLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/home_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/main_activity_toolbar"
@@ -18,7 +19,15 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-    </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOME"
+            android:layout_marginTop="200dp"
+            android:textSize="30dp"
+            android:layout_gravity="center" />
+    </android.support.v7.widget.LinearLayoutCompat>
 
     <!-- Container for contents of drawer - use MyNavigationDrawer to make configuration easier -->
     <android.support.design.widget.NavigationView
@@ -27,7 +36,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_menu"
-        app:headerLayout="@layout/navigation_drawer_header"/>
+        app:headerLayout="@layout/navigation_drawer_header"
+        app:menu="@menu/drawer_menu" />
 
 </android.support.v4.widget.DrawerLayout>
