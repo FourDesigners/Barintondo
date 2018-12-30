@@ -8,6 +8,8 @@ import org.json.*;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -57,9 +59,17 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
 
+        //ottengo il riferimento al chipGroup (l'id l'ho inserito io prima)
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        //creo il nuovo chip
+        Chip newChip = new Chip(this);
+        newChip.setChipText("prova");
+        //lo aggiungo al chipGroup
+        chipGroup.addView(newChip);
+
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
-        String urlToLoad = "";
-        String tag = "";
+        String urlToLoad;
+        String tag;
         if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
             urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
             tag = Constants.INTENT_ATTRACTIONS;
@@ -77,17 +87,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
     public String getItems_type(){
         return items_type;
     }
-
-
-
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate( R.menu.my_profile_menu , menu );
-
-        return (super.onCreateOptionsMenu( menu ));
-    }*/
 
     public void setRecyclerView() {
         Log.i( TAG , getClass().getSimpleName() + ":entered setRecyclerView()" );
