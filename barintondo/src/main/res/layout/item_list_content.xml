@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <!-- Attraction id (pid) - will be HIDDEN - used to pass to other activity -->
+    <!-- Attraction id - will be HIDDEN - used to pass to other activity -->
     <TextView
         android:id="@+id/item_id"
         android:layout_width="wrap_content"

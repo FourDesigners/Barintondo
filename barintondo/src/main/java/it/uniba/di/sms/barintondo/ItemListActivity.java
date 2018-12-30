@@ -181,7 +181,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         // JSON Node names
         private static final String TAG_SUCCESS = "success";
         private static final String TAG_id = "id";
-        private static final String TAG_NAME = "nome";
+        private static final String TAG_NAME = "name";
 
         //JSON Node items TAG
         private String TAG_items;
@@ -219,7 +219,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
             JSONObject json = jParser.makeHttpRequest( url_all_attractions , "GET" , params );
 
             // Check your log cat for JSON reponse
-            Log.d( "All attractions: " , json.toString() );
+            Log.i( "All attractions: " , json.toString() );
 
             try {
                 // Checking for SUCCESS TAG
