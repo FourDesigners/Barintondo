@@ -24,7 +24,8 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/myNicknameLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/myNicknameLabel"
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/myEmailLabel"
@@ -44,7 +45,8 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/myEmailLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/myEmailLabel"
+        tools:ignore="Autofill,LabelFor" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -54,7 +56,8 @@
         app:layout_constraintEnd_toStartOf="@+id/myUsernameBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myUsernameBox"
-        app:srcCompat="@drawable/ic_profile" />
+        app:srcCompat="@drawable/ic_profile"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -64,7 +67,8 @@
         app:layout_constraintEnd_toStartOf="@+id/myEmailBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myEmailBox"
-        app:srcCompat="@drawable/ic_mail_outline" />
+        app:srcCompat="@drawable/ic_mail_outline"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
 
     <TextView
         android:id="@+id/myPassLabel"
@@ -82,10 +86,11 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Name"
+        android:text="@string/str_name"
         app:layout_constraintEnd_toEndOf="@+id/myEmailBox"
         app:layout_constraintStart_toStartOf="@+id/myEmailBox"
-        app:layout_constraintTop_toBottomOf="@+id/myPassLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/myPassLabel"
+        tools:ignore="Autofill,LabelFor" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/myProfileToolbar"
@@ -95,5 +100,6 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="3dp" />
+        tools:layout_editor_absoluteY="3dp"
+        tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>

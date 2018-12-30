@@ -28,7 +28,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_home );
 
 
-        fillChips();
+        fillChips();            // Inserimento filtri
+
         //popolamento db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
