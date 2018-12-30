@@ -2,14 +2,21 @@ package it.uniba.di.sms.barintondo.utils;
 
 public interface Constants {
     String TAG = "Barintondo";
+    String INSERTED = "inserted";
+    String PREFS_NAME = "BarintondoPrefs";
 
     //intent per ItemListActivity
     String INTENT_ACTIVITY_ITEM_TYPE = "item_type";
     String INTENT_ATTRACTIONS = "attractions";
-    String INTENT_SLEEPING = "dormire";
-    String INTENT_EATING = "mangiare";
-    String INTENT_EVENTS = "eventi";
-    String INTENT_NEAR = "vicino";
+    String INTENT_SLEEPING = "sleeping";
+    String INTENT_EATING = "eating";
+    String INTENT_EVENTS = "events";
+    String INTENT_NEAR = "near";
+
+    String CHIPS_ATTRACTIONS = "Chiese, Monumenti, Teatri";
+    String CHIPS_SLEEPING = "B&B, Hotel";
+    String CHIPS_EATING = "Pranzo, Colazione, Cena";
+    String CHIPS_EVENTS = "Bari, vicino Bari";
 
     //costanti DB
     String DB_NAME = "datiUtente.db";

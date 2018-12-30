@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,17 +60,21 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
 
-        //ottengo il riferimento al chipGroup (l'id l'ho inserito io prima)
-        ChipGroup chipGroup = findViewById(R.id.chipGroup);
-        //creo il nuovo chip
-        Chip newChip = new Chip(this);
-        newChip.setChipText("prova");
-        //lo aggiungo al chipGroup
-        chipGroup.addView(newChip);
-
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
         String urlToLoad;
         String tag;
+
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
+
+        for(String s : categories.getString(items_type, "").split(",")) {
+            Chip newChip = new Chip(this);
+            newChip.setChipText(s);
+            newChip.setClickable(true);
+            newChip.setCheckable(true);
+            chipGroup.addView(newChip);
+        }
+
         if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
             urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
             tag = Constants.INTENT_ATTRACTIONS;

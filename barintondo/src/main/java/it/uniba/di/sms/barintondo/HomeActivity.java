@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +18,6 @@ import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class HomeActivity extends AppCompatActivity implements Constants {
 
-
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
 
@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home );
 
+
+        fillChips();
         //popolamento db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
@@ -53,6 +55,20 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
 
 
+    }
+
+    private void fillChips() {
+        SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
+        if(!categories.contains(INSERTED)) {
+            SharedPreferences.Editor edit = categories.edit();
+            edit.putBoolean(INSERTED, true);
+            edit.putString(INTENT_ATTRACTIONS, CHIPS_ATTRACTIONS);
+            edit.putString(INTENT_EATING, CHIPS_EATING);
+            edit.putString(INTENT_SLEEPING, CHIPS_SLEEPING);
+            edit.putString(INTENT_EVENTS, CHIPS_EVENTS);
+            edit.putString(INTENT_NEAR, CHIPS_ATTRACTIONS);
+            edit.apply();
+        }
     }
 
     @Override

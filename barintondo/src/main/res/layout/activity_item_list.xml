@@ -38,62 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content">
 
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip1" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip2" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip3" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip4" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip5" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip6" />
-
-                    <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="10dp"
-                        android:text="Chip7" />
-
+                   
                 </android.support.design.chip.ChipGroup>
             </HorizontalScrollView>
 
