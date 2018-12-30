@@ -28,15 +28,14 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-            <ScrollView
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-                <LinearLayout
-                    android:id="@+id/chipsContainer"
-                    android:layout_width="match_parent"
+                <android.support.design.chip.ChipGroup
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="wrap_content">
 
                     <android.support.design.chip.Chip
                         style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -62,8 +61,40 @@
                         android:padding="10dp"
                         android:text="Chip3" />
 
-                </LinearLayout>
-            </ScrollView>
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="10dp"
+                        android:text="Chip4" />
+
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="10dp"
+                        android:text="Chip5" />
+
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="10dp"
+                        android:text="Chip6" />
+
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="10dp"
+                        android:text="Chip7" />
+
+                </android.support.design.chip.ChipGroup>
+            </HorizontalScrollView>
 
             <!--<FrameLayout-->
             <!--android:id="@+id/frameLayout"-->

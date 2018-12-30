@@ -13,9 +13,9 @@
     <!--Drawer options-->
     <string name="navigazione_label">Navigate</string>
     <string name="categorie_option">Categories</string>
-    <string name="dormire_option">Stay Overnight</string>
+    <string name="dormire_option">Sleep</string>
     <string name="mangiare_option">Food</string>
-    <string name="attrazioni_option">Fun</string>
+    <string name="attrazioni_option">Attractions</string>
     <string name="eventi_option">Events</string>
     <string name="dintorni_option">Near Bari</string>
     <string name="utente_label">User</string>

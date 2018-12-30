@@ -52,7 +52,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
 
-        myNavigationDrawer =new MyNavigationDrawer(this,
+        myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
@@ -60,10 +60,14 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
         String urlToLoad = "";
         String tag = "";
-        if(items_type.equals(Constants.INTENT_ATTRAZIONI)) {
+        if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
             urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
-            tag = Constants.INTENT_ATTRAZIONI;
+            tag = Constants.INTENT_ATTRACTIONS;
         }
+
+        // ISTRUZIONI DA TOGLIERE
+        urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
+        tag = Constants.INTENT_ATTRACTIONS;
 
         // Loading attractions in Background Thread
         new LoadBarintondoItem(urlToLoad, tag).execute();

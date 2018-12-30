@@ -80,7 +80,7 @@ public class MyNavigationDrawer implements Constants {
                         switch (menuItem.getItemId()) {
                             case R.id.home_drawer:
                                 mDrawerLayout.closeDrawers();
-                                if (activity.getClass()!=HomeActivity.class ) {
+                                if (activity.getClass() != HomeActivity.class ) {
                                     Intent intent = new Intent( activity , HomeActivity.class );
                                     activity.startActivity( intent );
                                 }
@@ -96,29 +96,68 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Dormire" , Toast.LENGTH_SHORT ).show();
+                                //Toast.makeText( activity , "Dormire" , Toast.LENGTH_SHORT ).show();
+                                if (activity.getClass()!=ItemListActivity.class ||
+                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_SLEEPING )) {
+                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                    intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_SLEEPING);
+                                    activity.startActivity(intent);
+                                    if(activity.getClass() == ItemListActivity.class) {
+                                        activity.finish();
+                                    }
+                                }
                                 break;
                             case R.id.mangiare:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Mangiare" , Toast.LENGTH_SHORT ).show();
+                                //Toast.makeText( activity , "Mangiare" , Toast.LENGTH_SHORT ).show();
+                                if (activity.getClass()!=ItemListActivity.class ||
+                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_EATING )) {
+                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                    intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_EATING);
+                                    activity.startActivity(intent);
+                                    if(activity.getClass() == ItemListActivity.class) {
+                                        activity.finish();
+                                    }
+                                }
                                 break;
                             case R.id.attrazioni:
                                 mDrawerLayout.closeDrawers();
                                 if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_ATTRAZIONI )) {
+                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_ATTRACTIONS )) {
                                     Intent intent = new Intent( activity , ItemListActivity.class );
-                                    intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , Constants.INTENT_ATTRAZIONI );
+                                    intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , Constants.INTENT_ATTRACTIONS );
                                     activity.startActivity( intent );
+                                    if(activity.getClass() == ItemListActivity.class) {
+                                        activity.finish();
+                                    }
                                 }
                                 //Toast.makeText(activity, "Attrazioni", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.eventi:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Eventi" , Toast.LENGTH_SHORT ).show();
+                                //Toast.makeText( activity , "Eventi" , Toast.LENGTH_SHORT ).show();
+                                if (activity.getClass()!=ItemListActivity.class ||
+                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_EVENTS )) {
+                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                    intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_EVENTS);
+                                    activity.startActivity(intent);
+                                    if(activity.getClass() == ItemListActivity.class) {
+                                        activity.finish();
+                                    }
+                                }
                                 break;
                             case R.id.intorno:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Intorno a Bari" , Toast.LENGTH_SHORT ).show();
+                                //Toast.makeText( activity , "Intorno a Bari" , Toast.LENGTH_SHORT ).show();
+                                if (activity.getClass()!=ItemListActivity.class ||
+                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_NEAR )) {
+                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                    intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_NEAR);
+                                    activity.startActivity(intent);
+                                    if(activity.getClass() == ItemListActivity.class) {
+                                        activity.finish();
+                                    }
+                                }
                                 break;
                             case R.id.profile:
                                 mDrawerLayout.closeDrawers();

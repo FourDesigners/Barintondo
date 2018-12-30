@@ -5,7 +5,11 @@ public interface Constants {
 
     //intent per ItemListActivity
     String INTENT_ACTIVITY_ITEM_TYPE = "item_type";
-    String INTENT_ATTRAZIONI = "attrazioni";
+    String INTENT_ATTRACTIONS = "attrazioni";
+    String INTENT_SLEEPING = "dormire";
+    String INTENT_EATING = "mangiare";
+    String INTENT_EVENTS = "eventi";
+    String INTENT_NEAR = "vicino";
 
     //costanti DB
     String DB_NAME = "datiUtente.db";
