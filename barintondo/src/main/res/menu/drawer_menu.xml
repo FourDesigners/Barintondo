@@ -17,33 +17,33 @@
                     app:showAsAction="withText" />
 
                 <item
-                    android:id="@+id/dormire"
-                    android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="@string/dormire_option"
+                    android:id="@+id/attrazioni"
+                    android:icon="@drawable/ic_attractions"
+                    android:title="@string/attrazioni_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/mangiare"
-                    android:icon="@drawable/ic_fiber_smart_record"
+                    android:icon="@drawable/ic_food"
                     android:title="@string/mangiare_option"
                     app:showAsAction="withText"
                     android:visible="false"
                     />
                 <item
-                    android:id="@+id/attrazioni"
-                    android:icon="@drawable/ic_fiber_smart_record"
-                    android:title="@string/attrazioni_option"
+                    android:id="@+id/dormire"
+                    android:icon="@drawable/ic_stay"
+                    android:title="@string/dormire_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/eventi"
-                    android:icon="@drawable/ic_fiber_smart_record"
+                    android:icon="@drawable/ic_events"
                     android:title="@string/eventi_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/intorno"
-                    android:icon="@drawable/ic_fiber_smart_record"
+                    android:icon="@drawable/ic_surroundings"
                     android:title="@string/dintorni_option"
                     app:showAsAction="withText"
                     android:visible="false"/>

@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_feedback" />
-                            <entry key="sourceFile" value="C:\Users\domyg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_surroundings" />
+                            <entry key="sourceFile" value="C:\Users\domyg\Downloads\scan.svg" />
                           </map>
                         </option>
                       </PersistentState>
