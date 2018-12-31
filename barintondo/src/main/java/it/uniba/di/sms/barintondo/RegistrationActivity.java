@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        final ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         textViewNicknameError = findViewById(R.id.textViewNicknameError);
         textViewEmailError = findViewById(R.id.textViewEmailError);
         textViewPasswordError = findViewById(R.id.textViewPasswordError);
@@ -41,19 +43,6 @@ public class RegistrationActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
-
-        /////
-
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
-        SQLiteDatabase myDB = dbHelper.getWritableDatabase();
-        ContentValues user = new ContentValues();
-        user.put(Constants.COLUMN_NICKNAME, "prova2");
-        user.put(Constants.COLUMN_EMAIL, "pinco@prova.it");
-        user.put(Constants.COLUMN_PASSWORD, "prova1");
-        long newID = myDB.insert(Constants.TABLE_UTENTE, null, user);
-
-        /////
-
 
         editTextNickname = findViewById(R.id.editTextNickname);
 
@@ -139,38 +128,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 String repeatPassword = editTextRepeatPassword.getText().toString();
                 boolean correct = isCorrect(nickname, email, password, repeatPassword);
-                if(!isPresent(email)) {
-                    insertInto(nickname, email, password);
+                if(correct) {
+                    if(!ProfileOpenHelper.isPresent(email, openHelper)) {
+                        ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Account già presente", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
 
-    }
-
-    private boolean isPresent(String email) {
-
-        return false;
-    }
-
-    private void insertInto(String nickname, String email, String password) {
-        /*
-        ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
-        SQLiteDatabase db = openHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Constants.COLUMN_NICKNAME, nickname);
-        values.put(Constants.COLUMN_EMAIL, email);
-        values.put(Constants.COLUMN_PASSWORD, password);
-        db.insert(Constants.TABLE_UTENTE, null, values);
-        db.close();
-        */
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
-        SQLiteDatabase myDB = dbHelper.getWritableDatabase();
-        ContentValues user = new ContentValues();
-        user.put(Constants.COLUMN_NICKNAME, "prova2");
-        user.put(Constants.COLUMN_EMAIL, "pinco@prova.it");
-        user.put(Constants.COLUMN_PASSWORD, "prova1");
-        long newID = myDB.insert(Constants.TABLE_UTENTE, null, user);
-        Toast.makeText(getApplicationContext(), "Account creato", Toast.LENGTH_SHORT).show();
     }
 
     private boolean isCorrect(String nickname, String email, String password, String repeatPassword) {

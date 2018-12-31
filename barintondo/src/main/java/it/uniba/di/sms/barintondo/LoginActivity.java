@@ -2,9 +2,11 @@ package it.uniba.di.sms.barintondo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -14,7 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class LoginActivity extends AppCompatActivity {
     EditText editTextEmail, editTextPassword;
@@ -28,7 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        android.support.v7.widget.Toolbar myToolbar = findViewById(R.id.toolbar);
+        final ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.str_login);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -81,7 +86,13 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String email = editTextEmail.getText().toString();
+                String password = editTextPassword.getText().toString();
+                if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
+                    goHome();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Credenziali errate", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -93,6 +104,12 @@ public class LoginActivity extends AppCompatActivity {
                 goRegistration();
             }
         });
+    }
+
+    private void goHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void goRegistration() {

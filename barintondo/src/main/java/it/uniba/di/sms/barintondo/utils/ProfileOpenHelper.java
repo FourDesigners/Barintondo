@@ -1,8 +1,11 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -33,5 +36,54 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public static boolean isPresent(String email, ProfileOpenHelper openHelper) {
+        boolean found = false;
+
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        String[] projection = {Constants.COLUMN_EMAIL};
+        Cursor cursor = db.query(Constants.TABLE_UTENTE, projection, null, null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            String oEmail = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_EMAIL));
+            if(email.equals(oEmail)) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static boolean isPresent(String email, String password, ProfileOpenHelper openHelper) {
+        boolean found = false;
+
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        String[] projection = {Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
+        Cursor cursor = db.query(Constants.TABLE_UTENTE, projection, null, null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            String oEmail = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_EMAIL));
+            String oPassword = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_PASSWORD));
+            if(email.equals(oEmail) && password.equals(oPassword)) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static void insertInto(String nickname, String email, String password, ProfileOpenHelper openHelper) {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        String[] projection = {Constants.COLUMN_EMAIL};
+        Cursor cursor = db.query(Constants.TABLE_UTENTE, projection, null, null, null, null, null);
+        if(cursor.getCount() > 0) {
+            db.delete(Constants.TABLE_UTENTE, null, null);
+        }
+        db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constants.COLUMN_NICKNAME, nickname);
+        values.put(Constants.COLUMN_EMAIL, email);
+        values.put(Constants.COLUMN_PASSWORD, password);
+        db.insert(Constants.TABLE_UTENTE, null, values);
+        db.close();
     }
 }

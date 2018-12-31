@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         fillChips();            // Inserimento filtri
 
+        /*
         //popolamento db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
@@ -38,14 +39,12 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         user.put(Constants.COLUMN_EMAIL, "pinco@prova.it");
         user.put(Constants.COLUMN_PASSWORD, "prova1");
         long newID = myDB.insert(Constants.TABLE_UTENTE, null, user);
+        */
 
-        myNavigationDrawer =new MyNavigationDrawer(this,
+        myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
                 (DrawerLayout )findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
-        
-
-
 
         myToolbar = findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(myToolbar);
