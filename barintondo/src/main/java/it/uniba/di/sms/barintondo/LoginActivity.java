@@ -21,6 +21,7 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class LoginActivity extends AppCompatActivity {
+    TextView textViewForgotPassword;
     EditText editTextEmail, editTextPassword;
     ImageView imageView;
     Button reset, login;
@@ -71,6 +72,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
+        textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goForgotPassword();
+            }
+        });
+
         reset = findViewById(R.id.buttonReset);
 
         reset.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +113,11 @@ public class LoginActivity extends AppCompatActivity {
                 goRegistration();
             }
         });
+    }
+
+    private void goForgotPassword() {
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        startActivity(intent);
     }
 
     private void goHome() {

@@ -44,6 +44,15 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
         tools:ignore="Autofill" />
 
+    <TextView
+        android:id="@+id/textViewForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_i_forgot_my_password"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/widthEye"
@@ -97,7 +106,6 @@
         app:layout_constraintStart_toEndOf="@id/textViewNoAccount"
         app:layout_constraintTop_toTopOf="@id/textViewNoAccount"
         app:layout_constraintVertical_bias="0.0" />
-
 
 
 

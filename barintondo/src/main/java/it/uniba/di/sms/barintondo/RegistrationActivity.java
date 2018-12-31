@@ -131,6 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(correct) {
                     if(!ProfileOpenHelper.isPresent(email, openHelper)) {
                         ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                        Toast.makeText(getApplicationContext(), "Account creato", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getApplicationContext(), "Account già presente", Toast.LENGTH_SHORT).show();
                     }

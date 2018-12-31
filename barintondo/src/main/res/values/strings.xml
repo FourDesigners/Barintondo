@@ -82,5 +82,8 @@
     <string name="str_email_is_not_valid">Email is not valid</string>
     <string name="str_weak_password_min_8_characters_required">Weak password (min. 8 characters required)</string>
     <string name="str_passwords_don_t_match">Passwords don\'t match</string>
+    <string name="str_i_forgot_my_password">Forgot password? Click here</string>
+    <string name="str_reset_password">Reset password</string>
+    <string name="str_e_mail_per_il_recupero">E-mail per il recupero</string>
 
 </resources>
