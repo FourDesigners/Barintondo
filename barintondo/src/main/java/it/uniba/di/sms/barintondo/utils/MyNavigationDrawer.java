@@ -30,7 +30,7 @@ public class MyNavigationDrawer implements Constants {
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
 
-    private TextView username;
+    private TextView nickname;
 
     /**
      * @param activity:       activity parent in cui apparirà il drawer
@@ -49,21 +49,21 @@ public class MyNavigationDrawer implements Constants {
 
         //imposto il nome dell'utente
         /*con support library >= 23.1.1, bisogna fare riferimento all'header navigation view e, da questo, ottenere il riferimento
-        alla textView che mostra l'username dell'utente attuale*/
+        alla textView che mostra il nickname dell'utente attuale*/
         View header = navigationView.getHeaderView( 0 );
-        username = header.findViewById( R.id.header_nickname );
-        Log.i( TAG , getClass().getSimpleName() + ": username = " + username );
+        nickname = header.findViewById( R.id.header_nickname );
+        Log.i( TAG , getClass().getSimpleName() + ": nickname = " + nickname );
         //prelevo dati dal db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper( activity , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
         //definisco la query
-        String[] columns = {COLUMN_USERNAME};
+        String[] columns = {COLUMN_NICKNAME};
         Cursor myCursor;
         //ottengo il cursore
         myCursor = myDB.query( TABLE_UTENTE , columns , null , null , null , null , null , null );
         myCursor.moveToFirst();
 
-        username.setText( myCursor.getString( myCursor.getColumnIndex( COLUMN_USERNAME ) ) );
+        nickname.setText( myCursor.getString( myCursor.getColumnIndex( COLUMN_NICKNAME ) ) );
 
         myCursor.close();
         myDB.close();

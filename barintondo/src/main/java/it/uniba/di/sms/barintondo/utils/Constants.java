@@ -21,7 +21,7 @@ public interface Constants {
     //costanti DB
     String DB_NAME = "datiUtente.db";
     String TABLE_UTENTE = "utenti";
-    String COLUMN_USERNAME = "username";
+    String COLUMN_NICKNAME = "nickname";
 
     String COLUMN_EMAIL = "email";
     String COLUMN_PASSWORD = "password";

@@ -18,7 +18,6 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
 
-import static java.security.AccessController.getContext;
 
 public class RegistrationActivity extends AppCompatActivity {
     TextView textViewNicknameError, textViewEmailError, textViewPasswordError, textViewRepeatPasswordError;
@@ -34,7 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
         textViewNicknameError = findViewById(R.id.textViewNicknameError);
         textViewEmailError = findViewById(R.id.textViewEmailError);
         textViewPasswordError = findViewById(R.id.textViewPasswordError);
-        textViewRepeatPasswordError = findViewById(R.id.textViewRepeatPasswordtError);
+        textViewRepeatPasswordError = findViewById(R.id.textViewRepeatPasswordError);
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.str_register);
@@ -48,7 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
         ContentValues user = new ContentValues();
-        user.put(Constants.COLUMN_USERNAME, "prova2");
+        user.put(Constants.COLUMN_NICKNAME, "prova2");
         user.put(Constants.COLUMN_EMAIL, "pinco@prova.it");
         user.put(Constants.COLUMN_PASSWORD, "prova1");
         long newID = myDB.insert(Constants.TABLE_UTENTE, null, user);
@@ -167,7 +166,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
         ContentValues user = new ContentValues();
-        user.put(Constants.COLUMN_USERNAME, "prova2");
+        user.put(Constants.COLUMN_NICKNAME, "prova2");
         user.put(Constants.COLUMN_EMAIL, "pinco@prova.it");
         user.put(Constants.COLUMN_PASSWORD, "prova1");
         long newID = myDB.insert(Constants.TABLE_UTENTE, null, user);
@@ -184,7 +183,7 @@ public class RegistrationActivity extends AppCompatActivity {
             textViewNicknameError.setText("");
         }
         if(VerifyString.isEmailNotValid(email)) {
-            textViewEmailError.setText(R.string.str_email_not_valid);
+            textViewEmailError.setText(R.string.str_email_is_not_valid);
             correct = false;
         }else {
             textViewEmailError.setText("");

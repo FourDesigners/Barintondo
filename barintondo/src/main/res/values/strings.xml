@@ -78,5 +78,9 @@
     <string name="str_don_t_you_have_an_account">Don\'t you have an account?</string>
     <string name="str_register_now">Register now</string>
     <string name="str_name">Name</string>
+    <string name="str_nickname_is_empty">Nickname is empty</string>
+    <string name="str_email_is_not_valid">Email is not valid</string>
+    <string name="str_weak_password_min_8_characters_required">Weak password (min. 8 characters required)</string>
+    <string name="str_passwords_don_t_match">Passwords don\'t match</string>
 
 </resources>

@@ -11,13 +11,13 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "datiUtente.db";
     private static final String TABLE_UTENTE = "utenti";
     private static final String COLUMN_ID = "_ID";
-    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_NICKNAME = "nickname";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
     private static final String CREATE_USER_QUERY =
             "CREATE TABLE " + TABLE_UTENTE + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_USERNAME + " text, " + COLUMN_EMAIL + " text, " + COLUMN_PASSWORD + " text);";
+                    COLUMN_NICKNAME + " text, " + COLUMN_EMAIL + " text, " + COLUMN_PASSWORD + " text);";
 
 
     public ProfileOpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {

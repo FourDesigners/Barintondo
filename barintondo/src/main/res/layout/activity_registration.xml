@@ -34,6 +34,15 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="Autofill" />
 
+    <TextView
+        android:id="@+id/textViewNicknameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/editTextNickname"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNickname" />
+
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
@@ -46,6 +55,15 @@
         app:layout_constraintStart_toStartOf="@+id/editTextNickname"
         app:layout_constraintTop_toBottomOf="@id/editTextNickname"
         tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/textViewEmailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -60,6 +78,15 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
         tools:ignore="Autofill" />
 
+    <TextView
+        android:id="@+id/textViewPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+
     <EditText
         android:id="@+id/editTextRepeatPassword"
         android:layout_width="wrap_content"
@@ -72,6 +99,15 @@
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
         tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/textViewRepeatPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/editTextRepeatPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRepeatPassword" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -114,6 +150,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonRegister"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonRegister" />
+
 
 
 

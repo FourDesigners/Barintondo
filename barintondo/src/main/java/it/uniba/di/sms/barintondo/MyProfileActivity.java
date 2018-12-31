@@ -38,14 +38,14 @@ public class MyProfileActivity extends AppCompatActivity {
         ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
         //definisco la query
-        String[] columns = {Constants.COLUMN_USERNAME, Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
+        String[] columns = {Constants.COLUMN_NICKNAME, Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
         Cursor myCursor;
         //ottengo il cursore
         myCursor = myDB.query(Constants.TABLE_UTENTE, columns, null, null, null, null, null, null);
         myCursor.moveToFirst();
         //popolo campi
         username = findViewById(R.id.myUsernameBox);
-        username.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_USERNAME)));
+        username.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_NICKNAME)));
         email = findViewById(R.id.myEmailBox);
         email.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_EMAIL)));
         password = findViewById(R.id.myPassBox);
@@ -88,7 +88,7 @@ public class MyProfileActivity extends AppCompatActivity {
         SQLiteDatabase myDB = dbHelper.getWritableDatabase();
 
         ContentValues newValues= new ContentValues();
-        newValues.put(Constants.COLUMN_USERNAME, newUser);
+        newValues.put(Constants.COLUMN_NICKNAME, newUser);
         newValues.put(Constants.COLUMN_EMAIL, newEmail);
         newValues.put(Constants.COLUMN_PASSWORD, newPass);
         myDB.update(Constants.TABLE_UTENTE, newValues,null, null);
