@@ -86,4 +86,9 @@
     <string name="str_reset_password">Reset password</string>
     <string name="str_e_mail_per_il_recupero">E-mail per il recupero</string>
 
+    <!--METEO-->
+    <string name="OPEN_WEATHER_MAP_API_KEY">1694b85daddaaf9fe6689f06b58c7b29</string>
+    <string name="bari_latitude">41.133333</string>
+    <string name="bari_longitude">16.85</string>
+
 </resources>

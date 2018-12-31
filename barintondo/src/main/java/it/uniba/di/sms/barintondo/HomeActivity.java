@@ -1,8 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
-import android.content.ContentValues;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,15 +9,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.kwabenaberko.openweathermaplib.Units;
+import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
+import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
+
+import java.util.Locale;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class HomeActivity extends AppCompatActivity implements Constants {
 
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
+    OpenWeatherMapHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,5 +84,50 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         Boolean open = myNavigationDrawer.openMenu( item );
         if(open) return open;
         else return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //METEO
+        helper = new OpenWeatherMapHelper(); //creo oggetto helper
+        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY)); //imposto l'API KEY
+        helper.setUnits(Units.METRIC); //imposto l'unità in modo che mostri i gradi in CELSIUS
+        Log.i(TAG, "lang= " + Locale.getDefault().getLanguage());
+        helper.setLang(Locale.getDefault().getLanguage()); //imposto lingua delle info in base alla lingua del s.o.
+        //ottengo info
+        helper.getCurrentWeatherByGeoCoordinates(Double.parseDouble(getResources().getString(R.string.bari_latitude)), Double.parseDouble(getResources().getString(R.string.bari_longitude)), new OpenWeatherMapHelper.CurrentWeatherCallback() {
+            @Override
+            public void onSuccess(CurrentWeather currentWeather) {
+                Log.i(TAG,
+                        "Weather Description: " + currentWeather.getWeatherArray().get(0).getDescription() + "\n"
+                                +"Temp: "+currentWeather.getMain().getTemp() +"\n"
+                                +"Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
+                );
+
+                //imposto temperatura
+                TextView temp = findViewById(R.id.temp);
+                temp.setText(String.valueOf(Math.round(currentWeather.getMain().getTemp())));
+                //ottengo url icona
+                String iconurl = "http://openweathermap.org/img/w/" + currentWeather.getWeatherArray().get(0).getIcon() + ".png";
+                //imposto icona
+                Glide.with(HomeActivity.this)
+                        .load(iconurl)
+                        .apply(new RequestOptions().override(192, 192))
+                        .into( (ImageView) findViewById(R.id.weatherIcon));
+                //imposto descrizione
+                TextView desc = findViewById(R.id.weatherDesc);
+                desc.setText(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
+                //imposto scala
+                TextView tempScale = findViewById(R.id.tempScale);
+                tempScale.setText("°C");
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.i(TAG, throwable.getMessage());
+            }
+        });
     }
 }
