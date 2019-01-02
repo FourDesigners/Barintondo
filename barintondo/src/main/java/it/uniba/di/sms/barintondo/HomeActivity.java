@@ -1,5 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
+    Button moreBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,9 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
+
+        moreBtn = findViewById(R.id.moreBtn);
+        moreBtn.setOnClickListener(moreBtnListener);
 
 
     }
@@ -140,4 +148,11 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         }
         return originalString.trim().substring(0, 1).toUpperCase() + originalString.substring(1);
     }
+
+    private View.OnClickListener moreBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //TODO
+        }
+    };
 }

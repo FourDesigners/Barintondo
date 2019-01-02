@@ -92,5 +92,6 @@
     <string name="bari_longitude">16.85</string>
     <string name="tempUnit">°</string>
     <string name="windUnit">km/h</string>
+    <string name="moreBtn">...</string>
 
 </resources>
