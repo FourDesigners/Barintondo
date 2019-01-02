@@ -108,20 +108,22 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
                 //imposto temperatura
                 TextView temp = findViewById(R.id.temp);
-                temp.setText(String.valueOf(Math.round(currentWeather.getMain().getTemp())));
+                temp.setText(String.valueOf(Math.round(currentWeather.getMain().getTemp())).concat(getResources().getString(R.string.tempUnit)));
                 //ottengo url icona
                 String iconurl = "http://openweathermap.org/img/w/" + currentWeather.getWeatherArray().get(0).getIcon() + ".png";
                 //imposto icona
                 Glide.with(HomeActivity.this)
                         .load(iconurl)
-                        .apply(new RequestOptions().override(192, 192))
+                        .apply(new RequestOptions().override(144, 144)) //resize immagine altrimenti troppo piccola
                         .into( (ImageView) findViewById(R.id.weatherIcon));
                 //imposto descrizione
                 TextView desc = findViewById(R.id.weatherDesc);
-                desc.setText(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
-                //imposto scala
-                TextView tempScale = findViewById(R.id.tempScale);
-                tempScale.setText("°C");
+                String formattedString = capitalizeFirstLetter(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
+                desc.setText(formattedString);
+                //imposto velocità vento
+                /*TextView windSpeed = findViewById(R.id.windSpeed);
+                windSpeed.setText(String.valueOf(currentWeather.getWind().getSpeed()).concat(getResources().getString(R.string.windUnit)));
+                */
             }
 
             @Override
@@ -129,5 +131,13 @@ public class HomeActivity extends AppCompatActivity implements Constants {
                 Log.i(TAG, throwable.getMessage());
             }
         });
+    }
+
+    //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole
+    public String capitalizeFirstLetter(String originalString) {
+        if (originalString == null || originalString.length() == 0) {
+            return originalString;
+        }
+        return originalString.trim().substring(0, 1).toUpperCase() + originalString.substring(1);
     }
 }
