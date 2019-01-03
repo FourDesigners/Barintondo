@@ -41,9 +41,11 @@ public class BackgroundLogin extends AsyncTask<String, Void,String> {
         if(s.contains("login successful"))
         {
             Log.e("DBLOGIN", "ok");
+            /*
             Intent intent_name = new Intent();
             intent_name.setClass(context.getApplicationContext(), HomeActivity.class);
             context.startActivity(intent_name);
+            */
         }else {
             Toast.makeText(context, "Credenziali non valide", Toast.LENGTH_SHORT).show();
         }

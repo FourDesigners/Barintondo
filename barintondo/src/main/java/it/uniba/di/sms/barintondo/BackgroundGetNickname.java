@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -45,6 +46,9 @@ public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
         //dialog.setMessage(s);
         //dialog.show();
         ProfileOpenHelper.insertInto(s, email, password, openHelper);
+        Intent intent_name = new Intent();
+        intent_name.setClass(context.getApplicationContext(), HomeActivity.class);
+        context.startActivity(intent_name);
     }
 
     @Override
