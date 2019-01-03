@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.model.FileLoader;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,17 +21,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import it.uniba.di.sms.barintondo.HomeActivity;
 import it.uniba.di.sms.barintondo.LoginActivity;
 
 public class BackgroundRegistration extends AsyncTask<String, Void,String> {
 
     AlertDialog dialog;
     Context context;
+    String nickname, email, password;
+    ProfileOpenHelper openHelper;
     String origin;
     public Boolean registration = false;
-    public BackgroundRegistration(Context context, String origin)
+    public BackgroundRegistration(Context context, String nickname, String email, String password, ProfileOpenHelper openHelper, String origin)
     {
         this.context = context;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.openHelper = openHelper;
         this.origin = origin;
     }
 
@@ -47,12 +56,13 @@ public class BackgroundRegistration extends AsyncTask<String, Void,String> {
         }else {
             if(s.contains("Registration successful")) {
                 Log.e("DBRegistration", "ok");
-            /*
-            Intent intent_name = new Intent();
-            intent_name.setClass(context.getApplicationContext(), HomeActivity.class);
-            context.startActivity(intent_name);
-            */
+
+                if(!ProfileOpenHelper.isPresent(email, openHelper)) {
+                    ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                }
                 Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, HomeActivity.class);
+                context.startActivity(intent);
             }else {
                 Toast.makeText(context, "Account già presente", Toast.LENGTH_SHORT).show();
             }
@@ -62,9 +72,8 @@ public class BackgroundRegistration extends AsyncTask<String, Void,String> {
     @Override
     protected String doInBackground(String... voids) {
         String result = "";
-        String nickname = voids[0];
-        String user = voids[1];
-        String pass = voids[2];
+        String user = email;
+        String pass = password;
 
         String connstr = "http://barintondo.altervista.org/registration.php";
 

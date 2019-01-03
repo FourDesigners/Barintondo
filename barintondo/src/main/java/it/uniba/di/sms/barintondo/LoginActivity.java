@@ -49,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
                 String nickname = ProfileOpenHelper.getLocalAccount(openHelper)[0];
                 String email = ProfileOpenHelper.getLocalAccount(openHelper)[1];
                 String password = ProfileOpenHelper.getLocalAccount(openHelper)[2];
-                BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), LoginActivity.class.toString());
-                bg.execute(nickname, email, password);
+                BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), nickname, email, password, openHelper, LoginActivity.class.toString());
+                bg.execute();
             }
         }
 
@@ -117,11 +117,12 @@ public class LoginActivity extends AppCompatActivity {
                     bg.execute(email, password);
                     BackgroundGetNickname bgn = new BackgroundGetNickname(getApplicationContext(), email, password, openHelper);
                     bgn.execute();
-                }
-                if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
-                    goHome();
                 }else {
-                    if(!connected) Toast.makeText(getApplicationContext(), "Credenziali non valide", Toast.LENGTH_SHORT).show();
+                    if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
+                        goHome();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Credenziali non valide", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
