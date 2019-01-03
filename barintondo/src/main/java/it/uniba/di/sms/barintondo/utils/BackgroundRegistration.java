@@ -1,4 +1,4 @@
-package it.uniba.di.sms.barintondo;
+package it.uniba.di.sms.barintondo.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,21 +19,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
+import it.uniba.di.sms.barintondo.LoginActivity;
 
-public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
+public class BackgroundRegistration extends AsyncTask<String, Void,String> {
+
     AlertDialog dialog;
     Context context;
-    String email, password;
-    ProfileOpenHelper openHelper;
+    String origin;
     public Boolean registration = false;
-
-    public BackgroundGetNickname(Context context, String email, String password, ProfileOpenHelper openHelper)
+    public BackgroundRegistration(Context context, String origin)
     {
         this.context = context;
-        this.email = email;
-        this.password = password;
-        this.openHelper = openHelper;
+        this.origin = origin;
     }
 
     @Override
@@ -45,17 +42,31 @@ public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
     protected void onPostExecute(String s) {
         //dialog.setMessage(s);
         //dialog.show();
-        ProfileOpenHelper.insertInto(s, email, password, openHelper);
-        Intent intent_name = new Intent();
-        intent_name.setClass(context.getApplicationContext(), HomeActivity.class);
-        context.startActivity(intent_name);
+        if(origin.equals(LoginActivity.class.toString())) {
+            if(s.contains("Registration successfull")) Toast.makeText(context, "Sincronizzazione...", Toast.LENGTH_SHORT).show();
+        }else {
+            if(s.contains("Registration successful")) {
+                Log.e("DBRegistration", "ok");
+            /*
+            Intent intent_name = new Intent();
+            intent_name.setClass(context.getApplicationContext(), HomeActivity.class);
+            context.startActivity(intent_name);
+            */
+                Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(context, "Account già presente", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
     protected String doInBackground(String... voids) {
         String result = "";
+        String nickname = voids[0];
+        String user = voids[1];
+        String pass = voids[2];
 
-        String connstr = "http://barintondo.altervista.org/getNickname.php";
+        String connstr = "http://barintondo.altervista.org/registration.php";
 
         try {
             URL url = new URL(connstr);
@@ -66,7 +77,9 @@ public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
 
             OutputStream ops = http.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops,"UTF-8"));
-            String data = URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8");
+            String data = URLEncoder.encode("nickname","UTF-8")+"="+URLEncoder.encode(nickname,"UTF-8")
+                    +"&&"+URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")
+                    +"&&"+URLEncoder.encode("pass","UTF-8")+"="+URLEncoder.encode(pass,"UTF-8");
             writer.write(data);
             writer.flush();
             writer.close();
@@ -75,7 +88,8 @@ public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
             InputStream ips = http.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(ips,"ISO-8859-1"));
             String line ="";
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 result += line;
             }
             reader.close();
@@ -89,7 +103,7 @@ public class BackgroundGetNickname extends AsyncTask<String, Void,String> {
             result = e.getMessage();
         }
 
+
         return result;
     }
 }
-

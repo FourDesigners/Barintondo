@@ -25,6 +25,7 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import java.util.Locale;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 
 public class HomeActivity extends AppCompatActivity implements Constants {

@@ -14,7 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import it.uniba.di.sms.barintondo.utils.BackgroundGetNickname;
+import it.uniba.di.sms.barintondo.utils.BackgroundLogin;
+import it.uniba.di.sms.barintondo.utils.BackgroundRegistration;
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class LoginActivity extends AppCompatActivity {
