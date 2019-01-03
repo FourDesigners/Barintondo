@@ -29,8 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_surroundings" />
-                            <entry key="sourceFile" value="C:\Users\domyg\Downloads\scan.svg" />
+                            <entry key="outputName" value="ic_more_details" />
+                            <entry key="sourceFile" value="C:\Users\domyg\Downloads\more-details-circular-button.svg" />
                           </map>
                         </option>
                       </PersistentState>

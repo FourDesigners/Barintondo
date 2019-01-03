@@ -93,5 +93,7 @@
     <string name="tempUnit">°</string>
     <string name="windUnit">km/h</string>
     <string name="moreBtn">...</string>
+    <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
+    <string name="webUrl">https://www.ilmeteo.it/meteo/Bari</string>
 
 </resources>
