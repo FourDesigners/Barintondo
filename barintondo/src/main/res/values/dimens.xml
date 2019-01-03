@@ -2,6 +2,6 @@
 <resources>
     <dimen name="heightEye">40dp</dimen>
     <dimen name="widthEye">40dp</dimen>
-    <dimen name="tempSize">75dp</dimen>
-    <dimen name="standardTextSize">24dp</dimen>
+    <dimen name="tempSize">35dp</dimen>
+    <dimen name="standardTextSize">20dp</dimen>
 </resources>

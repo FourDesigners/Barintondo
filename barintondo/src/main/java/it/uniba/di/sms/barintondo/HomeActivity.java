@@ -1,5 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
+    Button moreBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,9 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
+
+        moreBtn = findViewById(R.id.moreBtn);
+        moreBtn.setOnClickListener(moreBtnListener);
 
 
     }
@@ -108,20 +116,22 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
                 //imposto temperatura
                 TextView temp = findViewById(R.id.temp);
-                temp.setText(String.valueOf(Math.round(currentWeather.getMain().getTemp())));
+                temp.setText(String.valueOf(Math.round(currentWeather.getMain().getTemp())).concat(getResources().getString(R.string.tempUnit)));
                 //ottengo url icona
                 String iconurl = "http://openweathermap.org/img/w/" + currentWeather.getWeatherArray().get(0).getIcon() + ".png";
                 //imposto icona
                 Glide.with(HomeActivity.this)
                         .load(iconurl)
-                        .apply(new RequestOptions().override(192, 192))
+                        .apply(new RequestOptions().override(144, 144)) //resize immagine altrimenti troppo piccola
                         .into( (ImageView) findViewById(R.id.weatherIcon));
                 //imposto descrizione
                 TextView desc = findViewById(R.id.weatherDesc);
-                desc.setText(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
-                //imposto scala
-                TextView tempScale = findViewById(R.id.tempScale);
-                tempScale.setText("°C");
+                String formattedString = capitalizeFirstLetter(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
+                desc.setText(formattedString);
+                //imposto velocità vento
+                /*TextView windSpeed = findViewById(R.id.windSpeed);
+                windSpeed.setText(String.valueOf(currentWeather.getWind().getSpeed()).concat(getResources().getString(R.string.windUnit)));
+                */
             }
 
             @Override
@@ -130,4 +140,19 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             }
         });
     }
+
+    //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole
+    public String capitalizeFirstLetter(String originalString) {
+        if (originalString == null || originalString.length() == 0) {
+            return originalString;
+        }
+        return originalString.trim().substring(0, 1).toUpperCase() + originalString.substring(1);
+    }
+
+    private View.OnClickListener moreBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //TODO
+        }
+    };
 }
