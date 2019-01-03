@@ -96,4 +96,9 @@
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
     <string name="webUrl">https://www.ilmeteo.it/meteo/Bari</string>
 
+    <!--ATTRACTIONS-->
+    <string name="attractionsToolbarTitle">Attractions</string>
+    <string name="searchTitle">Search</string>
+    <string name="searchHint">Find an Attraction</string>
+
 </resources>
