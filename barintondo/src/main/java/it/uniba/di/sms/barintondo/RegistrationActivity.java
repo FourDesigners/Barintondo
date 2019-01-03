@@ -129,11 +129,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 String repeatPassword = editTextRepeatPassword.getText().toString();
                 boolean correct = isCorrect(nickname, email, password, repeatPassword);
                 if(correct) {
+                    boolean connected = InternetConnection.isNetworkAvailable(RegistrationActivity.this);
+                    if(connected) {
+                        BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), RegistrationActivity.class.toString());
+                        bg.execute(nickname, email, password);
+                    }
                     if(!ProfileOpenHelper.isPresent(email, openHelper)) {
                         ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
-                        Toast.makeText(getApplicationContext(), "Account creato", Toast.LENGTH_SHORT).show();
+                        if(!connected) Toast.makeText(getApplicationContext(), "Account creato", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getApplicationContext(), "Account già presente", Toast.LENGTH_SHORT).show();
+                        if(!connected) Toast.makeText(getApplicationContext(), "Account già presente", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

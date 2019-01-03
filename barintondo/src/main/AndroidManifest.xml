@@ -39,10 +39,6 @@
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:parentActivityName=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"  />
     </application>
 
 </manifest>

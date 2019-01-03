@@ -9,6 +9,18 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
 public class ProfileOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "datiUtente.db";
@@ -85,5 +97,22 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_PASSWORD, password);
         db.insert(Constants.TABLE_UTENTE, null, values);
         db.close();
+    }
+
+    public static String[] getLocalAccount(ProfileOpenHelper openHelper) {
+        String[] params = new String[3];
+
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        String[] projection = {Constants.COLUMN_NICKNAME, Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
+        Cursor cursor = db.query(Constants.TABLE_UTENTE, projection, null, null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            params[0] = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_NICKNAME));
+            params[1] = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_EMAIL));
+            params[2] = cursor.getString(cursor.getColumnIndexOrThrow(Constants.COLUMN_PASSWORD));
+        }else {
+            params = null;
+        }
+        return params;
     }
 }

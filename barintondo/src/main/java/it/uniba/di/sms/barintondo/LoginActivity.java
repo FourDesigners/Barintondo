@@ -2,14 +2,11 @@ package it.uniba.di.sms.barintondo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +36,19 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+
+        if(!InternetConnection.isNetworkAvailable(LoginActivity.this)) {
+            Toast.makeText(this, "Non connesso alla rete", Toast.LENGTH_SHORT).show();
+        }else {
+            //Toast.makeText(this, "Connesso alla rete", Toast.LENGTH_SHORT).show();
+            if(ProfileOpenHelper.getLocalAccount(openHelper) != null) {
+                String nickname = ProfileOpenHelper.getLocalAccount(openHelper)[0];
+                String email = ProfileOpenHelper.getLocalAccount(openHelper)[1];
+                String password = ProfileOpenHelper.getLocalAccount(openHelper)[2];
+                BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), LoginActivity.class.toString());
+                bg.execute(nickname, email, password);
+            }
+        }
 
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextEmail.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -97,10 +107,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
+                boolean connected = InternetConnection.isNetworkAvailable(LoginActivity.this);
+                if(connected) {
+                    BackgroundLogin bg = new BackgroundLogin(getApplicationContext());
+                    bg.execute(email, password);
+                    BackgroundGetNickname bgn = new BackgroundGetNickname(getApplicationContext(), email, password, openHelper);
+                    bgn.execute();
+                }
                 if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
                     goHome();
                 }else {
-                    Toast.makeText(getApplicationContext(), "Credenziali errate", Toast.LENGTH_SHORT).show();
+                    if(!connected) Toast.makeText(getApplicationContext(), "Credenziali non valide", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,8 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goForgotPassword() {
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
-        startActivity(intent);
+
     }
 
     private void goHome() {

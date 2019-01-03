@@ -84,7 +84,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
         tag = Constants.INTENT_ATTRACTIONS;
 
-        // Loading attractions in Background Thread
+        // Loading attractions in BackgroundLogin Thread
         new LoadBarintondoItem(urlToLoad, tag).execute();
 
     }
@@ -168,7 +168,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
     }
 
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * BackgroundLogin Async Task to Load all product by making HTTP Request
      */
 
     class LoadBarintondoItem extends AsyncTask<String, String, String> {
@@ -261,7 +261,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all attractions
             pDialog.dismiss();
-            // updating UI from Background Thread
+            // updating UI from BackgroundLogin Thread
             runOnUiThread( new Runnable() {
                 public void run() {
                     /**
