@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
@@ -133,17 +134,22 @@ public class RegistrationActivity extends AppCompatActivity {
                     if(connected) {
                         BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), RegistrationActivity.class.toString());
                         bg.execute(nickname, email, password);
-                    }
-                    if(!ProfileOpenHelper.isPresent(email, openHelper)) {
-                        ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
-                        if(!connected) Toast.makeText(getApplicationContext(), "Account creato", Toast.LENGTH_SHORT).show();
+                        if(!ProfileOpenHelper.isPresent(email, openHelper)) {
+                            ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                        }
+                        goHome();
                     }else {
-                        if(!connected) Toast.makeText(getApplicationContext(), "Account già presente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Non connesso alla rete", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
+    }
+
+    private void goHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private boolean isCorrect(String nickname, String email, String password, String repeatPassword) {
