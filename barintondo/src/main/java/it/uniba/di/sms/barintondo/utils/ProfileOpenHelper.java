@@ -39,6 +39,7 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -48,6 +49,24 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public static void delete(ProfileOpenHelper openHelper) {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        db.delete(Constants.TABLE_UTENTE, null, null);
+        db.close();
+    }
+
+    public static boolean isPresent(ProfileOpenHelper openHelper) {
+        boolean found = false;
+
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        String[] projection = {Constants.COLUMN_EMAIL};
+        Cursor cursor = db.query(Constants.TABLE_UTENTE, projection, null, null, null, null, null);
+        if(cursor.getCount() > 0) {
+            found = true;
+        }
+        return found;
     }
 
     public static boolean isPresent(String email, ProfileOpenHelper openHelper) {

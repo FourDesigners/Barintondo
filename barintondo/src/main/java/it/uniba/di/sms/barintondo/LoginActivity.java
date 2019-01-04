@@ -32,9 +32,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         final ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        goHomeIfAccount(openHelper);
+
+        setContentView(R.layout.activity_login);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.str_login);
         setSupportActionBar(myToolbar);
@@ -135,6 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                 goRegistration();
             }
         });
+    }
+
+    private void goHomeIfAccount(ProfileOpenHelper openHelper) {
+        if(ProfileOpenHelper.isPresent(openHelper)) {
+            goHome();
+        }
     }
 
     private void goForgotPassword() {

@@ -1,7 +1,10 @@
 package it.uniba.di.sms.barintondo.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import it.uniba.di.sms.barintondo.HomeActivity;
 import it.uniba.di.sms.barintondo.ItemListActivity;
+import it.uniba.di.sms.barintondo.LoginActivity;
 import it.uniba.di.sms.barintondo.MyProfileActivity;
 import it.uniba.di.sms.barintondo.R;
 import it.uniba.di.sms.barintondo.SettingsActivity;
@@ -29,6 +33,7 @@ public class MyNavigationDrawer implements Constants {
     private final Activity activity;
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
+    final ProfileOpenHelper openHelper = new ProfileOpenHelper(getActivity(), Constants.DB_NAME, null, 1);
 
     private TextView nickname;
 
@@ -184,7 +189,7 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.logout:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Logout" , Toast.LENGTH_SHORT ).show();
+                                printDialog();
                                 break;
                         }
 
@@ -192,6 +197,33 @@ public class MyNavigationDrawer implements Constants {
                     }
                 } );
         return this;
+    }
+
+    private void printDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Vuoi disconneterti ?")
+                .setTitle("Logout");
+
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                goLogin();
+                //ProfileOpenHelper.delete(openHelper);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void goLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public boolean openMenu(MenuItem item) {

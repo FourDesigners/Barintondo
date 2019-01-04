@@ -60,7 +60,7 @@ public class BackgroundRegistration extends AsyncTask<String, Void,String> {
                 if(!ProfileOpenHelper.isPresent(email, openHelper)) {
                     ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
                 }
-                Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, HomeActivity.class);
                 context.startActivity(intent);
             }else {

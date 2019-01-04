@@ -132,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     boolean connected = InternetConnection.isNetworkAvailable(RegistrationActivity.this);
                     if(connected) {
                         BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), nickname, email, password, openHelper, RegistrationActivity.class.toString());
-                        bg.execute(nickname, email, password);
+                        bg.execute();
                     }else {
                         Toast.makeText(getApplicationContext(), "Non connesso alla rete", Toast.LENGTH_SHORT).show();
                     }
