@@ -33,7 +33,6 @@ public class MyNavigationDrawer implements Constants {
     private final Activity activity;
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
-    final ProfileOpenHelper openHelper = new ProfileOpenHelper(getActivity(), Constants.DB_NAME, null, 1);
 
     private TextView nickname;
 
@@ -207,8 +206,9 @@ public class MyNavigationDrawer implements Constants {
         AlertDialog dialog = builder.create();
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                ProfileOpenHelper openHelper = new ProfileOpenHelper(activity, Constants.DB_NAME, null, 1);
                 goLogin();
-                //ProfileOpenHelper.delete(openHelper);
+                ProfileOpenHelper.delete(openHelper);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

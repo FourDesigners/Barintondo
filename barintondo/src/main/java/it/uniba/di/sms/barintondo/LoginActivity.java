@@ -152,8 +152,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
         finish();
+        startActivity(intent);
     }
 
     private void goRegistration() {
