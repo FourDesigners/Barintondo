@@ -99,10 +99,17 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         }
 
         //URL creation
-        if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
+        if(items_type.equals(Constants.INTENT_ATTRACTIONS))
             URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
-            tag = Constants.INTENT_ATTRACTIONS;
-        }
+        else if(items_type.equals(Constants.INTENT_EATING))
+            URL = "http://barintondo.altervista.org/get_all_locali.php";
+        else if(items_type.equals(Constants.INTENT_SLEEPING))
+            URL = "http://barintondo.altervista.org/get_all_rifugi.php";
+        else if(items_type.equals(Constants.INTENT_EVENTS))
+            URL = "http://barintondo.altervista.org/get_all_eventi.php";
+        else if(items_type.equals(Constants.INTENT_NEAR))
+            URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
+
 
         //list and adapter setup
         itemList = new ArrayList<>();
@@ -134,8 +141,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if (response == null) {
+                        if (response.length() == 0) {
                             Toast.makeText(getApplicationContext(), "Couldn't fetch the contacts! Pleas try again.", Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
                             return;
                         }
 
