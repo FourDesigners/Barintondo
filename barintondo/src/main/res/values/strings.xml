@@ -100,5 +100,6 @@
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an Attraction</string>
+    <string name="loadingMessage">Loading...</string>
 
 </resources>

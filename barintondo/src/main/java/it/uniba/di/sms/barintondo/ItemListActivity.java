@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
@@ -21,7 +24,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,10 +36,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import it.uniba.di.sms.barintondo.utils.BarintondoContent;
+import it.uniba.di.sms.barintondo.utils.BarintondoItem;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 
@@ -50,7 +50,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
     private static final String TAG = ItemListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
-    private List<BarintondoContent.BarintondoItem> itemList;
+    private List<BarintondoItem> itemList;
     private ItemsAdapter mAdapter;
     private SearchView searchView;
     String URL;
@@ -66,6 +66,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         setContentView( R.layout.activity_item_list );
         mInstance = this;
 
+        //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
         myToolbar.setTitle(R.string.attractionsToolbarTitle);
         setSupportActionBar( myToolbar );
@@ -74,16 +75,20 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
 
+        //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
 
+        //intent reading
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
 
+        //chip group setup
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
 
+        //chips creation
         for(String s : categories.getString(items_type, "").split(",")) {
             Chip newChip = new Chip(this);
             newChip.setChipText(s);
@@ -92,28 +97,38 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             chipGroup.addView(newChip);
         }
 
+        //URL creation
         if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
             URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
             tag = Constants.INTENT_ATTRACTIONS;
         }
 
-        recyclerView = findViewById(R.id.item_list_recycler_view);
-        itemList = new ArrayList<BarintondoContent.BarintondoItem>();
+        //list and adapter setup
+        itemList = new ArrayList<>();
         mAdapter = new ItemsAdapter(this, itemList, this);
+
+        //recyclerView setup
+        recyclerView = findViewById(R.id.item_list_recycler_view);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        //recyclerView..addItemDecoration(dividerItemDecoration);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
 
         // white background notification bar
         whiteNotificationBar(recyclerView);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
 
         fetchItems();
 
     }
 
     private void fetchItems() {
+        //itemList.clear();
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getResources().getString(R.string.loadingMessage));
+        progressDialog.show();
+
         JsonArrayRequest request = new JsonArrayRequest(URL,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -123,24 +138,33 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                             return;
                         }
 
-                        List<BarintondoContent.BarintondoItem> items = new Gson().fromJson(response.toString(), new TypeToken<List<BarintondoContent.BarintondoItem>>() {
-                        }.getType());
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
 
-                        Log.i(TAG, "Elementi: " + items);
+                                BarintondoItem item = new BarintondoItem();
+                                item.setId(jsonObject.getString("id"));
+                                item.setName(jsonObject.getString("name"));
+                                Log.i(TAG, "Item" + i + ": " + item.toString());
 
-                        // adding contacts to contacts list
-                        itemList.clear();
-                        itemList.addAll(items);
-
-                        // refreshing recycler view
+                                //adding items to itemsList
+                                itemList.add(item);
+                                Log.i(TAG, "List: " + itemList.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                progressDialog.dismiss();
+                            }
+                        }
                         mAdapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // error in getting json
-                Log.e(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Volley Error: " + error.getMessage());
+                //Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -232,7 +256,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
     }
 
     @Override
-    public void onItemsSelected(BarintondoContent.BarintondoItem item) {
+    public void onItemsSelected(BarintondoItem item) {
         Toast.makeText(getApplicationContext(), "Selected: " + item.getName(), Toast.LENGTH_LONG).show();
     }
 

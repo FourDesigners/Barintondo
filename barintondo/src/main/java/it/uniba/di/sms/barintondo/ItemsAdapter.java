@@ -13,13 +13,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.uniba.di.sms.barintondo.utils.BarintondoContent;
+import it.uniba.di.sms.barintondo.utils.BarintondoItem;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder>
             implements Filterable {
         private Context context;
-        private List<BarintondoContent.BarintondoItem> itemList;
-        private List<BarintondoContent.BarintondoItem> itemListFiltered;
+        private List<BarintondoItem> itemList;
+        private List<BarintondoItem> itemListFiltered;
         private ItemsAdapterListener listener;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -28,6 +28,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
             public MyViewHolder(View view) {
                 super(view);
+
                 id = view.findViewById(R.id.item_id);
                 name = view.findViewById(R.id.item_name);
                 //thumbnail = view.findViewById(R.id.thumbnail);
@@ -43,7 +44,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         }
 
 
-        public ItemsAdapter(Context context, List<BarintondoContent.BarintondoItem> itemList, ItemsAdapterListener listener) {
+        public ItemsAdapter(Context context, List<BarintondoItem> itemList, ItemsAdapterListener listener) {
             this.context = context;
             this.listener = listener;
             this.itemList = itemList;
@@ -61,7 +62,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-            final BarintondoContent.BarintondoItem barintondoItem = itemListFiltered.get(position);
+            BarintondoItem barintondoItem = itemListFiltered.get(position);
+
             holder.id.setText(barintondoItem.getId());
             holder.name.setText(barintondoItem.getName());
 
@@ -85,8 +87,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                     if (charString.isEmpty()) {
                         itemListFiltered = itemList;
                     } else {
-                        List<BarintondoContent.BarintondoItem> filteredList = new ArrayList<>();
-                        for (BarintondoContent.BarintondoItem row : itemList) {
+                        List<BarintondoItem> filteredList = new ArrayList<>();
+                        for (BarintondoItem row : itemList) {
 
                             // name match condition. this might differ depending on your requirement
                             // here we are looking for name or phone number match
@@ -105,13 +107,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                    itemListFiltered = (ArrayList<BarintondoContent.BarintondoItem>) filterResults.values;
+                    itemListFiltered = (ArrayList<BarintondoItem>) filterResults.values;
                     notifyDataSetChanged();
                 }
             };
         }
 
         public interface ItemsAdapterListener {
-            void onItemsSelected(BarintondoContent.BarintondoItem item);
+            void onItemsSelected(BarintondoItem item);
         }
 }
