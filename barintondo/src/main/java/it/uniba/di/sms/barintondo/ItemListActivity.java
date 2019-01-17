@@ -46,7 +46,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
-    private String items_type;
+    private static String items_type;
     private RequestQueue mRequestQueue;
 
     private static final String TAG = ItemListActivity.class.getSimpleName();
@@ -55,7 +55,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
     private ItemsAdapter mAdapter;
     private SearchView searchView;
     String URL;
-    String tag;
     private static ItemListActivity mInstance;
 
 
@@ -82,14 +81,14 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                 (DrawerLayout)findViewById(R.id.drawer_layout));
         myNavigationDrawer.build();
 
-        //intent reading
+        //first time intent reading
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
 
-        //chip group setup
+        //first time chip group setup
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
 
-        //chips creation
+        //first time chips creation
         for(String s : categories.getString(items_type, "").split(",")) {
             Chip newChip = new Chip(this);
             newChip.setChipText(s);
@@ -98,18 +97,17 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             chipGroup.addView(newChip);
         }
 
-        //URL creation
-        if(items_type.equals(Constants.INTENT_ATTRACTIONS))
+        //first time URL selection
+        if (items_type.equals(Constants.INTENT_ATTRACTIONS))
             URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
-        else if(items_type.equals(Constants.INTENT_EATING))
+        else if (items_type.equals(Constants.INTENT_EATING))
             URL = "http://barintondo.altervista.org/get_all_locali.php";
-        else if(items_type.equals(Constants.INTENT_SLEEPING))
+        else if (items_type.equals(Constants.INTENT_SLEEPING))
             URL = "http://barintondo.altervista.org/get_all_rifugi.php";
-        else if(items_type.equals(Constants.INTENT_EVENTS))
+        else if (items_type.equals(Constants.INTENT_EVENTS))
             URL = "http://barintondo.altervista.org/get_all_eventi.php";
-        else if(items_type.equals(Constants.INTENT_NEAR))
+        else if (items_type.equals(Constants.INTENT_NEAR))
             URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
-
 
         //list and adapter setup
         itemList = new ArrayList<>();
@@ -126,8 +124,8 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         // white background notification bar
         whiteNotificationBar(recyclerView);
 
+        //first time populating
         fetchItems();
-
     }
 
     private void fetchItems() {
@@ -181,6 +179,44 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         });
 
         ItemListActivity.getInstance().addToRequestQueue(request);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //check if intent is changed
+        String new_items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
+        if(!(new_items_type.equals(items_type))) {
+            items_type = new_items_type;
+
+            //new chip group setup
+            ChipGroup chipGroup = findViewById(R.id.chipGroup);
+            SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
+
+            //new chips creation
+            for(String s : categories.getString(items_type, "").split(",")) {
+                Chip newChip = new Chip(this);
+                newChip.setChipText(s);
+                newChip.setClickable(true);
+                newChip.setCheckable(true);
+                chipGroup.addView(newChip);
+            }
+
+            //new URL selection
+            if (items_type.equals(Constants.INTENT_ATTRACTIONS))
+                URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
+            else if (items_type.equals(Constants.INTENT_EATING))
+                URL = "http://barintondo.altervista.org/get_all_locali.php";
+            else if (items_type.equals(Constants.INTENT_SLEEPING))
+                URL = "http://barintondo.altervista.org/get_all_rifugi.php";
+            else if (items_type.equals(Constants.INTENT_EVENTS))
+                URL = "http://barintondo.altervista.org/get_all_eventi.php";
+            else if (items_type.equals(Constants.INTENT_NEAR))
+                URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
+
+            fetchItems();
+        }
     }
 
     public String getItems_type(){
