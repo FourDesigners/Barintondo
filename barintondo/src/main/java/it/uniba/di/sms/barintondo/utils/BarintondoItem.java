@@ -1,35 +1,67 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import java.sql.Time;
+
 public class BarintondoItem {
-    private String id;
-    private String name;
+    private String cod;
+    private String nome;
+    private String sottoCat;
+    private String oraA;
+    private String oraC;
 
     public BarintondoItem(){
     }
 
-    public BarintondoItem(String newId, String newName){
-        id = newId;
-        name = newName;
+    public BarintondoItem(String newId, String newName, String newSottoCat, String newOraA, String newOraC){
+        cod = newId;
+        nome = newName;
+        sottoCat = newSottoCat;
+        oraA = newOraA;
+        oraC = newOraC;
     }
 
-    public String getId() {
-        return id;
+    public String getCod() {
+        return cod;
     }
 
-    public String getName() {
-        return name;
+    public void setCod(String cod) {
+        this.cod = cod;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSottoCat() {
+        return sottoCat;
+    }
+
+    public void setSottoCat(String sottoCat) {
+        this.sottoCat = sottoCat;
+    }
+
+    public String getOraA() {
+        return oraA;
+    }
+
+    public void setOraA(String oraA) {
+        this.oraA = oraA;
+    }
+
+    public String getOraC() {
+        return oraC;
+    }
+
+    public void setOraC(String oraC) {
+        this.oraC = oraC;
     }
 
     @Override
     public String toString() {
-        return "id= " + id + " name= " + name;
+        return "id= " + cod + " name= " + nome;
     }
 }

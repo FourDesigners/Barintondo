@@ -10,7 +10,13 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import it.uniba.di.sms.barintondo.utils.BarintondoItem;
@@ -23,14 +29,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         private ItemsAdapterListener listener;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView id, name;
+            public TextView cod, nome, sottoCat, stato, valutazione;
             //public ImageView thumbnail;
 
             public MyViewHolder(View view) {
                 super(view);
 
-                id = view.findViewById(R.id.item_id);
-                name = view.findViewById(R.id.item_name);
+                cod = view.findViewById(R.id.cod);
+                nome = view.findViewById(R.id.nome);
+                sottoCat = view.findViewById(R.id.sottoCat);
+                stato = view.findViewById(R.id.stato);
+                valutazione = view.findViewById(R.id.valutazione);
                 //thumbnail = view.findViewById(R.id.thumbnail);
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +73,26 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
             BarintondoItem barintondoItem = itemListFiltered.get(position);
 
-            holder.id.setText(barintondoItem.getId());
-            holder.name.setText(barintondoItem.getName());
+            holder.cod.setText(barintondoItem.getCod());
+            holder.nome.setText(barintondoItem.getNome());
+            holder.sottoCat.setText(barintondoItem.getSottoCat());
+
+            //controllo se il luogo è "aperto" o "chiuso"
+            String oraA = barintondoItem.getOraA();
+            String oraC = barintondoItem.getOraC();
+
+            //ottengo ora attuale
+            Date date = new Date();
+            String strDateFormat = "HH:mm:ss";
+            DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+            String formattedDate= dateFormat.format(date);
+
+            //confronto i dati
+            if(formattedDate.compareTo(oraA) < 0 || formattedDate.compareTo(oraC) > 0)
+                holder.stato.setText(context.getResources().getString(R.string.closedState));
+            else holder.stato.setText(context.getResources().getString(R.string.openState));
+            //holder.stato.setText(barintondoItem.get());
+            //holder.valutazione.setText(barintondoItem.get());
 
             /*Glide.with(context)
                     .load(BarintondoContent.BarintondoItem.getImage())
@@ -92,7 +119,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
                             // name match condition. this might differ depending on your requirement
                             // here we are looking for name or phone number match
-                            if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            if (row.getNome().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
                             }
                         }

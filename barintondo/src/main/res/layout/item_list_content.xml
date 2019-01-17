@@ -9,52 +9,52 @@
 
     <!-- Attraction id - will be HIDDEN - used to pass to other activity -->
     <TextView
-        android:id="@+id/item_id"
+        android:id="@+id/cod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="prova" />
 
     <!-- Name Label -->
     <TextView
-        android:id="@+id/item_name"
+        android:id="@+id/nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="prova"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_id"
+        app:layout_constraintStart_toEndOf="@+id/cod"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.design.chip.Chip
-        android:id="@+id/type"
+    <TextView
+        android:id="@+id/sottoCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="Teatro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        app:layout_constraintTop_toBottomOf="@+id/nome" />
 
-    <android.support.design.chip.Chip
-        android:id="@+id/open"
+    <TextView
+        android:id="@+id/stato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Aperto"
-        app:layout_constraintBottom_toBottomOf="@+id/type"
-        app:layout_constraintStart_toEndOf="@+id/type"
-        app:layout_constraintTop_toTopOf="@+id/type" />
+        app:layout_constraintBottom_toBottomOf="@+id/sottoCat"
+        app:layout_constraintStart_toEndOf="@+id/sottoCat"
+        app:layout_constraintTop_toTopOf="@+id/sottoCat" />
 
-    <android.support.design.chip.Chip
-        android:id="@+id/evaluation"
+    <TextView
+        android:id="@+id/valutazione"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="5"
+        android:text="N/A"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/open"
-        app:layout_constraintStart_toEndOf="@+id/open"
-        app:layout_constraintTop_toTopOf="@+id/open" />
+        app:layout_constraintBottom_toBottomOf="@+id/stato"
+        app:layout_constraintStart_toEndOf="@+id/stato"
+        app:layout_constraintTop_toTopOf="@+id/stato" />
 
 </android.support.constraint.ConstraintLayout>

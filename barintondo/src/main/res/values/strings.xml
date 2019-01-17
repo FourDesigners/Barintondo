@@ -101,5 +101,7 @@
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an Attraction</string>
     <string name="loadingMessage">Loading...</string>
+    <string name="closedState">Closed</string>
+    <string name="openState">Open</string>
 
 </resources>

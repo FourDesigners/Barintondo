@@ -143,8 +143,11 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                                 JSONObject jsonObject = response.getJSONObject(i);
 
                                 BarintondoItem item = new BarintondoItem();
-                                item.setId(jsonObject.getString("id"));
-                                item.setName(jsonObject.getString("name"));
+                                item.setCod(jsonObject.getString("cod"));
+                                item.setNome(jsonObject.getString("nome"));
+                                item.setSottoCat(jsonObject.getString("sottoCategoria"));
+                                item.setOraA(jsonObject.getString("oraA"));
+                                item.setOraC(jsonObject.getString("oraC"));
                                 Log.i(TAG, "Item" + i + ": " + item.toString());
 
                                 //adding items to itemsList
@@ -257,7 +260,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
     @Override
     public void onItemsSelected(BarintondoItem item) {
-        Toast.makeText(getApplicationContext(), "Selected: " + item.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Selected: " + item.getNome(), Toast.LENGTH_LONG).show();
     }
 
     public static synchronized ItemListActivity getInstance() {
