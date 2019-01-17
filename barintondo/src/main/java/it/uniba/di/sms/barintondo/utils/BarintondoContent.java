@@ -5,20 +5,14 @@ import java.util.List;
 
 public class BarintondoContent {
 
-    public static final List<BarintondoItem> BITEMS = new ArrayList<BarintondoItem>();
-
-
-
     public static class BarintondoItem {
-        private static int id;
+        private static String id;
         private static String name;
 
-        public BarintondoItem(int id, String name){
-            this.id=id;
-            this.name=name;
+        public BarintondoItem(){
         }
 
-        public static int getId() {
+        public static String getId() {
             return id;
         }
 

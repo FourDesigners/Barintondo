@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    useLibrary 'org.apache.http.legacy'
 
 
 
@@ -37,4 +36,7 @@ dependencies {
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:v1.1.2' //per meteo
     implementation 'com.github.bumptech.glide:glide:4.8.0' //per caricare immagini da url in maniera semplice (no classe a parte)
+    // volley http library
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
 }

@@ -1,45 +1,61 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.http.NameValuePair;
-import org.json.*;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import org.json.JSONArray;
+
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import it.uniba.di.sms.barintondo.utils.BarintondoContent;
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.JSONParser;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 
-import static it.uniba.di.sms.barintondo.utils.BarintondoContent.BITEMS;
+public class ItemListActivity extends AppCompatActivity implements Constants, ItemsAdapter.ItemsAdapterListener  {
 
-public class ItemListActivity extends AppCompatActivity implements Constants {
-
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     private String items_type;
+    private RequestQueue mRequestQueue;
+
+    private static final String TAG = ItemListActivity.class.getSimpleName();
+    private RecyclerView recyclerView;
+    private List<BarintondoContent.BarintondoItem> itemList;
+    private ItemsAdapter mAdapter;
+    private SearchView searchView;
+    String URL;
+    String tag;
+    private static ItemListActivity mInstance;
 
 
 
@@ -48,6 +64,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_item_list );
+        mInstance = this;
 
         myToolbar = findViewById( R.id.main_activity_toolbar );
         myToolbar.setTitle(R.string.attractionsToolbarTitle);
@@ -63,8 +80,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         myNavigationDrawer.build();
 
         items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
-        String urlToLoad;
-        String tag;
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
@@ -78,203 +93,76 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         }
 
         if(items_type.equals(Constants.INTENT_ATTRACTIONS)) {
-            urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
+            URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
             tag = Constants.INTENT_ATTRACTIONS;
         }
 
-        // ISTRUZIONI DA TOGLIERE
-        urlToLoad = "http://barintondo.altervista.org/get_all_attrazioni.php";
-        tag = Constants.INTENT_ATTRACTIONS;
+        recyclerView = findViewById(R.id.item_list_recycler_view);
+        itemList = new ArrayList<BarintondoContent.BarintondoItem>();
+        mAdapter = new ItemsAdapter(this, itemList, this);
 
-        // Loading attractions in BackgroundLogin Thread
-        new LoadBarintondoItem(urlToLoad, tag).execute();
+        // white background notification bar
+        whiteNotificationBar(recyclerView);
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        fetchItems();
+
+    }
+
+    private void fetchItems() {
+        JsonArrayRequest request = new JsonArrayRequest(URL,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if (response == null) {
+                            Toast.makeText(getApplicationContext(), "Couldn't fetch the contacts! Pleas try again.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        List<BarintondoContent.BarintondoItem> items = new Gson().fromJson(response.toString(), new TypeToken<List<BarintondoContent.BarintondoItem>>() {
+                        }.getType());
+
+                        Log.i(TAG, "Elementi: " + items);
+
+                        // adding contacts to contacts list
+                        itemList.clear();
+                        itemList.addAll(items);
+
+                        // refreshing recycler view
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error in getting json
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ItemListActivity.getInstance().addToRequestQueue(request);
     }
 
     public String getItems_type(){
         return items_type;
     }
 
-    public void setRecyclerView() {
-        Log.i( TAG , getClass().getSimpleName() + ":entered setRecyclerView()" );
-        mRecyclerView = (RecyclerView) findViewById( R.id.item_list_recycler_view );
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize( true );
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager( this );
-        mRecyclerView.setLayoutManager( mLayoutManager );
-
-        // specify an adapter
-        mAdapter = new MyAdapter( BITEMS );
-        mRecyclerView.setAdapter( mAdapter );
+        return mRequestQueue;
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-        private List<BarintondoContent.BarintondoItem> mDataset;
-
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public TextView mItemId;
-            public TextView mItemName;
-
-            public MyViewHolder(View v) {
-                super( v );
-                // Log.i(TAG, getClass().getSimpleName() + ":entered MyViewHolder()");
-                mItemId = v.findViewById( R.id.item_id );
-                mItemName = v.findViewById( R.id.item_name );
-            }
-        }
-
-        // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(List<BarintondoContent.BarintondoItem> myDataset) {
-            //Log.i(TAG, getClass().getSimpleName() + ":entered MyAdpter()");
-            mDataset = myDataset;
-        }
-
-        // Create new views (invoked by the layout manager)
-        @NonNull
-        @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent , int viewType) {
-            //Log.i( TAG , getClass().getSimpleName() + ":entered onCreateViewHolder()" );
-            // create a new view
-            View v = (View) LayoutInflater.from( parent.getContext() )
-                    .inflate( R.layout.item_list_content , parent , false );
-            MyViewHolder vh = new MyViewHolder( v );
-            return vh;
-        }
-
-
-        // Replace the contents of a view (invoked by the layout manager)
-        @Override
-        public void onBindViewHolder(MyViewHolder holder , int position) {
-            //Log.i( TAG , getClass().getSimpleName() + ":entered onBindViewHolder()" );
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            BarintondoContent.BarintondoItem item = mDataset.get( position );
-            holder.mItemId.setText( String.valueOf( item.getId() ) );
-            holder.mItemName.setText( item.getName() );
-        }
-
-        // Return the size of your dataset (invoked by the layout manager)
-        @Override
-        public int getItemCount() {
-            //Log.i(TAG, getClass().getSimpleName() + ":entered getItemCount()");
-            return mDataset.size();
-        }
-    }
-
-    /**
-     * BackgroundLogin Async Task to Load all product by making HTTP Request
-     */
-
-    class LoadBarintondoItem extends AsyncTask<String, String, String> {
-
-        // Progress Dialog
-        private ProgressDialog pDialog;
-
-        // Creating JSON Parser object
-        JSONParser jParser = new JSONParser();
-
-        // url to get all attractions list
-        private  String url_all_attractions;
-
-        // JSON Node names
-        private static final String TAG_SUCCESS = "success";
-        private static final String TAG_id = "id";
-        private static final String TAG_NAME = "name";
-
-        //JSON Node items TAG
-        private String TAG_items;
-
-        // attractions JSONArray
-        JSONArray attractions = null;
-
-        LoadBarintondoItem(String url, String tag) {
-            url_all_attractions = url;
-            TAG_items = tag;
-        }
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            BITEMS.clear();
-            pDialog = new ProgressDialog( ItemListActivity.this );
-            pDialog.setMessage( "Loading attractions. Please wait..." );
-            pDialog.setIndeterminate( false );
-            pDialog.setCancelable( false );
-            pDialog.show();
-        }
-
-        /**
-         * getting All attractions from url
-         */
-        protected String doInBackground(String... args) {
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<>();
-            // getting JSON string from URL
-            Log.i(TAG, "URL= " + url_all_attractions);
-            JSONObject json = jParser.makeHttpRequest( url_all_attractions , "GET" , params );
-
-            // Check your log cat for JSON reponse
-            Log.i( "All attractions: " , json.toString() );
-
-            try {
-                // Checking for SUCCESS TAG
-                int success = json.getInt( TAG_SUCCESS );
-
-                if (success == 1) {
-                    // attractions found
-                    // Getting Array of attractions
-                    attractions = json.getJSONArray(TAG_items);
-
-                    // looping through All attractions
-                    for (int i = 0; i < attractions.length(); i++) {
-                        JSONObject c = attractions.getJSONObject( i );
-
-                        // Storing each json item in variable
-                        int id = Integer.parseInt( c.getString( TAG_id ) );
-                        String name = c.getString( TAG_NAME );
-
-
-                        // add a new BarintondoItem to the list
-
-                        BITEMS.add( new BarintondoContent.BarintondoItem( id , name ) );
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all attractions
-            pDialog.dismiss();
-            // updating UI from BackgroundLogin Thread
-            runOnUiThread( new Runnable() {
-                public void run() {
-                    /**
-                     * Updating parsed JSON data into RecyclerView
-                     * */
-                    setRecyclerView();
-                }
-            } );
-
-        }
-
+    public <T> void addToRequestQueue(Request<T> req) {
+        req.setTag(TAG);
+        getRequestQueue().add(req);
     }
 
     @Override
@@ -282,14 +170,73 @@ public class ItemListActivity extends AppCompatActivity implements Constants {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.item_list_menu, menu);
 
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.app_bar_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        // listening to search query text change
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, getClass().getSimpleName() + ":entered onOptionsItemSelected()");
-        Boolean open = myNavigationDrawer.openMenu( item );
-        if(open) return open;
-        else return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        Boolean open = myNavigationDrawer.openMenu(item);
+        if (open) return open;
+
+        switch(id) {
+            case R.id.home: myNavigationDrawer.openMenu( item );
+            case R.id.app_bar_search: break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // close search view on back button pressed
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void whiteNotificationBar(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
+    }
+
+    @Override
+    public void onItemsSelected(BarintondoContent.BarintondoItem item) {
+        Toast.makeText(getApplicationContext(), "Selected: " + item.getName(), Toast.LENGTH_LONG).show();
+    }
+
+    public static synchronized ItemListActivity getInstance() {
+        return mInstance;
     }
 }
