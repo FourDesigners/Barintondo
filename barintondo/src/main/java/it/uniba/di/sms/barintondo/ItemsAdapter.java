@@ -13,10 +13,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import it.uniba.di.sms.barintondo.utils.BarintondoItem;
@@ -91,7 +88,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
             if(formattedDate.compareTo(oraA) < 0 || formattedDate.compareTo(oraC) > 0)
                 holder.stato.setText(context.getResources().getString(R.string.closedState));
             else holder.stato.setText(context.getResources().getString(R.string.openState));
-            //holder.stato.setText(barintondoItem.get());
             //holder.valutazione.setText(barintondoItem.get());
 
             /*Glide.with(context)

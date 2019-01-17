@@ -103,5 +103,6 @@
     <string name="loadingMessage">Loading...</string>
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
+    <string name="notDefined">N/A</string>
 
 </resources>
