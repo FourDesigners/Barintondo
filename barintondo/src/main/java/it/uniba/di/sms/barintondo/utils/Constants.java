@@ -25,4 +25,8 @@ public interface Constants {
 
     String COLUMN_EMAIL = "email";
     String COLUMN_PASSWORD = "password";
+
+    //stringa per link immagini
+    String imagesPath = "http://barintondo.altervista.org/images/";
+
 }

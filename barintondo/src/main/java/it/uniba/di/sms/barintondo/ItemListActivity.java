@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.support.annotation.IdRes;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -155,6 +156,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                                 item.setSottoCat(jsonObject.getString("sottoCategoria"));
                                 item.setOraA(jsonObject.getString("oraA"));
                                 item.setOraC(jsonObject.getString("oraC"));
+                                item.setThumbnailLink(jsonObject.getString("thumbnail"));
                                 Log.i(TAG, "Item" + i + ": " + item.toString());
 
                                 //adding items to itemsList
@@ -196,12 +198,30 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
             //new chips creation
             for(String s : categories.getString(items_type, "").split(",")) {
-                Chip newChip = new Chip(this);
+                final Chip newChip = new Chip(this);
                 newChip.setChipText(s);
                 newChip.setClickable(true);
                 newChip.setCheckable(true);
+                /*newChip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String query = newChip.getChipText().toString().substring(0, newChip.getChipText().length() - 2);
+                        Log.i(TAG, "Query= " + query);
+                        mAdapter.getFilter().filter(query);
+                        Toast.makeText(ItemListActivity.this, "Prova", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
                 chipGroup.addView(newChip);
             }
+
+            /*chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(ChipGroup group, @IdRes int checkedId) {
+                    Chip selected = findViewById(checkedId);
+                    String s = selected.getChipText().toString();
+                    Toast.makeText(ItemListActivity.this, "Testo= ", Toast.LENGTH_SHORT).show();
+                }
+            });*/
 
             //new URL selection
             if (items_type.equals(Constants.INTENT_ATTRACTIONS))

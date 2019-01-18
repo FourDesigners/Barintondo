@@ -36,7 +36,8 @@
                 <android.support.design.chip.ChipGroup
                     android:id="@+id/chipGroup"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content">
+                    android:layout_width="wrap_content"
+                    app:singleSelection="true">
 
 
                 </android.support.design.chip.ChipGroup>

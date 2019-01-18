@@ -1,5 +1,7 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import android.widget.ImageView;
+
 import java.sql.Time;
 
 public class BarintondoItem {
@@ -8,16 +10,18 @@ public class BarintondoItem {
     private String sottoCat;
     private String oraA;
     private String oraC;
+    private String thumbnailLink;
 
     public BarintondoItem(){
     }
 
-    public BarintondoItem(String newId, String newName, String newSottoCat, String newOraA, String newOraC){
+    public BarintondoItem(String newId, String newName, String newSottoCat, String newOraA, String newOraC, String newThumbnailLink){
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
         oraA = newOraA;
         oraC = newOraC;
+        thumbnailLink = newThumbnailLink;
     }
 
     public String getCod() {
@@ -58,6 +62,14 @@ public class BarintondoItem {
 
     public void setOraC(String oraC) {
         this.oraC = oraC;
+    }
+
+    public String getThumbnailLink() {
+        return thumbnailLink;
+    }
+
+    public void setThumbnailLink(String thumbnailLink) {
+        this.thumbnailLink = thumbnailLink;
     }
 
     @Override

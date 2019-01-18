@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.uniba.di.sms.barintondo.utils.BarintondoItem;
+
+import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder>
             implements Filterable {
@@ -27,7 +33,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView cod, nome, sottoCat, stato, valutazione;
-            //public ImageView thumbnail;
+            public ImageView thumbnail;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -37,12 +43,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 sottoCat = view.findViewById(R.id.sottoCat);
                 stato = view.findViewById(R.id.stato);
                 valutazione = view.findViewById(R.id.valutazione);
-                //thumbnail = view.findViewById(R.id.thumbnail);
+                thumbnail = view.findViewById(R.id.thumbnail);
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // send selected BarintondoContent.BarintondoItem in callback
+                        // send selected BarintondoItem in callback
                         listener.onItemsSelected(itemListFiltered.get(getAdapterPosition()));
                     }
                 });
@@ -70,6 +76,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
             BarintondoItem barintondoItem = itemListFiltered.get(position);
 
+            //thumbnail
+            Glide.with(context)
+                    .load(imagesPath + barintondoItem.getThumbnailLink())
+                    //.load("http://barintondo.altervista.org/images/petruzzelli.jpg")
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.thumbnail);
+
             holder.cod.setText(barintondoItem.getCod());
             holder.nome.setText(barintondoItem.getNome());
             holder.sottoCat.setText(barintondoItem.getSottoCat());
@@ -88,12 +101,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
             if(formattedDate.compareTo(oraA) < 0 || formattedDate.compareTo(oraC) > 0)
                 holder.stato.setText(context.getResources().getString(R.string.closedState));
             else holder.stato.setText(context.getResources().getString(R.string.openState));
+
             //holder.valutazione.setText(barintondoItem.get());
 
-            /*Glide.with(context)
-                    .load(BarintondoContent.BarintondoItem.getImage())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(holder.thumbnail);*/
         }
 
         @Override
@@ -113,9 +123,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                         List<BarintondoItem> filteredList = new ArrayList<>();
                         for (BarintondoItem row : itemList) {
 
-                            // name match condition. this might differ depending on your requirement
-                            // here we are looking for name or phone number match
-                            if (row.getNome().toLowerCase().contains(charString.toLowerCase())) {
+                            // name match condition
+                            if (row.getNome().toLowerCase().contains(charString.toLowerCase()) ||
+                                    row.getSottoCat().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
                             }
                         }
