@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -90,13 +91,24 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
 
         //first time chips creation
+
         for(String s : categories.getString(items_type, "").split(",")) {
-            Chip newChip = new Chip(this);
+            final Chip newChip = new Chip(this);
             newChip.setChipText(s);
             newChip.setClickable(true);
             newChip.setCheckable(true);
             chipGroup.addView(newChip);
+            newChip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String query = newChip.getChipText().toString().substring(0, newChip.getChipText().length() - 2);
+                    Log.i(TAG, "Query= " + query);
+                    mAdapter.getFilter().filter(query);
+                    Toast.makeText(getApplicationContext(), newChip.getChipText(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
 
         //first time URL selection
         if (items_type.equals(Constants.INTENT_ATTRACTIONS))
@@ -136,8 +148,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         progressDialog.setMessage(getResources().getString(R.string.loadingMessage));
         progressDialog.show();
 
-        JsonArrayRequest request = new JsonArrayRequest(URL,
-                new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         if (response.length() == 0) {
@@ -146,6 +157,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                             return;
                         }
 
+                        //Log.e("NUM", String.valueOf(response.length()));
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -200,28 +212,41 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             for(String s : categories.getString(items_type, "").split(",")) {
                 final Chip newChip = new Chip(this);
                 newChip.setChipText(s);
+                newChip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String query = newChip.getChipText().toString().substring(0, newChip.getChipText().length() - 2);
+                        Log.i(TAG, "Query= " + query);
+                        mAdapter.getFilter().filter(query);
+                        Toast.makeText(getApplicationContext(), newChip.getChipText(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 newChip.setClickable(true);
                 newChip.setCheckable(true);
-                /*newChip.setOnClickListener(new View.OnClickListener() {
+                /*
+                newChip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String query = newChip.getChipText().toString().substring(0, newChip.getChipText().length() - 2);
                         Log.i(TAG, "Query= " + query);
                         mAdapter.getFilter().filter(query);
-                        Toast.makeText(ItemListActivity.this, "Prova", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
+                */
                 chipGroup.addView(newChip);
             }
 
-            /*chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            /*
+            chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(ChipGroup group, @IdRes int checkedId) {
                     Chip selected = findViewById(checkedId);
                     String s = selected.getChipText().toString();
                     Toast.makeText(ItemListActivity.this, "Testo= ", Toast.LENGTH_SHORT).show();
                 }
-            });*/
+            });
+            */
 
             //new URL selection
             if (items_type.equals(Constants.INTENT_ATTRACTIONS))

@@ -13,9 +13,9 @@ public interface Constants {
     String INTENT_EVENTS = "events";
     String INTENT_NEAR = "near";
 
-    String CHIPS_ATTRACTIONS = "Chiese, Monumenti, Teatri";
+    String CHIPS_ATTRACTIONS = "Chiese, Monumenti, Teatri, Lidi, Discoteche";
     String CHIPS_SLEEPING = "B&B, Hotel";
-    String CHIPS_EATING = "Pranzo, Colazione, Cena";
+    String CHIPS_EATING = "Pizzerie, Ristoranti, Bar";
     String CHIPS_EVENTS = "Bari, vicino Bari";
 
     //costanti DB
