@@ -3,6 +3,7 @@ package it.uniba.di.sms.barintondo;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         private List<BarintondoItem> itemList;
         private List<BarintondoItem> itemListFiltered;
         private ItemsAdapterListener listener;
+
+        private static final String TAG = ItemsAdapter.class.getSimpleName();
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView cod, nome, sottoCat, stato, valutazione;
@@ -79,7 +82,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
             //thumbnail
             Glide.with(context)
                     .load(imagesPath + barintondoItem.getThumbnailLink())
-                    //.load("http://barintondo.altervista.org/images/petruzzelli.jpg")
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.thumbnail);
 
@@ -124,6 +126,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                         for (BarintondoItem row : itemList) {
 
                             // name match condition
+                            /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
+                            + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                             if (row.getNome().toLowerCase().contains(charString.toLowerCase()) ||
                                     row.getSottoCat().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
