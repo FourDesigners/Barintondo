@@ -6,9 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +110,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         myNavigationDrawer.build();
 
 
-
         //first time chip group setup
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
         SharedPreferences categories = getSharedPreferences( PREFS_NAME , 0 );
@@ -128,8 +133,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         }
 
 
-
-
         //list and adapter setup
         itemList = new ArrayList<>();
         mAdapter = new ItemsAdapter( this , itemList , this );
@@ -146,59 +149,83 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         whiteNotificationBar( recyclerView );
 
         //first time populating
-        fetchItems();
+        GetItems getItems = new GetItems(this);
+        getItems.execute(  );
+
     }
 
-    private void fetchItems() {
-        //itemList.clear();
 
-        final ProgressDialog progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
+    //thread per il prelievo dati dal db remoto
+    public class GetItems extends AsyncTask {
+        Context context;
 
-        JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response.length() == 0) {
-                    Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
-                    progressDialog.dismiss();
-                    return;
-                }
+        public GetItems(Context context) {
+            this.context=context;
+        }
 
-                //Log.e("NUM", String.valueOf(response.length()));
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject( i );
+        @Override
+        protected Object doInBackground(Object[] objects) {
 
-                        BarintondoItem item = new BarintondoItem();
-                        item.setCod( jsonObject.getString( "cod" ) );
-                        item.setNome( jsonObject.getString( "nome" ) );
-                        item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                        item.setOraA( jsonObject.getString( "oraA" ) );
-                        item.setOraC( jsonObject.getString( "oraC" ) );
-                        item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                        Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+            //itemList.clear();
 
-                        //adding items to itemsList
-                        itemList.add( item );
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            final ProgressDialog progressDialog = new ProgressDialog( context );
+            progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
+            progressDialog.show();
+
+            JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    if (response.length() == 0) {
+                        Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
                         progressDialog.dismiss();
+                        return;
                     }
+
+                    //Log.e("NUM", String.valueOf(response.length()));
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject( i );
+
+                            BarintondoItem item = new BarintondoItem();
+                            item.setCod( jsonObject.getString( "cod" ) );
+                            item.setNome( jsonObject.getString( "nome" ) );
+                            item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            item.setOraA( jsonObject.getString( "oraA" ) );
+                            item.setOraC( jsonObject.getString( "oraC" ) );
+                            item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+
+                            //adding items to itemsList
+                            itemList.add( item );
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            progressDialog.dismiss();
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+
                 }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+            } , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // error in getting json
+                    Log.e( TAG , "Volley Error: " + error.getMessage() );
+                }
+            } );
 
-            }
-        } , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.e( TAG , "Volley Error: " + error.getMessage() );
-            }
-        } );
+            ItemListActivity.getInstance().addToRequestQueue( request );
 
-        ItemListActivity.getInstance().addToRequestQueue( request );
+            return null;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
     }
 
     /*@Override
@@ -337,9 +364,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
     @Override
     public void onItemsSelected(BarintondoItem item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        Intent intent = new Intent (this, ItemDetailActivity.class);
-        intent.putExtra( INTENT_ITEM, item );
-        startActivity(intent);
+        Intent intent = new Intent( this , ItemDetailActivity.class );
+        intent.putExtra( INTENT_ITEM , item );
+        startActivity( intent );
     }
 
     public static synchronized ItemListActivity getInstance() {
