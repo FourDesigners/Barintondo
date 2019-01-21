@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +24,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     Toolbar myToolbar;
     ImageView myImageView;
+    TextView itemDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class ItemDetailActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imagesPath + myItem.getThumbnailLink())
                 .into(myImageView);
+
+        itemDesc = findViewById( R.id.itemDetailDesc );
+        itemDesc.setText( myItem.getDescription() );
     }
 
     @Override

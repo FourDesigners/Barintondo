@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.widget.ImageView;
 
 import java.sql.Time;
+import java.util.Locale;
 
 public class BarintondoItem implements Parcelable {
     private String cod;
@@ -13,17 +14,22 @@ public class BarintondoItem implements Parcelable {
     private String oraA;
     private String oraC;
     private String thumbnailLink;
+    private String descrizione_en;
+    private String descrizione_it;
 
-    public BarintondoItem(){
+    public BarintondoItem() {
     }
 
-    public BarintondoItem(String newId, String newName, String newSottoCat, String newOraA, String newOraC, String newThumbnailLink){
+    public BarintondoItem(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
+                          String newThumbnailLink , String newDescEn , String newDescIt) {
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
         oraA = newOraA;
         oraC = newOraC;
         thumbnailLink = newThumbnailLink;
+        descrizione_en = newDescEn;
+        descrizione_it = newDescIt;
     }
 
     protected BarintondoItem(Parcel in) {
@@ -33,6 +39,8 @@ public class BarintondoItem implements Parcelable {
         oraA = in.readString();
         oraC = in.readString();
         thumbnailLink = in.readString();
+        descrizione_en = in.readString();
+        descrizione_it = in.readString();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -96,6 +104,24 @@ public class BarintondoItem implements Parcelable {
         this.thumbnailLink = thumbnailLink;
     }
 
+    public void setDescrizione_en(String descEn){
+        descrizione_en=descEn;
+    }
+    public void setDescrizione_it(String descIt){
+        descrizione_it=descIt;
+    }
+
+    public String getDescription() {
+        String lang = Locale.getDefault().getLanguage();
+
+        switch (lang) {
+            case "it":
+                return descrizione_it;
+            default:
+                return descrizione_en;
+        }
+    }
+
     @Override
     public String toString() {
         return "id= " + cod + " name= " + nome;
@@ -114,5 +140,7 @@ public class BarintondoItem implements Parcelable {
         dest.writeString( oraA );
         dest.writeString( oraC );
         dest.writeString( thumbnailLink );
+        dest.writeString( descrizione_en );
+        dest.writeString( descrizione_it );
     }
 }
