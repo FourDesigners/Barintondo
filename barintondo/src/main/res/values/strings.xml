@@ -104,6 +104,9 @@
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
     <string name="notDefined">N/A</string>
+    <string name="title_activity_item_detail">ItemDetailActivity</string>
+    <string name="strRecensioni">Reviews</string>
+    <string name="strIndicazioni">Directions</string>
 
 
 </resources>

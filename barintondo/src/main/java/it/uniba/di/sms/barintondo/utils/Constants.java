@@ -12,6 +12,7 @@ public interface Constants {
     String INTENT_EATING = "eating";
     String INTENT_EVENTS = "events";
     String INTENT_NEAR = "near";
+    String INTENT_ITEM="item";
 
     String CHIPS_ATTRACTIONS = "Chiese, Monumenti, Teatri, Lidi, Discoteche";
     String CHIPS_SLEEPING = "B&B, Hotel";

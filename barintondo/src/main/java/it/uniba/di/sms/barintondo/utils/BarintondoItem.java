@@ -1,10 +1,12 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
 import java.sql.Time;
 
-public class BarintondoItem {
+public class BarintondoItem implements Parcelable {
     private String cod;
     private String nome;
     private String sottoCat;
@@ -23,6 +25,28 @@ public class BarintondoItem {
         oraC = newOraC;
         thumbnailLink = newThumbnailLink;
     }
+
+    protected BarintondoItem(Parcel in) {
+        cod = in.readString();
+        nome = in.readString();
+        sottoCat = in.readString();
+        oraA = in.readString();
+        oraC = in.readString();
+        thumbnailLink = in.readString();
+    }
+
+    //Serve per la parcelizzazione negli intent
+    public static final Creator<BarintondoItem> CREATOR = new Creator<BarintondoItem>() {
+        @Override
+        public BarintondoItem createFromParcel(Parcel in) {
+            return new BarintondoItem( in );
+        }
+
+        @Override
+        public BarintondoItem[] newArray(int size) {
+            return new BarintondoItem[size];
+        }
+    };
 
     public String getCod() {
         return cod;
@@ -75,5 +99,20 @@ public class BarintondoItem {
     @Override
     public String toString() {
         return "id= " + cod + " name= " + nome;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest , int flags) {
+        dest.writeString( cod );
+        dest.writeString( nome );
+        dest.writeString( sottoCat );
+        dest.writeString( oraA );
+        dest.writeString( oraC );
+        dest.writeString( thumbnailLink );
     }
 }

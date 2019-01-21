@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
-    Button moreBtn;
+    Button moreBtn, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +59,42 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         moreBtn = findViewById(R.id.moreBtn);
         moreBtn.setOnClickListener(moreBtnListener);
+        goAttractionBtn=findViewById( R.id.btnHomeGoAttraction );
+        goAttractionBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeStartActivity(Constants.INTENT_ATTRACTIONS);
+            }
+        } );
 
+        goFoodBtn=findViewById( R.id.btnHomeGoFood ) ;
+        goFoodBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeStartActivity( Constants.INTENT_EATING );
+            }
+        } );
+        goSleepBtn= findViewById( R.id.btnHomeGoSleep );
+        goSleepBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeStartActivity( Constants.INTENT_SLEEPING );
+            }
+        } );
+        goNearBariBtn=findViewById( R.id.btnHomeGoNearBari );
+        goNearBariBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeStartActivity( Constants.INTENT_NEAR );
+            }
+        } );
 
+    }
+
+    private void homeStartActivity(String constCall){
+        Intent intent = new Intent( this , ItemListActivity.class );
+        intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , constCall );
+        startActivity( intent );
     }
 
     private void fillChips() {
