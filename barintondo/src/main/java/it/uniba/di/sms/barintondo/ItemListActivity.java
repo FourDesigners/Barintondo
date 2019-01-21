@@ -184,6 +184,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                         item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                         item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
                         item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                        item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
                         Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
 
                         //adding items to itemsList

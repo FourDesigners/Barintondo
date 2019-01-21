@@ -112,7 +112,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnHomeGoFood"
-                app:layout_constraintBottom_toTopOf="@id/btnHomeGoSleep"/>
+                app:layout_constraintBottom_toTopOf="@id/btnHomeGoSleep"
+                android:drawableTop="@drawable/ic_attractions"/>
 
             <Button
                 android:id="@+id/btnHomeGoFood"
@@ -122,7 +123,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/btnHomeGoAttraction"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnHomeGoAttraction"
-                app:layout_constraintTop_toTopOf="@id/btnHomeGoAttraction" />
+                app:layout_constraintTop_toTopOf="@id/btnHomeGoAttraction"
+                android:drawableTop="@drawable/ic_food"/>
 
             <Button
                 android:id="@+id/btnHomeGoSleep"
@@ -132,7 +134,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/btnHomeGoAttraction"
                 app:layout_constraintStart_toStartOf="@id/btnHomeGoAttraction"
-                app:layout_constraintTop_toBottomOf="@id/btnHomeGoAttraction" />
+                app:layout_constraintTop_toBottomOf="@id/btnHomeGoAttraction"
+                android:drawableTop="@drawable/ic_stay"/>
 
             <Button
                 android:id="@+id/btnHomeGoNearBari"
@@ -142,7 +145,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/btnHomeGoSleep"
                 app:layout_constraintEnd_toEndOf="@id/btnHomeGoFood"
                 app:layout_constraintStart_toStartOf="@id/btnHomeGoFood"
-                app:layout_constraintTop_toTopOf="@id/btnHomeGoSleep" />
+                app:layout_constraintTop_toTopOf="@id/btnHomeGoSleep"
+                android:drawableTop="@drawable/ic_events"/>
         </android.support.constraint.ConstraintLayout>
 
 

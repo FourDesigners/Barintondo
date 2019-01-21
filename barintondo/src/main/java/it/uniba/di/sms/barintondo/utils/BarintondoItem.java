@@ -16,12 +16,13 @@ public class BarintondoItem implements Parcelable {
     private String thumbnailLink;
     private String descrizione_en;
     private String descrizione_it;
+    private String indirizzo;
 
     public BarintondoItem() {
     }
 
     public BarintondoItem(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
-                          String newThumbnailLink , String newDescEn , String newDescIt) {
+                          String newThumbnailLink , String newDescEn , String newDescIt, String newIndirizzo) {
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
@@ -30,6 +31,7 @@ public class BarintondoItem implements Parcelable {
         thumbnailLink = newThumbnailLink;
         descrizione_en = newDescEn;
         descrizione_it = newDescIt;
+        indirizzo=newIndirizzo;
     }
 
     protected BarintondoItem(Parcel in) {
@@ -41,6 +43,7 @@ public class BarintondoItem implements Parcelable {
         thumbnailLink = in.readString();
         descrizione_en = in.readString();
         descrizione_it = in.readString();
+        indirizzo = in.readString();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -109,6 +112,7 @@ public class BarintondoItem implements Parcelable {
     }
     public void setDescrizione_it(String descIt){
         descrizione_it=descIt;
+
     }
 
     public String getDescription() {
@@ -120,6 +124,14 @@ public class BarintondoItem implements Parcelable {
             default:
                 return descrizione_en;
         }
+    }
+
+    public void setIndirizzo(String indirizzo){
+        this.indirizzo=indirizzo;
+    }
+
+    public String getIndirizzo(){
+        return indirizzo;
     }
 
     @Override
@@ -142,5 +154,6 @@ public class BarintondoItem implements Parcelable {
         dest.writeString( thumbnailLink );
         dest.writeString( descrizione_en );
         dest.writeString( descrizione_it );
+        dest.writeString( indirizzo );
     }
 }
