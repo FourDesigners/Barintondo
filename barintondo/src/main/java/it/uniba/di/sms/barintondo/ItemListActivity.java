@@ -150,7 +150,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         whiteNotificationBar( recyclerView );
 
         //first time populating
-        new GetItems( this ).execute(  );
         fetchItems();
 
     }
@@ -210,30 +209,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
     }
 
-    //thread per il prelievo dati dal db remoto
-    public class GetItems extends AsyncTask {
-        Context context;
-
-        public GetItems(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            Looper.prepare();
-
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-
-    }
 
     /*@Override
     protected void onResume() {
