@@ -96,7 +96,7 @@
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
     <string name="webUrl">https://www.ilmeteo.it/meteo/Bari</string>
 
-    <!--ATTRACTIONS-->
+    <!--ITEMLIST ACTIVITY-->
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an Attraction</string>
@@ -107,6 +107,19 @@
     <string name="title_activity_item_detail">ItemDetailActivity</string>
     <string name="strRecensioni">Reviews</string>
     <string name="strIndicazioni">Directions</string>
+    <string name="strTheatre">Theatre</string>
+    <string name="strMonument">Monument</string>
+    <string name="strMuseum">Museum</string>
+    <string name="strChurch">Church</string>
+    <string name="strBeach">Beach</string>
+    <string name="strDisco">Disco</string>
+    <string name="strBar">Bar</string>
+    <string name="strPizzaHouse">Pizza House</string>
+    <string name="strRestaurant">Restaurant</string>
+    <string name="strHotel">Hotel</string>
+    <string name="strBB">Bed and Breakfast</string>
+
+
 
 
 </resources>

@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Looper;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -167,6 +168,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         protected Object doInBackground(Object[] objects) {
 
             //itemList.clear();
+            Looper.prepare();
 
             final ProgressDialog progressDialog = new ProgressDialog( context );
             progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );

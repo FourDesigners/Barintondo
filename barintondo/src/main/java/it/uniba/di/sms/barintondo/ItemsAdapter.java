@@ -90,7 +90,50 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
             holder.cod.setText(barintondoItem.getCod());
             holder.nome.setText(barintondoItem.getNome());
-            holder.sottoCat.setText(barintondoItem.getSottoCat());
+
+            //scelgo stringa per sottoCat
+            String sottoCat = "";
+            Log.i(TAG, "sottoCatItem=" + barintondoItem.getSottoCat() + "-post");
+            switch (barintondoItem.getSottoCat()) {
+                case "Teatro":
+                    sottoCat += context.getResources().getString(R.string.strTheatre);
+                    break;
+                case "Monumento":
+                    sottoCat += context.getResources().getString(R.string.strMonument);
+                    break;
+                case "Museo":
+                    sottoCat += context.getResources().getString(R.string.strMuseum);
+                    break;
+                case "Chiesa":
+                    sottoCat += context.getResources().getString(R.string.strChurch);
+                    break;
+                case "Lido":
+                    sottoCat += context.getResources().getString(R.string.strBeach);
+                    break;
+                case "Discoteca":
+                    sottoCat += context.getResources().getString(R.string.strDisco);
+                    break;
+                case "Bar":
+                    sottoCat += context.getResources().getString(R.string.strBar);
+                    break;
+                case "Pizzeria":
+                    sottoCat += context.getResources().getString(R.string.strPizzaHouse);
+                    break;
+                case "Ristorante":
+                    sottoCat += context.getResources().getString(R.string.strRestaurant);
+                    break;
+                case "Hotel":
+                    sottoCat += context.getResources().getString(R.string.strHotel);
+                    break;
+                case "B&B":
+                    sottoCat += context.getResources().getString(R.string.strBB);
+                    break;
+                default:
+                    sottoCat +="Default";
+                    break;
+            }
+            Log.i(TAG, "final sottoCat:" + sottoCat);
+            holder.sottoCat.setText(sottoCat);
 
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = barintondoItem.getOraA();
