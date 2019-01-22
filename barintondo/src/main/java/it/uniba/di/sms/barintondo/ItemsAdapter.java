@@ -93,33 +93,33 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
             //scelgo stringa per sottoCat
             String sottoCat = "";
-            Log.i(TAG, "sottoCatItem=" + barintondoItem.getSottoCat() + "-post");
+            Log.i(TAG, "sottoCatItem=" + barintondoItem.getSottoCat() + "-");
             switch (barintondoItem.getSottoCat()) {
-                case "Teatro":
+                case "Teatri":
                     sottoCat += context.getResources().getString(R.string.strTheatre);
                     break;
-                case "Monumento":
+                case "Monumenti":
                     sottoCat += context.getResources().getString(R.string.strMonument);
                     break;
-                case "Museo":
+                case "Musei":
                     sottoCat += context.getResources().getString(R.string.strMuseum);
                     break;
-                case "Chiesa":
+                case "Chiese":
                     sottoCat += context.getResources().getString(R.string.strChurch);
                     break;
-                case "Lido":
+                case "Lidi":
                     sottoCat += context.getResources().getString(R.string.strBeach);
                     break;
-                case "Discoteca":
+                case "Discoteche":
                     sottoCat += context.getResources().getString(R.string.strDisco);
                     break;
                 case "Bar":
                     sottoCat += context.getResources().getString(R.string.strBar);
                     break;
-                case "Pizzeria":
+                case "Pizzerie":
                     sottoCat += context.getResources().getString(R.string.strPizzaHouse);
                     break;
-                case "Ristorante":
+                case "Ristoranti":
                     sottoCat += context.getResources().getString(R.string.strRestaurant);
                     break;
                 case "Hotel":
