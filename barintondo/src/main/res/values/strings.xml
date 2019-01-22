@@ -1,27 +1,106 @@
 <resources>
-    <string name="app_name">Barintondo</string>
+    <string name="app_name" translatable="false">Barintondo</string>
     <!--Navigation Drawer elements-->
-    <string name="headerTitle">Nickname</string>
+    <string name="headerTitle" translatable="false">Nickname</string>
     <string name="myProfile_label">My Profile</string>
     <string name="myInterests_label">My Interests</string>
     <string name="myCoupon_label">My Coupons</string>
     <string name="app_settings_label">Settings</string>
-    <string name="logout_label">Logout</string>
-    <string name="home">Home</string>
+    <string name="logout_label" translatable="false">Logout</string>
+    <string name="home" translatable="false">Home</string>
     <string name="contacts_label">Contacts</string>
 
-    <!--Drawer options-->
-    <string name="navigazione_label">Navigate</string>
-    <string name="categorie_option">Categories</string>
-    <string name="dormire_option">Sleep</string>
-    <string name="mangiare_option">Food</string>
-    <string name="attrazioni_option">Attractions</string>
-    <string name="eventi_option">Events</string>
-    <string name="dintorni_option">Near Bari</string>
-    <string name="utente_label">User</string>
-    <string name="preferenze_label">Preferences</string>
-    <string name="title_send_feedback">Send Feedback</string>
+    <!--Drawer options MAI USATE tranne categories_option-->
+    <string name="navigation_label">Navigate</string>
+    <string name="categories_option">Categories</string>
+    <string name="sleeping_option">Sleep</string>
+    <string name="eating_option">Food</string>
+    <string name="attractions_option">Attractions</string>
+    <string name="events_option">Events</string>
+    <string name="near_option">Near Bari</string>
+    <string name="user_label">User</string>
+    <string name="preferences_label">Preferences</string>
+    <string name="title_send_feedback">Send feedback</string>
     <string name="choose_email_client">Choose email client</string>
+
+    <!--Chips attractions-->
+    <string-array name="attractions">
+        <item>Churces</item>
+        <item>Monuments</item>
+        <item>Teathers</item>
+        <item>Beaches</item>
+        <item>Discotheques</item>
+        <item>Family</item>
+    </string-array>
+
+    <!--Tags attractions-->
+    <string-array name="attractionsTags">
+        <item>Churches</item>
+        <item>Monuments</item>
+        <item>Teathers</item>
+        <item>Beaches</item>
+        <item>Discotheques</item>
+        <item>Family</item>
+    </string-array>
+
+    <!--Chips food-->
+    <string-array name="eating">
+        <item>Pizzerias</item>
+        <item>Restaurants</item>
+        <item>Cafes</item>
+    </string-array>
+
+    <!--Tags food-->
+    <string-array name="eatingTags">
+        <item>Pizzerias</item>
+        <item>Restaurants</item>
+        <item>Cafes</item>
+    </string-array>
+
+    <!--Chips sleep-->
+    <string-array name="sleeping">
+        <item>B&amp;B</item>
+        <item>Hotels</item>
+    </string-array>
+
+    <!--Tags sleep-->
+    <string-array name="sleepingTags">
+        <item>B&amp;B</item>
+        <item>Hotels</item>
+    </string-array>
+
+    <!--Chips events-->
+    <string-array name="events">
+        <item>In Bari</item>
+        <item>Near Bari</item>
+    </string-array>
+
+    <!--Tags events-->
+    <string-array name="eventsTags">
+        <item>In Bari</item>
+        <item>Near Bari</item>
+    </string-array>
+
+    <!--Chips near-->
+    <string-array name="near">
+        <item>Churches</item>
+        <item>Monuments</item>
+        <item>Teathers</item>
+        <item>Beaches</item>
+        <item>Discotheques</item>
+        <item>Family</item>
+    </string-array>
+
+    <!--Tags near-->
+    <string-array name="nearTags">
+        <item>Churches</item>
+        <item>Monuments</item>
+        <item>Teathers</item>
+        <item>Beaches</item>
+        <item>Discotheques</item>
+        <item>Family</item>
+    </string-array>
+
 
     <!--Settings-->
     <string name="action_settings">Settings</string>
@@ -35,46 +114,46 @@
     <string name="title_new_notification_sound">New message notification</string>
     <string name="title_vibrate">Vibrate</string>
     <string name="summary_vibrate">Vibrate on new notification</string>
-    <string name="notifications_new_message">notifications_new_message</string>
+    <string name="notifications_new_message" translatable="false">notifications_new_message</string>
 
-    <string name="pref_header_about">About</string>
-    <string name="summary_about">Info sul team di sviluppo</string>
-    <string name="app_version">3.5</string>
+    <string name="pref_header_about" translatable="false">About</string>
+    <string name="summary_about">Info on developers</string>
+    <string name="app_version" translatable="false">3.5</string>
 
     <string name="summary_support">Got any queries? We are happy to help!</string>
 
-    <string name="title_faq">FAQ</string>
+    <string name="title_faq" translatable="false">FAQ</string>
     <string name="summary_faq">View frequently asked questions</string>
 
-    <string name="url_faq">https://www.androidhive.info/privacy-policy/</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="url_privacy">http://barintondo.altervista.org/privacyPolicy.html</string>
+    <string name="url_faq" translatable="false">https://www.androidhive.info/privacy-policy/</string>
+    <string name="privacy_policy" translatable="false">Privacy Policy</string>
+    <string name="url_privacy" translatable="false">http://barintondo.altervista.org/privacyPolicy.html</string>
 
-    <string name="title_terms">Terms &amp; Conditions</string>
-    <string name="url_terms">http://barintondo.altervista.org/termsOfService.html</string>
+    <string name="title_terms" translatable="false">Terms &amp; Conditions</string>
+    <string name="url_terms" translatable="false">http://barintondo.altervista.org/termsOfService.html</string>
 
     <string name="title_version">Version</string>
 
-    <string name="pref_header_info">Info</string>
+    <string name="pref_header_info" translatable="false">Info</string>
 
-    <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
-    <string name="key_vibrate">key_vibrate</string>
-    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="key_notifications_new_message_ringtone" translatable="false">key_notifications_new_message_ringtone</string>
+    <string name="key_vibrate" translatable="false">key_vibrate</string>
+    <string name="key_send_feedback" translatable="false">key_send_feedback</string>
 
     <!--my profile-->
     <string name="myProfile_header">My Profile</string>
-    <string name="myUser_label">Username</string>
-    <string name="myEmail_label">Email</string>
-    <string name="myPass_label">Password</string>
+    <string name="myUser_label" translatable="false">Username</string>
+    <string name="myEmail_label" translatable="false">Email</string>
+    <string name="myPass_label" translatable="false">Password</string>
     <string name="saveBtnLabel">Save</string>
     <string name="saveBtnMessage">Changes Saved</string>
-    <string name="str_nickname">Nickname</string>
-    <string name="str_email">Email</string>
-    <string name="str_password">Password</string>
+    <string name="str_nickname" translatable="false">Nickname</string>
+    <string name="str_email" translatable="false">Email</string>
+    <string name="str_password" translatable="false">Password</string>
     <string name="str_repeat_password">Repeat Password</string>
     <string name="str_register">Register</string>
-    <string name="str_reset">Reset</string>
-    <string name="str_login">Login</string>
+    <string name="str_reset" translatable="false">Reset</string>
+    <string name="str_login" translatable="false">Login</string>
     <string name="str_don_t_you_have_an_account">Don\'t you have an account?</string>
     <string name="str_register_now">New account</string>
     <string name="str_name">Name</string>
@@ -83,46 +162,46 @@
     <string name="str_weak_password_min_8_characters_required">Weak password (min. 8 characters required)</string>
     <string name="str_passwords_don_t_match">Passwords don\'t match</string>
     <string name="str_i_forgot_my_password">Forgot password? Click here</string>
-    <string name="str_reset_password">Reset password</string>
-    <string name="str_e_mail_per_il_recupero">E-mail per il recupero</string>
+    <string name="str_reset_password" translatable="false">Reset password</string>
 
     <!--METEO-->
-    <string name="OPEN_WEATHER_MAP_API_KEY">1694b85daddaaf9fe6689f06b58c7b29</string>
-    <string name="bari_latitude">41.133333</string>
-    <string name="bari_longitude">16.85</string>
-    <string name="tempUnit">°</string>
-    <string name="windUnit">km/h</string>
-    <string name="moreBtn">...</string>
+    <string name="OPEN_WEATHER_MAP_API_KEY" translatable="false">1694b85daddaaf9fe6689f06b58c7b29</string>
+    <string name="bari_latitude" translatable="false">41.133333</string>
+    <string name="bari_longitude" translatable="false">16.85</string>
+    <string name="tempUnit" translatable="false">°</string>
+    <string name="windUnit" translatable="false">km/h</string>
+    <string name="moreBtn" translatable="false">...</string>
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
-    <string name="webUrl">https://www.ilmeteo.it/meteo/Bari</string>
+    <string name="webUrl" translatable="false">https://www.ilmeteo.it/meteo/Bari</string>
 
     <!--ITEMLIST ACTIVITY-->
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
-    <string name="searchHint">Find an Attraction</string>
+    <string name="searchHint">Find an attraction</string>
     <string name="loadingMessage">Loading...</string>
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
-    <string name="notDefined">N/A</string>
-    <string name="title_activity_item_detail">ItemDetailActivity</string>
-    <string name="strRecensioni">Reviews</string>
-    <string name="strIndicazioni">Directions</string>
+    <string name="notDefined" translatable="false">N/A</string>
+    <string name="title_activity_item_detail" translatable="false">ItemDetailActivity</string>
+    <string name="strReviews">Reviews</string>
+    <string name="strDirections">Directions</string>
     <string name="strTheatre">Theatre</string>
     <string name="strMonument">Monument</string>
     <string name="strMuseum">Museum</string>
     <string name="strChurch">Church</string>
     <string name="strBeach">Beach</string>
-    <string name="strDisco">Disco</string>
-    <string name="strBar">Bar</string>
-    <string name="strPizzaHouse">Pizza House</string>
+    <string name="strDisco">Discotheque</string>
+    <string name="strBar" translatable="false">Bar</string>
+    <string name="strPizzaHouse" translatable="false">Pizzeria</string>
     <string name="strRestaurant">Restaurant</string>
-    <string name="strHotel">Hotel</string>
-    <string name="strBB">Bed and Breakfast</string>
+    <string name="strHotel" translatable="false">Hotel</string>
+    <string name="strBB" translatable="false">Bed and Breakfast</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="strOrarioAperura">Opening:  </string>
-    <string name="strOrarioChiusura">Closiong:  </string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="strOpening">Opening:  </string>
+    <string name="strClosing">"Closing:  "</string>
+    <string name="str_e_mail_per_il_recupero">Recovery email</string>
 
 
 </resources>

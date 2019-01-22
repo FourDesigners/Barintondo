@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Looper;
+import android.support.annotation.ArrayRes;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -80,21 +82,35 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
+
+        Resources res = getResources();
+        String[] arrayRes = null;
+        String[] arrayTags = null;
         //first time URL selection
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
+            arrayRes = res.getStringArray(R.array.attractions);
+            arrayTags = res.getStringArray(R.array.attractionsTags);
             myToolbar.setTitle( R.string.attractionsToolbarTitle );
             URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
         } else if (items_type.equals( Constants.INTENT_EATING )) {
-            myToolbar.setTitle( R.string.mangiare_option );
+            arrayRes = res.getStringArray(R.array.eating);
+            arrayTags = res.getStringArray(R.array.eatingTags);
+            myToolbar.setTitle( R.string.eating_option );
             URL = "http://barintondo.altervista.org/get_all_locali.php";
         } else if (items_type.equals( Constants.INTENT_SLEEPING )) {
-            myToolbar.setTitle( R.string.dormire_option );
+            arrayRes = res.getStringArray(R.array.sleeping);
+            arrayTags = res.getStringArray(R.array.sleepingTags);
+            myToolbar.setTitle( R.string.sleeping_option );
             URL = "http://barintondo.altervista.org/get_all_rifugi.php";
         } else if (items_type.equals( Constants.INTENT_EVENTS )) {
-            myToolbar.setTitle( R.string.eventi_option );
+            arrayRes = res.getStringArray(R.array.events);
+            arrayTags = res.getStringArray(R.array.eventsTags);
+            myToolbar.setTitle( R.string.events_option );
             URL = "http://barintondo.altervista.org/get_all_eventi.php";
         } else if (items_type.equals( Constants.INTENT_NEAR )) {
-            myToolbar.setTitle( R.string.dintorni_option );
+            arrayRes = res.getStringArray(R.array.near);
+            arrayTags = res.getStringArray(R.array.nearTags);
+            myToolbar.setTitle( R.string.near_option);
             URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
         }
 
@@ -117,14 +133,20 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
         //first time chips creation
 
-        for (String s : categories.getString( items_type , "" ).split( ", " )) {
-            final Chip newChip = new Chip( this );
-            newChip.setChipText( s );
-            newChip.setClickable( true );
-            newChip.setCheckable( true );
-            newChip.setOnClickListener( new View.OnClickListener() {
+
+        int id = 0;
+        for (String s : arrayRes) {
+            final Chip newChip = new Chip(this);
+            newChip.setId(id);
+            assert arrayTags != null;
+            newChip.setTag(arrayTags[id++]);
+            newChip.setChipText(s);
+            newChip.setClickable(true);
+            newChip.setCheckable(true);
+            newChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
                     String query = newChip.getChipText().toString().substring( 0 , newChip.getChipText().length() - 1 );
                     //Log.i(TAG, "Query= " + query);
                     mAdapter.getFilter().filter( query );

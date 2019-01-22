@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="@string/navigazione_label">
+    <item android:title="@string/navigation_label">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -13,44 +13,44 @@
                 <item
                     android:id="@+id/categorie"
                     android:icon="@drawable/ic_keyboard_arrow_down"
-                    android:title="@string/categorie_option"
+                    android:title="@string/categories_option"
                     app:showAsAction="withText" />
 
                 <item
                     android:id="@+id/attrazioni"
                     android:icon="@drawable/ic_attractions"
-                    android:title="@string/attrazioni_option"
+                    android:title="@string/attractions_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/mangiare"
                     android:icon="@drawable/ic_food"
-                    android:title="@string/mangiare_option"
+                    android:title="@string/eating_option"
                     app:showAsAction="withText"
                     android:visible="false"
                     />
                 <item
                     android:id="@+id/dormire"
                     android:icon="@drawable/ic_stay"
-                    android:title="@string/dormire_option"
+                    android:title="@string/sleeping_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/eventi"
                     android:icon="@drawable/ic_events"
-                    android:title="@string/eventi_option"
+                    android:title="@string/events_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
                 <item
                     android:id="@+id/intorno"
                     android:icon="@drawable/ic_surroundings"
-                    android:title="@string/dintorni_option"
+                    android:title="@string/near_option"
                     app:showAsAction="withText"
                     android:visible="false"/>
             </group>
         </menu>
     </item>
-    <item android:title="@string/utente_label">
+    <item android:title="@string/user_label">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -71,7 +71,7 @@
             </group>
         </menu>
     </item>
-    <item android:title="@string/preferenze_label">
+    <item android:title="@string/preferences_label">
         <menu>
             <group android:checkableBehavior="single">
                 <item

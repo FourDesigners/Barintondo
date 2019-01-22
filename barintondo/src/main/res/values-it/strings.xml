@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="myProfile_label">Profilo</string>
+    <string name="myInterests_label">Miei interessi</string>
+    <string name="myCoupon_label">Miei coupon</string>
+    <string name="app_settings_label">Impostazioni</string>
+    <string name="contacts_label">Contatti</string>
+    <string name="categories_option">Categorie</string>
+    <string name="sleeping_option">Dormire</string>
+    <string name="eating_option">Mangiare</string>
+    <string name="attractions_option">Attrazioni</string>
+    <string name="events_option">Eventi</string>
+    <string name="near_option">Vicino Bari</string>
+    <string name="user_label">Utente</string>
+    <string name="preferences_label">Preferenze</string>
+    <string name="title_send_feedback">Invia feedback</string>
+    <string name="choose_email_client">Scegli email cliente</string>
+
+    <!--Chips attractions-->
+    <string-array name="attractions">
+        <item>Chiese</item>
+        <item>Monumenti</item>
+        <item>Teatri</item>
+        <item>Lidi</item>
+        <item>Discoteche</item>
+        <item>Famiglia</item>
+    </string-array>
+
+
+    <!--Chips food-->
+    <string-array name="eating">
+        <item>Pizzerie</item>
+        <item>Ristoranti</item>
+        <item>Bar</item>
+    </string-array>
+
+
+    <!--Chips sleep-->
+    <string-array name="sleeping">
+        <item>B&amp;B</item>
+        <item>Hotel</item>
+    </string-array>
+
+    <!--Chips events-->
+    <string-array name="events">
+        <item>Bari</item>
+        <item>Vicino Bari</item>
+    </string-array>
+
+    <!--Chips near-->
+    <string-array name="near">
+        <item>Chiese</item>
+        <item>Monumenti</item>
+        <item>Teatri</item>
+        <item>Lidi</item>
+        <item>Discoteche</item>
+        <item>Famiglia</item>
+    </string-array>
+
+    <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_settings">Impostazioni</string>
+    <string name="pref_title_ringtone">Suoneria</string>
+    <string name="pref_ringtone_silent">Silenzioso</string>
+    <string name="pref_title_notifications">Notifiche</string>
+    <string name="summary_choose_ringtone">Scegli suono notifica</string>
+    <string name="title_new_notification_sound">Nuovo messaggio di notifica</string>
+    <string name="title_vibrate">Vibrazione</string>
+    <string name="summary_vibrate">Vibra con notifiche</string>
+    <string name="summary_about">Info sul team di sviluppo</string>
+    <string name="summary_support">Domande? Siamo felici di aiutarti!</string>
+    <string name="summary_faq">Vedi FAQ</string>
+    <string name="title_version">Versione</string>
+    <string name="myProfile_header">Profilo</string>
+    <string name="saveBtnLabel">Salva</string>
+    <string name="saveBtnMessage">Modifiche salvate</string>
+    <string name="str_repeat_password">Ripeti password</string>
+    <string name="str_register">Registra</string>
+    <string name="str_don_t_you_have_an_account">Non hai un account?</string>
+    <string name="str_register_now">Nuovo account</string>
+    <string name="str_name">Nome</string>
+    <string name="str_nickname_is_empty">Nickname vuoto</string>
+    <string name="str_email_is_not_valid">Email non valida</string>
+    <string name="str_weak_password_min_8_characters_required">Password debole (min. 8 caratteri)</string>
+    <string name="str_passwords_don_t_match">Le password non coincidono</string>
+    <string name="str_i_forgot_my_password">Hai dimenticato la password? Clicca qui</string>
+    <string name="str_e_mail_per_il_recupero">Email per il recupero</string>
+    <string name="weatherNotAvailableMsg">Rete non disponibile. Verifica la tua connessione Internet</string>
+    <string name="attractionsToolbarTitle">Attrazioni</string>
+    <string name="searchTitle">Cerca</string>
+    <string name="searchHint">Trova attrazione</string>
+    <string name="loadingMessage">Caricamento...</string>
+    <string name="closedState">Chiuso</string>
+    <string name="openState">Aperto</string>
+    <string name="strReviews">Recensioni</string>
+    <string name="strDirections">Indicazioni</string>
+    <string name="strTheatre">Teatro</string>
+    <string name="strMonument">Monumento</string>
+    <string name="strMuseum">Museo</string>
+    <string name="strChurch">Chiesa</string>
+    <string name="strBeach">Lido</string>
+    <string name="strDisco">Discoteca</string>
+    <string name="strRestaurant">Ristorante</string>
+    <string name="strOpening">Apertura:</string>
+    <string name="strClosing">Chiusura:</string>
+    <string name="navigation_label">Naviga</string>
+</resources>
