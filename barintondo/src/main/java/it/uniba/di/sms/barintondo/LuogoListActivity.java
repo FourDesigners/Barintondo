@@ -68,7 +68,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_item_list );
+        setContentView( R.layout.activity_luogo_list);
         mInstance = this;
 
         //first time intent reading
