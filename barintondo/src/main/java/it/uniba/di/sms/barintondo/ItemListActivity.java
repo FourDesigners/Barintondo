@@ -132,33 +132,33 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
 
         //first time chips creation
-        /*
-        int id = 0;
-        for (String s : arrayRes) {
-            final Chip newChip = new Chip(this);
-            newChip.setId(id);
-            assert arrayTags != null;
-            newChip.setTag(arrayTags[id++]);
-            newChip.setChipText(s);
-            newChip.setClickable(true);
-            newChip.setCheckable(true);
-            newChip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String query;
-                    if(newChip.isChecked())
-                        query = newChip.getTag().toString();
-                    else query = ""; //stringa vuota così da mostrare tutti i luoghi
-                    Log.i(TAG, "Query=" + query);
-                    mAdapter.getFilter().filter( query );
-                    setCounter(arrayRes, arrayTags, newChip.getTag().toString());
-                }
-            } );
-            chipGroup.addView( newChip );
+        if (items_type.equals(Constants.INTENT_ATTRACTIONS) || items_type.equals(Constants.INTENT_NEAR)) {
+            changeChipsOrder(arrayRes, arrayTags, null);
+        }else {
+            int id = 0;
+            for (String s : arrayRes) {
+                final Chip newChip = new Chip(this);
+                newChip.setId(id);
+                assert arrayTags != null;
+                newChip.setTag(arrayTags[id++]);
+                newChip.setChipText(s);
+                newChip.setClickable(true);
+                newChip.setCheckable(true);
+                newChip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String query;
+                        if(newChip.isChecked())
+                            query = newChip.getTag().toString();
+                        else query = ""; //stringa vuota così da mostrare tutti i luoghi
+                        Log.i(TAG, "Query=" + query);
+                        mAdapter.getFilter().filter( query );
+                        //setCounter(arrayRes, arrayTags, newChip.getTag().toString());
+                    }
+                } );
+                chipGroup.addView( newChip );
+            }
         }
-        */
-
-        changeChipsOrder(arrayRes, arrayTags, null);
 
         //list and adapter setup
         itemList = new ArrayList<>();
