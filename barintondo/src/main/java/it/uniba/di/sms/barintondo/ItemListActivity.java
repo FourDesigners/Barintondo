@@ -146,9 +146,11 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             newChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
-                    String query = newChip.getChipText().toString().substring( 0 , newChip.getChipText().length() - 1 );
-                    //Log.i(TAG, "Query= " + query);
+                    String query;
+                    if(newChip.isChecked())
+                        query = newChip.getTag().toString();
+                    else query = ""; //stringa vuota così da mostrare tutti i luoghi
+                    Log.i(TAG, "Query=" + query);
                     mAdapter.getFilter().filter( query );
                 }
             } );
