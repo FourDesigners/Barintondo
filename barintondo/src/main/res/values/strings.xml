@@ -35,12 +35,12 @@
 
     <!--Tags attractions-->
     <string-array name="attractionsTags">
-        <item>Churches</item>
-        <item>Monuments</item>
-        <item>Teathers</item>
-        <item>Beaches</item>
-        <item>Discotheques</item>
-        <item>Family</item>
+        <item>Chiese</item>
+        <item>Monumenti</item>
+        <item>Teatri</item>
+        <item>Lidi</item>
+        <item>Discoteche</item>
+        <item>Famiglia</item>
     </string-array>
 
     <!--Chips food-->
@@ -52,9 +52,9 @@
 
     <!--Tags food-->
     <string-array name="eatingTags">
-        <item>Pizzerias</item>
-        <item>Restaurants</item>
-        <item>Cafes</item>
+        <item>Pizzerie</item>
+        <item>Ristoranti</item>
+        <item>Bar</item>
     </string-array>
 
     <!--Chips sleep-->
@@ -66,7 +66,7 @@
     <!--Tags sleep-->
     <string-array name="sleepingTags">
         <item>B&amp;B</item>
-        <item>Hotels</item>
+        <item>Hotel</item>
     </string-array>
 
     <!--Chips events-->
@@ -77,8 +77,8 @@
 
     <!--Tags events-->
     <string-array name="eventsTags">
-        <item>In Bari</item>
-        <item>Near Bari</item>
+        <item>Bari</item>
+        <item>Vicino Bari</item>
     </string-array>
 
     <!--Chips near-->
@@ -93,12 +93,12 @@
 
     <!--Tags near-->
     <string-array name="nearTags">
-        <item>Churches</item>
-        <item>Monuments</item>
-        <item>Teathers</item>
-        <item>Beaches</item>
-        <item>Discotheques</item>
-        <item>Family</item>
+        <item>Chiese</item>
+        <item>Monumenti</item>
+        <item>Teatri</item>
+        <item>Lidi</item>
+        <item>Discoteche</item>
+        <item>Famiglia</item>
     </string-array>
 
 
