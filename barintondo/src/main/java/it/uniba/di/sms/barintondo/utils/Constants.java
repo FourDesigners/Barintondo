@@ -14,10 +14,15 @@ public interface Constants {
     String INTENT_NEAR = "near";
     String INTENT_ITEM="item";
 
-    String CHIPS_ATTRACTIONS = "Chiese, Monumenti, Teatri, Lidi, Discoteche";
-    String CHIPS_SLEEPING = "B&B, Hotel";
-    String CHIPS_EATING = "Pizzerie, Ristoranti, Bar";
-    String CHIPS_EVENTS = "Bari, vicino Bari";
+    // SharedPreferences
+    String ORDER = "order";
+    String CHIESE = "Chiese";
+    String MONUMENTI = "Monumenti";
+    String TEATRI = "Teatri";
+    String LIDI = "Lidi";
+    String DISCOTECHE = "Discoteche";
+    String FAMIGLIA = "Famiglia";
+    String MAX = "max";
 
     //costanti DB
     String DB_NAME = "datiUtente.db";

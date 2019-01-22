@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_home);
 
 
-        fillChips(); // Inserimento filtri
+        openPreferences(); // Inserimento filtri
 
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
@@ -97,16 +97,19 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         startActivity( intent );
     }
 
-    private void fillChips() {
-        SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
-        if (!categories.contains(INSERTED)) {
-            SharedPreferences.Editor edit = categories.edit();
+    private void openPreferences() {
+        SharedPreferences list = getSharedPreferences(PREFS_NAME, 0);
+        if(!list.contains(INSERTED)) {
+            SharedPreferences.Editor edit = list.edit();
+            edit.putString(ORDER, "0,1,2,3,4,5");
+            edit.putInt(CHIESE, 0);
+            edit.putInt(MONUMENTI, 0);
+            edit.putInt(TEATRI, 0);
+            edit.putInt(LIDI, 0);
+            edit.putInt(DISCOTECHE, 0);
+            edit.putInt(FAMIGLIA, 0);
+            edit.putInt(MAX, 0);
             edit.putBoolean(INSERTED, true);
-            edit.putString(INTENT_ATTRACTIONS, CHIPS_ATTRACTIONS);
-            edit.putString(INTENT_EATING, CHIPS_EATING);
-            edit.putString(INTENT_SLEEPING, CHIPS_SLEEPING);
-            edit.putString(INTENT_EVENTS, CHIPS_EVENTS);
-            edit.putString(INTENT_NEAR, CHIPS_ATTRACTIONS);
             edit.apply();
         }
     }

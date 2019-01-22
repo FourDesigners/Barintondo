@@ -68,6 +68,8 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
     private SearchView searchView;
     String URL;
     private static ItemListActivity mInstance;
+    String[] arrayRes = null;
+    String[] arrayTags = null;
 
 
     @Override
@@ -84,8 +86,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         myToolbar = findViewById( R.id.main_activity_toolbar );
 
         Resources res = getResources();
-        String[] arrayRes = null;
-        String[] arrayTags = null;
+
         //first time URL selection
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
             arrayRes = res.getStringArray(R.array.attractions);
@@ -129,11 +130,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
         //first time chip group setup
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
-        SharedPreferences categories = getSharedPreferences( PREFS_NAME , 0 );
+
 
         //first time chips creation
-
-
         int id = 0;
         for (String s : arrayRes) {
             final Chip newChip = new Chip(this);
@@ -146,10 +145,11 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             newChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
                     String query = newChip.getChipText().toString().substring( 0 , newChip.getChipText().length() - 1 );
-                    //Log.i(TAG, "Query= " + query);
+                    //Log.i(TAG, "Query = " + query);
                     mAdapter.getFilter().filter( query );
+                    setCounter(arrayRes, arrayTags, newChip.getTag().toString());
                 }
             } );
             chipGroup.addView( newChip );
@@ -174,6 +174,71 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
         //first time populating
         fetchItems();
 
+    }
+
+    private void setCounter(String[] arrayRes, String[] arrayTags, String tag) {
+        SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
+        SharedPreferences.Editor edit = list.edit();
+        String[] order = list.getString("order", "").split(",");
+        int max = list.getInt("max", 0);
+        int val = list.getInt(tag, 0) + 1;
+        if(val > max) {
+            edit.putInt(MAX, val);
+            int index = findPos(arrayTags, tag);
+            int pos = findPos(order, String.valueOf(index));
+            String temp = order[0];
+            order[0] = order[pos];
+            order[pos] = temp;
+            String o = "";
+            for(int i=0; i<order.length - 1; i++) {
+                o += order[i] + ",";
+            }
+            o += order[order.length-1];
+            Toast.makeText(getApplicationContext(), o, Toast.LENGTH_SHORT).show();
+            edit.putString(ORDER, o);
+        }
+        edit.putInt(tag, val);
+        edit.apply();
+        changeChipsOrder(arrayRes, arrayTags, tag);
+    }
+
+    private int findPos(String[] arrayTags, String tag) {
+        for(int i=0; i<arrayTags.length; i++) {
+            if(arrayTags[i].equals(tag)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void changeChipsOrder(final String[] arrayRes, final String[] arrayTags, String tag) {
+        ChipGroup chipGroup = findViewById( R.id.chipGroup );
+        chipGroup.removeAllViews();
+        SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
+        String[] order = list.getString("order", "").split(",");
+        for(int id=0; id<order.length; id++) {
+            final Chip newChip = new Chip(this);
+            newChip.setId(id);
+            assert arrayTags != null;
+            newChip.setTag(arrayTags[Integer.valueOf(order[id])]);
+            newChip.setChipText(arrayRes[Integer.valueOf(order[id])]);
+            newChip.setClickable(true);
+            newChip.setCheckable(true);
+            if(newChip.getTag().toString().equals(tag)) {
+                newChip.setChecked(true);
+            }
+            newChip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
+                    String query = newChip.getChipText().toString().substring( 0 , newChip.getChipText().length() - 1 );
+                    //Log.i(TAG, "Query= " + query);
+                    mAdapter.getFilter().filter( query );
+                    setCounter(arrayRes, arrayTags, newChip.getTag().toString());
+                }
+            } );
+            chipGroup.addView( newChip );
+        }
     }
 
     private void fetchItems() {
