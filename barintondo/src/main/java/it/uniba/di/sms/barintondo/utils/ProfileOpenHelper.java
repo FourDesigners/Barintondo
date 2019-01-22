@@ -134,4 +134,9 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
         }
         return params;
     }
+
+    public static void setNickname(Context context, String email, String password, ProfileOpenHelper openHelper) {
+        BackgroundGetNickname bgn = new BackgroundGetNickname(context, email, password, openHelper);
+        bgn.execute();
+    }
 }

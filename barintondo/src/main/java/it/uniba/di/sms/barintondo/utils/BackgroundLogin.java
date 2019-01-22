@@ -24,9 +24,14 @@ public class BackgroundLogin extends AsyncTask<String, Void,String> {
     AlertDialog dialog;
     Context context;
     public Boolean login = false;
-    public BackgroundLogin(Context context)
+    private String email, password;
+    private ProfileOpenHelper openHelper;
+    public BackgroundLogin(Context context, String email, String password, ProfileOpenHelper openHelper)
     {
         this.context = context;
+        this.email = email;
+        this.password = password;
+        this.openHelper = openHelper;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class BackgroundLogin extends AsyncTask<String, Void,String> {
         if(s.contains("login successfull"))
         {
             Log.e("DBLOGIN", "ok");
+            ProfileOpenHelper.setNickname(context, email, password, openHelper);
             //Toast.makeText(context, "Credenziali valide", Toast.LENGTH_SHORT).show();
             /*
             Intent intent_name = new Intent();
@@ -50,13 +56,15 @@ public class BackgroundLogin extends AsyncTask<String, Void,String> {
             */
         }else {
             Toast.makeText(context, "Credenziali non valide", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, s, Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     protected String doInBackground(String... voids) {
         String result = "";
-        String user = voids[0];
-        String pass = voids[1];
+        String user = email;
+        String pass = password;
 
         String connstr = "http://barintondo.altervista.org/login.php";
 

@@ -116,10 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 boolean connected = InternetConnection.isNetworkAvailable(LoginActivity.this);
                 if(connected) {
-                    BackgroundLogin bg = new BackgroundLogin(getApplicationContext());
-                    bg.execute(email, password);
-                    BackgroundGetNickname bgn = new BackgroundGetNickname(getApplicationContext(), email, password, openHelper);
-                    bgn.execute();
+                    BackgroundLogin bg = new BackgroundLogin(getApplicationContext(), email, password, openHelper);
+                    bg.execute();
                 }else {
                     if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
                         goHome();
