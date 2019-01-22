@@ -232,9 +232,12 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             newChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getApplicationContext(), newChip.getTag().toString(), Toast.LENGTH_SHORT).show();
-                    String query = newChip.getChipText().toString().substring( 0 , newChip.getChipText().length() - 1 );
-                    //Log.i(TAG, "Query= " + query);
+                    String query;
+                    if(newChip.isChecked()) {
+                        query = newChip.getTag().toString();
+                    }else {
+                        query = "";
+                    }
                     mAdapter.getFilter().filter( query );
                     setCounter(arrayRes, arrayTags, newChip.getTag().toString());
                 }
