@@ -1,18 +1,24 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 
@@ -22,11 +28,13 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     Toolbar myToolbar;
     ImageView myImageView;
     Button itemInfo, itemDirection, itemReview;
+    FloatingActionButton fabPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_item_detail );
+        Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
 
         final Luogo myItem = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
 
@@ -37,8 +45,10 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled( true );
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
-        fab.setOnClickListener( new View.OnClickListener() {
+        fabPref = findViewById( R.id.fab );
+
+        checkPref( myItem );
+        fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make( view , "Replace with your own action" , Snackbar.LENGTH_LONG )
@@ -94,8 +104,8 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     private void attachDescription(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_DESCRIPTION , myItem.getDescription() );
-        arguments.putString( ITEM_ORA_A, myItem.getOraA() );
-        arguments.putString( ITEM_ORA_C, myItem.getOraC() );
+        arguments.putString( ITEM_ORA_A , myItem.getOraA() );
+        arguments.putString( ITEM_ORA_C , myItem.getOraC() );
         ItemDescriptionFragment fragment = new ItemDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -139,8 +149,22 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
                 itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 break;
             case ITEM_REVIEWS:
-                itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue) );
+                itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 break;
+        }
+    }
+
+    private void checkPref(Luogo myItem) {
+        ControllerPrefered controllerPrefered = new ControllerPrefered( this );
+        controllerPrefered.checkPref( myItem.getCod() );
+    }
+
+    public void checkPrefResult(boolean result){
+        if (result) {
+            ImageViewCompat.setImageTintList(
+                    fabPref,
+                    ColorStateList.valueOf(Color.YELLOW)
+            );
         }
     }
 

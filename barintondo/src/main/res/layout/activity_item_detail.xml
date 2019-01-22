@@ -20,7 +20,8 @@
             app:fabCustomSize="40dp"
             android:layout_gravity="end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_star" />
+            app:srcCompat="@drawable/ic_star"
+            android:tint="@color/colorWhite"/>
     </android.support.v7.widget.Toolbar>
 
     <ImageView

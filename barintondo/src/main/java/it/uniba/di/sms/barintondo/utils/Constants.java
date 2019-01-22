@@ -41,4 +41,6 @@ public interface Constants {
     //stringa per link immagini
     String imagesPath = "http://barintondo.altervista.org/images/";
 
+    String REQUEST_CHECK_PREF = "checkPref";
+
 }

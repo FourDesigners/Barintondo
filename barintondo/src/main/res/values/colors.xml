@@ -7,4 +7,6 @@
     <color name="colorPrimaryBlue">#6200EE</color>
     <color name="colorSecondaryBlue">#03DAC6</color>
     <color name="colorSecondaryBlueVariant">#018786</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorYellow">#FFFF00</color>
 </resources>
