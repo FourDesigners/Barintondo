@@ -5,7 +5,7 @@ public interface Constants {
     String INSERTED = "inserted";
     String PREFS_NAME = "BarintondoPrefs";
 
-    //intent per ItemListActivity
+    //intent per LuogoListActivity
     String INTENT_ACTIVITY_ITEM_TYPE = "item_type";
     String INTENT_ATTRACTIONS = "attractions";
     String INTENT_SLEEPING = "sleeping";

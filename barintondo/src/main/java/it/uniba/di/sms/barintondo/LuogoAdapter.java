@@ -1,9 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,18 +21,18 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.uniba.di.sms.barintondo.utils.BarintondoItem;
+import it.uniba.di.sms.barintondo.utils.Luogo;
 
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder>
+public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder>
             implements Filterable {
         private Context context;
-        private List<BarintondoItem> itemList;
-        private List<BarintondoItem> itemListFiltered;
+        private List<Luogo> itemList;
+        private List<Luogo> itemListFiltered;
         private ItemsAdapterListener listener;
 
-        private static final String TAG = ItemsAdapter.class.getSimpleName();
+        private static final String TAG = LuogoAdapter.class.getSimpleName();
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView cod, nome, sottoCat, stato, valutazione;
@@ -54,7 +51,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // send selected BarintondoItem in callback
+                        // send selected Luogo in callback
                         listener.onItemsSelected(itemListFiltered.get(getAdapterPosition()));
                     }
                 });
@@ -62,7 +59,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         }
 
 
-        public ItemsAdapter(Context context, List<BarintondoItem> itemList, ItemsAdapterListener listener) {
+        public LuogoAdapter(Context context, List<Luogo> itemList, ItemsAdapterListener listener) {
             this.context = context;
             this.listener = listener;
             this.itemList = itemList;
@@ -80,21 +77,21 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-            BarintondoItem barintondoItem = itemListFiltered.get(position);
+            Luogo luogo = itemListFiltered.get(position);
 
             //thumbnail
             Glide.with(context)
-                    .load(imagesPath + barintondoItem.getThumbnailLink())
+                    .load(imagesPath + luogo.getThumbnailLink())
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.thumbnail);
 
-            holder.cod.setText(barintondoItem.getCod());
-            holder.nome.setText(barintondoItem.getNome());
+            holder.cod.setText(luogo.getCod());
+            holder.nome.setText(luogo.getNome());
 
             //scelgo stringa per sottoCat
             String sottoCat = "";
-            Log.i(TAG, "sottoCatItem=" + barintondoItem.getSottoCat() + "-");
-            switch (barintondoItem.getSottoCat()) {
+            Log.i(TAG, "sottoCatItem=" + luogo.getSottoCat() + "-");
+            switch (luogo.getSottoCat()) {
                 case "Teatri":
                     sottoCat += context.getResources().getString(R.string.strTheatre);
                     break;
@@ -136,8 +133,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
             holder.sottoCat.setText(sottoCat);
 
             //controllo se il luogo è "aperto" o "chiuso"
-            String oraA = barintondoItem.getOraA();
-            String oraC = barintondoItem.getOraC();
+            String oraA = luogo.getOraA();
+            String oraC = luogo.getOraC();
 
             //ottengo ora attuale
             Date date = new Date();
@@ -150,7 +147,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 holder.stato.setText(context.getResources().getString(R.string.closedState));
             else holder.stato.setText(context.getResources().getString(R.string.openState));
 
-            //holder.valutazione.setText(barintondoItem.get());
+            //holder.valutazione.setText(luogo.get());
 
         }
 
@@ -168,8 +165,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                     if (charString.isEmpty()) {
                         itemListFiltered = itemList;
                     } else {
-                        List<BarintondoItem> filteredList = new ArrayList<>();
-                        for (BarintondoItem row : itemList) {
+                        List<Luogo> filteredList = new ArrayList<>();
+                        for (Luogo row : itemList) {
 
                             // name match condition
                             /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
@@ -190,14 +187,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                    itemListFiltered = (ArrayList<BarintondoItem>) filterResults.values;
+                    itemListFiltered = (ArrayList<Luogo>) filterResults.values;
                     notifyDataSetChanged();
                 }
             };
         }
 
         public interface ItemsAdapterListener {
-            void onItemsSelected(BarintondoItem item);
+            void onItemsSelected(Luogo item);
         }
 
 

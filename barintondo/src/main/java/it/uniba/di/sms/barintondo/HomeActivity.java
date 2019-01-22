@@ -1,6 +1,5 @@
 package it.uniba.di.sms.barintondo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -92,7 +91,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     }
 
     private void homeStartActivity(String constCall){
-        Intent intent = new Intent( this , ItemListActivity.class );
+        Intent intent = new Intent( this , LuogoListActivity.class );
         intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , constCall );
         startActivity( intent );
     }

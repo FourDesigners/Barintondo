@@ -6,18 +6,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
-import it.uniba.di.sms.barintondo.utils.BarintondoItem;
+import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 
 
@@ -32,7 +28,7 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_item_detail );
 
-        final BarintondoItem myItem = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
+        final Luogo myItem = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
 
         myToolbar = findViewById( R.id.itemDetailToolbar );
         myToolbar.setTitle( myItem.getNome() );
@@ -95,7 +91,7 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
 
     }
 
-    private void attachDescription(BarintondoItem myItem) {
+    private void attachDescription(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_DESCRIPTION , myItem.getDescription() );
         arguments.putString( ITEM_ORA_A, myItem.getOraA() );
@@ -108,7 +104,7 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         itemOptionSelected( ITEM_DESCRIPTION );
     }
 
-    private void attachDirections(BarintondoItem myItem) {
+    private void attachDirections(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_DIRECTIONS , myItem.getIndirizzo() );
         ItemDirectionsFragment fragment = new ItemDirectionsFragment();
@@ -119,7 +115,7 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         itemOptionSelected( ITEM_DIRECTIONS );
     }
 
-    private void attachReviews(BarintondoItem myItem) {
+    private void attachReviews(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_REVIEWS , myItem.getCod() );
         ItemReviewsFragment fragment = new ItemReviewsFragment();

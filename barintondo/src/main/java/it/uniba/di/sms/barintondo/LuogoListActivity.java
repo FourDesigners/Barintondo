@@ -7,15 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Looper;
-import android.support.annotation.ArrayRes;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -50,24 +42,24 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
-import it.uniba.di.sms.barintondo.utils.BarintondoItem;
+import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 
-public class ItemListActivity extends AppCompatActivity implements Constants, ItemsAdapter.ItemsAdapterListener {
+public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     private static String items_type;
     private RequestQueue mRequestQueue;
 
-    private static final String TAG = ItemListActivity.class.getSimpleName();
+    private static final String TAG = LuogoListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
-    private List<BarintondoItem> itemList;
-    private ItemsAdapter mAdapter;
+    private List<Luogo> itemList;
+    private LuogoAdapter mAdapter;
     private SearchView searchView;
     String URL;
-    private static ItemListActivity mInstance;
+    private static LuogoListActivity mInstance;
     String[] arrayRes = null;
     String[] arrayTags = null;
 
@@ -162,7 +154,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
         //list and adapter setup
         itemList = new ArrayList<>();
-        mAdapter = new ItemsAdapter( this , itemList , this );
+        mAdapter = new LuogoAdapter( this , itemList , this );
 
         //recyclerView setup
         recyclerView = findViewById( R.id.item_list_recycler_view );
@@ -268,7 +260,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                     try {
                         JSONObject jsonObject = response.getJSONObject( i );
 
-                        BarintondoItem item = new BarintondoItem();
+                        Luogo item = new Luogo();
                         item.setCod( jsonObject.getString( "cod" ) );
                         item.setNome( jsonObject.getString( "nome" ) );
                         item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
@@ -299,7 +291,7 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             }
         } );
 
-        ItemListActivity.getInstance().addToRequestQueue( request );
+        LuogoListActivity.getInstance().addToRequestQueue( request );
 
     }
 
@@ -438,14 +430,14 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
     }
 
     @Override
-    public void onItemsSelected(BarintondoItem item) {
+    public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
         Intent intent = new Intent( this , ItemDetailActivity.class );
         intent.putExtra( INTENT_ITEM , item );
         startActivity( intent );
     }
 
-    public static synchronized ItemListActivity getInstance() {
+    public static synchronized LuogoListActivity getInstance() {
         return mInstance;
     }
 }

@@ -2,7 +2,6 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import it.uniba.di.sms.barintondo.HomeActivity;
-import it.uniba.di.sms.barintondo.ItemListActivity;
+import it.uniba.di.sms.barintondo.LuogoListActivity;
 import it.uniba.di.sms.barintondo.LoginActivity;
 import it.uniba.di.sms.barintondo.MyProfileActivity;
 import it.uniba.di.sms.barintondo.R;
@@ -101,12 +100,12 @@ public class MyNavigationDrawer implements Constants {
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Dormire" , Toast.LENGTH_SHORT ).show();
-                                if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_SLEEPING )) {
-                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                if (activity.getClass()!=LuogoListActivity.class ||
+                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_SLEEPING )) {
+                                    Intent intent = new Intent(activity, LuogoListActivity.class);
                                     intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_SLEEPING);
                                     activity.startActivity(intent);
-                                    if(activity.getClass() == ItemListActivity.class) {
+                                    if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
                                     }
                                 }
@@ -114,24 +113,24 @@ public class MyNavigationDrawer implements Constants {
                             case R.id.mangiare:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Mangiare" , Toast.LENGTH_SHORT ).show();
-                                if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_EATING )) {
-                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                if (activity.getClass()!=LuogoListActivity.class ||
+                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_EATING )) {
+                                    Intent intent = new Intent(activity, LuogoListActivity.class);
                                     intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_EATING);
                                     activity.startActivity(intent);
-                                    if(activity.getClass() == ItemListActivity.class) {
+                                    if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
                                     }
                                 }
                                 break;
                             case R.id.attrazioni:
                                 mDrawerLayout.closeDrawers();
-                                if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_ATTRACTIONS )) {
-                                    Intent intent = new Intent( activity , ItemListActivity.class );
+                                if (activity.getClass()!=LuogoListActivity.class ||
+                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_ATTRACTIONS )) {
+                                    Intent intent = new Intent( activity , LuogoListActivity.class );
                                     intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , Constants.INTENT_ATTRACTIONS );
                                     activity.startActivity( intent );
-                                    if(activity.getClass() == ItemListActivity.class) {
+                                    if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
                                     }
                                 }
@@ -140,12 +139,12 @@ public class MyNavigationDrawer implements Constants {
                             case R.id.eventi:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Eventi" , Toast.LENGTH_SHORT ).show();
-                                if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_EVENTS )) {
-                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                if (activity.getClass()!=LuogoListActivity.class ||
+                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_EVENTS )) {
+                                    Intent intent = new Intent(activity, LuogoListActivity.class);
                                     intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_EVENTS);
                                     activity.startActivity(intent);
-                                    if(activity.getClass() == ItemListActivity.class) {
+                                    if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
                                     }
                                 }
@@ -153,12 +152,12 @@ public class MyNavigationDrawer implements Constants {
                             case R.id.intorno:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Intorno a Bari" , Toast.LENGTH_SHORT ).show();
-                                if (activity.getClass()!=ItemListActivity.class ||
-                                        !((ItemListActivity) activity).getItems_type().equals( Constants.INTENT_NEAR )) {
-                                    Intent intent = new Intent(activity, ItemListActivity.class);
+                                if (activity.getClass()!=LuogoListActivity.class ||
+                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_NEAR )) {
+                                    Intent intent = new Intent(activity, LuogoListActivity.class);
                                     intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_NEAR);
                                     activity.startActivity(intent);
-                                    if(activity.getClass() == ItemListActivity.class) {
+                                    if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
                                     }
                                 }

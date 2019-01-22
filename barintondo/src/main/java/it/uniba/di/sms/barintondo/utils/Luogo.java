@@ -2,12 +2,10 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageView;
 
-import java.sql.Time;
 import java.util.Locale;
 
-public class BarintondoItem implements Parcelable {
+public class Luogo implements Parcelable {
     private String cod;
     private String nome;
     private String sottoCat;
@@ -18,11 +16,11 @@ public class BarintondoItem implements Parcelable {
     private String descrizione_it;
     private String indirizzo;
 
-    public BarintondoItem() {
+    public Luogo() {
     }
 
-    public BarintondoItem(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
-                          String newThumbnailLink , String newDescEn , String newDescIt, String newIndirizzo) {
+    public Luogo(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
+                 String newThumbnailLink , String newDescEn , String newDescIt, String newIndirizzo) {
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
@@ -34,7 +32,7 @@ public class BarintondoItem implements Parcelable {
         indirizzo=newIndirizzo;
     }
 
-    protected BarintondoItem(Parcel in) {
+    protected Luogo(Parcel in) {
         cod = in.readString();
         nome = in.readString();
         sottoCat = in.readString();
@@ -47,15 +45,15 @@ public class BarintondoItem implements Parcelable {
     }
 
     //Serve per la parcelizzazione negli intent
-    public static final Creator<BarintondoItem> CREATOR = new Creator<BarintondoItem>() {
+    public static final Creator<Luogo> CREATOR = new Creator<Luogo>() {
         @Override
-        public BarintondoItem createFromParcel(Parcel in) {
-            return new BarintondoItem( in );
+        public Luogo createFromParcel(Parcel in) {
+            return new Luogo( in );
         }
 
         @Override
-        public BarintondoItem[] newArray(int size) {
-            return new BarintondoItem[size];
+        public Luogo[] newArray(int size) {
+            return new Luogo[size];
         }
     };
 
