@@ -130,9 +130,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
 
         //first time chip group setup
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
-        SharedPreferences categories = getSharedPreferences( PREFS_NAME , 0 );
 
         //first time chips creation
+        /*
         int id = 0;
         for (String s : arrayRes) {
             final Chip newChip = new Chip(this);
@@ -156,7 +156,9 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
             } );
             chipGroup.addView( newChip );
         }
+        */
 
+        changeChipsOrder(arrayRes, arrayTags, null);
 
         //list and adapter setup
         itemList = new ArrayList<>();
@@ -196,7 +198,6 @@ public class ItemListActivity extends AppCompatActivity implements Constants, It
                 o += order[i] + ",";
             }
             o += order[order.length-1];
-            Toast.makeText(getApplicationContext(), o, Toast.LENGTH_SHORT).show();
             edit.putString(ORDER, o);
         }
         edit.putInt(tag, val);
