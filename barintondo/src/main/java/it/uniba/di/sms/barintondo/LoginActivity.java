@@ -14,12 +14,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import it.uniba.di.sms.barintondo.utils.BackgroundGetNickname;
-import it.uniba.di.sms.barintondo.utils.BackgroundLogin;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import it.uniba.di.sms.barintondo.utils.BackgroundRegistration;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
+import it.uniba.di.sms.barintondo.utils.VolleyAccess;
 
 public class LoginActivity extends AppCompatActivity {
     TextView textViewForgotPassword;
@@ -27,13 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imageView;
     Button reset, login;
     TextView register;
+    ProfileOpenHelper openHelper;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         goHomeIfAccount(openHelper);
 
         setContentView(R.layout.activity_login);
@@ -52,8 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 String nickname = ProfileOpenHelper.getLocalAccount(openHelper)[0];
                 String email = ProfileOpenHelper.getLocalAccount(openHelper)[1];
                 String password = ProfileOpenHelper.getLocalAccount(openHelper)[2];
-                BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), nickname, email, password, openHelper, LoginActivity.class.toString());
-                bg.execute();
+                //VolleyAccess.registration(getApplicationContext(), nickname, email, password, openHelper);
             }
         }
 
@@ -70,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                 Integer integer = (Integer) imageView.getTag();
                 integer = integer == null ? 0 : integer;
 
-                //Toast.makeText(getApplicationContext(), integer.toString(), Toast.LENGTH_SHORT).show();
                 switch(integer) {
                     case R.drawable.openeye:
                         imageView.setImageResource(R.drawable.closedeye);
@@ -116,8 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 boolean connected = InternetConnection.isNetworkAvailable(LoginActivity.this);
                 if(connected) {
-                    BackgroundLogin bg = new BackgroundLogin(getApplicationContext(), email, password, openHelper);
-                    bg.execute();
+                    VolleyAccess.login(getApplicationContext(), email, password, openHelper);
                 }else {
                     if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
                         goHome();
