@@ -114,7 +114,8 @@
     <string name="strConfirm">Conferma</string>
     <string name="strCancel">Annulla</string>
     <string name="strDisconnect">Sei sicuro ?</string>
-    <string name="strChangeOrder">Hai selezionato questo filtro diverse volte. Vuoi avvicinarlo ?</string>
+    <string name="strYouSelected">Hai selezionato</string>
+    <string name="strThisFilter">molte volte. Vuoi avvicinarlo ?</string>
     <string name="do_not_show_again">Non mostrare più</string>
     <string name="strNo">No</string>
     <string name="strFilter">Filtro</string>

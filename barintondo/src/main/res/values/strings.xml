@@ -214,7 +214,8 @@
     <string name="strCancel">Cancel</string>
     <string name="strDisconnect">Are you sure ?</string>
     <string name="strLogout">Logout</string>
-    <string name="strChangeOrder">You selected this filter many times. Do you want to put it closer ?</string>
+    <string name="strYouSelected">You selected</string>
+    <string name="strThisFilter">many times. Do you want to put it closer ?</string>
     <string name="do_not_show_again">Do not show again</string>
     <string name="strFilter">Filter</string>
     <string name="strYes">Yes</string>

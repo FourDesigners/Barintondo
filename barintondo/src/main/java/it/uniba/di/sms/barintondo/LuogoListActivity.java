@@ -192,14 +192,14 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
             int pos = findPos(order, String.valueOf(index));
             boolean skip = list.getBoolean(SKIP, false);
             if(pos!=0 && !skip) {
-                showDialog(edit, tag, pos);
+                showDialog(edit, arrayRes, tag, pos);
             }
         }
     }
 
-    private void showDialog(final SharedPreferences.Editor edit, final String tag, final int pos) {
+    private void showDialog(final SharedPreferences.Editor edit, final String[] arrayRes, final String tag, final int pos) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.strChangeOrder))
+        builder.setMessage(getResources().getString(R.string.strYouSelected)  + " " + arrayRes[Integer.valueOf(order[pos])] + " " + getResources().getString(R.string.strThisFilter))
                 .setTitle(getResources().getString(R.string.strFilter))
                 .setCancelable(false);
 
