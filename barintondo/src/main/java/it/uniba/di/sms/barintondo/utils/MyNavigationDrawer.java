@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import it.uniba.di.sms.barintondo.CouponLuogoListActivity;
 import it.uniba.di.sms.barintondo.HomeActivity;
 import it.uniba.di.sms.barintondo.LuogoListActivity;
 import it.uniba.di.sms.barintondo.LoginActivity;
@@ -165,7 +166,7 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.coupon:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Coupon" , Toast.LENGTH_SHORT ).show();
+                                activity.startActivity( new Intent( activity , CouponLuogoListActivity.class ) );
                                 break;
                             case R.id.contact:
                                 mDrawerLayout.closeDrawers();

@@ -11,18 +11,21 @@ public class CouponLuogo implements Parcelable {
     private String scadenza;
     private String descrizione_it;
     private String descrizione_en;
+    private String sottoCat;
 
     public CouponLuogo() {
     }
 
     public CouponLuogo(String newCod , String newEmail , String newLuogo , String newScadenza , String newDescrizione_it,
-                       String newDescrizione_en) {
+                       String newDescrizione_en, String newSottoCat) {
         cod = newCod;
         email = newEmail;
         luogo = newLuogo;
         scadenza = newScadenza;
         descrizione_it = newDescrizione_it;
         descrizione_en = newDescrizione_en;
+        descrizione_en = newDescrizione_en;
+        sottoCat = newSottoCat;
     }
 
     protected CouponLuogo(Parcel in) {
@@ -32,6 +35,7 @@ public class CouponLuogo implements Parcelable {
         scadenza = in.readString();
         descrizione_it = in.readString();
         descrizione_en = in.readString();
+        sottoCat = in.readString();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -96,6 +100,13 @@ public class CouponLuogo implements Parcelable {
         }
     }
 
+    public String getSottoCat() {
+        return sottoCat;
+    }
+
+    public void setSottoCat(String sottoCat) {
+        this.sottoCat = sottoCat;
+    }
 
     @Override
     public String toString() {
@@ -115,5 +126,6 @@ public class CouponLuogo implements Parcelable {
         dest.writeString( scadenza );
         dest.writeString( descrizione_it );
         dest.writeString( descrizione_en );
+        dest.writeString( sottoCat );
     }
 }

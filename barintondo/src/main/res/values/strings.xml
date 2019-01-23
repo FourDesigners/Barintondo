@@ -174,7 +174,7 @@
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
     <string name="webUrl" translatable="false">https://www.ilmeteo.it/meteo/Bari</string>
 
-    <!--ITEMLIST ACTIVITY-->
+    <!--LUOGOLIST ACTIVITY-->
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an attraction</string>
@@ -221,6 +221,10 @@
     <string name="strNo">No</string>
     <string name="open_maps">Open Map</string>
     <string name="str_located_in">Located in:</string>
+
+    <!--LUOGOLIST ACTIVITY-->
+    <string name="expiredString">Expired</string>
+    <string name="validString">Valid</string>
 
 
 </resources>

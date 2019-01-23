@@ -121,4 +121,6 @@
     <string name="strYes">Sì</string>
     <string name="open_maps">Apri Mappa</string>
     <string name="str_located_in">"Situato in: "</string>
+    <string name="expiredString">Scaduto</string>
+    <string name="validString">Valido</string>
 </resources>
