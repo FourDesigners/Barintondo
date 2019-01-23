@@ -152,12 +152,15 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         switch (option) {
             case ITEM_DESCRIPTION:
                 itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                myImageView.setVisibility( View.VISIBLE );
                 break;
             case ITEM_DIRECTIONS:
                 itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                myImageView.setVisibility( View.VISIBLE );
                 break;
             case ITEM_REVIEWS:
                 itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                myImageView.setVisibility( View.GONE );
                 break;
         }
     }

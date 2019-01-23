@@ -219,6 +219,8 @@
     <string name="strFilter">Filter</string>
     <string name="strYes">Yes</string>
     <string name="strNo">No</string>
+    <string name="open_maps">Open Map</string>
+    <string name="str_located_in">Located in:</string>
 
 
 </resources>

@@ -119,4 +119,6 @@
     <string name="strNo">No</string>
     <string name="strFilter">Filtro</string>
     <string name="strYes">Sì</string>
+    <string name="open_maps">Apri Mappa</string>
+    <string name="str_located_in">"Situato in: "</string>
 </resources>

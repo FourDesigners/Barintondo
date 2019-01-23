@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ItemDetailActivity">
+    tools:context=".ItemDetailActivity"
+    android:animateLayoutChanges="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/itemDetailToolbar"
@@ -35,57 +36,61 @@
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+
         android:background="@color/colorPrimaryDark">
 
         <Button
             android:id="@+id/item_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:minHeight="0dip"
             android:background="@color/colorSecondaryBlueVariant"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="@string/pref_header_info"
             android:textColor="@android:color/background_light"
-            android:textSize="@dimen/standardTextSize"
+            android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
-            android:padding="10dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_directions"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_directions"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/item_directions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:minHeight="0dip"
             android:background="@color/colorSecondaryBlueVariant"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="@string/strDirections"
             android:textColor="@android:color/background_light"
-            android:padding="10dp"
-            android:textSize="@dimen/standardTextSize"
+            android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/item_info"
             app:layout_constraintBottom_toBottomOf="@id/item_info"
+            app:layout_constraintEnd_toStartOf="@id/item_reviews"
             app:layout_constraintStart_toEndOf="@id/item_info"
-            app:layout_constraintEnd_toStartOf="@id/item_reviews"/>
+            app:layout_constraintTop_toTopOf="@id/item_info" />
 
         <Button
             android:id="@+id/item_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="center"
+            android:minHeight="0dip"
             android:background="@color/colorSecondaryBlueVariant"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="@string/strReviews"
             android:textColor="@android:color/background_light"
-            android:textSize="@dimen/standardTextSize"
+            android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/item_info"
             app:layout_constraintBottom_toBottomOf="@id/item_info"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_directions"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/item_info" />
 
 
     </android.support.constraint.ConstraintLayout>
