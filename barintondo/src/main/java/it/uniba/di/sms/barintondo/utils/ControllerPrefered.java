@@ -47,9 +47,11 @@ public class ControllerPrefered implements Constants {
 
     String email;
     Context context;
+    ItemDetailActivity itemDetailActivity;
 
     public ControllerPrefered(Context context) {
         this.context = context;
+        itemDetailActivity = (ItemDetailActivity) context;
         //prelevo dati dal db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
@@ -70,62 +72,62 @@ public class ControllerPrefered implements Constants {
         volleyCall( REQUEST_CHECK_PREF , email , itemCod );
     }
 
-    private void volleyCall(final String requestOp, final String user, final String itemCod){
-       // Log.i( TAG , getClass().getSimpleName() + ":entered volleyCall( )");
+    public void addPref(String itemCod) {
+        volleyCall( REQUEST_ADD_PREF , email , itemCod );
+    }
+
+    public void removePref(String itemCod) {
+        volleyCall( REQUEST_REMOVE_PREF , email , itemCod );
+    }
+
+    private void volleyCall(final String requestOp , final String user , final String itemCod) {
+        // Log.i( TAG , getClass().getSimpleName() + ":entered volleyCall( )");
 
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
 
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(context);
-        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Log.i( TAG , getClass().getSimpleName() + ":entered onResponse() "+response );
-                ItemDetailActivity itemDetail = (ItemDetailActivity) context;
-                itemDetail.checkPrefResult( Boolean.valueOf( response ) );
+                String[] result = response.split( "," );
+                Log.i( TAG , "ControllerPrefered: entered onResponse(), request: "+result[0]+", result: "+result[1] );
+
+
+                switch (result[0]) {
+                    case REQUEST_CHECK_PREF:
+                        itemDetailActivity.checkPrefResult( Boolean.valueOf( result[1] ) );
+                        break;
+                    case REQUEST_ADD_PREF:
+                        boolean added = result[1].equals( REQUEST_RESULT_OK );
+                        itemDetailActivity.prefAdded( added );
+                        break;
+                    case REQUEST_REMOVE_PREF:
+                        boolean removed = result[1].equals( REQUEST_RESULT_OK );
+                        itemDetailActivity.prefRemoved( removed );
+                        break;
+                }
+
             }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
+                Toast.makeText(context, context.getResources().getString( R.string.str_fail_pref_managing ), Toast.LENGTH_SHORT).show();
             }
-        }) {
+        } ) {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("request_op", requestOp);
-                MyData.put("email", user);
-                MyData.put("itemCod", itemCod);
+                MyData.put( "request_op" , requestOp );
+                MyData.put( "email" , user );
+                MyData.put( "itemCod" , itemCod );
                 return MyData;
             }
         };
 
 
-        MyRequestQueue.add(MyStringRequest);
-    }
-
-
-    private class DbRequest extends AsyncTask<String, String, String> {
-        private String checked;
-
-        DbRequest() {
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String result = "";
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
+        MyRequestQueue.add( MyStringRequest );
     }
 }

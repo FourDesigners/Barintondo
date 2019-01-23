@@ -9,44 +9,31 @@
                     android:icon="@drawable/ic_home"
                     android:title="@string/home"
                     app:showAsAction="withText" />
-
-                <item
-                    android:id="@+id/categorie"
-                    android:icon="@drawable/ic_keyboard_arrow_down"
-                    android:title="@string/categories_option"
-                    app:showAsAction="withText" />
-
                 <item
                     android:id="@+id/attrazioni"
                     android:icon="@drawable/ic_attractions"
                     android:title="@string/attractions_option"
-                    app:showAsAction="withText"
-                    android:visible="false"/>
+                    app:showAsAction="withText"/>
                 <item
                     android:id="@+id/mangiare"
                     android:icon="@drawable/ic_food"
                     android:title="@string/eating_option"
-                    app:showAsAction="withText"
-                    android:visible="false"
-                    />
+                    app:showAsAction="withText"/>
                 <item
                     android:id="@+id/dormire"
                     android:icon="@drawable/ic_stay"
                     android:title="@string/sleeping_option"
-                    app:showAsAction="withText"
-                    android:visible="false"/>
+                    app:showAsAction="withText"/>
                 <item
                     android:id="@+id/eventi"
                     android:icon="@drawable/ic_events"
                     android:title="@string/events_option"
-                    app:showAsAction="withText"
-                    android:visible="false"/>
+                    app:showAsAction="withText"/>
                 <item
                     android:id="@+id/intorno"
                     android:icon="@drawable/ic_surroundings"
                     android:title="@string/near_option"
-                    app:showAsAction="withText"
-                    android:visible="false"/>
+                    app:showAsAction="withText"/>
             </group>
         </menu>
     </item>
