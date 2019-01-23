@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
+import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 
@@ -29,12 +30,13 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     ImageView myImageView;
     Button itemInfo, itemDirection, itemReview;
     FloatingActionButton fabPref;
+    boolean isPref = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_item_detail );
-        Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
+        Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
         final Luogo myItem = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
 
@@ -47,12 +49,18 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
 
         fabPref = findViewById( R.id.fab );
 
-        checkPref( myItem );
+        final ControllerPrefered controllerPrefered = new ControllerPrefered( this );
+        controllerPrefered.checkPref( myItem.getCod() );
+
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make( view , "Replace with your own action" , Snackbar.LENGTH_LONG )
-                        .setAction( "Action" , null ).show();
+                if (!InternetConnection.isNetworkAvailable( ItemDetailActivity.this )) {
+                    Toast.makeText( ItemDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+                } else {
+                    if (isPref) controllerPrefered.removePref( myItem.getCod() );
+                    else controllerPrefered.addPref( myItem.getCod() );
+                }
             }
         } );
 
@@ -154,18 +162,36 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         }
     }
 
-    private void checkPref(Luogo myItem) {
-        ControllerPrefered controllerPrefered = new ControllerPrefered( this );
-        controllerPrefered.checkPref( myItem.getCod() );
-    }
-
-    public void checkPrefResult(boolean result){
+    public void checkPrefResult(boolean result) {
         if (result) {
+            isPref = true;
             ImageViewCompat.setImageTintList(
-                    fabPref,
-                    ColorStateList.valueOf(Color.YELLOW)
+                    fabPref ,
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorOrange ) )
+            );
+        } else {
+            isPref = false;
+            ImageViewCompat.setImageTintList(
+                    fabPref ,
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorWhite ) )
             );
         }
+    }
+
+    public void prefAdded(boolean result) {
+        if (result) {
+            checkPrefResult( true );
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_added ) , Toast.LENGTH_SHORT ).show();
+        } else
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+    }
+
+    public void prefRemoved(boolean result) {
+        if (result) {
+            checkPrefResult( false );
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_removed ) , Toast.LENGTH_SHORT ).show();
+        } else
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
     }
 
 }

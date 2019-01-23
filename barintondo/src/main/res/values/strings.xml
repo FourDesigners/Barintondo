@@ -199,12 +199,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+
     <string name="strOpening">Opening:  </string>
-    <string name="strClosing">"Closing:  "</string>
+    <string name="strClosing">Closing:  </string>
     <string name="str_e_mail_per_il_recupero">Recovery email</string>
     <string name="notConnected">Network not available</string>
     <string name="invalidCredentials">Not valid credentials</string>
     <string name="duplicateAccount">Email already present</string>
+    <string name="str_pref_added">Added to interests</string>
+    <string name="str_fail_pref_managing">Error in managing interests, try again later</string>
+    <string name="str_pref_removed">Removed from interests</string>
+    <string name="str_error_not_connected">Not connected, check your connection tha retry</string>
 
 
 </resources>

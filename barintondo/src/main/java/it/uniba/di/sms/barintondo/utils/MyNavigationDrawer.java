@@ -89,14 +89,6 @@ public class MyNavigationDrawer implements Constants {
                                 }
                                 Toast.makeText( activity , "Home" , Toast.LENGTH_SHORT ).show();
                                 break;
-                            case R.id.categorie:
-                                boolean b = !m.findItem( R.id.dormire ).isVisible();
-                                m.findItem( R.id.dormire ).setVisible( b );
-                                m.findItem( R.id.mangiare ).setVisible( b );
-                                m.findItem( R.id.attrazioni ).setVisible( b );
-                                m.findItem( R.id.eventi ).setVisible( b );
-                                m.findItem( R.id.intorno ).setVisible( b );
-                                break;
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Dormire" , Toast.LENGTH_SHORT ).show();
