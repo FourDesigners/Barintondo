@@ -11,18 +11,20 @@
     <TextView
         android:id="@+id/text_item_directions"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="30dp"
-        android:layout_weight="3"
-        android:textSize="@dimen/standardTextSize" />
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:layout_weight="6"
+        android:textSize="@dimen/standardTextSize"
+        android:layout_gravity="top"/>
 
-    <ImageView
-        android:id="@+id/icon_gmaps"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <Button
+        android:id="@+id/button_open_gmaps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open_maps"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:padding="10dp"
-        android:src="@mipmap/ic_gmaps"/>
+        android:drawableTop="@mipmap/ic_gmaps"/>
 
 
 </LinearLayout>

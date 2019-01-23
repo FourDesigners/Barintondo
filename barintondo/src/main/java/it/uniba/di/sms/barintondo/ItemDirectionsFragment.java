@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ public class ItemDirectionsFragment extends Fragment implements Constants {
 
     private String itemDirections;
     TextView textViewDirections;
-    ImageView iconGMaps;
+    Button openGMaps;
 
     public ItemDirectionsFragment() {
         // Required empty public constructor
@@ -43,10 +44,11 @@ public class ItemDirectionsFragment extends Fragment implements Constants {
 
         // Show description as text in a TextView.
         textViewDirections = rootView.findViewById( R.id.text_item_directions );
-        textViewDirections.setText( itemDirections );
+        String indicazione = rootView.getResources().getString( R.string.str_located_in )+"\n"+itemDirections;
+        textViewDirections.setText( indicazione );
 
-        iconGMaps = rootView.findViewById( R.id.icon_gmaps );
-        iconGMaps.setOnClickListener( new View.OnClickListener() {
+        openGMaps = rootView.findViewById( R.id.button_open_gmaps );
+        openGMaps.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri gmmIntentUri = Uri.parse( "geo:0,0?q=" + itemDirections );
