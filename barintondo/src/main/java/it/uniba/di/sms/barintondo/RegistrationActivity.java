@@ -13,11 +13,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import it.uniba.di.sms.barintondo.utils.BackgroundRegistration;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
+import it.uniba.di.sms.barintondo.utils.VolleyAccess;
 
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -131,8 +142,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(correct) {
                     boolean connected = InternetConnection.isNetworkAvailable(RegistrationActivity.this);
                     if(connected) {
-                        BackgroundRegistration bg = new BackgroundRegistration(getApplicationContext(), nickname, email, password, openHelper, RegistrationActivity.class.toString());
-                        bg.execute();
+                        VolleyAccess.registration(getApplicationContext(), nickname, email, password, openHelper);
                     }else {
                         Toast.makeText(getApplicationContext(), "Non connesso alla rete", Toast.LENGTH_SHORT).show();
                     }
@@ -141,7 +151,6 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
-
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
