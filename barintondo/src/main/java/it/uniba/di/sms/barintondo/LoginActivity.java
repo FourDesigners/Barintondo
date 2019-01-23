@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,8 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
-public class LoginActivity extends AppCompatActivity {
+
+public class LoginActivity extends AppCompatActivity implements Constants{
     TextView textViewForgotPassword;
     EditText editTextEmail, editTextPassword;
     ImageView imageView;
@@ -45,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         goHomeIfAccount(openHelper);
 
         setContentView(R.layout.activity_login);
-
         Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.str_login);
         setSupportActionBar(myToolbar);
@@ -143,9 +144,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void resetChips() {
+        SharedPreferences list = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor edit = list.edit();
+        edit.putString(ORDER, "0,1,2,3,4,5");
+        edit.putInt(CHIESE, 0);
+        edit.putInt(MONUMENTI, 0);
+        edit.putInt(TEATRI, 0);
+        edit.putInt(LIDI, 0);
+        edit.putInt(DISCOTECHE, 0);
+        edit.putInt(FAMIGLIA, 0);
+        edit.putInt(MAX, 0);
+        //edit.putBoolean(INSERTED, true);
+        edit.apply();
+    }
+
     private void goHomeIfAccount(ProfileOpenHelper openHelper) {
         if(ProfileOpenHelper.isPresent(openHelper)) {
             goHome();
+        }else {
+            resetChips();
         }
     }
 

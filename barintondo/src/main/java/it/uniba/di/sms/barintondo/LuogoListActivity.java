@@ -228,11 +228,11 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
                     String query;
                     if(newChip.isChecked()) {
                         query = newChip.getTag().toString();
+                        setCounter(arrayRes, arrayTags, newChip.getTag().toString());
                     }else {
                         query = "";
                     }
                     mAdapter.getFilter().filter( query );
-                    setCounter(arrayRes, arrayTags, newChip.getTag().toString());
                 }
             } );
             chipGroup.addView( newChip );

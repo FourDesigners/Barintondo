@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_home);
 
 
-        openPreferences(); // Inserimento filtri
+        //openPreferences(); // Inserimento filtri
 
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
