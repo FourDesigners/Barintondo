@@ -1,4 +1,4 @@
-package it.uniba.di.sms.barintondo;
+package it.uniba.di.sms.barintondo.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.uniba.di.sms.barintondo.utils.Luogo;
+import it.uniba.di.sms.barintondo.R;
 
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
 

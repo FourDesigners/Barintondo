@@ -1,10 +1,8 @@
-package it.uniba.di.sms.barintondo;
+package it.uniba.di.sms.barintondo.utils;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,11 +18,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import it.uniba.di.sms.barintondo.utils.CouponLuogo;
-
-import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
+import it.uniba.di.sms.barintondo.R;
 
 public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.MyViewHolder>
         implements Filterable {

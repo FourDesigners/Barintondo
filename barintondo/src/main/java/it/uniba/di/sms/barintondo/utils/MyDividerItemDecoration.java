@@ -1,4 +1,4 @@
-package it.uniba.di.sms.barintondo;
+package it.uniba.di.sms.barintondo.utils;
 
 import android.content.Context;
         import android.content.res.Resources;
