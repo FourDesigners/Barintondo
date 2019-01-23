@@ -32,9 +32,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -178,27 +180,36 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     private void setCounter(String[] arrayRes, String[] arrayTags, String tag) {
         SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
         SharedPreferences.Editor edit = list.edit();
-        order = list.getString("order", "").split(",");
-        int max = list.getInt("max", 0);
+        order = list.getString(ORDER, "").split(",");
+        int max = list.getInt(MAX, 0);
         int val = list.getInt(tag, 0) + 1;
+        edit.putInt(tag, val);
+        edit.apply();
         if(val > max) {
             edit.putInt(MAX, val);
-            edit.putInt(tag, val);
             edit.apply();
-            showDialog(edit, tag);
+            int index = findPos(arrayTags, tag);
+            int pos = findPos(order, String.valueOf(index));
+            boolean skip = list.getBoolean(SKIP, false);
+            if(pos!=0 && !skip) {
+                showDialog(edit, tag, pos);
+            }
         }
     }
 
-    private void showDialog(final SharedPreferences.Editor edit, final String tag) {
+    private void showDialog(final SharedPreferences.Editor edit, final String tag, final int pos) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getResources().getString(R.string.strChangeOrder))
-                .setTitle(getResources().getString(R.string.strLogout));
+                .setTitle(getResources().getString(R.string.strFilter))
+                .setCancelable(false);
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_app_updates, null);
+        final CheckBox checkBox = view.findViewById(R.id.checkBox);
+        builder.setView(view);
 
         AlertDialog dialog = builder.create();
-        builder.setPositiveButton(getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.strYes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int index = findPos(arrayTags, tag);
-                int pos = findPos(order, String.valueOf(index));
                 String temp = order[0];
                 order[0] = order[pos];
                 order[pos] = temp;
@@ -210,15 +221,21 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
                 edit.putString(ORDER, o);
                 edit.apply();
                 changeChipsOrder(arrayRes, arrayTags, tag);
+                setSkip(edit, checkBox.isChecked());
             }
         });
-        builder.setNegativeButton(getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.strNo), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
+                setSkip(edit, checkBox.isChecked());
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void setSkip(SharedPreferences.Editor edit, boolean checked) {
+        edit.putBoolean(SKIP, checked);
+        edit.apply();
     }
 
     private int findPos(String[] arrayTags, String tag) {

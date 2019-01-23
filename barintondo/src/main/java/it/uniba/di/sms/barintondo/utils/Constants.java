@@ -22,6 +22,7 @@ public interface Constants {
     String LIDI = "Lidi";
     String DISCOTECHE = "Discoteche";
     String FAMIGLIA = "Famiglia";
+    String SKIP = "skip";
     String MAX = "max";
 
     //costanti DB

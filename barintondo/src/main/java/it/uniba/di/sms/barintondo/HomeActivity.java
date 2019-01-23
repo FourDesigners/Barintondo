@@ -41,9 +41,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        //openPreferences(); // Inserimento filtri
-
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -94,23 +91,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         Intent intent = new Intent( this , LuogoListActivity.class );
         intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , constCall );
         startActivity( intent );
-    }
-
-    private void openPreferences() {
-        SharedPreferences list = getSharedPreferences(PREFS_NAME, 0);
-        if(!list.contains(INSERTED)) {
-            SharedPreferences.Editor edit = list.edit();
-            edit.putString(ORDER, "0,1,2,3,4,5");
-            edit.putInt(CHIESE, 0);
-            edit.putInt(MONUMENTI, 0);
-            edit.putInt(TEATRI, 0);
-            edit.putInt(LIDI, 0);
-            edit.putInt(DISCOTECHE, 0);
-            edit.putInt(FAMIGLIA, 0);
-            edit.putInt(MAX, 0);
-            edit.putBoolean(INSERTED, true);
-            edit.apply();
-        }
     }
 
     @Override

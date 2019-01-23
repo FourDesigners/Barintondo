@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         edit.putInt(DISCOTECHE, 0);
         edit.putInt(FAMIGLIA, 0);
         edit.putInt(MAX, 0);
-        //edit.putBoolean(INSERTED, true);
+        edit.putBoolean(SKIP, false);
         edit.apply();
     }
 

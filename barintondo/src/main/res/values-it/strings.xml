@@ -111,4 +111,12 @@
     <string name="str_pref_removed">Rimosso dagli interessi</string>
     <string name="str_error_not_connected">Non sei connesso, controlla la connessione e riprova</string>
     <string name="strLogout">Logout</string>
+    <string name="strConfirm">Conferma</string>
+    <string name="strCancel">Annulla</string>
+    <string name="strDisconnect">Sei sicuro ?</string>
+    <string name="strChangeOrder">Hai selezionato questo filtro diverse volte. Vuoi avvicinarlo ?</string>
+    <string name="do_not_show_again">Non mostrare più</string>
+    <string name="strNo">No</string>
+    <string name="strFilter">Filtro</string>
+    <string name="strYes">Sì</string>
 </resources>
