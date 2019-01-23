@@ -202,6 +202,9 @@
     <string name="strOpening">Opening:  </string>
     <string name="strClosing">"Closing:  "</string>
     <string name="str_e_mail_per_il_recupero">Recovery email</string>
+    <string name="notConnected">Network not available</string>
+    <string name="invalidCredentials">Not valid credentials</string>
+    <string name="duplicateAccount">Email already present</string>
 
 
 </resources>

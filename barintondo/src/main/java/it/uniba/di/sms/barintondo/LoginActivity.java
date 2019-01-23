@@ -24,11 +24,9 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.uniba.di.sms.barintondo.utils.BackgroundRegistration;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
-import it.uniba.di.sms.barintondo.utils.VolleyAccess;
 
 public class LoginActivity extends AppCompatActivity {
     TextView textViewForgotPassword;
@@ -55,14 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
 
         if(!InternetConnection.isNetworkAvailable(LoginActivity.this)) {
-            Toast.makeText(this, "Non connesso alla rete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.notConnected), Toast.LENGTH_SHORT).show();
         }else {
             //Toast.makeText(this, "Connesso alla rete", Toast.LENGTH_SHORT).show();
             if(ProfileOpenHelper.getLocalAccount(openHelper) != null) {
                 String nickname = ProfileOpenHelper.getLocalAccount(openHelper)[0];
                 String email = ProfileOpenHelper.getLocalAccount(openHelper)[1];
                 String password = ProfileOpenHelper.getLocalAccount(openHelper)[2];
-                //VolleyAccess.registration(getApplicationContext(), nickname, email, password, openHelper);
+                //registration(getApplicationContext(), nickname, email, password, openHelper);
             }
         }
 
@@ -124,12 +122,12 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 boolean connected = InternetConnection.isNetworkAvailable(LoginActivity.this);
                 if(connected) {
-                    VolleyAccess.login(getApplicationContext(), email, password, openHelper);
+                    login(email, password);
                 }else {
                     if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
                         goHome();
                     }else {
-                        Toast.makeText(getApplicationContext(), "Credenziali non valide", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalidCredentials), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -164,5 +162,67 @@ public class LoginActivity extends AppCompatActivity {
     private void goRegistration() {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    private void login(final String email, final String password) {
+        String Url = "http://barintondo.altervista.org/login.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                if(response.contains("login successfull")) {
+                    getNickname(email, password);
+                }else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalidCredentials), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("user", email);
+                MyData.put("pass", password);
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add(MyStringRequest);
+    }
+
+    private void getNickname(final String email, final String password) {
+        String Url = "http://barintondo.altervista.org/getNickname.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ProfileOpenHelper.insertInto(response, email, password, openHelper);
+                Intent intent_name = new Intent();
+                intent_name.setClass(getApplicationContext(), HomeActivity.class);
+                startActivity(intent_name);
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("email", email);
+                return MyData;
+            }
+        };
+
+        MyRequestQueue.add(MyStringRequest);
     }
 }

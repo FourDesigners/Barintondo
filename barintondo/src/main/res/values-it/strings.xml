@@ -103,4 +103,7 @@
     <string name="strOpening">Apertura:</string>
     <string name="strClosing">Chiusura:</string>
     <string name="navigation_label">Naviga</string>
+    <string name="notConnected">Non connesso alla rete</string>
+    <string name="invalidCredentials">Credenziali non valide</string>
+    <string name="duplicateAccount">Account già presente</string>
 </resources>

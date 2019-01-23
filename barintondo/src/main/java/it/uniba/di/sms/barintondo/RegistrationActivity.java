@@ -23,12 +23,10 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.uniba.di.sms.barintondo.utils.BackgroundRegistration;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
-import it.uniba.di.sms.barintondo.utils.VolleyAccess;
 
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -36,13 +34,14 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText editTextNickname, editTextEmail, editTextPassword, editTextRepeatPassword;
     ImageView imageView, imageView2;
     Button reset, register;
+    ProfileOpenHelper openHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        final ProfileOpenHelper openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         textViewNicknameError = findViewById(R.id.textViewNicknameError);
         textViewEmailError = findViewById(R.id.textViewEmailError);
         textViewPasswordError = findViewById(R.id.textViewPasswordError);
@@ -142,14 +141,52 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(correct) {
                     boolean connected = InternetConnection.isNetworkAvailable(RegistrationActivity.this);
                     if(connected) {
-                        VolleyAccess.registration(getApplicationContext(), nickname, email, password, openHelper);
+                        registration(nickname, email, password);
                     }else {
-                        Toast.makeText(getApplicationContext(), "Non connesso alla rete", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.notConnected), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
+    }
+
+    private void registration(final String nickname, final String email, final String password) {
+        String Url = "http://barintondo.altervista.org/registration.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.contains("Registration successfull")) {
+                    if(!ProfileOpenHelper.isPresent(email, openHelper)) {
+                        ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                    }
+                    //Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.duplicateAccount), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("nickname", nickname);
+                MyData.put("user", email);
+                MyData.put("pass", password);
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add(MyStringRequest);
     }
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
