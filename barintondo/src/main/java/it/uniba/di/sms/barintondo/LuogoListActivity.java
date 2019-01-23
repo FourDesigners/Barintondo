@@ -1,8 +1,10 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -45,6 +47,7 @@ import com.android.volley.toolbox.Volley;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -62,7 +65,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     private static LuogoListActivity mInstance;
     String[] arrayRes = null;
     String[] arrayTags = null;
-
+    String[] order = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -175,26 +178,47 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     private void setCounter(String[] arrayRes, String[] arrayTags, String tag) {
         SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
         SharedPreferences.Editor edit = list.edit();
-        String[] order = list.getString("order", "").split(",");
+        order = list.getString("order", "").split(",");
         int max = list.getInt("max", 0);
         int val = list.getInt(tag, 0) + 1;
         if(val > max) {
             edit.putInt(MAX, val);
-            int index = findPos(arrayTags, tag);
-            int pos = findPos(order, String.valueOf(index));
-            String temp = order[0];
-            order[0] = order[pos];
-            order[pos] = temp;
-            String o = "";
-            for(int i=0; i<order.length - 1; i++) {
-                o += order[i] + ",";
-            }
-            o += order[order.length-1];
-            edit.putString(ORDER, o);
+            edit.putInt(tag, val);
+            edit.apply();
+            showDialog(edit, tag);
         }
-        edit.putInt(tag, val);
-        edit.apply();
-        changeChipsOrder(arrayRes, arrayTags, tag);
+    }
+
+    private void showDialog(final SharedPreferences.Editor edit, final String tag) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.strChangeOrder))
+                .setTitle(getResources().getString(R.string.strLogout));
+
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton(getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int index = findPos(arrayTags, tag);
+                int pos = findPos(order, String.valueOf(index));
+                String temp = order[0];
+                order[0] = order[pos];
+                order[pos] = temp;
+                String o = "";
+                for(int i=0; i<order.length - 1; i++) {
+                    o += order[i] + ",";
+                }
+                o += order[order.length-1];
+                edit.putString(ORDER, o);
+                edit.apply();
+                changeChipsOrder(arrayRes, arrayTags, tag);
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private int findPos(String[] arrayTags, String tag) {
@@ -210,7 +234,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
         chipGroup.removeAllViews();
         SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
-        String[] order = list.getString("order", "").split(",");
+        order = list.getString("order", "").split(",");
         for(int id=0; id<order.length; id++) {
             final Chip newChip = new Chip(this);
             newChip.setId(id);

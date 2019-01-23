@@ -192,18 +192,18 @@ public class MyNavigationDrawer implements Constants {
 
     private void printDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Vuoi disconneterti ?")
-                .setTitle("Logout");
+        builder.setMessage(getActivity().getResources().getString(R.string.strDisconnect))
+                .setTitle(getActivity().getResources().getString(R.string.strLogout));
 
         AlertDialog dialog = builder.create();
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getActivity().getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 ProfileOpenHelper openHelper = new ProfileOpenHelper(activity, Constants.DB_NAME, null, 1);
                 goLogin();
                 ProfileOpenHelper.delete(openHelper);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getActivity().getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }

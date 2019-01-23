@@ -210,6 +210,11 @@
     <string name="str_fail_pref_managing">Error in managing interests, try again later</string>
     <string name="str_pref_removed">Removed from interests</string>
     <string name="str_error_not_connected">Not connected, check your connection tha retry</string>
+    <string name="strConfirm">Confirm</string>
+    <string name="strCancel">Cancel</string>
+    <string name="strDisconnect">Are you sure ?</string>
+    <string name="strLogout">Logout</string>
+    <string name="strChangeOrder">You selected this chip many times. Do you want to put it closer ?</string>
 
 
 </resources>

@@ -110,4 +110,5 @@
     <string name="str_fail_pref_managing">"Errore nella gestione degli interessi, riprova più tardi "</string>
     <string name="str_pref_removed">Rimosso dagli interessi</string>
     <string name="str_error_not_connected">Non sei connesso, controlla la connessione e riprova</string>
+    <string name="strLogout">Logout</string>
 </resources>
