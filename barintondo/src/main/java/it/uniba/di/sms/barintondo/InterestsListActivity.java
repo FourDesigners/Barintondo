@@ -75,8 +75,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     @Override
     protected void onStart() {
         super.onStart();
-        ControllerRemoteDB controllerPref = new ControllerRemoteDB( this );
-        controllerPref.getAllInterests();
+        ControllerRemoteDB controller = new ControllerRemoteDB( this );
+        controller.getAllInterests();
     }
 
     public void setupRecyclerView(ArrayList<Luogo> interestsList) {
