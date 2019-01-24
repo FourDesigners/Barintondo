@@ -230,6 +230,10 @@
     <string name="str_fail_get_luoghi">Failed to get places, try again later</string>
     <string name="str_fail_coupon_managing">Failed to load coupon, try again later</string>
     <string name="strModified">Account modified</string>
+    <string name="strForgotPassword">Forgot password</string>
+    <string name="strInsert">Insert e-mail and new password</string>
+    <string name="strNoAccount">Account does not exist</string>
+    <string name="strInfo">Password modified! Click to access</string>
 
 
 </resources>

@@ -128,4 +128,8 @@
     <string name="str_fail_get_luoghi">Errore nel caricamento dei luoghi, riprovare più tardi</string>
     <string name="str_fail_coupon_managing">Errore nel caricamento dei coupon, riprovare più tardi</string>
     <string name="strModified">Account modificato</string>
+    <string name="strForgotPassword">Password dimenticata</string>
+    <string name="strInsert">Inserimento e-mail e password</string>
+    <string name="strNoAccount">Account non presente</string>
+    <string name="strInfo">Password modificata! Clicca per accedere</string>
 </resources>
