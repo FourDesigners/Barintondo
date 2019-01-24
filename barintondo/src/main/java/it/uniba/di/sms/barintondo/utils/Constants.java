@@ -13,6 +13,7 @@ public interface Constants {
     String INTENT_EVENTS = "events";
     String INTENT_NEAR = "near";
     String INTENT_ITEM = "item";
+    String INTENT_LUOGO_COD="luogoCod";
 
     //intent per CouponDetailActivity
     String INTENT_COUPON = "coupon";
@@ -51,6 +52,8 @@ public interface Constants {
     String REQUEST_GET_EAT = "Mangiare";
     String REQUEST_GET_EVENTS = "Evento"; //da controllare perchè non ancora inserita nel DB
     String REQUEST_GET_NEAR_BARI="Near"; //da controllare perchè non ancora inserita nel DB
+    String REQUEST_GET_CATEGORY="Categoria";
+    String REQUEST_GET_LUOGO="Luogo";
 
     String REQUEST_CHECK_PREF = "checkPref";
     String REQUEST_ADD_PREF="addPref";
