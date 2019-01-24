@@ -148,4 +148,5 @@
     <string name="notConnectedMsg">Comunicazione interrotta</string>
     <string name="listeningModeMsg">In attesa di connessione di un dispositivo</string>
     <string name="btExchangeBtn">Scambio Bluetooth</string>
+    <string name="str_meteo">Meteo</string>
 </resources>

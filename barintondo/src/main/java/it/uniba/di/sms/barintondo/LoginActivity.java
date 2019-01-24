@@ -166,7 +166,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         edit.putInt(LIDI, 0);
         edit.putInt(DISCOTECHE, 0);
         edit.putInt(FAMIGLIA, 0);
-        edit.putInt(MAX, 0);
+        edit.putInt(MAX, 3);
         edit.putBoolean(SKIP, false);
         edit.apply();
     }
@@ -270,7 +270,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     }
 
     private void showNotification(final String email, final String password) {
-        getNickname(email, password);
+        getNickname(email, password, 0);
         final Intent intent = new Intent(this, LoginActivity.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -321,10 +321,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             public void onResponse(String response) {
                 //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 if(response.contains("login successfull")) {
-                    getNickname(email, password);
-                    Intent intent_name = new Intent();
-                    intent_name.setClass(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent_name);
+                    getNickname(email, password, 1);
                 }else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalidCredentials), Toast.LENGTH_SHORT).show();
                 }
@@ -348,7 +345,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         MyRequestQueue.add(MyStringRequest);
     }
 
-    private void getNickname(final String email, final String password) {
+    private void getNickname(final String email, final String password, final int flag) {
         String Url = "http://barintondo.altervista.org/getNickname.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -356,6 +353,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             @Override
             public void onResponse(String response) {
                 ProfileOpenHelper.insertInto(response, email, password, openHelper);
+                if(flag!=0) goHome();
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override

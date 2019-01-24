@@ -90,7 +90,7 @@ public class MyNavigationDrawer implements Constants {
                                     Intent intent = new Intent( activity , HomeActivity.class );
                                     activity.startActivity( intent );
                                 }
-                                Toast.makeText( activity , "Home" , Toast.LENGTH_SHORT ).show();
+                                //Toast.makeText( activity , "Home" , Toast.LENGTH_SHORT ).show();
                                 break;
                             case R.id.dormire:
                                 mDrawerLayout.closeDrawers();

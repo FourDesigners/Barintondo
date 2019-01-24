@@ -168,9 +168,14 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private View.OnClickListener moreBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            /*
             Intent webWeatherIntent = new Intent(Intent.ACTION_VIEW);
             webWeatherIntent.setData(Uri.parse(getResources().getString(R.string.webUrl)));
             startActivity(webWeatherIntent);
+            */
+            Intent intent  = new Intent(getApplicationContext(), MeteoActivity.class);
+            startActivity(intent);
+
         }
     };
 }
