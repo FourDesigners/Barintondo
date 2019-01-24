@@ -322,4 +322,78 @@ public class ControllerRemoteDB implements Constants {
 
         MyRequestQueue.add( MyStringRequest );
     }
+
+    public void getCouponList(final List<CouponLuogo> couponList, final CouponLuogoAdapter mAdapter){
+        //couponList.clear();
+
+        final ProgressDialog progressDialog = new ProgressDialog( context );
+        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
+        progressDialog.show();
+
+        final String email = ProfileOpenHelper.getEmail( context );
+
+        //creazione URL
+        String Url = "http://barintondo.altervista.org/get_my_coupons.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            CouponLuogo coupon = new CouponLuogo();
+                            coupon.setCod( jsonObject.getString( "codCoupon" ) );
+                            coupon.setCodLuogo( jsonObject.getString( "cod" ) );
+                            coupon.setLuogo( jsonObject.getString( "nome" ) );
+                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
+                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
+                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
+
+                            //adding items to itemsList
+                            couponList.add( coupon );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    progressDialog.dismiss();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                }
+                mAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                progressDialog.dismiss();
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "email" , email );
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+
+    }
 }

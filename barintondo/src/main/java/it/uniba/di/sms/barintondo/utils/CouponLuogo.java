@@ -7,19 +7,21 @@ import java.util.Locale;
 public class CouponLuogo implements Parcelable {
     private String cod;
     private String email;
+    private String codLuogo;
     private String luogo;
     private String scadenza;
-    public String descrizione_it; //DA METTERE PRIVATE
-    public String descrizione_en; //DA METTERE PRIVATE
+    private String descrizione_it; //DA METTERE PRIVATE
+    private String descrizione_en; //DA METTERE PRIVATE
     private String sottoCat;
 
     public CouponLuogo() {
     }
 
-    public CouponLuogo(String newCod , String newEmail , String newLuogo , String newScadenza , String newDescrizione_it,
-                       String newDescrizione_en, String newSottoCat) {
+    public CouponLuogo(String newCod , String newEmail , String newCodLuogo, String newLuogo , String newScadenza ,
+                       String newDescrizione_it, String newDescrizione_en, String newSottoCat) {
         cod = newCod;
         email = newEmail;
+        codLuogo = newCodLuogo;
         luogo = newLuogo;
         scadenza = newScadenza;
         descrizione_it = newDescrizione_it;
@@ -30,6 +32,7 @@ public class CouponLuogo implements Parcelable {
     protected CouponLuogo(Parcel in) {
         cod = in.readString();
         email = in.readString();
+        codLuogo = in.readString();
         luogo = in.readString();
         scadenza = in.readString();
         descrizione_it = in.readString();
@@ -64,6 +67,14 @@ public class CouponLuogo implements Parcelable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCodLuogo() {
+        return codLuogo;
+    }
+
+    public void setCodLuogo(String codLuogo) {
+        this.codLuogo = codLuogo;
     }
 
     public String getLuogo() {
@@ -121,6 +132,7 @@ public class CouponLuogo implements Parcelable {
     public void writeToParcel(Parcel dest , int flags) {
         dest.writeString( cod );
         dest.writeString( email );
+        dest.writeString( codLuogo );
         dest.writeString( luogo );
         dest.writeString( scadenza );
         dest.writeString( descrizione_it );

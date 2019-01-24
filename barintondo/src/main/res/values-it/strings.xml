@@ -132,4 +132,20 @@
     <string name="strInsert">Inserimento e-mail e password</string>
     <string name="strNoAccount">Account non presente</string>
     <string name="strInfo">Password modificata! Clicca per accedere</string>
+    <string name="useBtn">Utilizzo Coupon</string>
+    <string name="detailBtn">Dettaglio Luogo</string>
+    <string name="none_paired">Non ci sono dispositivi accoppiati</string>
+    <string name="none_found">Nessun dispositivo trovato</string>
+    <string name="btNotAvailable">Bluetooth non disponibile su questo dispositivo</string>
+    <string name="devicesDialog">Dispositivi Bluetooth</string>
+    <string name="devicesPairedDialogMsg">Dispositivi Accoppiati</string>
+    <string name="devicesFoundDialogMsg">Dispositivi Trovati</string>
+    <string name="cancelDialogBtn">Annulla</string>
+    <string name="connectedToMsg">"connesso a: "</string>
+    <string name="connectingMsg">Connessione in corso</string>
+    <string name="connectionLostMsg">Connessione persa!</string>
+    <string name="btDisabledMsg">Bluetooth disattiva; attivarlo e riprovare!</string>
+    <string name="notConnectedMsg">Comunicazione interrotta</string>
+    <string name="listeningModeMsg">In attesa di connessione di un dispositivo</string>
+    <string name="btExchangeBtn">Scambio Bluetooth</string>
 </resources>

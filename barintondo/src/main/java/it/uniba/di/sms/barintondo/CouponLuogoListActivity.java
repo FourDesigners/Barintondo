@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.CouponLuogo;
 import it.uniba.di.sms.barintondo.utils.CouponLuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -62,10 +63,9 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
     private CouponLuogoAdapter mAdapter;
     private SearchView searchView;
-    String URL;
+
     private static CouponLuogoListActivity mInstance;
-    String[] arrayRes = null;
-    String[] arrayTags = null;
+
 
 
     @Override
@@ -139,7 +139,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
         //first time populating
         //fetchItems();
-        volleyGetCoupons( this );
+        ControllerRemoteDB controller = new ControllerRemoteDB( this );
+        controller.getCouponList( couponList, mAdapter );
 
     }
 
@@ -210,151 +211,7 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         }
     }*/
 
-    private void volleyGetCoupons(final Context context){
-        //couponList.clear();
 
-        final ProgressDialog progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
-        final String email = ProfileOpenHelper.getEmail( this );
-
-        //creazione URL
-        String Url = "http://barintondo.altervista.org/get_my_coupons.php";
-
-        RequestQueue MyRequestQueue = Volley.newRequestQueue( this );
-        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                try {
-
-                    JSONArray jsonArray = new JSONArray( response );
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
-
-                            CouponLuogo coupon = new CouponLuogo();
-                            coupon.setCod( jsonObject.getString( "cod" ) );
-                            coupon.setLuogo( jsonObject.getString( "luogo" ) );
-                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
-                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
-                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
-
-                            //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
-
-                            //adding items to itemsList
-                            couponList.add( coupon );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-                        }
-                    }
-                } catch (JSONException e2) {
-                    e2.printStackTrace();
-                    progressDialog.dismiss();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-                }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-                progressDialog.dismiss();
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-            }
-        } ) {
-
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "email" , email );
-                return MyData;
-            }
-        };
-
-
-        MyRequestQueue.add( MyStringRequest );
-
-    }
-
-    private void fetchItems() {
-        //couponList.clear();
-
-        final ProgressDialog progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
-        //prelevo email dal db
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper( mInstance , DB_NAME , null , 1 );
-        SQLiteDatabase myDB = dbHelper.getReadableDatabase();
-        //definisco la query
-        String[] columns = {COLUMN_EMAIL};
-        Cursor myCursor;
-        //ottengo il cursore
-        myCursor = myDB.query( TABLE_UTENTE , columns , null , null , null , null , null , null );
-        myCursor.moveToFirst();
-
-        String email = myCursor.getString( myCursor.getColumnIndex( COLUMN_EMAIL ) );
-
-        myCursor.close();
-        myDB.close();
-
-        //creazione URL
-        String URL = "http://barintondo.altervista.org/get_my_coupons.php?email=" + email;
-
-        JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response.length() == 0) {
-                    Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
-                    progressDialog.dismiss();
-                    return;
-                }
-
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject( i );
-
-                        CouponLuogo item = new CouponLuogo();
-                        item.setCod( jsonObject.getString( "codCoupon" ) );
-                        item.setLuogo( jsonObject.getString( "nome" ) );
-                        item.setScadenza( jsonObject.getString( "scadenza" ) );
-                        item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                        item.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
-                        item.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
-
-                        //adding items to itemsList
-                        couponList.add( item );
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        progressDialog.dismiss();
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-
-            }
-        } , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.e( TAG , "Volley Error: " + error.getMessage() );
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        } );
-
-        CouponLuogoListActivity.getInstance().addToRequestQueue( request );
-
-    }
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {

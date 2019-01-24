@@ -14,18 +14,6 @@
     android:paddingRight="@dimen/activity_margin"
     android:paddingBottom="@dimen/row_padding">
 
-    <!-- Attraction id - will be HIDDEN - used to pass to other activity -->
-    <TextView
-        android:id="@+id/cod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="@string/notDefined"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!-- Name Label -->
     <TextView
         android:id="@+id/luogo"
@@ -54,8 +42,9 @@
         android:id="@+id/icona"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cod"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
