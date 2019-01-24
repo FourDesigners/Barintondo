@@ -149,7 +149,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 holder.stato.setText(context.getResources().getString(R.string.closedState));
             else holder.stato.setText(context.getResources().getString(R.string.openState));
 
-            int icon=R.drawable.ic_fiber_smart_record;
+            //Codice per assegnare l'icona dela corrispondente categoria, attivato solo dentro l'activity degli interessi
+            int icon=R.drawable.ic_fiber_smart_record; //icona di default assegnata nel caso andasse storto qualcosa
             if(context instanceof InterestsListActivity){
                 switch (luogo.getCategoria()){
                     case "Attrazione":

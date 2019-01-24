@@ -227,6 +227,7 @@
     <string name="expiredString">Expired</string>
     <string name="validString">Valid</string>
     <string name="no_interests">You have not selected an interest place yet</string>
+    <string name="str_fail_get_luoghi">Failed to get places, try again later</string>
 
 
 </resources>

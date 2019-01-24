@@ -134,21 +134,21 @@ public class ControllerPrefered implements Constants {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            Luogo item = new Luogo();
-                            item.setCod( jsonObject.getString( "cod" ) );
-                            item.setNome( jsonObject.getString( "nome" ) );
-                            item.setCategoria( jsonObject.getString( "nomeCategoria" ));
-                            item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            item.setOraA( jsonObject.getString( "oraA" ) );
-                            item.setOraC( jsonObject.getString( "oraC" ) );
-                            item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-                            item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                            item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            Luogo luogo = new Luogo();
+                            luogo.setCod( jsonObject.getString( "cod" ) );
+                            luogo.setNome( jsonObject.getString( "nome" ) );
+                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ));
+                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
                             //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
 
                             //adding items to itemsList
-                            interestsList.add( item );
+                            interestsList.add( luogo );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
