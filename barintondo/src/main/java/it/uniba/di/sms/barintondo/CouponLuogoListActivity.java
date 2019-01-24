@@ -30,6 +30,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -37,11 +38,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.CouponLuogo;
 import it.uniba.di.sms.barintondo.utils.CouponLuogoAdapter;
+import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
@@ -54,7 +58,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
     private static final String TAG = CouponLuogoListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
-    private List<CouponLuogo> itemList;
+    private List<CouponLuogo> couponList;
+
     private CouponLuogoAdapter mAdapter;
     private SearchView searchView;
     String URL;
@@ -118,8 +123,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         }*/
 
         //list and adapter setup
-        itemList = new ArrayList<>();
-        mAdapter = new CouponLuogoAdapter( this , itemList , this );
+        couponList = new ArrayList<>();
+        mAdapter = new CouponLuogoAdapter( this , couponList , this );
 
         //recyclerView setup
         recyclerView = findViewById( R.id.coupon_luogo_list_recycler_view );
@@ -133,7 +138,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         whiteNotificationBar( recyclerView );
 
         //first time populating
-        fetchItems();
+        //fetchItems();
+        volleyGetCoupons( this );
 
     }
 
@@ -204,8 +210,83 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         }
     }*/
 
+    private void volleyGetCoupons(final Context context){
+        //couponList.clear();
+
+        final ProgressDialog progressDialog = new ProgressDialog( this );
+        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
+        progressDialog.show();
+
+        final String email = ProfileOpenHelper.getEmail( this );
+
+        //creazione URL
+        String Url = "http://barintondo.altervista.org/get_my_coupons.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( this );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            CouponLuogo coupon = new CouponLuogo();
+                            coupon.setCod( jsonObject.getString( "cod" ) );
+                            coupon.setLuogo( jsonObject.getString( "luogo" ) );
+                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
+                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
+                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
+
+                            //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+
+                            //adding items to itemsList
+                            couponList.add( coupon );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    progressDialog.dismiss();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                }
+                mAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                progressDialog.dismiss();
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "email" , email );
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+
+    }
+
     private void fetchItems() {
-        //itemList.clear();
+        //couponList.clear();
 
         final ProgressDialog progressDialog = new ProgressDialog( this );
         progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
@@ -247,11 +328,11 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
                         item.setLuogo( jsonObject.getString( "luogo" ) );
                         item.setScadenza( jsonObject.getString( "scadenza" ) );
                         item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                        item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                        item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                        item.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
+                        item.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
 
                         //adding items to itemsList
-                        itemList.add( item );
+                        couponList.add( item );
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();

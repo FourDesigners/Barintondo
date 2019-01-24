@@ -24,7 +24,7 @@ import it.uniba.di.sms.barintondo.R;
 public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.MyViewHolder>
         implements Filterable {
     private Context context;
-    private List<CouponLuogo> itemList;
+    private List<CouponLuogo> couponList;
     private List<CouponLuogo> itemListFiltered;
     private ItemsAdapterListener listener;
 
@@ -53,11 +53,11 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
     }
 
 
-    public CouponLuogoAdapter(Context context, List<CouponLuogo> itemList, ItemsAdapterListener listener) {
+    public CouponLuogoAdapter(Context context, List<CouponLuogo> couponList, ItemsAdapterListener listener) {
         this.context = context;
         this.listener = listener;
-        this.itemList = itemList;
-        this.itemListFiltered = itemList;
+        this.couponList = couponList;
+        this.itemListFiltered = couponList;
     }
 
     @NonNull
@@ -115,10 +115,10 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    itemListFiltered = itemList;
+                    itemListFiltered = couponList;
                 } else {
                     List<CouponLuogo> filteredList = new ArrayList<>();
-                    for (CouponLuogo row : itemList) {
+                    for (CouponLuogo row : couponList) {
 
                         if (row.getLuogo().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);

@@ -35,20 +35,7 @@ public class ControllerPrefered implements Constants {
         this.context = context;
 
         Url = "http://barintondo.altervista.org/gestore_interessi.php";
-        //prelevo dati dal db
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper( context , DB_NAME , null , 1 );
-        SQLiteDatabase myDB = dbHelper.getReadableDatabase();
-        //definisco la query
-        String[] columns = {COLUMN_EMAIL};
-        Cursor myCursor;
-        //ottengo il cursore
-        myCursor = myDB.query( TABLE_UTENTE , columns , null , null , null , null , null , null );
-        myCursor.moveToFirst();
-
-        email = myCursor.getString( myCursor.getColumnIndex( COLUMN_EMAIL ) );
-
-        myCursor.close();
-        myDB.close();
+        email=ProfileOpenHelper.getEmail( context );
     }
 
     public void checkPref(String itemCod) {
@@ -76,7 +63,6 @@ public class ControllerPrefered implements Constants {
                 String[] result = response.split( "," );
                 Log.i( TAG , "ControllerPrefered: entered onResponse(), request: " + result[0] + ", result: " + result[1] );
 
-
                 switch (result[0]) {
                     case REQUEST_CHECK_PREF:
                         luogoDetailActivity.checkPrefResult( Boolean.valueOf( result[1] ) );
@@ -90,7 +76,6 @@ public class ControllerPrefered implements Constants {
                         luogoDetailActivity.prefRemoved( removed );
                         break;
                 }
-
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
@@ -99,7 +84,6 @@ public class ControllerPrefered implements Constants {
                 Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
             }
         } ) {
-
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , requestOp );
@@ -108,8 +92,6 @@ public class ControllerPrefered implements Constants {
                 return MyData;
             }
         };
-
-
         MyRequestQueue.add( MyStringRequest );
     }
 

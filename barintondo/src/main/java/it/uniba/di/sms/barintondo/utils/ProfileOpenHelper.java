@@ -134,4 +134,23 @@ public class ProfileOpenHelper extends SQLiteOpenHelper {
         }
         return params;
     }
+
+    public static String getEmail(Context context){
+        //prelevo email dal db
+        ProfileOpenHelper dbHelper = new ProfileOpenHelper( context , DB_NAME , null , 1 );
+        SQLiteDatabase myDB = dbHelper.getReadableDatabase();
+        //definisco la query
+        String[] columns = {COLUMN_EMAIL};
+        Cursor myCursor;
+        //ottengo il cursore
+        myCursor = myDB.query( TABLE_UTENTE , columns , null , null , null , null , null , null );
+        myCursor.moveToFirst();
+
+        String email = myCursor.getString( myCursor.getColumnIndex( COLUMN_EMAIL ) );
+
+        myCursor.close();
+        myDB.close();
+
+        return email;
+    }
 }
