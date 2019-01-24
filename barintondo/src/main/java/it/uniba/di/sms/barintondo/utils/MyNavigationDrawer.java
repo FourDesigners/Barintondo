@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import it.uniba.di.sms.barintondo.CouponLuogoListActivity;
 import it.uniba.di.sms.barintondo.HomeActivity;
+import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoListActivity;
 import it.uniba.di.sms.barintondo.LoginActivity;
 import it.uniba.di.sms.barintondo.MyProfileActivity;
@@ -162,7 +163,10 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.interests:
                                 mDrawerLayout.closeDrawers();
-                                Toast.makeText( activity , "Interessi" , Toast.LENGTH_SHORT ).show();
+                                if (activity.getClass()!=InterestsListActivity.class) {
+                                    Intent intent = new Intent(activity, InterestsListActivity.class);
+                                    activity.startActivity(intent);
+                                }
                                 break;
                             case R.id.coupon:
                                 mDrawerLayout.closeDrawers();

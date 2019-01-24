@@ -20,6 +20,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,10 +37,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.ItemDetailActivity;
 import it.uniba.di.sms.barintondo.R;
 
@@ -47,11 +50,12 @@ public class ControllerPrefered implements Constants {
 
     String email;
     Context context;
-    ItemDetailActivity itemDetailActivity;
+    String Url;
 
     public ControllerPrefered(Context context) {
         this.context = context;
-        itemDetailActivity = (ItemDetailActivity) context;
+
+        Url = "http://barintondo.altervista.org/gestore_interessi.php";
         //prelevo dati dal db
         ProfileOpenHelper dbHelper = new ProfileOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
@@ -82,8 +86,7 @@ public class ControllerPrefered implements Constants {
 
     private void volleyCall(final String requestOp , final String user , final String itemCod) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered volleyCall( )");
-
-        String Url = "http://barintondo.altervista.org/gestore_interessi.php";
+        final ItemDetailActivity itemDetailActivity = (ItemDetailActivity) context;
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
@@ -92,7 +95,7 @@ public class ControllerPrefered implements Constants {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 String[] result = response.split( "," );
-                Log.i( TAG , "ControllerPrefered: entered onResponse(), request: "+result[0]+", result: "+result[1] );
+                Log.i( TAG , "ControllerPrefered: entered onResponse(), request: " + result[0] + ", result: " + result[1] );
 
 
                 switch (result[0]) {
@@ -114,7 +117,7 @@ public class ControllerPrefered implements Constants {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText(context, context.getResources().getString( R.string.str_fail_pref_managing ), Toast.LENGTH_SHORT).show();
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
             }
         } ) {
 
@@ -123,6 +126,77 @@ public class ControllerPrefered implements Constants {
                 MyData.put( "request_op" , requestOp );
                 MyData.put( "email" , user );
                 MyData.put( "itemCod" , itemCod );
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+    }
+
+
+    public void getAllPrefered() {
+        Log.i( TAG ,  "ControllerPrefered: entered getAllPrefered()" );
+        final ArrayList<Luogo> interestsList = new ArrayList<>();
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.i( TAG ,  "ControllerPrefered: entered onResponse()"+response );
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            Luogo item = new Luogo();
+                            item.setCod( jsonObject.getString( "cod" ) );
+                            item.setNome( jsonObject.getString( "nome" ) );
+                            item.setCategoria( jsonObject.getString( "nomeCategoria" ));
+                            item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            item.setOraA( jsonObject.getString( "oraA" ) );
+                            item.setOraC( jsonObject.getString( "oraC" ) );
+                            item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                            item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                            item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+
+                            //adding items to itemsList
+                            interestsList.add( item );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                }
+                InterestsListActivity interestsListActivity = (InterestsListActivity) context;
+                interestsListActivity.setupRecyclerView(interestsList);
+
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_op" , REQUEST_GET_ALL_PREF );
+                MyData.put( "email" , email );
                 return MyData;
             }
         };

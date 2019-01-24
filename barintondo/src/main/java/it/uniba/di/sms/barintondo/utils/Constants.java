@@ -45,6 +45,7 @@ public interface Constants {
     String REQUEST_CHECK_PREF = "checkPref";
     String REQUEST_ADD_PREF="addPref";
     String REQUEST_REMOVE_PREF="removePref";
+    String REQUEST_GET_ALL_PREF="getAllPref";
     String REQUEST_RESULT_OK="ok";
 
 }

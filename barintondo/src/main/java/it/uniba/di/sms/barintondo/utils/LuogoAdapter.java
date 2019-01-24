@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.R;
 
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
@@ -36,7 +37,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView cod, nome, sottoCat, stato, valutazione;
-            public ImageView thumbnail;
+            public ImageView thumbnail, categIcon;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -47,6 +48,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 stato = view.findViewById(R.id.stato);
                 valutazione = view.findViewById(R.id.valutazione);
                 thumbnail = view.findViewById(R.id.thumbnail);
+                categIcon = view.findViewById( R.id.icon_categoria );
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -146,6 +148,22 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             if(formattedDate.compareTo(oraA) < 0 || formattedDate.compareTo(oraC) > 0)
                 holder.stato.setText(context.getResources().getString(R.string.closedState));
             else holder.stato.setText(context.getResources().getString(R.string.openState));
+
+            int icon=R.drawable.ic_fiber_smart_record;
+            if(context instanceof InterestsListActivity){
+                switch (luogo.getCategoria()){
+                    case "Attrazione":
+                        icon = R.drawable.ic_attractions;
+                        break;
+                    case "Dormire":
+                        icon= R.drawable.ic_stay;
+                        break;
+                    case "Mangiare":
+                        icon = R.drawable.ic_food;
+                        break;
+                }
+                holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
+            }
 
             //holder.valutazione.setText(luogo.get());
 

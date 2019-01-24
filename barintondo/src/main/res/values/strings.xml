@@ -226,6 +226,7 @@
     <!--LUOGOLIST ACTIVITY-->
     <string name="expiredString">Expired</string>
     <string name="validString">Valid</string>
+    <string name="no_interests">You have not selected an interest place yet</string>
 
 
 </resources>

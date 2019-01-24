@@ -8,6 +8,7 @@ import java.util.Locale;
 public class Luogo implements Parcelable {
     private String cod;
     private String nome;
+    private String categoria;
     private String sottoCat;
     private String oraA;
     private String oraC;
@@ -20,7 +21,7 @@ public class Luogo implements Parcelable {
     }
 
     public Luogo(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
-                 String newThumbnailLink , String newDescEn , String newDescIt, String newIndirizzo) {
+                 String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo) {
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
@@ -29,13 +30,14 @@ public class Luogo implements Parcelable {
         thumbnailLink = newThumbnailLink;
         descrizione_en = newDescEn;
         descrizione_it = newDescIt;
-        indirizzo=newIndirizzo;
+        indirizzo = newIndirizzo;
     }
 
     protected Luogo(Parcel in) {
         cod = in.readString();
         nome = in.readString();
         sottoCat = in.readString();
+        categoria = in.readString();
         oraA = in.readString();
         oraC = in.readString();
         thumbnailLink = in.readString();
@@ -73,6 +75,10 @@ public class Luogo implements Parcelable {
         this.nome = nome;
     }
 
+    public void setCategoria(String categoria) {this.categoria = categoria;}
+
+    public String getCategoria() {return categoria;}
+
     public String getSottoCat() {
         return sottoCat;
     }
@@ -105,11 +111,12 @@ public class Luogo implements Parcelable {
         this.thumbnailLink = thumbnailLink;
     }
 
-    public void setDescrizione_en(String descEn){
-        descrizione_en=descEn;
+    public void setDescrizione_en(String descEn) {
+        descrizione_en = descEn;
     }
-    public void setDescrizione_it(String descIt){
-        descrizione_it=descIt;
+
+    public void setDescrizione_it(String descIt) {
+        descrizione_it = descIt;
 
     }
 
@@ -124,11 +131,11 @@ public class Luogo implements Parcelable {
         }
     }
 
-    public void setIndirizzo(String indirizzo){
-        this.indirizzo=indirizzo;
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
     }
 
-    public String getIndirizzo(){
+    public String getIndirizzo() {
         return indirizzo;
     }
 
@@ -146,6 +153,7 @@ public class Luogo implements Parcelable {
     public void writeToParcel(Parcel dest , int flags) {
         dest.writeString( cod );
         dest.writeString( nome );
+        dest.writeString( categoria );
         dest.writeString( sottoCat );
         dest.writeString( oraA );
         dest.writeString( oraC );

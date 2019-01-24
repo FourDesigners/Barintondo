@@ -124,4 +124,5 @@
     <string name="str_located_in">"Situato in: "</string>
     <string name="expiredString">Scaduto</string>
     <string name="validString">Valido</string>
+    <string name="no_interests">Non hai ancora selezionato un luogo di interesse</string>
 </resources>
