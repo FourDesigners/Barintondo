@@ -24,7 +24,6 @@ public class CouponLuogo implements Parcelable {
         scadenza = newScadenza;
         descrizione_it = newDescrizione_it;
         descrizione_en = newDescrizione_en;
-        descrizione_en = newDescrizione_en;
         sottoCat = newSottoCat;
     }
 
