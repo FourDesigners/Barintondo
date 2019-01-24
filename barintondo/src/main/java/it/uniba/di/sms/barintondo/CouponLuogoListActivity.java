@@ -324,8 +324,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
                         JSONObject jsonObject = response.getJSONObject( i );
 
                         CouponLuogo item = new CouponLuogo();
-                        item.setCod( jsonObject.getString( "cod" ) );
-                        item.setLuogo( jsonObject.getString( "luogo" ) );
+                        item.setCod( jsonObject.getString( "codCoupon" ) );
+                        item.setLuogo( jsonObject.getString( "nome" ) );
                         item.setScadenza( jsonObject.getString( "scadenza" ) );
                         item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                         item.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
