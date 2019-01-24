@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private RecyclerView recyclerView;
     private LuogoAdapter mAdapter;
     private SearchView searchView;
+    private ProgressDialog progressDialog;
 
 
 
@@ -64,7 +66,9 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         myNavigationDrawer.build();
 
         noInterests = findViewById( R.id.text_view_no_interests );
-
+        progressDialog = new ProgressDialog( this );
+        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
+        progressDialog.show();
 
     }
 
@@ -76,6 +80,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     }
 
     public void setupRecyclerView(ArrayList<Luogo> interestsList) {
+        progressDialog.dismiss();
+
         if (interestsList.size() > 0) noInterests.setVisibility( View.GONE );
         else noInterests.setVisibility( View.VISIBLE );
 

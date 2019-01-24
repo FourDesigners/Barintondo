@@ -42,6 +42,13 @@ public interface Constants {
     //stringa per link immagini
     String imagesPath = "http://barintondo.altervista.org/images/";
 
+    //Stesso nome delle categorie del db, questa stringa sarà usata dallo script per la quesry, NON CAMBIARE
+    String REQUEST_GET_ATTRACTIONS = "Attrazione";
+    String REQUEST_GET_SLEEP = "Dormire";
+    String REQUEST_GET_EAT = "Mangiare";
+    String REQUEST_GET_EVENTS = "Evento"; //da controllare perchè non ancora inserita nel DB
+    String REQUEST_GET_NEAR_BARI="Near"; //da controllare perchè non ancora inserita nel DB
+
     String REQUEST_CHECK_PREF = "checkPref";
     String REQUEST_ADD_PREF="addPref";
     String REQUEST_REMOVE_PREF="removePref";

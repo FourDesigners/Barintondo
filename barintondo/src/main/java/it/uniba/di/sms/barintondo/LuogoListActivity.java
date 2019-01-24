@@ -13,7 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +44,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -60,10 +62,9 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
     private static final String TAG = LuogoListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
-    private List<Luogo> itemList;
+    private List<Luogo> luogoList;
     private LuogoAdapter mAdapter;
     private SearchView searchView;
-    String URL;
     private static LuogoListActivity mInstance;
     String[] arrayRes = null;
     String[] arrayTags = null;
@@ -83,33 +84,38 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         myToolbar = findViewById( R.id.main_activity_toolbar );
 
         Resources res = getResources();
-
+        String requestCat="";
         //first time URL selection
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
+            requestCat=REQUEST_GET_ATTRACTIONS;
             arrayRes = res.getStringArray(R.array.attractions);
             arrayTags = res.getStringArray(R.array.attractionsTags);
             myToolbar.setTitle( R.string.attractionsToolbarTitle );
-            URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
+            //URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
         } else if (items_type.equals( Constants.INTENT_EATING )) {
+            requestCat=REQUEST_GET_EAT;
             arrayRes = res.getStringArray(R.array.eating);
             arrayTags = res.getStringArray(R.array.eatingTags);
             myToolbar.setTitle( R.string.eating_option );
-            URL = "http://barintondo.altervista.org/get_all_locali.php";
+           // URL = "http://barintondo.altervista.org/get_all_locali.php";
         } else if (items_type.equals( Constants.INTENT_SLEEPING )) {
+            requestCat= REQUEST_GET_SLEEP;
             arrayRes = res.getStringArray(R.array.sleeping);
             arrayTags = res.getStringArray(R.array.sleepingTags);
             myToolbar.setTitle( R.string.sleeping_option );
-            URL = "http://barintondo.altervista.org/get_all_rifugi.php";
+            //URL = "http://barintondo.altervista.org/get_all_rifugi.php";
         } else if (items_type.equals( Constants.INTENT_EVENTS )) {
+            requestCat=REQUEST_GET_EVENTS;
             arrayRes = res.getStringArray(R.array.events);
             arrayTags = res.getStringArray(R.array.eventsTags);
             myToolbar.setTitle( R.string.events_option );
-            URL = "http://barintondo.altervista.org/get_all_eventi.php";
+            //URL = "http://barintondo.altervista.org/get_all_eventi.php";
         } else if (items_type.equals( Constants.INTENT_NEAR )) {
+            requestCat=REQUEST_GET_NEAR_BARI;
             arrayRes = res.getStringArray(R.array.near);
             arrayTags = res.getStringArray(R.array.nearTags);
             myToolbar.setTitle( R.string.near_option);
-            URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
+            //URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
         }
 
         setSupportActionBar( myToolbar );
@@ -158,8 +164,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         }
 
         //list and adapter setup
-        itemList = new ArrayList<>();
-        mAdapter = new LuogoAdapter( this , itemList , this );
+        luogoList = new ArrayList<>();
+        mAdapter = new LuogoAdapter( this , luogoList , this );
 
         //recyclerView setup
         recyclerView = findViewById( R.id.item_list_recycler_view );
@@ -173,7 +179,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         whiteNotificationBar( recyclerView );
 
         //first time populating
-        fetchItems();
+        //fetchItems();
+        volleyGetLuoghi( requestCat );
 
     }
 
@@ -280,61 +287,139 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         }
     }
 
-    private void fetchItems() {
-        //itemList.clear();
-
+    private void volleyGetLuoghi(final String requestCat){
+        final Context context = this;
         final ProgressDialog progressDialog = new ProgressDialog( this );
         progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-        JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
+        String Url="http://barintondo.altervista.org/get_luoghi.php";
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( this );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray response) {
-                if (response.length() == 0) {
-                    Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
-                    progressDialog.dismiss();
-                    return;
-                }
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.i( TAG ,  "ControllerPrefered: entered onResponse()");
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
 
-                //Log.e("NUM", String.valueOf(response.length()));
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject( i );
+                try {
 
-                        Luogo item = new Luogo();
-                        item.setCod( jsonObject.getString( "cod" ) );
-                        item.setNome( jsonObject.getString( "nome" ) );
-                        item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                        item.setOraA( jsonObject.getString( "oraA" ) );
-                        item.setOraC( jsonObject.getString( "oraC" ) );
-                        item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                        item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-                        item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                        item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                        Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+                    JSONArray jsonArray = new JSONArray( response );
 
-                        //adding items to itemsList
-                        itemList.add( item );
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (jsonArray.length() == 0) {
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
                         progressDialog.dismiss();
+                        return;
                     }
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            Luogo luogo = new Luogo();
+                            luogo.setCod( jsonObject.getString( "cod" ) );
+                            luogo.setNome( jsonObject.getString( "nome" ) );
+                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            //adding items to itemsList
+                            luogoList.add( luogo );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
                 mAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
 
             }
-        } , new Response.ErrorListener() {
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.e( TAG , "Volley Error: " + error.getMessage() );
+                progressDialog.dismiss();
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
             }
-        } );
+        } ) {
 
-        LuogoListActivity.getInstance().addToRequestQueue( request );
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_cat" , requestCat );
+                return MyData;
+            }
+        };
 
+
+        MyRequestQueue.add( MyStringRequest );
     }
+
+//    private void fetchItems() {
+//        //luogoList.clear();
+//
+//        final ProgressDialog progressDialog = new ProgressDialog( this );
+//        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
+//        progressDialog.show();
+//
+//        JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                if (response.length() == 0) {
+//                    Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
+//                    progressDialog.dismiss();
+//                    return;
+//                }
+//
+//                //Log.e("NUM", String.valueOf(response.length()));
+//                for (int i = 0; i < response.length(); i++) {
+//                    try {
+//                        JSONObject jsonObject = response.getJSONObject( i );
+//
+//                        Luogo item = new Luogo();
+//                        item.setCod( jsonObject.getString( "cod" ) );
+//                        item.setNome( jsonObject.getString( "nome" ) );
+//                        item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+//                        item.setOraA( jsonObject.getString( "oraA" ) );
+//                        item.setOraC( jsonObject.getString( "oraC" ) );
+//                        item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+//                        item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+//                        item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+//                        item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+//                        Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+//
+//                        //adding items to itemsList
+//                        luogoList.add( item );
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        progressDialog.dismiss();
+//                    }
+//                }
+//                mAdapter.notifyDataSetChanged();
+//                progressDialog.dismiss();
+//
+//            }
+//        } , new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                // error in getting json
+//                Log.e( TAG , "Volley Error: " + error.getMessage() );
+//            }
+//        } );
+//
+//        LuogoListActivity.getInstance().addToRequestQueue( request );
+//
+//    }
 
 
     /*@Override
