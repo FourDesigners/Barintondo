@@ -12,7 +12,10 @@ public interface Constants {
     String INTENT_EATING = "eating";
     String INTENT_EVENTS = "events";
     String INTENT_NEAR = "near";
-    String INTENT_ITEM="item";
+    String INTENT_ITEM = "item";
+
+    //intent per CouponDetailActivity
+    String INTENT_COUPON = "coupon";
 
     // SharedPreferences
     String ORDER = "order";

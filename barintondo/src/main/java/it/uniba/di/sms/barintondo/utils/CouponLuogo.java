@@ -9,8 +9,8 @@ public class CouponLuogo implements Parcelable {
     private String email;
     private String luogo;
     private String scadenza;
-    private String descrizione_it;
-    private String descrizione_en;
+    public String descrizione_it; //DA METTERE PRIVATE
+    public String descrizione_en; //DA METTERE PRIVATE
     private String sottoCat;
 
     public CouponLuogo() {

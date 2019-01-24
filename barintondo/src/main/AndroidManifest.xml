@@ -29,8 +29,8 @@
         </activity>
         <activity
             android:name=".LuogoListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:noHistory="true"
@@ -53,8 +53,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".InterestsListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CouponDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
