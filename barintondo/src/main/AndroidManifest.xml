@@ -46,7 +46,7 @@
             android:parentActivityName=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ItemDetailActivity"
+            android:name=".LuogoDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".CouponLuogoListActivity"

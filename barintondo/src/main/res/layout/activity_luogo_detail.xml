@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ItemDetailActivity"
+    tools:context=".LuogoDetailActivity"
     android:animateLayoutChanges="true">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/itemDetailToolbar"
+        android:id="@+id/luogoDetailToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -26,7 +26,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ImageView
-        android:id="@+id/itemDetailImage"
+        android:id="@+id/luogoDetailImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
@@ -42,7 +42,7 @@
         android:background="@color/colorPrimaryDark">
 
         <Button
-            android:id="@+id/item_info"
+            android:id="@+id/btn_luogo_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="0dip"
@@ -54,12 +54,12 @@
             android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_directions"
+            app:layout_constraintEnd_toStartOf="@id/btn_luogo_directions"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/item_directions"
+            android:id="@+id/btn_luogo_directions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="0dip"
@@ -70,13 +70,13 @@
             android:textColor="@android:color/background_light"
             android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/item_info"
-            app:layout_constraintEnd_toStartOf="@id/item_reviews"
-            app:layout_constraintStart_toEndOf="@id/item_info"
-            app:layout_constraintTop_toTopOf="@id/item_info" />
+            app:layout_constraintBottom_toBottomOf="@id/btn_luogo_info"
+            app:layout_constraintEnd_toStartOf="@id/btn_luogo_reviews"
+            app:layout_constraintStart_toEndOf="@id/btn_luogo_info"
+            app:layout_constraintTop_toTopOf="@id/btn_luogo_info" />
 
         <Button
-            android:id="@+id/item_reviews"
+            android:id="@+id/btn_luogo_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="0dip"
@@ -87,10 +87,10 @@
             android:textColor="@android:color/background_light"
             android:textSize="@dimen/mediumTextSize"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/item_info"
+            app:layout_constraintBottom_toBottomOf="@id/btn_luogo_info"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_directions"
-            app:layout_constraintTop_toTopOf="@id/item_info" />
+            app:layout_constraintStart_toEndOf="@id/btn_luogo_directions"
+            app:layout_constraintTop_toTopOf="@id/btn_luogo_info" />
 
 
     </android.support.constraint.ConstraintLayout>
@@ -99,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:id="@+id/item_extra_container">
+        android:id="@+id/luogo_extra_container">
 
 
     </FrameLayout>

@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 
-public class ItemReviewsFragment  extends Fragment implements Constants {
+public class LuogoReviewsFragment extends Fragment implements Constants {
 
     private String itemCod;
     TextView textViewItemCod;
 
-    public ItemReviewsFragment() {
+    public LuogoReviewsFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +34,7 @@ public class ItemReviewsFragment  extends Fragment implements Constants {
     public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate( R.layout.fragment_item_reviews , container , false );
+        View rootView = inflater.inflate( R.layout.fragment_luogo_reviews , container , false );
 
         // Show description as text in a TextView.
         textViewItemCod = rootView.findViewById(R.id.text_item_cod);

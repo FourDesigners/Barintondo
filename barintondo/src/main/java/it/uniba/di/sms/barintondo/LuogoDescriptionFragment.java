@@ -1,7 +1,5 @@
 package it.uniba.di.sms.barintondo;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,14 +10,14 @@ import android.widget.TextView;
 import it.uniba.di.sms.barintondo.utils.Constants;
 
 
-public class ItemDescriptionFragment extends Fragment implements Constants {
+public class LuogoDescriptionFragment extends Fragment implements Constants {
 
     private String itemDescription, orarioA, orarioC;
     TextView textViewDescription, textOrarioA, textOrarioC;
 
 
 
-    public ItemDescriptionFragment() {
+    public LuogoDescriptionFragment() {
         // Required empty public constructor
     }
 
@@ -46,7 +44,7 @@ public class ItemDescriptionFragment extends Fragment implements Constants {
     public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate( R.layout.fragment_item_description , container , false );
+        View rootView = inflater.inflate( R.layout.fragment_luogo_description , container , false );
 
         // Show description as text in a TextView.
         textViewDescription = rootView.findViewById(R.id.text_description);

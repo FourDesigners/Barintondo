@@ -1,22 +1,15 @@
 package it.uniba.di.sms.barintondo.utils;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -24,26 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
-import it.uniba.di.sms.barintondo.ItemDetailActivity;
+import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.R;
 
 public class ControllerPrefered implements Constants {
@@ -84,9 +63,9 @@ public class ControllerPrefered implements Constants {
         volleyCall( REQUEST_REMOVE_PREF , email , itemCod );
     }
 
-    private void volleyCall(final String requestOp , final String user , final String itemCod) {
+    private void volleyCall(final String requestOp , final String user , final String luogoCod) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered volleyCall( )");
-        final ItemDetailActivity itemDetailActivity = (ItemDetailActivity) context;
+        final LuogoDetailActivity luogoDetailActivity = (LuogoDetailActivity) context;
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
@@ -100,15 +79,15 @@ public class ControllerPrefered implements Constants {
 
                 switch (result[0]) {
                     case REQUEST_CHECK_PREF:
-                        itemDetailActivity.checkPrefResult( Boolean.valueOf( result[1] ) );
+                        luogoDetailActivity.checkPrefResult( Boolean.valueOf( result[1] ) );
                         break;
                     case REQUEST_ADD_PREF:
                         boolean added = result[1].equals( REQUEST_RESULT_OK );
-                        itemDetailActivity.prefAdded( added );
+                        luogoDetailActivity.prefAdded( added );
                         break;
                     case REQUEST_REMOVE_PREF:
                         boolean removed = result[1].equals( REQUEST_RESULT_OK );
-                        itemDetailActivity.prefRemoved( removed );
+                        luogoDetailActivity.prefRemoved( removed );
                         break;
                 }
 
@@ -125,7 +104,7 @@ public class ControllerPrefered implements Constants {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , requestOp );
                 MyData.put( "email" , user );
-                MyData.put( "itemCod" , itemCod );
+                MyData.put( "luogoCod" , luogoCod );
                 return MyData;
             }
         };

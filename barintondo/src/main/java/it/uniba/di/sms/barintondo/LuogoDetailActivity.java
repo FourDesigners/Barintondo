@@ -1,10 +1,8 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +22,7 @@ import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 
 
-public class ItemDetailActivity extends AppCompatActivity implements Constants {
+public class LuogoDetailActivity extends AppCompatActivity implements Constants {
 
     Toolbar myToolbar;
     ImageView myImageView;
@@ -35,13 +33,13 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_item_detail );
+        setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
-        final Luogo myItem = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
+        final Luogo myLuogo = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
 
-        myToolbar = findViewById( R.id.itemDetailToolbar );
-        myToolbar.setTitle( myItem.getNome() );
+        myToolbar = findViewById( R.id.luogoDetailToolbar );
+        myToolbar.setTitle( myLuogo.getNome() );
         setSupportActionBar( myToolbar );
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
@@ -50,51 +48,51 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         fabPref = findViewById( R.id.fab );
 
         final ControllerPrefered controllerPrefered = new ControllerPrefered( this );
-        controllerPrefered.checkPref( myItem.getCod() );
+        controllerPrefered.checkPref( myLuogo.getCod() );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!InternetConnection.isNetworkAvailable( ItemDetailActivity.this )) {
-                    Toast.makeText( ItemDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+                if (!InternetConnection.isNetworkAvailable( LuogoDetailActivity.this )) {
+                    Toast.makeText( LuogoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controllerPrefered.removePref( myItem.getCod() );
-                    else controllerPrefered.addPref( myItem.getCod() );
+                    if (isPref) controllerPrefered.removePref( myLuogo.getCod() );
+                    else controllerPrefered.addPref( myLuogo.getCod() );
                 }
             }
         } );
 
-        myImageView = findViewById( R.id.itemDetailImage );
+        myImageView = findViewById( R.id.luogoDetailImage );
         //thumbnail
         Glide.with( this )
-                .load( imagesPath + myItem.getThumbnailLink() )
+                .load( imagesPath + myLuogo.getThumbnailLink() )
                 .into( myImageView );
 
 
-        itemInfo = findViewById( R.id.item_info );
+        itemInfo = findViewById( R.id.btn_luogo_info );
         itemInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attachDescription( myItem );
+                attachDescription( myLuogo );
             }
         } );
 
-        itemDirection = findViewById( R.id.item_directions );
+        itemDirection = findViewById( R.id.btn_luogo_directions );
         itemDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attachDirections( myItem );
+                attachDirections( myLuogo );
             }
         } );
-        itemReview = findViewById( R.id.item_reviews );
+        itemReview = findViewById( R.id.btn_luogo_reviews );
         itemReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attachReviews( myItem );
+                attachReviews( myLuogo );
             }
         } );
 
-        attachDescription( myItem );
+        attachDescription( myLuogo );
     }
 
     @Override
@@ -114,10 +112,10 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
         arguments.putString( ITEM_DESCRIPTION , myItem.getDescription() );
         arguments.putString( ITEM_ORA_A , myItem.getOraA() );
         arguments.putString( ITEM_ORA_C , myItem.getOraC() );
-        ItemDescriptionFragment fragment = new ItemDescriptionFragment();
+        LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
-                .replace( R.id.item_extra_container , fragment )
+                .replace( R.id.luogo_extra_container , fragment )
                 .commit();
         itemOptionSelected( ITEM_DESCRIPTION );
     }
@@ -125,10 +123,10 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     private void attachDirections(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_DIRECTIONS , myItem.getIndirizzo() );
-        ItemDirectionsFragment fragment = new ItemDirectionsFragment();
+        LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
-                .replace( R.id.item_extra_container , fragment )
+                .replace( R.id.luogo_extra_container , fragment )
                 .commit();
         itemOptionSelected( ITEM_DIRECTIONS );
     }
@@ -136,10 +134,10 @@ public class ItemDetailActivity extends AppCompatActivity implements Constants {
     private void attachReviews(Luogo myItem) {
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_REVIEWS , myItem.getCod() );
-        ItemReviewsFragment fragment = new ItemReviewsFragment();
+        LuogoReviewsFragment fragment = new LuogoReviewsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
-                .replace( R.id.item_extra_container , fragment )
+                .replace( R.id.luogo_extra_container , fragment )
                 .commit();
         itemOptionSelected( ITEM_REVIEWS );
     }

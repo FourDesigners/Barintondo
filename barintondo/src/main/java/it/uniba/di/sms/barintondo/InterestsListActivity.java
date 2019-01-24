@@ -1,11 +1,8 @@
 package it.uniba.di.sms.barintondo;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
@@ -24,31 +21,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
-import it.uniba.di.sms.barintondo.utils.CouponLuogo;
-import it.uniba.di.sms.barintondo.utils.CouponLuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
 
 public class InterestsListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -180,7 +161,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     @Override
     public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        Intent intent = new Intent( this , ItemDetailActivity.class );
+        Intent intent = new Intent( this , LuogoDetailActivity.class );
         intent.putExtra( INTENT_ITEM , item );
         startActivity( intent );
     }

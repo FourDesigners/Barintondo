@@ -358,7 +358,7 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
     @Override
     public void onItemsSelected(CouponLuogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        Intent intent = new Intent( this , ItemDetailActivity.class );
+        Intent intent = new Intent( this , LuogoDetailActivity.class );
         intent.putExtra( INTENT_ITEM , item );
         startActivity( intent );
     }

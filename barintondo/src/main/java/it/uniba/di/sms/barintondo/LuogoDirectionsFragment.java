@@ -8,18 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 
-public class ItemDirectionsFragment extends Fragment implements Constants {
+public class LuogoDirectionsFragment extends Fragment implements Constants {
 
     private String itemDirections;
     TextView textViewDirections;
     Button openGMaps;
 
-    public ItemDirectionsFragment() {
+    public LuogoDirectionsFragment() {
         // Required empty public constructor
     }
 
@@ -40,10 +39,10 @@ public class ItemDirectionsFragment extends Fragment implements Constants {
     public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate( R.layout.fragment_item_directions , container , false );
+        View rootView = inflater.inflate( R.layout.fragment_luogo_directions , container , false );
 
         // Show description as text in a TextView.
-        textViewDirections = rootView.findViewById( R.id.text_item_directions );
+        textViewDirections = rootView.findViewById( R.id.text_luogo_directions );
         String indicazione = rootView.getResources().getString( R.string.str_located_in )+"\n"+itemDirections;
         textViewDirections.setText( indicazione );
 
