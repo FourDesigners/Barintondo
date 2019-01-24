@@ -26,7 +26,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
@@ -75,8 +75,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     @Override
     protected void onStart() {
         super.onStart();
-        ControllerPrefered controllerPref = new ControllerPrefered( this );
-        controllerPref.getAllPrefered();
+        ControllerRemoteDB controllerPref = new ControllerRemoteDB( this );
+        controllerPref.getAllInterests();
     }
 
     public void setupRecyclerView(ArrayList<Luogo> interestsList) {
@@ -168,7 +168,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
         Intent intent = new Intent( this , LuogoDetailActivity.class );
-        intent.putExtra( INTENT_ITEM , item );
+        intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
         startActivity( intent );
     }
 }

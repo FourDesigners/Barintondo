@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
@@ -29,6 +29,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     Button itemInfo, itemDirection, itemReview;
     FloatingActionButton fabPref;
     boolean isPref = false;
+    ControllerRemoteDB controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +37,29 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
-        final Luogo myLuogo = getIntent().getParcelableExtra( Constants.INTENT_ITEM );
+        String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
+        controller = new ControllerRemoteDB( this );
+        controller.getLuogo( myLuogoCod );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
-        myToolbar.setTitle( myLuogo.getNome() );
+
         setSupportActionBar( myToolbar );
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled( true );
 
         fabPref = findViewById( R.id.fab );
+        myImageView = findViewById( R.id.luogoDetailImage );
+        itemInfo = findViewById( R.id.btn_luogo_info );
+        itemDirection = findViewById( R.id.btn_luogo_directions );
+        itemReview = findViewById( R.id.btn_luogo_reviews );
+    }
 
-        final ControllerPrefered controllerPrefered = new ControllerPrefered( this );
-        controllerPrefered.checkPref( myLuogo.getCod() );
+    public void onLuogoLoaded(final Luogo myLuogo){
+
+        myToolbar.setTitle( myLuogo.getNome() );
+
+        controller.checkPref( myLuogo.getCod() );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -56,20 +67,20 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 if (!InternetConnection.isNetworkAvailable( LuogoDetailActivity.this )) {
                     Toast.makeText( LuogoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controllerPrefered.removePref( myLuogo.getCod() );
-                    else controllerPrefered.addPref( myLuogo.getCod() );
+                    if (isPref) controller.removePref( myLuogo.getCod() );
+                    else controller.addPref( myLuogo.getCod() );
                 }
             }
         } );
 
-        myImageView = findViewById( R.id.luogoDetailImage );
+
         //thumbnail
         Glide.with( this )
                 .load( imagesPath + myLuogo.getThumbnailLink() )
                 .into( myImageView );
 
 
-        itemInfo = findViewById( R.id.btn_luogo_info );
+
         itemInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,14 +88,14 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             }
         } );
 
-        itemDirection = findViewById( R.id.btn_luogo_directions );
+
         itemDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attachDirections( myLuogo );
             }
         } );
-        itemReview = findViewById( R.id.btn_luogo_reviews );
+
         itemReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {

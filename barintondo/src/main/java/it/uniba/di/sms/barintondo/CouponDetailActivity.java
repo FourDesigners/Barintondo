@@ -1,6 +1,5 @@
 package it.uniba.di.sms.barintondo;
 
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,13 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.ControllerPrefered;
 import it.uniba.di.sms.barintondo.utils.CouponLuogo;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
-import it.uniba.di.sms.barintondo.utils.Luogo;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
 

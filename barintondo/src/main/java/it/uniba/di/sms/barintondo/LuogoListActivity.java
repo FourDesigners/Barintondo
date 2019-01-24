@@ -1,7 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,13 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
@@ -38,15 +31,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
@@ -180,7 +170,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
         //first time populating
         //fetchItems();
-        volleyGetLuoghi( requestCat );
+        ControllerRemoteDB controller = new ControllerRemoteDB( this );
+        controller.getLuoghiList( requestCat , luogoList, mAdapter);
 
     }
 
@@ -286,141 +277,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
             chipGroup.addView( newChip );
         }
     }
-
-    private void volleyGetLuoghi(final String requestCat){
-        final Context context = this;
-        final ProgressDialog progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
-        String Url="http://barintondo.altervista.org/get_luoghi.php";
-        RequestQueue MyRequestQueue = Volley.newRequestQueue( this );
-        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                Log.i( TAG ,  "ControllerPrefered: entered onResponse()");
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-
-                try {
-
-                    JSONArray jsonArray = new JSONArray( response );
-
-                    if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
-                        progressDialog.dismiss();
-                        return;
-                    }
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
-
-                            Luogo luogo = new Luogo();
-                            luogo.setCod( jsonObject.getString( "cod" ) );
-                            luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            luogo.setOraA( jsonObject.getString( "oraA" ) );
-                            luogo.setOraC( jsonObject.getString( "oraC" ) );
-                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            //adding items to itemsList
-                            luogoList.add( luogo );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
-                        }
-                    }
-
-                } catch (JSONException e2) {
-                    e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
-                }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-
-            }
-        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
-            }
-        } ) {
-
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "request_cat" , requestCat );
-                return MyData;
-            }
-        };
-
-
-        MyRequestQueue.add( MyStringRequest );
-    }
-
-//    private void fetchItems() {
-//        //luogoList.clear();
-//
-//        final ProgressDialog progressDialog = new ProgressDialog( this );
-//        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-//        progressDialog.show();
-//
-//        JsonArrayRequest request = new JsonArrayRequest( URL , new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                if (response.length() == 0) {
-//                    Toast.makeText( getApplicationContext() , "Couldn't fetch the contacts! Pleas try again." , Toast.LENGTH_LONG ).show();
-//                    progressDialog.dismiss();
-//                    return;
-//                }
-//
-//                //Log.e("NUM", String.valueOf(response.length()));
-//                for (int i = 0; i < response.length(); i++) {
-//                    try {
-//                        JSONObject jsonObject = response.getJSONObject( i );
-//
-//                        Luogo item = new Luogo();
-//                        item.setCod( jsonObject.getString( "cod" ) );
-//                        item.setNome( jsonObject.getString( "nome" ) );
-//                        item.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-//                        item.setOraA( jsonObject.getString( "oraA" ) );
-//                        item.setOraC( jsonObject.getString( "oraC" ) );
-//                        item.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-//                        item.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-//                        item.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-//                        item.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-//                        Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
-//
-//                        //adding items to itemsList
-//                        luogoList.add( item );
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        progressDialog.dismiss();
-//                    }
-//                }
-//                mAdapter.notifyDataSetChanged();
-//                progressDialog.dismiss();
-//
-//            }
-//        } , new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                // error in getting json
-//                Log.e( TAG , "Volley Error: " + error.getMessage() );
-//            }
-//        } );
-//
-//        LuogoListActivity.getInstance().addToRequestQueue( request );
-//
-//    }
-
 
     /*@Override
     protected void onResume() {
@@ -559,7 +415,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
         Intent intent = new Intent( this , LuogoDetailActivity.class );
-        intent.putExtra( INTENT_ITEM , item );
+        intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
         startActivity( intent );
     }
 
