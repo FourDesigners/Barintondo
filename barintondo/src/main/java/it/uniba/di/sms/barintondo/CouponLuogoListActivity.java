@@ -246,7 +246,7 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
                             coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                             coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
                             coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
-                            
+
                             //adding items to itemsList
                             couponList.add( coupon );
 
