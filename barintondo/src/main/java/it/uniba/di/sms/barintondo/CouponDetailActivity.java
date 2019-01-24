@@ -42,7 +42,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     ImageView myImageView;
     TextView desc;
     CouponLuogo myCoupon;
-    Button useBtn;
+    Button useBtn, btnDetailLuogo;
 
     //BT
     static String nameUUID = "it.uniba.di.sms.Barintondo";
@@ -104,6 +104,20 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
             }
         } );
 
+        btnDetailLuogo = findViewById( R.id.btnDettaglioPosto );
+        btnDetailLuogo.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goDettaglioLuogo();
+            }
+        } );
+
+    }
+
+    private void goDettaglioLuogo(){
+        Intent intent = new Intent( this, LuogoDetailActivity.class );
+        intent.putExtra( INTENT_LUOGO_COD, myCoupon.getCodLuogo() );
+        startActivity( intent );
     }
 
     @Override

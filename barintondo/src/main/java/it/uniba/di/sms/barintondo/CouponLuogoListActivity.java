@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.CouponLuogo;
 import it.uniba.di.sms.barintondo.utils.CouponLuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -62,10 +63,9 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
     private CouponLuogoAdapter mAdapter;
     private SearchView searchView;
-    String URL;
+
     private static CouponLuogoListActivity mInstance;
-    String[] arrayRes = null;
-    String[] arrayTags = null;
+
 
 
     @Override
@@ -139,7 +139,8 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
         //first time populating
         //fetchItems();
-        volleyGetCoupons( this );
+        ControllerRemoteDB controller = new ControllerRemoteDB( this );
+        controller.getCouponList( couponList, mAdapter );
 
     }
 
@@ -210,79 +211,7 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         }
     }*/
 
-    private void volleyGetCoupons(final Context context){
-        //couponList.clear();
 
-        final ProgressDialog progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
-        final String email = ProfileOpenHelper.getEmail( this );
-
-        //creazione URL
-        String Url = "http://barintondo.altervista.org/get_my_coupons.php";
-
-        RequestQueue MyRequestQueue = Volley.newRequestQueue( this );
-        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                try {
-
-                    JSONArray jsonArray = new JSONArray( response );
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
-
-                            CouponLuogo coupon = new CouponLuogo();
-                            coupon.setCod( jsonObject.getString( "codCoupon" ) );
-                            coupon.setCodLuogo( jsonObject.getString( "cod" ) );
-                            coupon.setLuogo( jsonObject.getString( "nome" ) );
-                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
-                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
-                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
-
-                            //adding items to itemsList
-                            couponList.add( coupon );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-                        }
-                    }
-                } catch (JSONException e2) {
-                    e2.printStackTrace();
-                    progressDialog.dismiss();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-                }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-                progressDialog.dismiss();
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-            }
-        } ) {
-
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "email" , email );
-                return MyData;
-            }
-        };
-
-
-        MyRequestQueue.add( MyStringRequest );
-
-    }
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
