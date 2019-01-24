@@ -33,18 +33,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/myEmail_label"
-        app:layout_constraintStart_toStartOf="@+id/myEmailBox"
+        app:layout_constraintStart_toStartOf="@+id/myNicknameLabel"
         app:layout_constraintTop_toBottomOf="@+id/myUsernameBox" />
 
-    <EditText
+    <TextView
         android:id="@+id/myEmailBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/myEmailLabel"
         app:layout_constraintTop_toBottomOf="@+id/myEmailLabel"
         tools:ignore="Autofill,LabelFor" />
 
@@ -64,10 +62,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/myEmailBox"
-        app:layout_constraintEnd_toStartOf="@+id/myEmailBox"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/myEmailBox"
         app:srcCompat="@drawable/ic_mail_outline"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox"
+        app:srcCompat="@drawable/ic_key"
         tools:ignore="ContentDescription,VectorDrawableCompat" />
 
     <TextView
@@ -76,21 +85,39 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/myPass_label"
-        app:layout_constraintStart_toStartOf="@+id/myPassBox"
+        app:layout_constraintStart_toStartOf="@+id/myEmailLabel"
         app:layout_constraintTop_toBottomOf="@+id/myEmailBox" />
 
     <EditText
         android:id="@+id/myPassBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPassword"
         android:text="@string/str_name"
-        app:layout_constraintEnd_toEndOf="@+id/myEmailBox"
-        app:layout_constraintStart_toStartOf="@+id/myEmailBox"
+        app:layout_constraintStart_toStartOf="@+id/myPassLabel"
         app:layout_constraintTop_toBottomOf="@+id/myPassLabel"
         tools:ignore="Autofill,LabelFor" />
+
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/closedeye"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/myPassBox"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/textViewPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/myPassBox"
+        app:layout_constraintTop_toBottomOf="@+id/myPassBox" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/myProfileToolbar"

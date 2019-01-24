@@ -125,4 +125,7 @@
     <string name="expiredString">Scaduto</string>
     <string name="validString">Valido</string>
     <string name="no_interests">Non hai ancora selezionato un luogo di interesse</string>
+    <string name="str_fail_get_luoghi">Errore nel caricamento dei luoghi, riprovare più tardi</string>
+    <string name="str_fail_coupon_managing">Errore nel caricamento dei coupon, riprovare più tardi</string>
+    <string name="strModified">Account modificato</string>
 </resources>
