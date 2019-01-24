@@ -3,6 +3,7 @@ package it.uniba.di.sms.barintondo.utils;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +32,12 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
     private static final String TAG = CouponLuogoAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView cod, luogo, scadenza;
+        public TextView codLuogo, luogo, scadenza;
         public ImageView icona;
 
         public MyViewHolder(View view) {
             super(view);
 
-            cod = view.findViewById(R.id.cod);
             luogo = view.findViewById(R.id.luogo);
             scadenza = view.findViewById(R.id.scadenza);
             icona = view.findViewById(R.id.icona);
@@ -73,6 +73,7 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         CouponLuogo couponL = itemListFiltered.get(position);
 
+        //scelgo icona da assegnare
         HashSet<String> container = new HashSet<>();
         container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.attractions)));
         if(container.contains(couponL.getSottoCat()))
@@ -85,7 +86,7 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
             else holder.icona.setImageResource(R.drawable.ic_sleeping_coupon);
         }
 
-        holder.cod.setText(couponL.getCod());
+        Log.i(TAG, "couponL: " + couponL.getCod() + couponL.getCodLuogo() + couponL.getLuogo());
         holder.luogo.setText(couponL.getLuogo());
 
         //controllo se il coupon è ancora valido

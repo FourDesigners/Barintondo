@@ -50,7 +50,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
         desc = findViewById( R.id.couponDesc );
         desc.setText(myCoupon.getDescription());
-        Log.i(TAG, "dati:" + myCoupon.getDescription() + myCoupon.descrizione_en + myCoupon.descrizione_it);
 
         useBtn = findViewById( R.id.useBtn );
         useBtn.setOnClickListener(new View.OnClickListener() {
