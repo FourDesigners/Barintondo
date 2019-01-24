@@ -73,11 +73,6 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         CouponLuogo couponL = itemListFiltered.get(position);
 
-        //icona
-        /*Glide.with(context)
-                .load(imagesPath + "offer.svg")
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.icona);*/
         HashSet<String> container = new HashSet<>();
         container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.attractions)));
         if(container.contains(couponL.getSottoCat()))
