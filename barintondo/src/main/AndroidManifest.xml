@@ -65,8 +65,7 @@
             android:name=".MeteoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ContactsActivity"
-            android:parentActivityName=".HomeActivity"
+            android:name=".EventsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

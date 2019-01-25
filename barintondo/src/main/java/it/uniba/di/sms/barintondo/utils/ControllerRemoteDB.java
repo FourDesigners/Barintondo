@@ -240,6 +240,88 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
+    public void getEventiList(final String requestCat, final List<Evento> eventoList, final EventoAdapter mAdapter){
+        final ProgressDialog progressDialog = new ProgressDialog( context );
+        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
+        progressDialog.show();
+
+        String Url="http://barintondo.altervista.org/get_eventi.php";
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()");
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    if (jsonArray.length() == 0) {
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
+                        progressDialog.dismiss();
+                        return;
+                    }
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            Evento evento = new Evento();
+                            evento.setCod( jsonObject.getString( "cod" ) );
+                            evento.setNome( jsonObject.getString( "nome" ) );
+                            evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                            evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                            evento.setCitta( jsonObject.getString( "citta" ) );
+                            evento.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            evento.setDescrizione_it( jsonObject.getString( "descrizione-it" ) );
+                            evento.setDescrizione_en( jsonObject.getString( "descrizione-en" ) );
+                            evento.setLuogo( jsonObject.getString( "luogo" ) );
+                            evento.setOraI( jsonObject.getString( "oraI" ) );
+                            evento.setOraF( jsonObject.getString( "oraF" ) );
+                            evento.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            evento.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            //adding items to itemsList
+                            eventoList.add( evento );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                }
+                mAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_op", REQUEST_GET_CATEGORY );
+                MyData.put( "request_cat" , requestCat );
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+    }
+
     public void getLuogo(final String codLuogo){
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
