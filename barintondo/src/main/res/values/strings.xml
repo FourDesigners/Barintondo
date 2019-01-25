@@ -101,6 +101,22 @@
         <item>Famiglia</item>
     </string-array>
 
+    <string-array name="contacts">
+        <item>Carabinieri</item>
+        <item>Police</item>
+        <item>Childhood emergency</item>
+        <item>Fire fighters</item>
+        <item>Sanitary emergency</item>
+    </string-array>
+
+    <string-array name="contactsNumbers" translatable="false">
+        <item>112</item>
+        <item>113</item>
+        <item>114</item>
+        <item>115</item>
+        <item>118</item>
+    </string-array>
+
 
     <!--Settings-->
     <string name="action_settings">Settings</string>
@@ -257,7 +273,7 @@
     <string name="btExchangeBtn">BT Exchange</string>
     <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Unable to connect device</string>
-    <string name="contacts">Contacts</string>
+    <string name="contacts">Useful contacts</string>
 
     <string name="str_fail_get_review">Error in reviews loading, try again later</string>
     <string name="str_add_your_review">Add your review</string>

@@ -57,6 +57,14 @@
         <item>Famiglia</item>
     </string-array>
 
+    <string-array name="contacts">
+        <item>Carabinieri</item>
+        <item>Polizia</item>
+        <item>Emergenza infanzia</item>
+        <item>Vigili del fuoco</item>
+        <item>Emergenza sanitaria</item>
+    </string-array>
+
     <string name="action_settings">Impostazioni</string>
     <string name="title_activity_settings">Impostazioni</string>
     <string name="pref_title_ringtone">Suoneria</string>
@@ -150,7 +158,7 @@
     <string name="btExchangeBtn">Scambio Bluetooth</string>
     <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Impossibile connettersi al dispositivo</string>
-    <string name="contacts">Contatti</string>
+    <string name="contacts">Contatti utili</string>
     <string name="nameHidden">Nome non disponibile</string>
     <string name="str_fail_get_review">Errore nel caricamento delle recensioni; riprovare più tardi</string>
     <string name="str_add_your_review">Nuova recensione</string>

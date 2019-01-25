@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import it.uniba.di.sms.barintondo.ContactsActivity;
 import it.uniba.di.sms.barintondo.EventsActivity;
 import it.uniba.di.sms.barintondo.CouponLuogoListActivity;
 import it.uniba.di.sms.barintondo.HomeActivity;
@@ -173,7 +174,7 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.contact:
                                 mDrawerLayout.closeDrawers();
-                                Intent intent = new Intent(activity, EventsActivity.class);
+                                Intent intent = new Intent(activity, ContactsActivity.class);
                                 activity.startActivity(intent);
                                 break;
                             case R.id.feedback:
