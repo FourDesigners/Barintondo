@@ -150,4 +150,5 @@
     <string name="btExchangeBtn">Scambio Bluetooth</string>
     <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Impossibile connettersi al dispositivo</string>
+    <string name="contacts">Contatti</string>
 </resources>
