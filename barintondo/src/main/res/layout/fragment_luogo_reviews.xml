@@ -6,13 +6,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LuogoReviewsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
+
+    <Button
+        android:id="@+id/btn_add_your_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_add_your_review"
+        android:layout_marginLeft="20dp"/>
+    <Button
+        android:id="@+id/btn_back_to_reviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_your_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_give_vote"/>
+            <ImageView
+                android:id="@+id/yourReviewStar0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"/>
+            <ImageView
+                android:id="@+id/yourReviewStar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"/>
+            <ImageView
+                android:id="@+id/yourReviewStar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"/>
+            <ImageView
+                android:id="@+id/yourReviewStar3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"/>
+            <ImageView
+                android:id="@+id/yourReviewStar4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_text_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/luogo_reviews_list_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/recensione_list_content" />

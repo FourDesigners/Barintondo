@@ -403,7 +403,7 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onResponse(String response) {
 
-                Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered onResponse()"+response);
+                //Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered onResponse()"+response);
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
 
@@ -425,19 +425,21 @@ public class ControllerRemoteDB implements Constants {
                             int vote = jsonObject.getInt( "voto" );
                             String date = jsonObject.getString( "data" );
                             Review review = new Review( userName, textReview, vote, date);
-                            Log.i(TAG, "TEST: "+review.getUserName()+", "+review.getDate()+", "+review.getReviewText()+", "+review.getVote());
+                            //Log.i(TAG, "TEST: "+review.getUserName()+", "+review.getDate()+", "+review.getReviewText()+", "+review.getVote());
                             //adding items to itemsList
                             reviewsList.add( review );
                             Log.i(TAG, "Test");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered first catch");
                             Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
                         }
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
+                    Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered second catch");
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
                 }
 
@@ -451,6 +453,7 @@ public class ControllerRemoteDB implements Constants {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 //This code is executed if there is an error.
+                Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered onErrorResponse()");
                 Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
             }
         } ) {

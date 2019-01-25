@@ -38,7 +38,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     private static final String TAG = ReviewAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView userName, textRecensione;
+        public TextView userName, textRecensione, reviewDate;
         public ImageView[] reviewVoteStar;
 
         public MyViewHolder(View view) {
@@ -46,10 +46,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
             userName = view.findViewById( R.id.userName );
             textRecensione = view.findViewById( R.id.text_recensione );
+            reviewDate = view.findViewById( R.id.reviewDate );
+            reviewVoteStar = new ImageView[5];
 
             Resources res = view.getResources();
             for(int i=0; i<5; i++){
-                int id = res.getIdentifier("reviewStar"+i, "id", view.getContext().getPackageName());
+                int id = res.getIdentifier("reviewStar"+String.valueOf( i ), "id", view.getContext().getPackageName());
                 reviewVoteStar[i]= view.findViewById( id );
             }
         }
@@ -77,7 +79,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
         //Log.i(TAG, "entered onBindViewHolder()");
         holder.userName.setText(review.getUserName());
         holder.textRecensione.setText(review.getReviewText());
-
+        holder.reviewDate.setText( review.getDate() );
         for(int i=0; i<review.getVote();i++){
             ImageViewCompat.setImageTintList(
                     holder.reviewVoteStar[i] ,
