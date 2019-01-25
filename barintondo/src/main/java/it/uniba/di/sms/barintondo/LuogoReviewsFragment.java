@@ -51,6 +51,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             // to load content from a content provider.
             itemCod = getArguments().getString( ITEM_REVIEWS );
             reviewList = new ArrayList<>(  );
+            yourReviewVoteStar = new ImageView[5];
 
         }
     }
@@ -124,12 +125,18 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     }
 
     private void starSelected(int j, Resources res){
-        for(int i=0; i<j;i++){
+        int i;
+        for(i=0; i<j;i++){
             ImageViewCompat.setImageTintList(
                     yourReviewVoteStar[i] ,
                     ColorStateList.valueOf( res.getColor( R.color.colorOrange ) )
             );
-
+        }
+        for(;i<5;i++){
+            ImageViewCompat.setImageTintList(
+                    yourReviewVoteStar[i] ,
+                    ColorStateList.valueOf( res.getColor( R.color.colorBlack ) )
+            );
         }
     }
 
