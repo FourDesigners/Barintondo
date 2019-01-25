@@ -150,4 +150,8 @@
     <string name="btExchangeBtn">Scambio Bluetooth</string>
     <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Impossibile connettersi al dispositivo</string>
+    <string name="nameHidden">Nome non disponibile</string>
+    <string name="str_fail_get_review">Errore nel caricamento delle recensioni; riprovare più tardi</string>
+    <string name="str_add_your_review">Nuova recensione</string>
+    <string name="str_give_vote">Voto:</string>
 </resources>

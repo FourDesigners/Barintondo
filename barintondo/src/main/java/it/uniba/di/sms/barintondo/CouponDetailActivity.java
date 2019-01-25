@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,7 +63,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     public static final int MESSAGE_DEVICE_OBJECT = 4;
     public static final int MESSAGE_TOAST = 5;
     public static final String DEVICE_OBJECT = "device_name";
-    double average=0;
 
     private static final int REQUEST_ENABLE_BLUETOOTH = 1;
     private BTCommunicationController communicationController;
@@ -146,7 +147,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
             } else {
                 communicationController = new BTCommunicationController(this, BTHandler);
-                //showPrinterPickDialog();
+                showPrinterPickDialog();
             }
         }
 
@@ -160,6 +161,9 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
+        //richiedo a runtime il permesso altrimenti startDiscovery() dirà che non ci sono dispositivi disponibili
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         bluetoothAdapter.startDiscovery();
 
         //Initializing bluetooth adapters
@@ -209,7 +213,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
                 String address = info.substring(info.length() - 17);
 
-                connectToDevice(address); //INVIO MESSAGGIO
+                connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
+                //sendMessage(); //INVIO MESSAGGIO
                 dialog.dismiss();
             }
 
@@ -222,7 +227,9 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 String info = ((TextView) view).getText().toString();
                 String address = info.substring(info.length() - 17);
                 Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
-                connectToDevice(address);
+
+                connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
+                //sendMessage(); //INVIO MESSAGGIO
 
                 dialog.dismiss();
             }
@@ -268,8 +275,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                     }
                     break;
                 case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    String writeMessage = new String(writeBuf);
+                    //byte[] writeBuf = (byte[]) msg.obj;
+                    //String writeMessage = new String(writeBuf);
+                    //sendMessage(writeMessage);
+                    sendMessage();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -277,6 +286,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
                     //ELABORAZIONE DEL MESSAGGIO RICEVUTO DENTRO MESSAGE_READ
                     String mess = "Coupon code: " + readMessage;
+                    readMessage(mess);
+
                     break;
                 case MESSAGE_DEVICE_OBJECT:
                     connectingDevice = msg.getData().getParcelable(DEVICE_OBJECT);
@@ -292,16 +303,28 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         }
     });
 
-    private void sendMessage(String message) {
+    private void sendMessage() {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (message.length() > 0) {
-            message = myCoupon.getCod(); //setup del messaggio da inviare
-            byte[] send = message.getBytes();
-            communicationController.write(send);
+        String message;
+        message = myCoupon.getCod(); //setup del messaggio da inviare
+        byte[] send = message.getBytes();
+        communicationController.write(send);
+        Toast.makeText(this, "inviato: " + message, Toast.LENGTH_SHORT).show();
+        //fermo la connessione
+        if (communicationController != null)
+            communicationController.stop();
+    }
+
+    private void readMessage(String message) {
+        if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
+            Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            Toast.makeText(this, "ricevuto: " + message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -334,7 +357,11 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    discoveredDevicesAdapter.add(device.getName() + "\n" + device.getAddress());
+                    String deviceName;
+                    if(device.getName() == null) //controllo che sia fornito un nome al dispositivo
+                        deviceName = getResources().getString(R.string.nameHidden);
+                    else deviceName = device.getName();
+                    discoveredDevicesAdapter.add(deviceName + "\n" + device.getAddress());
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 if (discoveredDevicesAdapter.getCount() == 0) {

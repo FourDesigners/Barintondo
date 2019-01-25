@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,8 @@ import static it.uniba.di.sms.barintondo.utils.Constants.STRING_TOAST_MSG;
 
 
 public class BTCommunicationController {
+    private static final String TAG = BTCommunicationController.class.getSimpleName();
+
     static String nameUUID = "it.uniba.di.sms.Barintondo";
     private final static UUID MY_UUID = UUID.nameUUIDFromBytes(nameUUID.getBytes());
 
@@ -129,8 +132,15 @@ public class BTCommunicationController {
         bundle.putParcelable(CouponDetailActivity.DEVICE_OBJECT, device);
         msg.setData(bundle);
         handler.sendMessage(msg);
+        Log.i(TAG, "inviato MESSAGE_DEVICE_OBJECT");
 
         setState(STATE_CONNECTED);
+
+        // Send the coupon ID back to the UI Activity
+        msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_WRITE);
+        handler.sendMessage(msg);
+        Log.i(TAG, "inviato MESSAGE_WRITE");
+
     }
 
     // stop all threads
