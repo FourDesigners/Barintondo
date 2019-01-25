@@ -15,6 +15,9 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import it.uniba.di.sms.barintondo.CouponDetailActivity;
+import it.uniba.di.sms.barintondo.R;
+
+import static it.uniba.di.sms.barintondo.utils.Constants.STRING_TOAST_MSG;
 
 
 public class BTCommunicationController {
@@ -27,6 +30,7 @@ public class BTCommunicationController {
     private ConnectThread connectThread;
     private ReadWriteThread connectedThread;
     private int state;
+    private Context mContext;
 
     public static final int STATE_NONE = 0;
     public static final int STATE_LISTEN = 1;
@@ -36,6 +40,7 @@ public class BTCommunicationController {
     public BTCommunicationController(Context context, Handler handler) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         state = STATE_NONE;
+        mContext = context;
 
         this.handler = handler;
     }
@@ -160,7 +165,7 @@ public class BTCommunicationController {
     private void connectionFailed() {
         Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString("toast", "Unable to connect device");
+        bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.unableToConnectMsg));
         msg.setData(bundle);
         handler.sendMessage(msg);
 
@@ -171,7 +176,7 @@ public class BTCommunicationController {
     private void connectionLost() {
         Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString("toast", "Device connection was lost");
+        bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.connectionLostMsg));
         msg.setData(bundle);
         handler.sendMessage(msg);
 

@@ -140,7 +140,15 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         if (bluetoothAdapter == null) {
             Toast.makeText(this, getResources().getString(R.string.btNotAvailable), Toast.LENGTH_SHORT).show();
         }
-        else showPrinterPickDialog();
+        else {
+            if (!bluetoothAdapter.isEnabled()) {
+                Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
+            } else {
+                communicationController = new BTCommunicationController(this, BTHandler);
+                //showPrinterPickDialog();
+            }
+        }
 
     }
 
@@ -216,7 +224,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
                 connectToDevice(address);
 
-                //INVIO MESSAGGIO
                 dialog.dismiss();
             }
         });
@@ -277,7 +284,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                             Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString("toast"),
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(STRING_TOAST_MSG),
                             Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -304,21 +311,11 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
             case REQUEST_ENABLE_BLUETOOTH:
                 if (resultCode == Activity.RESULT_OK) {
                     communicationController = new BTCommunicationController(this, BTHandler);
+                    showPrinterPickDialog();
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.btDisabledMsg), Toast.LENGTH_SHORT).show();
                     finish();
                 }
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
-        } else {
-            communicationController = new BTCommunicationController(this, BTHandler);
         }
     }
 
