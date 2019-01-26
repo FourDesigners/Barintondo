@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Utility</string>
+
+    <!--bt strings -->
+    <string name="nameHidden">Device name not available</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="btNotAvailable">Bluetooth is not available!</string>
+    <string name="devicesDialog">Bluetooth Devices</string>
+    <string name="devicesPairedDialogMsg">Paired Devices</string>
+    <string name="devicesFoundDialogMsg">Found Devices</string>
+    <string name="cancelDialogBtn">Cancel</string>
+    <string name="connectedToMsg">Connected to: </string>
+    <string name="connectingMsg">Connecting</string>
+    <string name="connectionLostMsg">Connection lost!</string>
+    <string name="btDisabledMsg">Bluetooth still disabled, turn off application!</string>
+    <string name="notConnectedMsg">Interaction Stopped</string>
+    <string name="listeningModeMsg">Waiting for a target device</string>
+    <string name="btExchangeBtn">BT Exchange</string>
+    <string name="str_meteo">Meteo</string>
+    <string name="unableToConnectMsg">Unable to connect device</string>
+    <string name="contacts">Useful contacts</string>
 </resources>

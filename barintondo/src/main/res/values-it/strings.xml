@@ -151,9 +151,8 @@
     <string name="cancelDialogBtn">Annulla</string>
     <string name="connectedToMsg">"connesso a: "</string>
     <string name="connectingMsg">Connessione in corso</string>
-    <string name="connectionLostMsg">Connessione persa!</string>
+    <string name="connectionLostMsg">Comunicazione terminata</string>
     <string name="btDisabledMsg">Bluetooth disattiva; attivarlo e riprovare!</string>
-    <string name="notConnectedMsg">Comunicazione interrotta</string>
     <string name="listeningModeMsg">In attesa di connessione di un dispositivo</string>
     <string name="btExchangeBtn">Scambio Bluetooth</string>
     <string name="str_meteo">Meteo</string>

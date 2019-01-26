@@ -1,4 +1,4 @@
-package it.uniba.di.sms.barintondo.utils;
+package sms.di.uniba.it.utility;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -15,17 +15,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import it.uniba.di.sms.barintondo.CouponDetailActivity;
-import it.uniba.di.sms.barintondo.R;
-
-import static it.uniba.di.sms.barintondo.utils.Constants.STRING_TOAST_MSG;
-
+import sms.di.uniba.it.utility.HomeActivity;
+import sms.di.uniba.it.utility.R;
 
 public class BTCommunicationController {
     private static final String TAG = BTCommunicationController.class.getSimpleName();
 
     static String nameUUID = "it.uniba.di.sms.Barintondo";
     private final static UUID MY_UUID = UUID.nameUUIDFromBytes(nameUUID.getBytes());
+    String STRING_TOAST_MSG="toast";
 
     private final BluetoothAdapter bluetoothAdapter;
     private final Handler handler;
@@ -52,7 +50,7 @@ public class BTCommunicationController {
     private synchronized void setState(int state) {
         this.state = state;
 
-        handler.obtainMessage(CouponDetailActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+        handler.obtainMessage(HomeActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 
     // get current connection state
@@ -127,19 +125,19 @@ public class BTCommunicationController {
         connectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_DEVICE_OBJECT);
+        Message msg = handler.obtainMessage(HomeActivity.MESSAGE_DEVICE_OBJECT);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(CouponDetailActivity.DEVICE_OBJECT, device);
+        bundle.putParcelable(HomeActivity.DEVICE_OBJECT, device);
         msg.setData(bundle);
         handler.sendMessage(msg);
-
+        Log.i(TAG, "inviato MESSAGE_DEVICE_OBJECT");
 
         setState(STATE_CONNECTED);
 
         // Send the coupon ID back to the UI Activity
-        msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_WRITE);
-        handler.sendMessage(msg);
-        Log.i(TAG, "inviato MESSAGE_WRITE");
+//        msg = handler.obtainMessage(HomeActivity.MESSAGE_WRITE);
+//        handler.sendMessage(msg);
+//        Log.i(TAG, "inviato MESSAGE_WRITE");
 
     }
 
@@ -173,7 +171,7 @@ public class BTCommunicationController {
     }
 
     private void connectionFailed() {
-        Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_TOAST);
+        Message msg = handler.obtainMessage(HomeActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
         bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.unableToConnectMsg));
         msg.setData(bundle);
@@ -184,7 +182,7 @@ public class BTCommunicationController {
     }
 
     private void connectionLost() {
-        Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_TOAST);
+        Message msg = handler.obtainMessage(HomeActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
         bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.connectionLostMsg));
         msg.setData(bundle);
@@ -332,7 +330,7 @@ public class BTCommunicationController {
                     // Read from the InputStream
                     bytes = inputStream.read(buffer);
                     // Send the obtained bytes to the UI Activity
-                    handler.obtainMessage(CouponDetailActivity.MESSAGE_READ, bytes, -1,
+                    handler.obtainMessage(HomeActivity.MESSAGE_READ, bytes, -1,
                             buffer).sendToTarget();
                 } catch (IOException e) {
                     connectionLost();

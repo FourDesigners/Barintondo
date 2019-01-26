@@ -1,4 +1,4 @@
-package it.uniba.di.sms.barintondo;
+package sms.di.uniba.it.utility;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,43 +12,30 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
-import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
-import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.CouponLuogo;
-import it.uniba.di.sms.barintondo.utils.InternetConnection;
 
-public class CouponDetailActivity extends AppCompatActivity implements Constants {
+public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = CouponDetailActivity.class.getSimpleName();
-
-    Toolbar myToolbar;
-    ImageView myImageView;
-    TextView desc;
-    CouponLuogo myCoupon;
-    Button useBtn, btnDetailLuogo;
+    Button couponBtn;
 
     //BT
     static String nameUUID = "it.uniba.di.sms.Barintondo";
     private final static UUID MY_UUID = UUID.nameUUIDFromBytes(nameUUID.getBytes());
+    String STRING_TOAST_MSG="toast";
+    String TAG = HomeActivity.class.getSimpleName();
 
     private TextView status;
     private ListView listView;
@@ -69,65 +56,18 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     private BluetoothDevice connectingDevice;
     private ArrayAdapter<String> discoveredDevicesAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_coupon_detail );
-        Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
-        myCoupon = getIntent().getParcelableExtra( Constants.INTENT_COUPON);
-
-        myToolbar = findViewById( R.id.coupon_detail_activity_toolbar );
-        myToolbar.setTitle( myCoupon.getLuogo() );
-        setSupportActionBar( myToolbar );
-        ActionBar actionbar = getSupportActionBar();
-        assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled( true );
-
-        myImageView = findViewById( R.id.luogoDetailImage );
-        //thumbnail
-        /*Glide.with( this )
-                .load( imagesPath + myCoupon.getThumbnailLink() )
-                .into( myImageView );*/
-
-        desc = findViewById( R.id.couponDesc );
-        desc.setText(myCoupon.getDescription());
-
-        useBtn = findViewById( R.id.useBtn );
-        useBtn.setOnClickListener(new View.OnClickListener() {
+        couponBtn = findViewById(R.id.couponBtn);
+        couponBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkBTAvailability();
             }
         } );
-
-        btnDetailLuogo = findViewById( R.id.btnDettaglioPosto );
-        btnDetailLuogo.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goDettaglioLuogo();
-            }
-        } );
-
-    }
-
-    private void goDettaglioLuogo(){
-        Intent intent = new Intent( this, LuogoDetailActivity.class );
-        intent.putExtra( INTENT_LUOGO_COD, myCoupon.getCodLuogo() );
-        startActivity( intent );
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected( item );
 
     }
 
@@ -152,9 +92,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     }
 
     private void showPrinterPickDialog() {
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.bluetooth_devices_list);
-        dialog.setTitle(getResources().getString(R.string.devicesDialog));
 
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
@@ -164,15 +101,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         bluetoothAdapter.startDiscovery();
 
-        //Initializing bluetooth adapters
-        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        discoveredDevicesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        //locate listviews and attatch the adapters
-        ListView listView = dialog.findViewById(R.id.pairedDeviceList);
-        ListView listView2 = dialog.findViewById(R.id.discoveredDeviceList);
-        listView.setAdapter(pairedDevicesAdapter);
-        listView2.setAdapter(discoveredDevicesAdapter);
 
         // Register for broadcasts when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -189,66 +118,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         }
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-
-        // If there are paired devices, add each one to the ArrayAdapter
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                pairedDevicesAdapter.add(device.getName() + "\n" + device.getAddress());
-            }
-        } else {
-            pairedDevicesAdapter.add(getString(R.string.none_paired));
-        }
-
-        //Handling listview item click event
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // bluetoothAdapter.cancelDiscovery();
-                String info = ((TextView) view).getText().toString();
-                Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
-                String address = info.substring(info.length() - 17);
-
-                connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
-                //sendMessage(); //INVIO MESSAGGIO
-                dialog.dismiss();
-            }
-
-        });
-
-        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // bluetoothAdapter.cancelDiscovery();
-                String info = ((TextView) view).getText().toString();
-                String address = info.substring(info.length() - 17);
-                Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
-
-                connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
-                //sendMessage(); //INVIO MESSAGGIO
-
-                dialog.dismiss();
-            }
-        });
-
-        dialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setCancelable(false);
-        dialog.show();
-    }
 
 
-    private void connectToDevice(String deviceAddress) {
-        bluetoothAdapter.cancelDiscovery();
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-        communicationController.connect(device);
     }
 
     private Handler BTHandler = new Handler(new Handler.Callback() {
@@ -259,16 +130,16 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 case MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BTCommunicationController.STATE_CONNECTED:
-                            Log.i(TAG, getResources().getString(R.string.connectedToMsg) + connectingDevice.getName() );
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.connectedToMsg) + connectingDevice.getName(),Toast.LENGTH_SHORT).show();
                             break;
                         case BTCommunicationController.STATE_CONNECTING:
-                            Log.i(TAG, getResources().getString(R.string.connectingMsg) );
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.connectingMsg),Toast.LENGTH_SHORT).show();
                             break;
                         case BTCommunicationController.STATE_LISTEN:
-                            Log.i(TAG, getResources().getString(R.string.listeningModeMsg) );
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.listeningModeMsg),Toast.LENGTH_SHORT).show();
                             break;
                         case BTCommunicationController.STATE_NONE:
-                            Log.i(TAG, getResources().getString(R.string.connectionLostMsg) );
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.notConnectedMsg),Toast.LENGTH_SHORT).show();
                             break;
                     }
                     break;
@@ -280,7 +151,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                     String readMessage = new String(readBuf, 0, msg.arg1);
 
                     //ELABORAZIONE DEL MESSAGGIO RICEVUTO DENTRO MESSAGE_READ
-                    readMessage(readMessage);
+                    String mess = "Coupon code: " + readMessage;
+                    readMessage(mess);
+
+                    sendMessage();
 
                     break;
                 case MESSAGE_DEVICE_OBJECT:
@@ -304,10 +178,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         }
 
         String message;
-        message = myCoupon.getCod(); //setup del messaggio da inviare
+        message = "ok"; //setup del messaggio da inviare
         byte[] send = message.getBytes();
         communicationController.write(send);
-        Log.i(TAG,"inviato: " + message);
+        Toast.makeText(this, "inviato: " + message, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -317,10 +191,9 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
             return;
         } else {
             Toast.makeText(this, "ricevuto: " + message, Toast.LENGTH_SHORT).show();
-            if(message.contains("ok"))
-                communicationController.stop();
         }
 
+        sendMessage();
     }
 
 
@@ -349,7 +222,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            /*if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     String deviceName;
@@ -362,8 +235,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 if (discoveredDevicesAdapter.getCount() == 0) {
                     discoveredDevicesAdapter.add(getString(R.string.none_found));
                 }
-            }
+            }*/
         }
     };
-
 }
