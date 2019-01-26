@@ -154,7 +154,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             if(context instanceof InterestsListActivity){
                 switch (luogo.getCategoria()){
                     case "Attrazione":
-                        icon = R.drawable.ic_attractions;
+                        icon = R.drawable.ic_attraction;
                         break;
                     case "Dormire":
                         icon= R.drawable.ic_stay;

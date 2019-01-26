@@ -85,69 +85,62 @@
             android:layout_height="0dp"
             android:layout_weight="5"
             android:background="@color/colorPrimaryDark">
+
             <TextView
                 android:id="@+id/testotemporaneo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="SLIDER EVENTI"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/standardTextSize"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <Button
-                android:id="@+id/btnHomeGoAttraction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attractions_option"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnHomeGoFood"
-                app:layout_constraintBottom_toTopOf="@id/btnHomeGoSleep"
-                android:drawableTop="@drawable/ic_attractions"/>
+            <TableRow
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/btnHomeGoFood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/eating_option"
-                app:layout_constraintBottom_toBottomOf="@id/btnHomeGoAttraction"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnHomeGoAttraction"
-                app:layout_constraintTop_toTopOf="@id/btnHomeGoAttraction"
-                android:drawableTop="@drawable/ic_food"/>
+                <Button
+                    android:id="@+id/btnHomeGoAttraction"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_attraction"
+                    android:text="@string/attractions_option"/>
 
-            <Button
-                android:id="@+id/btnHomeGoSleep"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sleeping_option"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/btnHomeGoAttraction"
-                app:layout_constraintStart_toStartOf="@id/btnHomeGoAttraction"
-                app:layout_constraintTop_toBottomOf="@id/btnHomeGoAttraction"
-                android:drawableTop="@drawable/ic_stay"/>
+                <Button
+                    android:id="@+id/btnHomeGoFood"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_food"
+                    android:text="@string/eating_option" />
 
-            <Button
-                android:id="@+id/btnHomeGoNearBari"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/near_option"
-                app:layout_constraintBottom_toBottomOf="@id/btnHomeGoSleep"
-                app:layout_constraintEnd_toEndOf="@id/btnHomeGoFood"
-                app:layout_constraintStart_toStartOf="@id/btnHomeGoFood"
-                app:layout_constraintTop_toTopOf="@id/btnHomeGoSleep"
-                android:drawableTop="@drawable/ic_events"/>
-        </android.support.constraint.ConstraintLayout>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/btnHomeGoSleep"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_stay"
+                    android:text="@string/sleeping_option"/>
+
+                <Button
+                    android:id="@+id/btnHomeGoNearBari"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_surroundings"
+                    android:text="@string/near_option"/>
+
+            </TableRow>
+
+        </TableLayout>
 
 
     </android.support.v7.widget.LinearLayoutCompat>

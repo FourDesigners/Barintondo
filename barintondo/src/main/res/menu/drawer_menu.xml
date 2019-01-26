@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="@string/navigation_label">
-        <menu>
-            <group android:checkableBehavior="single">
+
+            <group
+                android:id="@+id/navigation"
+                android:checkableBehavior="single">
                 <item
                     android:id="@+id/home_drawer"
                     android:icon="@drawable/ic_home"
@@ -35,11 +36,10 @@
                     android:title="@string/near_option"
                     app:showAsAction="withText"/>
             </group>
-        </menu>
-    </item>
-    <item android:title="@string/user_label">
-        <menu>
-            <group android:checkableBehavior="single">
+
+            <group
+                android:id="@+id/profilo"
+                android:checkableBehavior="single">
                 <item
                     android:id="@+id/profile"
                     android:icon="@drawable/ic_profile"
@@ -56,11 +56,10 @@
                     android:title="@string/myCoupon_label"
                     app:showAsAction="withText" />
             </group>
-        </menu>
-    </item>
-    <item android:title="@string/preferences_label">
-        <menu>
-            <group android:checkableBehavior="single">
+
+            <group
+                android:id="@+id/settaggi"
+                android:checkableBehavior="single">
                 <item
                     android:id="@+id/contact"
                     android:icon="@drawable/ic_mail_outline"
@@ -82,6 +81,5 @@
                     android:title="@string/logout_label"
                     app:showAsAction="withText" />
             </group>
-        </menu>
-    </item>
+
 </menu>

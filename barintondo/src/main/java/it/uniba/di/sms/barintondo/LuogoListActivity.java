@@ -42,6 +42,7 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 
 public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -56,9 +57,11 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     private LuogoAdapter mAdapter;
     private SearchView searchView;
     private static LuogoListActivity mInstance;
+    private ToolbarSwitchCategories mySwitchCategory;
     String[] arrayRes = null;
     String[] arrayTags = null;
     String[] order = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
+        mySwitchCategory = new ToolbarSwitchCategories( this, items_type );
 
         Resources res = getResources();
         String requestCat="";

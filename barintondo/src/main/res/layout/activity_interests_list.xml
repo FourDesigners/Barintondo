@@ -39,9 +39,12 @@
                 android:id="@+id/item_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
+                android:layout_weight="1"
                 android:scrollbars="vertical"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/luogo_list_content" />
+
+            <include layout="@layout/toolbar_switch_categories" />
 
 
         </android.support.v7.widget.LinearLayoutCompat>
