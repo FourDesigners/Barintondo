@@ -31,6 +31,7 @@ import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 
 public class InterestsListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -41,6 +42,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private LuogoAdapter mAdapter;
     private SearchView searchView;
     private ProgressDialog progressDialog;
+    private ToolbarSwitchCategories myToolbarSwitchCategories;
 
 
 
@@ -58,6 +60,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+
+        myToolbarSwitchCategories = new ToolbarSwitchCategories( this, Constants.INTENT_INTERESES );
 
         //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer( this ,

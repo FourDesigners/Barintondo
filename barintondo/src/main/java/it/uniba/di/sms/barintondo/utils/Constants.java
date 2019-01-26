@@ -14,6 +14,7 @@ public interface Constants {
     String INTENT_NEAR = "near";
     String INTENT_ITEM = "item";
     String INTENT_LUOGO_COD="luogoCod";
+    String INTENT_INTERESES = "interests";
 
     //intent per CouponDetailActivity
     String INTENT_COUPON = "coupon";
