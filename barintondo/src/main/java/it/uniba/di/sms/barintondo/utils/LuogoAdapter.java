@@ -1,7 +1,10 @@
 package it.uniba.di.sms.barintondo.utils;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,19 +39,27 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         private static final String TAG = LuogoAdapter.class.getSimpleName();
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView cod, nome, sottoCat, stato, valutazione;
+            public TextView nome, sottoCat, stato, valutazione;
             public ImageView thumbnail, categIcon;
+            public ImageView[] luogoVoteStar;
 
             public MyViewHolder(View view) {
                 super(view);
 
-                cod = view.findViewById(R.id.cod);
                 nome = view.findViewById(R.id.nome);
                 sottoCat = view.findViewById(R.id.sottoCat);
                 stato = view.findViewById(R.id.stato);
                 valutazione = view.findViewById(R.id.valutazione);
                 thumbnail = view.findViewById(R.id.thumbnail);
                 categIcon = view.findViewById( R.id.icon_categoria );
+
+                luogoVoteStar = new ImageView[5];
+
+                Resources res = view.getResources();
+                for(int i=0; i<5; i++){
+                    int id = res.getIdentifier("luogoStar"+String.valueOf( i ), "id", view.getContext().getPackageName());
+                    luogoVoteStar[i]= view.findViewById( id );
+                }
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -87,7 +98,6 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.thumbnail);
 
-            holder.cod.setText(luogo.getCod());
             holder.nome.setText(luogo.getNome());
 
             //scelgo stringa per sottoCat
@@ -166,7 +176,13 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
             }
 
-            //holder.valutazione.setText(luogo.get());
+            for(int i=0; i<luogo.getVoto();i++){
+                ImageViewCompat.setImageTintList(
+                        holder.luogoVoteStar[i] ,
+                        ColorStateList.valueOf( context.getResources().getColor( R.color.colorOrange ) )
+                );
+
+            }
 
         }
 

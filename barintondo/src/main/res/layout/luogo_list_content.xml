@@ -14,18 +14,6 @@
     android:paddingRight="@dimen/activity_margin"
     android:paddingBottom="@dimen/row_padding">
 
-    <!-- Attraction id - will be HIDDEN - used to pass to other activity -->
-    <TextView
-        android:id="@+id/cod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="@string/notDefined"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!-- Name Label -->
     <TextView
         android:id="@+id/nome"
@@ -38,7 +26,43 @@
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/thumbnail" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/luogoVoteLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/nome"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/luogoStar0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"/>
+        <ImageView
+            android:id="@+id/luogoStar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"/>
+        <ImageView
+            android:id="@+id/luogoStar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"/>
+        <ImageView
+            android:id="@+id/luogoStar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"/>
+        <ImageView
+            android:id="@+id/luogoStar4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"/>
+
+    </LinearLayout>
 
     <!--ImageView visualizzata solo nella lista degli interessi-->
     <ImageView
@@ -48,8 +72,8 @@
         android:layout_marginLeft="10dp"
         app:layout_constraintHorizontal_bias="0.0"
        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/nome"
-        app:layout_constraintBottom_toBottomOf="@id/nome"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/sottoCat"
@@ -58,9 +82,8 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="8dp"
         android:text="@string/notDefined"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/nome"
-        app:layout_constraintTop_toBottomOf="@+id/nome" />
+        app:layout_constraintTop_toBottomOf="@+id/luogoVoteLayout" />
 
     <TextView
         android:id="@+id/stato"

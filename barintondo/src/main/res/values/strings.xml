@@ -275,9 +275,12 @@
     <string name="unableToConnectMsg">Unable to connect device</string>
     <string name="contacts">Useful contacts</string>
 
+
+    <!--Recensioni-->
     <string name="str_fail_get_review">Error in reviews loading, try again later</string>
     <string name="str_add_your_review">Add your review</string>
-    <string name="str_give_vote">Give vote:</string>
+    <string name="str_give_vote">Vote:</string>
+    <string name="testo">Text:</string>
 
 
 </resources>

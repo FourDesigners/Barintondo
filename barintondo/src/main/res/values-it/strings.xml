@@ -163,4 +163,5 @@
     <string name="str_fail_get_review">Errore nel caricamento delle recensioni; riprovare più tardi</string>
     <string name="str_add_your_review">Nuova recensione</string>
     <string name="str_give_vote">Voto:</string>
+    <string name="testo">Testo</string>
 </resources>

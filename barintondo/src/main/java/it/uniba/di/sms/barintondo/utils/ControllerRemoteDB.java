@@ -125,6 +125,7 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setOraA( jsonObject.getString( "oraA" ) );
                             luogo.setOraC( jsonObject.getString( "oraC" ) );
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
                             //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
 
                             //adding items to itemsList
@@ -202,6 +203,7 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setOraC( jsonObject.getString( "oraC" ) );
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
                             //adding items to itemsList
                             luogoList.add( luogo );
 

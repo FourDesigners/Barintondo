@@ -12,7 +12,7 @@
                     app:showAsAction="withText" />
                 <item
                     android:id="@+id/attrazioni"
-                    android:icon="@drawable/ic_attractions"
+                    android:icon="@drawable/ic_attraction"
                     android:title="@string/attractions_option"
                     app:showAsAction="withText"/>
                 <item

@@ -16,12 +16,13 @@ public class Luogo implements Parcelable {
     private String descrizione_en;
     private String descrizione_it;
     private String indirizzo;
+    private int voto;
 
     public Luogo() {
     }
 
     public Luogo(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
-                 String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo) {
+                 String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo, int newVoto) {
         cod = newId;
         nome = newName;
         sottoCat = newSottoCat;
@@ -31,6 +32,7 @@ public class Luogo implements Parcelable {
         descrizione_en = newDescEn;
         descrizione_it = newDescIt;
         indirizzo = newIndirizzo;
+        voto=newVoto;
     }
 
     protected Luogo(Parcel in) {
@@ -44,6 +46,7 @@ public class Luogo implements Parcelable {
         descrizione_en = in.readString();
         descrizione_it = in.readString();
         indirizzo = in.readString();
+        voto=in.readInt();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -139,6 +142,14 @@ public class Luogo implements Parcelable {
         return indirizzo;
     }
 
+    public int getVoto() {
+        return voto;
+    }
+
+    public void setVoto(int voto) {
+        this.voto = voto;
+    }
+
     @Override
     public String toString() {
         return "id= " + cod + " name= " + nome;
@@ -161,5 +172,6 @@ public class Luogo implements Parcelable {
         dest.writeString( descrizione_en );
         dest.writeString( descrizione_it );
         dest.writeString( indirizzo );
+        dest.writeInt(voto);
     }
 }
