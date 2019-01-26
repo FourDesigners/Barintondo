@@ -2,7 +2,6 @@ package sms.di.uniba.it.utility;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -14,17 +13,9 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,16 +23,8 @@ public class HomeActivity extends AppCompatActivity {
     Button couponBtn;
 
     //BT
-    static String nameUUID = "it.uniba.di.sms.Barintondo";
-    private final static UUID MY_UUID = UUID.nameUUIDFromBytes(nameUUID.getBytes());
     String STRING_TOAST_MSG="toast";
-    String TAG = HomeActivity.class.getSimpleName();
 
-    private TextView status;
-    private ListView listView;
-    private Dialog dialog;
-    private ArrayAdapter<String> chatAdapter;
-    private ArrayList<String> chatMessages;
     private BluetoothAdapter bluetoothAdapter;
 
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -54,7 +37,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BLUETOOTH = 1;
     private BTCommunicationController communicationController;
     private BluetoothDevice connectingDevice;
-    private ArrayAdapter<String> discoveredDevicesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +67,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
             } else {
                 communicationController = new BTCommunicationController(this, BTHandler);
-                showPrinterPickDialog();
+                startReceivingMode();
             }
         }
 
     }
 
-    private void showPrinterPickDialog() {
+    private void startReceivingMode() {
 
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
@@ -100,8 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         bluetoothAdapter.startDiscovery();
-
-
 
         // Register for broadcasts when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -149,13 +129,11 @@ public class HomeActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-
-                    //ELABORAZIONE DEL MESSAGGIO RICEVUTO DENTRO MESSAGE_READ
-                    String mess = "Coupon code: " + readMessage;
+                    //aggiungo stringa esplicativa
+                    String mess = "Codice coupon: " + readMessage;
                     readMessage(mess);
-
+                    //invio il messaggio di risposta
                     sendMessage();
-
                     break;
                 case MESSAGE_DEVICE_OBJECT:
                     connectingDevice = msg.getData().getParcelable(DEVICE_OBJECT);
@@ -174,14 +152,13 @@ public class HomeActivity extends AppCompatActivity {
     private void sendMessage() {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
-            return;
+        } else {
+            String message;
+            message = "ok"; //setup del messaggio da inviare
+            byte[] send = message.getBytes();
+            communicationController.write(send);
+            Toast.makeText(this, "Messaggio inviato: " + message, Toast.LENGTH_SHORT).show();
         }
-
-        String message;
-        message = "ok"; //setup del messaggio da inviare
-        byte[] send = message.getBytes();
-        communicationController.write(send);
-        Toast.makeText(this, "inviato: " + message, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -202,7 +179,7 @@ public class HomeActivity extends AppCompatActivity {
             case REQUEST_ENABLE_BLUETOOTH:
                 if (resultCode == Activity.RESULT_OK) {
                     communicationController = new BTCommunicationController(this, BTHandler);
-                    showPrinterPickDialog();
+                    startReceivingMode();
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.btDisabledMsg), Toast.LENGTH_SHORT).show();
                     finish();

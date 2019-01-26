@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,15 +27,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.CouponLuogo;
-import it.uniba.di.sms.barintondo.utils.InternetConnection;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
 
@@ -47,14 +44,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     Button useBtn, btnDetailLuogo;
 
     //BT
-    static String nameUUID = "it.uniba.di.sms.Barintondo";
-    private final static UUID MY_UUID = UUID.nameUUIDFromBytes(nameUUID.getBytes());
-
-    private TextView status;
-    private ListView listView;
     private Dialog dialog;
-    private ArrayAdapter<String> chatAdapter;
-    private ArrayList<String> chatMessages;
     private BluetoothAdapter bluetoothAdapter;
 
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -145,13 +135,13 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
             } else {
                 communicationController = new BTCommunicationController(this, BTHandler);
-                showPrinterPickDialog();
+                startCommunication();
             }
         }
 
     }
 
-    private void showPrinterPickDialog() {
+    private void startCommunication() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.bluetooth_devices_list);
         dialog.setTitle(getResources().getString(R.string.devicesDialog));
@@ -259,16 +249,16 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 case MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BTCommunicationController.STATE_CONNECTED:
-                            Log.i(TAG, getResources().getString(R.string.connectedToMsg) + connectingDevice.getName() );
+                            Log.i(TAG, "Connesso a: " + connectingDevice.getName() );
                             break;
                         case BTCommunicationController.STATE_CONNECTING:
-                            Log.i(TAG, getResources().getString(R.string.connectingMsg) );
+                            Log.i(TAG, "Connessione in corso..." );
                             break;
                         case BTCommunicationController.STATE_LISTEN:
-                            Log.i(TAG, getResources().getString(R.string.listeningModeMsg) );
+                            Log.i(TAG, "In attesa di connessioni in entrata" );
                             break;
                         case BTCommunicationController.STATE_NONE:
-                            Log.i(TAG, getResources().getString(R.string.connectionLostMsg) );
+                            Log.i(TAG, "Connessione interrotta" );
                             break;
                     }
                     break;
@@ -278,15 +268,12 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-
-                    //ELABORAZIONE DEL MESSAGGIO RICEVUTO DENTRO MESSAGE_READ
                     readMessage(readMessage);
-
                     break;
                 case MESSAGE_DEVICE_OBJECT:
                     connectingDevice = msg.getData().getParcelable(DEVICE_OBJECT);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.connectedToMsg) + connectingDevice.getName(),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.connectedToMsg)
+                                    + connectingDevice.getName(),Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(STRING_TOAST_MSG),
@@ -299,37 +286,38 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
     private void sendMessage() {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
-            Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, getResources().getString(R.string.connectionInterruptedMsg), Toast.LENGTH_SHORT).show();
+        } else {
+            String message;
+            message = myCoupon.getCod(); //setup del messaggio da inviare
+            byte[] send = message.getBytes();
+            communicationController.write(send);
+            Log.i(TAG,"inviato: " + message);
         }
-
-        String message;
-        message = myCoupon.getCod(); //setup del messaggio da inviare
-        byte[] send = message.getBytes();
-        communicationController.write(send);
-        Log.i(TAG,"inviato: " + message);
 
     }
 
     private void readMessage(String message) {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
-            Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, getResources().getString(R.string.connectionInterruptedMsg), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "ricevuto: " + message, Toast.LENGTH_SHORT).show();
             if(message.contains("ok"))
                 communicationController.stop();
+            else {
+                Toast.makeText(this, "errore", Toast.LENGTH_SHORT).show();
+            }
         }
+        communicationController.stop();
 
     }
-
-
+    
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_ENABLE_BLUETOOTH:
                 if (resultCode == Activity.RESULT_OK) {
                     communicationController = new BTCommunicationController(this, BTHandler);
-                    showPrinterPickDialog();
+                    startCommunication();
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.btDisabledMsg), Toast.LENGTH_SHORT).show();
                     finish();

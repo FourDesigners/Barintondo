@@ -183,15 +183,12 @@ public class BTCommunicationController {
         BTCommunicationController.this.start();
     }
 
-    private void connectionLost() {
+    private void connectionInterrupted() {
         Message msg = handler.obtainMessage(CouponDetailActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.connectionLostMsg));
+        bundle.putString(STRING_TOAST_MSG, mContext.getResources().getString(R.string.connectionInterruptedMsg));
         msg.setData(bundle);
         handler.sendMessage(msg);
-
-        // Start the service over to restart listening mode
-        BTCommunicationController.this.start();
     }
 
     // runs while listening for incoming connections
@@ -234,6 +231,7 @@ public class BTCommunicationController {
                                 try {
                                     socket.close();
                                 } catch (IOException e) {
+                                    Log.e(TAG, "Exception in run() method");
                                 }
                                 break;
                         }
@@ -246,6 +244,7 @@ public class BTCommunicationController {
             try {
                 serverSocket.close();
             } catch (IOException e) {
+                Log.e(TAG, "Exception in cancel() method");
             }
         }
     }
@@ -279,6 +278,7 @@ public class BTCommunicationController {
                 try {
                     socket.close();
                 } catch (IOException e2) {
+                    Log.e(TAG, "Exception in run() method");
                 }
                 connectionFailed();
                 return;
@@ -297,6 +297,7 @@ public class BTCommunicationController {
             try {
                 socket.close();
             } catch (IOException e) {
+                Log.e(TAG, "Exception in cancel() method");
             }
         }
     }
@@ -316,6 +317,7 @@ public class BTCommunicationController {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
             } catch (IOException e) {
+                Log.e(TAG, "Exception in setting sockets");
             }
 
             inputStream = tmpIn;
@@ -335,7 +337,7 @@ public class BTCommunicationController {
                     handler.obtainMessage(CouponDetailActivity.MESSAGE_READ, bytes, -1,
                             buffer).sendToTarget();
                 } catch (IOException e) {
-                    connectionLost();
+                    connectionInterrupted();
                     // Start the service over to restart listening mode
                     BTCommunicationController.this.start();
                     break;
@@ -348,6 +350,7 @@ public class BTCommunicationController {
             try {
                 outputStream.write(buffer);
             } catch (IOException e) {
+                Log.e(TAG, "Exception in write() method");
             }
         }
 
