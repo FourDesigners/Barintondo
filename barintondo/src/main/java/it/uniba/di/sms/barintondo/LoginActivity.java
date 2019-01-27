@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -189,42 +188,13 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         builder.setView(view);
 
         final EditText editEmail = view.findViewById(R.id.editEmailForgot);
-        final EditText editPassword = view.findViewById(R.id.editForgotPassword);
-        final ImageView imageViewDialog = view.findViewById(R.id.imageView);
-        imageViewDialog.setTag(R.drawable.closedeye);
-        imageViewDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageViewDialog.getTag();
-                integer = integer == null ? 0 : integer;
-
-                //Toast.makeText(getApplicationContext(), integer.toString(), Toast.LENGTH_SHORT).show();
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageViewDialog.setImageResource(R.drawable.closedeye);
-                        imageViewDialog.setTag(R.drawable.closedeye);
-                        editPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        editPassword.setSelection(editPassword.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageViewDialog.setImageResource(R.drawable.openeye);
-                        imageViewDialog.setTag(R.drawable.openeye);
-                        editPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        editPassword.setSelection(editPassword.getText().length());
-                        break;
-                }
-            }
-        });
-
 
         AlertDialog dialog = builder.create();
         builder.setPositiveButton(getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 String email = editEmail.getText().toString();
-                String password = editPassword.getText().toString();
-                if(isCorrect(email, password)) {
-                    resetPassword(email, password);
+                if(isCorrect(email)) {
+                    resetPassword(email);
                 }
             }
         });
@@ -237,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         alert.show();
     }
 
-    private void resetPassword(final String email, final String password) {
+    private void resetPassword(final String email) {
         String Url = "http://barintondo.altervista.org/recuperaPassword.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -245,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             @Override
             public void onResponse(String response) {
                 if(response.contains("ok")) {
-                    showNotification(email, password);
+                    showNotification();
                 }else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.strNoAccount), Toast.LENGTH_SHORT).show();
                 }
@@ -260,7 +230,6 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put("user", email);
-                MyData.put("pass", password);
                 return MyData;
             }
         };
@@ -269,8 +238,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         MyRequestQueue.add(MyStringRequest);
     }
 
-    private void showNotification(final String email, final String password) {
-        getNickname(email, password, 0);
+    private void showNotification() {
         final Intent intent = new Intent(this, LoginActivity.class);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new NotificationCompat.Builder(this)
@@ -283,18 +251,14 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         notificationManager.notify(0, notification);
     }
 
-    private boolean isCorrect(String email, String password) {
+    private boolean isCorrect(String email) {
         boolean correct = true;
 
         if(VerifyString.isEmailNotValid(email)) {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.str_email_is_not_valid), Toast.LENGTH_SHORT).show();
             correct = false;
-        }else {
-            if(VerifyString.isPasswordNotValid(password)) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.str_weak_password_min_8_characters_required), Toast.LENGTH_SHORT).show();
-                correct = false;
-            }
         }
+
         return correct;
     }
 
