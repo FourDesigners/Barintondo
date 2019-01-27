@@ -482,6 +482,8 @@ public class ControllerRemoteDB implements Constants {
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
+        reviewsList.clear();
+
         String Url="http://barintondo.altervista.org/manager_review.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
