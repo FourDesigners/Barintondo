@@ -139,7 +139,7 @@
     <string name="strForgotPassword">Password dimenticata</string>
     <string name="strInsert">Inserimento e-mail e password</string>
     <string name="strNoAccount">Account non presente</string>
-    <string name="strInfo">Password modificata! Clicca per accedere</string>
+    <string name="strInfo">Password modificata! Controlla account e-mail</string>
     <string name="useBtn">Utilizzo Coupon</string>
     <string name="detailBtn">Dettaglio Luogo</string>
     <string name="btNotAvailable">Bluetooth non disponibile su questo dispositivo</string>

@@ -272,12 +272,10 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     private void showNotification(final String email, final String password) {
         getNickname(email, password, 0);
         final Intent intent = new Intent(this, LoginActivity.class);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_profile)
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText(getResources().getString(R.string.strInfo))
                 .build();
