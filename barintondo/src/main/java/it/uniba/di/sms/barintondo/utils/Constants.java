@@ -63,6 +63,7 @@ public interface Constants {
     String REQUEST_RESULT_OK="ok";
 
     String REQUEST_GET_REVIEWS = "Reviews";
+    String REQUEST_SAVE_REVIEW = "SaveReview";
 
     //BT IDs
     String STRING_TOAST_MSG="toast";

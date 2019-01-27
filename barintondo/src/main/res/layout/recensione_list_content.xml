@@ -31,41 +31,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reviewDate" />
 
-    <LinearLayout
+    <include
         android:id="@+id/reviewVoteLayout"
+        layout="@layout/frame_vote_stars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/userName"
-        app:layout_constraintBottom_toBottomOf="@id/userName"
-        android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/reviewStar0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"/>
-        <ImageView
-            android:id="@+id/reviewStar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"/>
-        <ImageView
-            android:id="@+id/reviewStar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"/>
-        <ImageView
-            android:id="@+id/reviewStar3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"/>
-        <ImageView
-            android:id="@+id/reviewStar4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"/>
+        app:layout_constraintBottom_toBottomOf="@id/userName" />
 
-    </LinearLayout>
 
 
     <TextView

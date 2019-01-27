@@ -160,4 +160,5 @@
     <string name="devicesPairedDialogMsg">Dispositvi Accoppiati</string>
     <string name="devicesFoundDialogMsg">Dispositivi Trovati</string>
     <string name="cancelDialogBtn">Annulla</string>
+    <string name="strInsertReview">Testo recensione</string>
 </resources>

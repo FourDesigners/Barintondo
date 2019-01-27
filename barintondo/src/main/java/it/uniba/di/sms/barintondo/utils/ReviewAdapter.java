@@ -39,7 +39,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView userName, textRecensione, reviewDate;
-        public ImageView[] reviewVoteStar;
+        public FrameVoteStars mFrameVoteStars;
 
         public MyViewHolder(View view) {
             super(view);
@@ -47,13 +47,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             userName = view.findViewById( R.id.userName );
             textRecensione = view.findViewById( R.id.text_recensione );
             reviewDate = view.findViewById( R.id.reviewDate );
-            reviewVoteStar = new ImageView[5];
-
-            Resources res = view.getResources();
-            for(int i=0; i<5; i++){
-                int id = res.getIdentifier("reviewStar"+String.valueOf( i ), "id", view.getContext().getPackageName());
-                reviewVoteStar[i]= view.findViewById( id );
-            }
+            mFrameVoteStars = new FrameVoteStars( view );
         }
     }
 
@@ -80,13 +74,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
         holder.userName.setText(review.getUserName());
         holder.textRecensione.setText(review.getReviewText());
         holder.reviewDate.setText( review.getDate() );
-        for(int i=0; i<review.getVote();i++){
-            ImageViewCompat.setImageTintList(
-                    holder.reviewVoteStar[i] ,
-                    ColorStateList.valueOf( context.getResources().getColor( R.color.colorOrange ) )
-            );
-
-        }
+        holder.mFrameVoteStars.setStars( review.getVote() );
     }
 
     @Override

@@ -41,7 +41,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView nome, sottoCat, stato, valutazione;
             public ImageView thumbnail, categIcon;
-            public ImageView[] luogoVoteStar;
+            public FrameVoteStars mVoteStars;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -53,13 +53,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 thumbnail = view.findViewById(R.id.thumbnail);
                 categIcon = view.findViewById( R.id.icon_categoria );
 
-                luogoVoteStar = new ImageView[5];
-
-                Resources res = view.getResources();
-                for(int i=0; i<5; i++){
-                    int id = res.getIdentifier("luogoStar"+String.valueOf( i ), "id", view.getContext().getPackageName());
-                    luogoVoteStar[i]= view.findViewById( id );
-                }
+                mVoteStars = new FrameVoteStars( view);
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,13 +170,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
             }
 
-            for(int i=0; i<luogo.getVoto();i++){
-                ImageViewCompat.setImageTintList(
-                        holder.luogoVoteStar[i] ,
-                        ColorStateList.valueOf( context.getResources().getColor( R.color.colorOrange ) )
-                );
-
-            }
+            holder.mVoteStars.setStars( luogo.getVoto() );
 
         }
 

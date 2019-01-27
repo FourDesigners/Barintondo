@@ -23,6 +23,7 @@ import java.util.Map;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
+import it.uniba.di.sms.barintondo.LuogoReviewsFragment;
 import it.uniba.di.sms.barintondo.R;
 
 public class ControllerRemoteDB implements Constants {
@@ -494,12 +495,6 @@ public class ControllerRemoteDB implements Constants {
                 try {
                     JSONArray jsonArray = new JSONArray( response );
 
-                    if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review )  , Toast.LENGTH_LONG ).show();
-                        progressDialog.dismiss();
-                        return;
-                    }
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( i );
@@ -545,12 +540,51 @@ public class ControllerRemoteDB implements Constants {
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op", REQUEST_GET_REVIEWS );
-                MyData.put( "request_codLuogo", codLuogo );
+                MyData.put( "cod_luogo", codLuogo );
                 return MyData;
             }
         };
 
 
+        MyRequestQueue.add( MyStringRequest );
+    }
+
+    public void saveReview(final String reviewText , final String codLuogo, final int voto, final LuogoReviewsFragment myReviewFragment) {
+        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
+
+        String Url="http://barintondo.altervista.org/manager_review.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.i( "Review" , getClass().getSimpleName() + ":entered saveReview( )"+response);
+
+                if(response.equals( REQUEST_RESULT_OK )){
+                    myReviewFragment.onSaveReviewResult();
+                }
+                else Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
+
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_op" , REQUEST_SAVE_REVIEW );
+                MyData.put( "email" , email );
+                MyData.put( "cod_luogo" , codLuogo );
+                MyData.put( "review_text", reviewText );
+                MyData.put( "voto", String.valueOf( voto ) );
+                return MyData;
+            }
+        };
         MyRequestQueue.add( MyStringRequest );
     }
 }

@@ -277,6 +277,8 @@
     <string name="str_add_your_review">Add your review</string>
     <string name="str_give_vote">Vote:</string>
     <string name="testo">Text:</string>
+    <string name="strInsertReview">Review text</string>
+    <string name="str_fail_save_review">Failed to save your review, try again later</string>
 
 
 </resources>

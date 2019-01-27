@@ -17,9 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,12 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     LinearLayout layoutYourReview;
     CoordinatorLayout layourReviewsList;
     public ImageView[] yourReviewVoteStar;
-    FloatingActionButton fabAdReview, fabCancelReview;
+    FloatingActionButton fabAdReview;
+    ImageButton btnCancelReview, btnSaveReview;
+    private int yourVote;
+    EditText reviewEditText;
+    LuogoReviewsFragment mLuogoReviewFragment;
+    ControllerRemoteDB controllerRemoteDB;
 
     public LuogoReviewsFragment() {
         // Required empty public constructor
@@ -56,15 +65,17 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             itemCod = getArguments().getString( ITEM_REVIEWS );
             reviewList = new ArrayList<>(  );
             yourReviewVoteStar = new ImageView[5];
+            mLuogoReviewFragment=this;
+            controllerRemoteDB = new ControllerRemoteDB( this.getContext() );
 
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater , ViewGroup container ,
+    public View onCreateView(LayoutInflater inflater , final ViewGroup container ,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate( R.layout.fragment_luogo_reviews , container , false );
+        final View rootView = inflater.inflate( R.layout.fragment_luogo_reviews , container , false );
 
         mAdapter = new ReviewAdapter( rootView.getContext(), reviewList );
         //recyclerView setup
@@ -78,7 +89,9 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         layoutYourReview = rootView.findViewById(R.id.layout_your_review);
         layourReviewsList = rootView.findViewById( R.id.layout_reviews_list );
         fabAdReview = rootView.findViewById( R.id.fabAddReview );
-        fabCancelReview = rootView.findViewById( R.id.fabCancelReview );
+        btnCancelReview = rootView.findViewById( R.id.btnCancelReview );
+        btnSaveReview = rootView.findViewById( R.id.btnSaveReview );
+        reviewEditText = rootView.findViewById( R.id.edit_text_review );
 
         fabAdReview.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -88,7 +101,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             }
         } );
 
-        fabCancelReview.setOnClickListener( new View.OnClickListener() {
+        btnCancelReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layourReviewsList.setVisibility( View.VISIBLE );
@@ -100,7 +113,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         for(int i=0; i<5; i++){
             int id = res.getIdentifier("yourReviewStar"+String.valueOf( i ), "id", rootView.getContext().getPackageName());
             yourReviewVoteStar[i]= rootView.findViewById( id );
-            final int j=i;
+            final int j=i+1;
             yourReviewVoteStar[i].setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,11 +121,17 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
                 }
             } );
         }
+        starSelected(1, res);
 
 
+        controllerRemoteDB.getReviewsList( itemCod, reviewList, mAdapter );
 
-        ControllerRemoteDB controller = new ControllerRemoteDB( rootView.getContext() );
-        controller.getReviewsList( itemCod, reviewList, mAdapter );
+        btnSaveReview.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controllerRemoteDB.saveReview( reviewEditText.getText().toString(), itemCod, yourVote, mLuogoReviewFragment  );
+            }
+        } );
 
         return rootView;
     }
@@ -125,6 +144,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     }
 
     private void starSelected(int j, Resources res){
+        yourVote=j;
         int i;
         for(i=0; i<j;i++){
             ImageViewCompat.setImageTintList(
@@ -138,6 +158,12 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
                     ColorStateList.valueOf( res.getColor( R.color.colorBlack ) )
             );
         }
+    }
+
+    public void onSaveReviewResult(){
+        layourReviewsList.setVisibility( View.VISIBLE );
+        layoutYourReview.setVisibility( View.GONE );
+        controllerRemoteDB.getReviewsList( itemCod, reviewList, mAdapter );
     }
 
 }
