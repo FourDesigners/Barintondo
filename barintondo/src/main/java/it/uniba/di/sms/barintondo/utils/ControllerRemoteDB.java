@@ -562,7 +562,7 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( "Review" , getClass().getSimpleName() + ":entered saveReview( )"+response);
+                //Log.i( "Review" , getClass().getSimpleName() + ":entered saveReview( )"+response);
 
                 if(response.equals( REQUEST_RESULT_OK )){
                     myReviewFragment.onSaveReviewResult();

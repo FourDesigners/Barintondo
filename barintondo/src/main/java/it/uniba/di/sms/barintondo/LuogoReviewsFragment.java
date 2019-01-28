@@ -164,6 +164,9 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         layourReviewsList.setVisibility( View.VISIBLE );
         layoutYourReview.setVisibility( View.GONE );
         controllerRemoteDB.getReviewsList( itemCod, reviewList, mAdapter );
+        reviewEditText.getText().clear();
+        final Resources res = this.getResources();
+        starSelected(1, res);
     }
 
 }
