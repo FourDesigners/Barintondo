@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.ContentObservable;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuCompat;
@@ -27,8 +28,10 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import java.util.Locale;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class HomeActivity extends AppCompatActivity implements Constants {
 
@@ -36,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
     Button moreBtn, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn;
+    ControllerRemoteDB controllerRemoteDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,11 @@ public class HomeActivity extends AppCompatActivity implements Constants {
                 homeStartActivity( Constants.INTENT_NEAR );
             }
         } );
+
+        controllerRemoteDB = new ControllerRemoteDB( this );
+        controllerRemoteDB.populateInterestsCod();
+
+
 
     }
 

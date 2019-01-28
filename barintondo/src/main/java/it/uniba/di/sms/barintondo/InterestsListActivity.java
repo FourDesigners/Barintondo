@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
@@ -32,6 +33,7 @@ import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
+import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class InterestsListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -86,7 +88,13 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     public void setupRecyclerView(ArrayList<Luogo> interestsList) {
         progressDialog.dismiss();
 
-        if (interestsList.size() > 0) noInterests.setVisibility( View.GONE );
+        if (interestsList.size() > 0) {
+            noInterests.setVisibility( View.GONE );
+            for(int i=0; i<interestsList.size();i++){
+                interestsList.get( i ).setOrder( interestsList.get( i ).getVoto() );
+            }
+            Collections.sort( interestsList );
+        }
         else noInterests.setVisibility( View.VISIBLE );
 
         mAdapter = new LuogoAdapter( this , interestsList , this );

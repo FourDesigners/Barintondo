@@ -28,12 +28,18 @@ public class FrameVoteStars implements Constants{
     }
 
     public void setStars(int vote){
-        for(int i=0; i<vote;i++){
+        int i;
+        for(i=0; i<vote;i++){
             ImageViewCompat.setImageTintList(
                     voteStar[i] ,
                     ColorStateList.valueOf( view.getResources().getColor( R.color.colorOrange ) )
             );
-
+        }
+        for(; i<5;i++){
+            ImageViewCompat.setImageTintList(
+                    voteStar[i] ,
+                    ColorStateList.valueOf( view.getResources().getColor( R.color.colorBlack ) )
+            );
         }
     }
 }

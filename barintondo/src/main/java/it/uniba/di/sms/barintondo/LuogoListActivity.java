@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.support.design.chip.Chip;
@@ -43,6 +44,7 @@ import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
+import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
@@ -177,6 +179,18 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         ControllerRemoteDB controller = new ControllerRemoteDB( this );
         controller.getLuoghiList( requestCat , luogoList, mAdapter);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        for(int i=0; i<luogoList.size();i++){
+            int order=luogoList.get( i ).getVoto();
+            if(UserUtils.codPref.contains( luogoList.get( i ).getCod() )) order=order+10;
+            luogoList.get( i ).setOrder( order );
+        }
+        Collections.sort( luogoList );
+        mAdapter.notifyDataSetChanged();
     }
 
     private void setCounter(String[] arrayRes, String[] arrayTags, String tag) {

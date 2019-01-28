@@ -12,14 +12,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 
 public class LuogoDetailActivity extends AppCompatActivity implements Constants {
@@ -30,6 +33,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     FloatingActionButton fabPref;
     boolean isPref = false;
     ControllerRemoteDB controller;
+    FrameVoteStars myFrameVoteStars;
+    Luogo luogo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +59,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemInfo = findViewById( R.id.btn_luogo_info );
         itemDirection = findViewById( R.id.btn_luogo_directions );
         itemReview = findViewById( R.id.btn_luogo_reviews );
+        myFrameVoteStars=new FrameVoteStars( findViewById( R.id.luogoVoteLayout) );
+
     }
 
-    public void onLuogoLoaded(final Luogo myLuogo){
+    public void onLuogoLoaded(final Luogo myLuogo) {
+        this.luogo=myLuogo;
 
         myToolbar.setTitle( myLuogo.getNome() );
 
@@ -73,12 +82,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             }
         } );
 
+        myFrameVoteStars.setStars( myLuogo.getVoto() );
 
         //thumbnail
         Glide.with( this )
                 .load( imagesPath + myLuogo.getThumbnailLink() )
                 .into( myImageView );
-
 
 
         itemInfo.setOnClickListener( new View.OnClickListener() {
@@ -104,6 +113,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         } );
 
         attachDescription( myLuogo );
+
     }
 
     @Override
@@ -193,6 +203,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     public void prefAdded(boolean result) {
         if (result) {
             checkPrefResult( true );
+            UserUtils.codPref.add( luogo.getCod() );
             Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_added ) , Toast.LENGTH_SHORT ).show();
         } else
             Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
@@ -201,6 +212,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     public void prefRemoved(boolean result) {
         if (result) {
             checkPrefResult( false );
+            UserUtils.codPref.remove( luogo.getCod() );
             Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_removed ) , Toast.LENGTH_SHORT ).show();
         } else
             Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();

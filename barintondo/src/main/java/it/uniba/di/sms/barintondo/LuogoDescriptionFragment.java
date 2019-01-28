@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
@@ -14,8 +15,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
 
     private String itemDescription, orarioA, orarioC;
     TextView textViewDescription, textOrarioA, textOrarioC;
-
-
+    TableLayout tableOrari;
 
     public LuogoDescriptionFragment() {
         // Required empty public constructor
@@ -30,12 +30,13 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
         if (getArguments().containsKey( ITEM_DESCRIPTION )) {
             itemDescription = getArguments().getString( ITEM_DESCRIPTION );
             orarioA = getArguments().getString( ITEM_ORA_A );
-            ora=orarioA.split( ":" );
-            orarioA=ora[0]+":"+ora[1];
-            orarioC = getArguments().getString( ITEM_ORA_C );
-            ora=orarioC.split( ":" );
-            orarioC=ora[0]+":"+ora[1];
-
+            if(orarioA!=null) {
+                ora = orarioA.split( ":" );
+                orarioA = ora[0] + ":" + ora[1];
+                orarioC = getArguments().getString( ITEM_ORA_C );
+                ora = orarioC.split( ":" );
+                orarioC = ora[0] + ":" + ora[1];
+            }
 
         }
     }
@@ -50,11 +51,14 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
         textViewDescription = rootView.findViewById(R.id.text_description);
         textViewDescription.setText( itemDescription );
 
+        tableOrari = rootView.findViewById( R.id.luogo_table_orari );
         textOrarioA = rootView.findViewById(R.id.text_orario_a);
-        textOrarioA.setText( orarioA );
-
         textOrarioC = rootView.findViewById(R.id.text_orario_c);
-        textOrarioC.setText( orarioC );
+
+        if (orarioA != null) {
+            textOrarioA.setText( orarioA );
+            textOrarioC.setText( orarioC );
+        } else tableOrari.setVisibility( View.GONE );
 
         return rootView;
     }

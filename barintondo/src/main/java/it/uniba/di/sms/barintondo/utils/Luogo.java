@@ -4,10 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Locale;
+import java.util.Objects;
 
-public class Luogo implements Parcelable {
+public class Luogo implements Parcelable, Comparable<Luogo>{
     private String cod;
     private String nome;
+    private String citta;
     private String categoria;
     private String sottoCat;
     private String oraA;
@@ -17,14 +19,16 @@ public class Luogo implements Parcelable {
     private String descrizione_it;
     private String indirizzo;
     private int voto;
+    private int order;
 
     public Luogo() {
     }
 
-    public Luogo(String newId , String newName , String newSottoCat , String newOraA , String newOraC ,
+    public Luogo(String newId , String newName , String newCitta, String newSottoCat , String newOraA , String newOraC ,
                  String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo, int newVoto) {
         cod = newId;
         nome = newName;
+        citta=newCitta;
         sottoCat = newSottoCat;
         oraA = newOraA;
         oraC = newOraC;
@@ -38,6 +42,7 @@ public class Luogo implements Parcelable {
     protected Luogo(Parcel in) {
         cod = in.readString();
         nome = in.readString();
+        citta = in.readString();
         sottoCat = in.readString();
         categoria = in.readString();
         oraA = in.readString();
@@ -47,6 +52,7 @@ public class Luogo implements Parcelable {
         descrizione_it = in.readString();
         indirizzo = in.readString();
         voto=in.readInt();
+        order=in.readInt();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -76,6 +82,14 @@ public class Luogo implements Parcelable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
     }
 
     public void setCategoria(String categoria) {this.categoria = categoria;}
@@ -150,6 +164,14 @@ public class Luogo implements Parcelable {
         this.voto = voto;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "id= " + cod + " name= " + nome;
@@ -164,6 +186,7 @@ public class Luogo implements Parcelable {
     public void writeToParcel(Parcel dest , int flags) {
         dest.writeString( cod );
         dest.writeString( nome );
+        dest.writeString( citta );
         dest.writeString( categoria );
         dest.writeString( sottoCat );
         dest.writeString( oraA );
@@ -173,5 +196,14 @@ public class Luogo implements Parcelable {
         dest.writeString( descrizione_it );
         dest.writeString( indirizzo );
         dest.writeInt(voto);
+        dest.writeInt( order );
+    }
+
+
+    @Override
+    public int compareTo(Luogo o) {
+        if(this.order> o.order) return -1;
+        if(this.order==o.order) return 0;
+        return 1;
     }
 }

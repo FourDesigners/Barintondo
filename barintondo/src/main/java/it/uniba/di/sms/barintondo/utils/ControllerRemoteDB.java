@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class ControllerRemoteDB implements Constants {
 
     public ControllerRemoteDB(Context context) {
         this.context = context;
-        email=ProfileOpenHelper.getEmail( context );
+        email = ProfileOpenHelper.getEmail( context );
     }
 
     public void checkPref(String itemCod) {
@@ -97,7 +99,7 @@ public class ControllerRemoteDB implements Constants {
 
 
     public void getAllInterests() {
-        Log.i( TAG ,  "ControllerRemoteDB: entered getAllInterests()" );
+        Log.i( TAG , "ControllerRemoteDB: entered getAllInterests()" );
         final ArrayList<Luogo> interestsList = new ArrayList<>();
 
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
@@ -121,10 +123,16 @@ public class ControllerRemoteDB implements Constants {
                             Luogo luogo = new Luogo();
                             luogo.setCod( jsonObject.getString( "cod" ) );
                             luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ));
+                            luogo.setCitta( jsonObject.getString( "citta" ) );
+                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
                             luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            luogo.setOraA( jsonObject.getString( "oraA" ) );
-                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                                luogo.setOraA( null );
+                                luogo.setOraC( null );
+                            } else {
+                                luogo.setOraA( jsonObject.getString( "oraA" ) );
+                                luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setVoto( jsonObject.getInt( "voto" ) );
                             //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
@@ -143,7 +151,7 @@ public class ControllerRemoteDB implements Constants {
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
                 }
                 InterestsListActivity interestsListActivity = (InterestsListActivity) context;
-                interestsListActivity.setupRecyclerView(interestsList);
+                interestsListActivity.setupRecyclerView( interestsList );
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
@@ -166,19 +174,74 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiList(final String requestCat, final List<Luogo> luogoList, final LuogoAdapter mAdapter){
+    public void populateInterestsCod() {
+        Log.i( TAG , "ControllerRemoteDB: entered getInterestsCod()" );
+        UserUtils.codPref.clear();
+
+        String Url = "http://barintondo.altervista.org/gestore_interessi.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()"+response );
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+                            UserUtils.codPref.add( jsonObject.getString( "luogo" ) );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                }
+
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_op" , REQUEST_GET_PREF_COD );
+                MyData.put( "email" , email );
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+    }
+
+    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final LuogoAdapter mAdapter) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-        String Url="http://barintondo.altervista.org/get_luoghi.php";
+        String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()");
+                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
 
@@ -187,7 +250,7 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_LONG ).show();
                         progressDialog.dismiss();
                         return;
                     }
@@ -199,12 +262,21 @@ public class ControllerRemoteDB implements Constants {
                             Luogo luogo = new Luogo();
                             luogo.setCod( jsonObject.getString( "cod" ) );
                             luogo.setNome( jsonObject.getString( "nome" ) );
+                            luogo.setCitta( jsonObject.getString( "citta" ) );
                             luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            luogo.setOraA( jsonObject.getString( "oraA" ) );
-                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                                luogo.setOraA( null );
+                                luogo.setOraC( null );
+                            } else {
+                                luogo.setOraA( jsonObject.getString( "oraA" ) );
+                                luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
                             luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            int order=jsonObject.getInt( "voto" );
+                            if(UserUtils.codPref.contains( luogo.getCod() )) order=order+10;
+                            luogo.setOrder( order );
                             //adding items to itemsList
                             luogoList.add( luogo );
 
@@ -218,6 +290,7 @@ public class ControllerRemoteDB implements Constants {
                     e2.printStackTrace();
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
+                Collections.sort( luogoList );
                 mAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
 
@@ -233,7 +306,7 @@ public class ControllerRemoteDB implements Constants {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "request_op", REQUEST_GET_CATEGORY );
+                MyData.put( "request_op" , REQUEST_GET_CATEGORY );
                 MyData.put( "request_cat" , requestCat );
                 return MyData;
             }
@@ -243,19 +316,19 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getEventiList(final String requestCat, final List<Evento> eventoList, final EventoAdapter mAdapter){
+    public void getEventiList(final String requestCat , final List<Evento> eventoList , final EventoAdapter mAdapter) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-        String Url="http://barintondo.altervista.org/get_eventi.php";
+        String Url = "http://barintondo.altervista.org/get_eventi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()");
+                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
 
@@ -264,7 +337,7 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_LONG ).show();
                         progressDialog.dismiss();
                         return;
                     }
@@ -315,7 +388,7 @@ public class ControllerRemoteDB implements Constants {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "request_op", REQUEST_GET_CATEGORY );
+                MyData.put( "request_op" , REQUEST_GET_CATEGORY );
                 MyData.put( "request_cat" , requestCat );
                 return MyData;
             }
@@ -325,20 +398,20 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuogo(final String codLuogo){
+    public void getLuogo(final String codLuogo) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
 
-        String Url="http://barintondo.altervista.org/get_luoghi.php";
+        String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()");
+                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
@@ -347,12 +420,12 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi )  , Toast.LENGTH_LONG ).show();
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_LONG ).show();
                         progressDialog.dismiss();
                         return;
                     }
 
-                    if( jsonArray.length()==1) {
+                    if (jsonArray.length() == 1) {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( 0 );
 
@@ -360,12 +433,18 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setCod( jsonObject.getString( "cod" ) );
                             luogo.setNome( jsonObject.getString( "nome" ) );
                             luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            luogo.setOraA( jsonObject.getString( "oraA" ) );
-                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                                luogo.setOraA( null );
+                                luogo.setOraC( null );
+                            } else {
+                                luogo.setOraA( jsonObject.getString( "oraA" ) );
+                                luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
                             luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -393,7 +472,7 @@ public class ControllerRemoteDB implements Constants {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "request_op", REQUEST_GET_LUOGO );
+                MyData.put( "request_op" , REQUEST_GET_LUOGO );
                 MyData.put( "request_luogo" , codLuogo );
                 return MyData;
             }
@@ -403,7 +482,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getCouponList(final List<CouponLuogo> couponList, final CouponLuogoAdapter mAdapter){
+    public void getCouponList(final List<CouponLuogo> couponList , final CouponLuogoAdapter mAdapter) {
         //couponList.clear();
 
         final ProgressDialog progressDialog = new ProgressDialog( context );
@@ -477,14 +556,14 @@ public class ControllerRemoteDB implements Constants {
 
     }
 
-    public void getReviewsList(final String codLuogo, final List<Review> reviewsList, final ReviewAdapter mAdapter){
+    public void getReviewsList(final String codLuogo , final List<Review> reviewsList , final ReviewAdapter mAdapter) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
         reviewsList.clear();
 
-        String Url="http://barintondo.altervista.org/manager_review.php";
+        String Url = "http://barintondo.altervista.org/manager_review.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
@@ -501,26 +580,26 @@ public class ControllerRemoteDB implements Constants {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            String userName =  jsonObject.getString( "nickname" );
+                            String userName = jsonObject.getString( "nickname" );
                             String textReview = jsonObject.getString( "commento" );
                             int vote = jsonObject.getInt( "voto" );
                             String date = jsonObject.getString( "data" );
-                            Review review = new Review( userName, textReview, vote, date);
+                            Review review = new Review( userName , textReview , vote , date );
                             //Log.i(TAG, "TEST: "+review.getUserName()+", "+review.getDate()+", "+review.getReviewText()+", "+review.getVote());
                             //adding items to itemsList
                             reviewsList.add( review );
-                            Log.i(TAG, "Test");
+                            Log.i( TAG , "Test" );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered first catch");
+                            Log.i( TAG , "ControllerRemoteDB getReviewsList: entered first catch" );
                             Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
                         }
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered second catch");
+                    Log.i( TAG , "ControllerRemoteDB getReviewsList: entered second catch" );
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
                 }
 
@@ -534,15 +613,15 @@ public class ControllerRemoteDB implements Constants {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 //This code is executed if there is an error.
-                Log.i( TAG ,  "ControllerRemoteDB getReviewsList: entered onErrorResponse()");
+                Log.i( TAG , "ControllerRemoteDB getReviewsList: entered onErrorResponse()" );
                 Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
             }
         } ) {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "request_op", REQUEST_GET_REVIEWS );
-                MyData.put( "cod_luogo", codLuogo );
+                MyData.put( "request_op" , REQUEST_GET_REVIEWS );
+                MyData.put( "cod_luogo" , codLuogo );
                 return MyData;
             }
         };
@@ -551,10 +630,10 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void saveReview(final String reviewText , final String codLuogo, final int voto, final LuogoReviewsFragment myReviewFragment) {
+    public void saveReview(final String reviewText , final String codLuogo , final int voto , final LuogoReviewsFragment myReviewFragment) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
 
-        String Url="http://barintondo.altervista.org/manager_review.php";
+        String Url = "http://barintondo.altervista.org/manager_review.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
@@ -564,10 +643,10 @@ public class ControllerRemoteDB implements Constants {
                 //The String 'response' contains the server's response.
                 //Log.i( "Review" , getClass().getSimpleName() + ":entered saveReview( )"+response);
 
-                if(response.equals( REQUEST_RESULT_OK )){
+                if (response.equals( REQUEST_RESULT_OK )) {
                     myReviewFragment.onSaveReviewResult();
-                }
-                else Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
+                } else
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
@@ -582,8 +661,8 @@ public class ControllerRemoteDB implements Constants {
                 MyData.put( "request_op" , REQUEST_SAVE_REVIEW );
                 MyData.put( "email" , email );
                 MyData.put( "cod_luogo" , codLuogo );
-                MyData.put( "review_text", reviewText );
-                MyData.put( "voto", String.valueOf( voto ) );
+                MyData.put( "review_text" , reviewText );
+                MyData.put( "voto" , String.valueOf( voto ) );
                 return MyData;
             }
         };

@@ -52,7 +52,7 @@ public interface Constants {
     String REQUEST_GET_SLEEP = "Dormire";
     String REQUEST_GET_EAT = "Mangiare";
     String REQUEST_GET_EVENTS = "Evento"; //da controllare perchè non ancora inserita nel DB
-    String REQUEST_GET_NEAR_BARI="Near"; //da controllare perchè non ancora inserita nel DB
+    String REQUEST_GET_NEAR_BARI="Vicinanze"; //da controllare perchè non ancora inserita nel DB
     String REQUEST_GET_CATEGORY="Categoria";
     String REQUEST_GET_LUOGO="Luogo";
 
@@ -60,6 +60,7 @@ public interface Constants {
     String REQUEST_ADD_PREF="addPref";
     String REQUEST_REMOVE_PREF="removePref";
     String REQUEST_GET_ALL_PREF="getAllPref";
+    String REQUEST_GET_PREF_COD="prefCod";
     String REQUEST_RESULT_OK="ok";
 
     String REQUEST_GET_REVIEWS = "Reviews";

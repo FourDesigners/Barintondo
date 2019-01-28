@@ -70,17 +70,6 @@
         app:layout_constraintStart_toEndOf="@+id/sottoCat"
         app:layout_constraintTop_toTopOf="@+id/sottoCat" />
 
-    <TextView
-        android:id="@+id/valutazione"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/notDefined"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/stato"
-        app:layout_constraintStart_toEndOf="@+id/stato"
-        app:layout_constraintTop_toTopOf="@+id/stato" />
-
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="48dp"
