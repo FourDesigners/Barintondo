@@ -328,7 +328,7 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
+                Log.i( "Test" , "ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
 
@@ -349,17 +349,7 @@ public class ControllerRemoteDB implements Constants {
                             Evento evento = new Evento();
                             evento.setCod( jsonObject.getString( "cod" ) );
                             evento.setNome( jsonObject.getString( "nome" ) );
-                            evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
-                            evento.setDataFine( jsonObject.getString( "dataFine" ) );
                             evento.setCitta( jsonObject.getString( "citta" ) );
-                            evento.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            evento.setDescrizione_it( jsonObject.getString( "descrizione-it" ) );
-                            evento.setDescrizione_en( jsonObject.getString( "descrizione-en" ) );
-                            evento.setLuogo( jsonObject.getString( "luogo" ) );
-                            evento.setOraI( jsonObject.getString( "oraI" ) );
-                            evento.setOraF( jsonObject.getString( "oraF" ) );
-                            evento.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            evento.setIndirizzo( jsonObject.getString( "indirizzo" ) );
                             //adding items to itemsList
                             eventoList.add( evento );
 

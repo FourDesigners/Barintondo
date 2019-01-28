@@ -67,7 +67,7 @@
             android:name=".MeteoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".EventsActivity"
+            android:name=".EventListActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ContactsActivity"

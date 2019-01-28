@@ -12,7 +12,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -21,8 +20,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.ContactsActivity;
-import it.uniba.di.sms.barintondo.EventsActivity;
 import it.uniba.di.sms.barintondo.CouponLuogoListActivity;
+import it.uniba.di.sms.barintondo.EventListActivity;
 import it.uniba.di.sms.barintondo.HomeActivity;
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoListActivity;
@@ -135,10 +134,8 @@ public class MyNavigationDrawer implements Constants {
                             case R.id.eventi:
                                 mDrawerLayout.closeDrawers();
                                 //Toast.makeText( activity , "Eventi" , Toast.LENGTH_SHORT ).show();
-                                if (activity.getClass()!=LuogoListActivity.class ||
-                                        !((LuogoListActivity) activity).getItems_type().equals( Constants.INTENT_EVENTS )) {
-                                    Intent intent = new Intent(activity, LuogoListActivity.class);
-                                    intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_EVENTS);
+                                if (activity.getClass()!=EventListActivity.class) {
+                                    Intent intent = new Intent(activity, EventListActivity.class);
                                     activity.startActivity(intent);
                                     if(activity.getClass() == LuogoListActivity.class) {
                                         activity.finish();
@@ -153,9 +150,6 @@ public class MyNavigationDrawer implements Constants {
                                     Intent intent = new Intent(activity, LuogoListActivity.class);
                                     intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, Constants.INTENT_NEAR);
                                     activity.startActivity(intent);
-                                    if(activity.getClass() == LuogoListActivity.class) {
-                                        activity.finish();
-                                    }
                                 }
                                 break;
                             case R.id.profile:

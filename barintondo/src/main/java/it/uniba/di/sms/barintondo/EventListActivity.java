@@ -28,7 +28,7 @@ import it.uniba.di.sms.barintondo.utils.EventoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 
-public class EventsActivity extends AppCompatActivity implements Constants, EventoAdapter.ItemsAdapterListener {
+public class EventListActivity extends AppCompatActivity implements Constants, EventoAdapter.ItemsAdapterListener {
     private Toolbar myToolbar;
     private RecyclerView recyclerView;
     private List<Evento> eventoList;
@@ -40,7 +40,7 @@ public class EventsActivity extends AppCompatActivity implements Constants, Even
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_event_list );
 
         myToolbar = findViewById(R.id.events_toolbar);
         myToolbar.setTitle(R.string.contacts);
