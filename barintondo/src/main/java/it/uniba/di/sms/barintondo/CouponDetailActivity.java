@@ -311,7 +311,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         communicationController.stop();
 
     }
-    
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_ENABLE_BLUETOOTH:

@@ -13,12 +13,29 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class HomeActivity extends AppCompatActivity {
+
+    //COSTANTI
+    final String REQUEST_ADD_COUPON="addCoupon";
+    final String REQUEST_REMOVE_COUPON="removeCoupon";
+    final String REQUEST_RESULT_OK="ok";
+    Context context;
 
     Button couponBtn;
 
@@ -42,6 +59,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        context = this;
 
         couponBtn = findViewById(R.id.couponBtn);
         couponBtn.setOnClickListener(new View.OnClickListener() {
@@ -124,16 +143,15 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     break;
                 case MESSAGE_WRITE:
-                    sendMessage();
+                    //sendMessage();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    //aggiungo stringa esplicativa
-                    String mess = "Codice coupon: " + readMessage;
-                    readMessage(mess);
+                    Toast.makeText(context, "Codice coupon:" + readMessage + "-", Toast.LENGTH_SHORT).show();
+                    readMessage(readMessage);
                     //invio il messaggio di risposta
-                    sendMessage();
+                    //sendMessage();
                     break;
                 case MESSAGE_DEVICE_OBJECT:
                     connectingDevice = msg.getData().getParcelable(DEVICE_OBJECT);
@@ -149,12 +167,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     });
 
-    private void sendMessage() {
+    private void sendMessage(String message) {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
         } else {
-            String message;
-            message = "ok"; //setup del messaggio da inviare
+            //String message;
+            //message = "ok"; //setup del messaggio da inviare
             byte[] send = message.getBytes();
             communicationController.write(send);
             Toast.makeText(this, "Messaggio inviato: " + message, Toast.LENGTH_SHORT).show();
@@ -166,11 +184,9 @@ public class HomeActivity extends AppCompatActivity {
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.connectionLostMsg), Toast.LENGTH_SHORT).show();
             return;
-        } else {
-            Toast.makeText(this, "ricevuto: " + message, Toast.LENGTH_SHORT).show();
-        }
+        } else removeCoupon(message);
 
-        sendMessage();
+        //sendMessage();
     }
 
 
@@ -199,20 +215,85 @@ public class HomeActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            /*if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    String deviceName;
-                    if(device.getName() == null) //controllo che sia fornito un nome al dispositivo
-                        deviceName = getResources().getString(R.string.nameHidden);
-                    else deviceName = device.getName();
-                    discoveredDevicesAdapter.add(deviceName + "\n" + device.getAddress());
+                    Toast.makeText(context, "Individuati dispositivi nelle vicinanze", Toast.LENGTH_SHORT).show();
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                if (discoveredDevicesAdapter.getCount() == 0) {
-                    discoveredDevicesAdapter.add(getString(R.string.none_found));
-                }
-            }*/
+                Toast.makeText(context, "Ricerca dispositivi terminata", Toast.LENGTH_SHORT).show();
+            }
         }
     };
+
+    /*public void addCoupon(String itemCod) {
+        manageCoupons( REQUEST_ADD_COUPON , email , itemCod );
+    }*/
+
+    public void removeCoupon(String couponCod) {
+        manageCoupons( REQUEST_REMOVE_COUPON , couponCod );
+    }
+
+    private void manageCoupons(final String requestOp /*, final String user*/ ,final String couponCod) {
+        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
+        final HomeActivity homeActivity = (HomeActivity) context;
+
+        String Url = "http://barintondo.altervista.org/gestore_coupon.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                String[] result = response.split( "," );
+                //Log.i( "utilityApp" , "ControllerRemoteDB: entered onResponse(), request: " + result[0] + ", result: " + result[1] );
+
+                switch (result[0]) {
+                    case REQUEST_ADD_COUPON:
+                        boolean added = result[1].equals( REQUEST_RESULT_OK );
+                        couponAdded( added );
+                        break;
+                    case REQUEST_REMOVE_COUPON:
+                        boolean removed = result[1].equals( REQUEST_RESULT_OK );
+                        Log.i("utilityApp", "risultato server:" + result[1] + "-");
+                        couponRemoved( removed );
+                        break;
+                }
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                Toast.makeText( context , "Errore nella richiesta al server" , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "request_op" , requestOp );
+                //MyData.put( "email" , user );
+                MyData.put( "couponCod" , couponCod );
+                return MyData;
+            }
+        };
+        MyRequestQueue.add( MyStringRequest );
+    }
+
+    public void couponRemoved(boolean result) {
+        if (result) {
+            Toast.makeText( getApplicationContext() , "Coupon rimosso" , Toast.LENGTH_SHORT ).show();
+            sendMessage("ok");
+        } else {
+            Toast.makeText(getApplicationContext(), "Errore nella rimozione", Toast.LENGTH_SHORT).show();
+            sendMessage("err");
+        }
+    }
+
+    public void couponAdded(boolean result) {
+        if (result) {
+            Toast.makeText( getApplicationContext() , "Coupon aggiunto" , Toast.LENGTH_SHORT ).show();
+        } else
+            Toast.makeText( getApplicationContext() , "Errore nella aggiunta" , Toast.LENGTH_SHORT ).show();
+    }
+
 }
