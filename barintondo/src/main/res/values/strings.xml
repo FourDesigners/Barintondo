@@ -9,6 +9,7 @@
     <string name="logout_label" translatable="false">Logout</string>
     <string name="home" translatable="false">Home</string>
     <string name="contacts_label">Contacts</string>
+    <string name="strBari" translatable="false">Bari</string>
 
     <!--Drawer options MAI USATE tranne categories_option-->
     <string name="navigation_label">Navigate</string>
@@ -72,13 +73,13 @@
     <!--Chips events-->
     <string-array name="events">
         <item>In Bari</item>
-        <item>Near Bari</item>
+        <item>Outside Bari</item>
     </string-array>
 
     <!--Tags events-->
     <string-array name="eventsTags">
         <item>Bari</item>
-        <item>Vicino Bari</item>
+        <item>Fuori</item>
     </string-array>
 
     <!--Chips near-->
@@ -212,6 +213,7 @@
     <string name="strRestaurant">Restaurant</string>
     <string name="strHotel" translatable="false">Hotel</string>
     <string name="strBB" translatable="false">Bed and Breakfast</string>
+    <string name="strNearBari">Outside Bari</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -242,7 +244,7 @@
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>
     <string name="validString">Valid</string>
-    <string name="no_interests">You have not selected an interest place yet</string>
+    <string name="no_interests">You have not selected an interest place</string>
     <string name="str_fail_get_luoghi">Failed to get places, try again later</string>
     <string name="str_fail_coupon_managing">Failed to load coupon, try again later</string>
     <string name="strModified">Account modified</string>

@@ -13,7 +13,7 @@ import it.uniba.di.sms.barintondo.R;
 
 public class ToolbarSwitchCategories implements Constants {
     Activity activity;
-    ImageButton interests, attraction, food, sleep, near;
+    ImageButton interests, attraction, food, sleep, near, event;
 
     public ToolbarSwitchCategories(final Activity activity , String category) {
         this.activity = activity;
@@ -33,6 +33,8 @@ public class ToolbarSwitchCategories implements Constants {
         onClickcategory( sleep , INTENT_SLEEPING );
         near = activity.findViewById( R.id.btnSwitchNear );
         onClickcategory( near , INTENT_NEAR );
+        event=activity.findViewById( R.id.btnSwitchEvent );
+        onClickcategory( event, INTENT_EVENTS );
 
         int color = activity.getResources().getColor( R.color.colorSecondaryBlue );
         switch (category) {
@@ -50,6 +52,9 @@ public class ToolbarSwitchCategories implements Constants {
                 break;
             case INTENT_INTERESES:
                 interests.setColorFilter( color );
+                break;
+            case INTENT_EVENTS:
+                event.setColorFilter( color );
         }
     }
 
@@ -58,9 +63,13 @@ public class ToolbarSwitchCategories implements Constants {
         iB.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( activity , LuogoListActivity.class );
-                intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , category );
-                activity.startActivity( intent );
+
+                if (activity.getClass()!=LuogoListActivity.class ||
+                        !((LuogoListActivity) activity).getItems_type().equals( category )) {
+                    Intent intent = new Intent( activity , LuogoListActivity.class );
+                    intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , category );
+                    activity.startActivity( intent );
+                }
             }
         } );
 

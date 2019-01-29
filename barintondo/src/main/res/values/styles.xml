@@ -38,7 +38,18 @@
         <item name="android:tint">@color/colorWhite</item>
         <item name="android:padding">10dp</item>
         <item name="android:scaleType">fitCenter</item>
+    </style>
 
+    <style name="btnLuogoDetail">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/colorSecondaryBlueVariant</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
 </resources>

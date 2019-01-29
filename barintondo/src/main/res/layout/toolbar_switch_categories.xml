@@ -31,4 +31,9 @@
         style="@style/btnCategoriesNavigation"
         android:src="@drawable/ic_surroundings" />
 
+    <ImageButton
+        android:id="@+id/btnSwitchEvent"
+        style="@style/btnCategoriesNavigation"
+        android:src="@drawable/ic_events" />
+
 </android.support.v7.widget.LinearLayoutCompat>

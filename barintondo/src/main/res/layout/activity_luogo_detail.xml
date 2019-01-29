@@ -41,67 +41,30 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"/>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-
+        android:orientation="horizontal"
         android:background="@color/colorPrimaryDark">
 
         <Button
             android:id="@+id/btn_luogo_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dip"
-            android:background="@color/colorSecondaryBlueVariant"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/pref_header_info"
-            android:textColor="@android:color/background_light"
-            android:textSize="@dimen/mediumTextSize"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_luogo_directions"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            style="@style/btnLuogoDetail"
+            android:text="@string/pref_header_info"/>
 
         <Button
             android:id="@+id/btn_luogo_directions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dip"
-            android:background="@color/colorSecondaryBlueVariant"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/strDirections"
-            android:textColor="@android:color/background_light"
-            android:textSize="@dimen/mediumTextSize"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/btn_luogo_info"
-            app:layout_constraintEnd_toStartOf="@id/btn_luogo_reviews"
-            app:layout_constraintStart_toEndOf="@id/btn_luogo_info"
-            app:layout_constraintTop_toTopOf="@id/btn_luogo_info" />
+            style="@style/btnLuogoDetail"
+            android:text="@string/strDirections" />
 
         <Button
             android:id="@+id/btn_luogo_reviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dip"
-            android:background="@color/colorSecondaryBlueVariant"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/strReviews"
-            android:textColor="@android:color/background_light"
-            android:textSize="@dimen/mediumTextSize"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/btn_luogo_info"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_luogo_directions"
-            app:layout_constraintTop_toTopOf="@id/btn_luogo_info" />
+            style="@style/btnLuogoDetail"
+            android:text="@string/strReviews"/>
 
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

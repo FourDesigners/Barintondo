@@ -44,7 +44,7 @@
     <!--Chips events-->
     <string-array name="events">
         <item>Bari</item>
-        <item>Vicino Bari</item>
+        <item>Fuori Bari</item>
     </string-array>
 
     <!--Chips near-->
@@ -132,7 +132,7 @@
     <string name="str_located_in">"Situato in: "</string>
     <string name="expiredString">Scaduto</string>
     <string name="validString">Valido</string>
-    <string name="no_interests">Non hai ancora selezionato un luogo di interesse</string>
+    <string name="no_interests">Non hai selezionato alcun luogo di interesse</string>
     <string name="str_fail_get_luoghi">Errore nel caricamento dei luoghi, riprovare più tardi</string>
     <string name="str_fail_coupon_managing">Errore nel caricamento dei coupon, riprovare più tardi</string>
     <string name="strModified">Account modificato</string>
@@ -161,4 +161,6 @@
     <string name="devicesFoundDialogMsg">Dispositivi Trovati</string>
     <string name="cancelDialogBtn">Annulla</string>
     <string name="strInsertReview">Testo recensione</string>
+    <string name="str_fail_save_review">Errore nel salvatggio della recensione, riprova più tardi</string>
+    <string name="strNearBari">Fuori Bari</string>
 </resources>

@@ -137,6 +137,14 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
 
     }
 
+    public String getDescrizione_en() {
+        return descrizione_en;
+    }
+
+    public String getDescrizione_it() {
+        return descrizione_it;
+    }
+
     public String getDescription() {
         String lang = Locale.getDefault().getLanguage();
 

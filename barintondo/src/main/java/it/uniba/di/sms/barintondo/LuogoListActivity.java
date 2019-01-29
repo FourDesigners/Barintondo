@@ -38,6 +38,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
@@ -432,9 +433,15 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     @Override
     public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        Intent intent = new Intent( this , LuogoDetailActivity.class );
-        intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-        startActivity( intent );
+        if (item instanceof Evento){
+            Intent intent = new Intent( this , EventoDetailActivity.class );
+            intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
+            startActivity( intent );
+        }else {
+            Intent intent = new Intent( this , LuogoDetailActivity.class );
+            intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
+            startActivity( intent );
+        }
     }
 
     public static synchronized LuogoListActivity getInstance() {

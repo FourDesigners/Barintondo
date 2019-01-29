@@ -52,8 +52,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             stato = view.findViewById( R.id.stato );
             thumbnail = view.findViewById( R.id.thumbnail );
             categIcon = view.findViewById( R.id.icon_categoria );
-
-            mVoteStars = new FrameVoteStars( view );
+            View frameVote = view.findViewById( R.id.luogoVoteLayout );
+            mVoteStars = new FrameVoteStars( frameVote );
 
             view.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -81,6 +81,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
 
         return new MyViewHolder( itemView );
     }
+
 
     @SuppressLint("NewApi")
     @Override
@@ -131,6 +132,12 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 break;
             case "B&B":
                 sottoCat += context.getResources().getString( R.string.strBB );
+                break;
+            case "Bari":
+                sottoCat += context.getResources().getString( R.string.strBari );
+                break;
+            case "Fuori":
+                sottoCat += context.getResources().getString( R.string.strNearBari);
                 break;
             default:
                 sottoCat += "Default";
@@ -183,8 +190,10 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
-
-        holder.mVoteStars.setStars( luogo.getVoto() );
+        if(luogo instanceof Evento){
+            Evento evento = (Evento) luogo;
+            holder.mVoteStars.hideVoteFrame();
+        }else holder.mVoteStars.setStars( luogo.getVoto() );
 
     }
 
