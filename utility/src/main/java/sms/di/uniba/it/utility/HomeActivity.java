@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,8 +38,6 @@ public class HomeActivity extends AppCompatActivity {
     final String REQUEST_RESULT_OK="ok";
     Context context;
 
-    Button couponBtn;
-
     //BT
     String STRING_TOAST_MSG="toast";
 
@@ -55,6 +54,10 @@ public class HomeActivity extends AppCompatActivity {
     private BTCommunicationController communicationController;
     private BluetoothDevice connectingDevice;
 
+    //view
+    Button useCouponBtn, addCouponBtn;
+    EditText codCoupon, email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +65,26 @@ public class HomeActivity extends AppCompatActivity {
 
         context = this;
 
-        couponBtn = findViewById(R.id.couponBtn);
-        couponBtn.setOnClickListener(new View.OnClickListener() {
+        codCoupon = findViewById(R.id.codCoupon);
+        email = findViewById(R.id.email);
+
+        addCouponBtn = findViewById(R.id.btnAdd);
+        addCouponBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCoupon();
+            }
+        } );
+
+        useCouponBtn = findViewById(R.id.couponBtn);
+        useCouponBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkBTAvailability();
             }
         } );
+
+
 
     }
 
@@ -226,18 +242,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    /*public void addCoupon(String itemCod) {
-        manageCoupons( REQUEST_ADD_COUPON , email , itemCod );
-    }*/
-
-    public void removeCoupon(String couponCod) {
-        manageCoupons( REQUEST_REMOVE_COUPON , couponCod );
+    public void addCoupon() {
+        String newCod = codCoupon.getText().toString();
+        String emailAddress = email.getText().toString();
+        manageCoupons( REQUEST_ADD_COUPON , newCod , emailAddress );
     }
 
-    private void manageCoupons(final String requestOp /*, final String user*/ ,final String couponCod) {
-        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
-        final HomeActivity homeActivity = (HomeActivity) context;
+    public void removeCoupon(String couponCod) {
+        manageCoupons( REQUEST_REMOVE_COUPON, couponCod, null );
+    }
 
+    private void manageCoupons(final String requestOp, final String couponCod, final String user ) {
+        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
         String Url = "http://barintondo.altervista.org/gestore_coupon.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -247,11 +263,12 @@ public class HomeActivity extends AppCompatActivity {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 String[] result = response.split( "," );
-                //Log.i( "utilityApp" , "ControllerRemoteDB: entered onResponse(), request: " + result[0] + ", result: " + result[1] );
+                Log.i( "utilityApp" , "entered onResponse(), request: " + result[0] + ", result: " + result[1] );
 
                 switch (result[0]) {
                     case REQUEST_ADD_COUPON:
                         boolean added = result[1].equals( REQUEST_RESULT_OK );
+                        Log.i("utilityApp", "risultato server:" + result[1] + "-");
                         couponAdded( added );
                         break;
                     case REQUEST_REMOVE_COUPON:
@@ -271,8 +288,8 @@ public class HomeActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , requestOp );
-                //MyData.put( "email" , user );
                 MyData.put( "couponCod" , couponCod );
+                MyData.put( "email" , user );
                 return MyData;
             }
         };
