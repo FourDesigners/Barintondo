@@ -287,7 +287,7 @@
     <string name="testo">Text:</string>
     <string name="strInsertReview">Review text</string>
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
-
+    <string name="couponDescLabelTxt">Description</string>
 
 
 </resources>

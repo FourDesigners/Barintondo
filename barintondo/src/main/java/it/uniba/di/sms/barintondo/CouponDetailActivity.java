@@ -145,6 +145,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.bluetooth_devices_list);
         dialog.setTitle(getResources().getString(R.string.devicesDialog));
+        dialog.setCanceledOnTouchOutside(true);
 
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
@@ -230,8 +231,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 dialog.dismiss();
             }
         });
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();
+        //Toolbar titleDialog = findViewById(R.id.bluetooth_list_toolbar);
+        //titleDialog.setTitle(R.string.devicesDialog);
     }
 
 
