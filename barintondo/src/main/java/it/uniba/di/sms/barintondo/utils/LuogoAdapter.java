@@ -200,25 +200,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
 
-            Date today = new Date();
-            long diff = evento.getDataInizio().getTime() - today.getTime() ;
-            int days= (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            if(days<=0){
-                holder.startDays.setText( context.getResources().getString( R.string.strInProgress ));
-            } else if(days<=30){
-                String inDays = context.getResources().getQuantityString(R.plurals.EventInDays, days, days);
-                holder.startDays.setText( inDays);
-            }else{
-                if(days%30>=5) days=(days/30)+1;
-                else days=days/30;
-                String inDays = context.getResources().getQuantityString(R.plurals.EventInMonths, days, days);
-                holder.startDays.setText( inDays);
-            }
-
-
-
-
-
+            holder.startDays.setText(evento.getDaysToEvent( context ));
 
         }else holder.mVoteStars.setStars( luogo.getVoto() );
 

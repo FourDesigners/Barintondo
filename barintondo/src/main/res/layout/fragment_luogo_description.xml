@@ -1,107 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_item_description"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LuogoDescriptionFragment"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context=".LuogoDescriptionFragment">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/luogo_orari"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_clock"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_clock"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+
+                <TextView
+                    android:id="@+id/text_orario_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/mediumTextSize"
+                    android:text="@string/notDefined"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/text_orario_c"
+                    app:layout_constraintStart_toEndOf="@id/image_clock"/>
+
+
+                <TextView
+                    android:id="@+id/text_orario_c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notDefined"
+                    android:textSize="@dimen/mediumTextSize"
+                    app:layout_constraintTop_toBottomOf="@id/text_orario_a"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_clock"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout_dates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/image_calendar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_calendar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/text_event_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/mediumTextSize"
+                        android:text="@string/notDefined"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/text_event_End"
+                        app:layout_constraintStart_toEndOf="@id/image_calendar"/>
+
+                    <TextView
+                        android:id="@+id/text_event_End"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notDefined"
+                        android:textSize="@dimen/mediumTextSize"
+                        app:layout_constraintTop_toBottomOf="@id/text_event_start"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/text_event_start"/>
+
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_mark_location"/>
             <TextView
-                android:layout_height="wrap_content"
+                android:id="@+id/text_adress"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/notDefined"
                 android:textSize="@dimen/mediumTextSize"
-                android:gravity="right"
-                android:text="@string/str_event_take_place"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/mediumTextSize"
-                android:gravity="right"
-                android:text="@string/str_from"
-                android:paddingLeft="5dp"/>
-            <TextView
-                android:id="@+id/text_event_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/mediumTextSize"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/mediumTextSize"
-                android:text="@string/str_to"
-                android:gravity="right"
-                android:paddingLeft="5dp"/>
-            <TextView
-                android:id="@+id/text_event_End"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/mediumTextSize"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/luogo_orari"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="@string/strOpening"
-                android:textSize="@dimen/mediumTextSize" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_orario_a"
-                android:layout_gravity="right"
-                android:textSize="@dimen/mediumTextSize" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/strClosing"
-                android:textSize="@dimen/mediumTextSize"
-                android:gravity="right"
-                android:paddingLeft="5dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_orario_c"
-                android:gravity="left"
-                android:textSize="@dimen/mediumTextSize" />
+                android:layout_gravity="center"/>
+            <ImageView
+                android:id="@+id/luogo_icon_direction"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:tint="@color/colorPrimaryBlueVariant"
+                android:src="@drawable/ic_directions"/>
 
         </LinearLayout>
-
-
-
-
-
-
 
         <TextView
-            android:paddingTop="10dp"
             android:id="@+id/text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingTop="10dp"
             android:text="Descrizione"
             android:textSize="@dimen/mediumTextSize" />
+    </LinearLayout>
 
-
-    </android.support.v7.widget.LinearLayoutCompat>
 </ScrollView>
