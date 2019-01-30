@@ -40,7 +40,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     private static final String TAG = LuogoAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView nome, sottoCat, stato;
+        public TextView nome, sottoCat, stato, dataEvento;
         public ImageView thumbnail, categIcon;
         public FrameVoteStars mVoteStars;
 
@@ -54,6 +54,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             categIcon = view.findViewById( R.id.icon_categoria );
             View frameVote = view.findViewById( R.id.luogoVoteLayout );
             mVoteStars = new FrameVoteStars( frameVote );
+            dataEvento = view.findViewById( R.id.dateEvento );
 
             view.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -118,6 +119,9 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             case "Discoteche":
                 sottoCat += context.getResources().getString( R.string.strDisco );
                 break;
+            case "Famiglia":
+                sottoCat +=context.getResources().getString( R.string.strFamiglia );
+                break;
             case "Bar":
                 sottoCat += context.getResources().getString( R.string.strBar );
                 break;
@@ -137,7 +141,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 sottoCat += context.getResources().getString( R.string.strBari );
                 break;
             case "Fuori":
-                sottoCat += context.getResources().getString( R.string.strNearBari);
+                sottoCat += luogo.getCitta();
                 break;
             default:
                 sottoCat += "Default";
@@ -146,7 +150,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         Log.i( TAG , "final sottoCat:" + sottoCat );
         holder.sottoCat.setText( sottoCat );
 
-        if (luogo.getOraA() != null) {
+        if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
             String oraC = luogo.getOraC();
@@ -193,6 +197,16 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         if(luogo instanceof Evento){
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
+            if(evento.getDataInizio().equals( evento.getDataFine() )){
+                holder.dataEvento.setText( evento.getDataInizio());
+            }
+            else {
+                holder.dataEvento.setText( evento.getDataInizio() + " / "+ evento.getDataFine());
+            }
+
+
+
+
         }else holder.mVoteStars.setStars( luogo.getVoto() );
 
     }

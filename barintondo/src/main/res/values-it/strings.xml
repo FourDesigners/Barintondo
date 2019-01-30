@@ -163,4 +163,8 @@
     <string name="strInsertReview">Testo recensione</string>
     <string name="str_fail_save_review">Errore nel salvatggio della recensione, riprova più tardi</string>
     <string name="strNearBari">Fuori Bari</string>
+    <string name="strFamiglia">Famiglia</string>
+    <string name="strDate">"Data: "</string>
+    <string name="strStartDate">"Data inizio: "</string>
+    <string name="strEndDate">"Data fine: "</string>
 </resources>

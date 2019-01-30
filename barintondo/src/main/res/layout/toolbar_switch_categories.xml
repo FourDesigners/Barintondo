@@ -4,36 +4,37 @@
     android:id="@+id/toolbar_switch_categories"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/colorPrimaryDark">
 
-    <ImageButton
-        android:id="@+id/btnSwitchInterests"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_star" />
+        <ImageButton
+            android:id="@+id/btnSwitchAttractions"
+            style="@style/btnCategoriesNavigation"
+            android:src="@drawable/ic_attraction" />
 
-    <ImageButton
-        android:id="@+id/btnSwitchAttractions"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_attraction" />
+        <ImageButton
+            android:id="@+id/btnSwitchFood"
+            style="@style/btnCategoriesNavigation"
+            android:src="@drawable/ic_food" />
 
-    <ImageButton
-        android:id="@+id/btnSwitchFood"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_food" />
 
-    <ImageButton
-        android:id="@+id/btnSwitchSleep"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_stay" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btnSwitchSleep"
+            style="@style/btnCategoriesNavigation"
+            android:src="@drawable/ic_stay" />
 
-    <ImageButton
-        android:id="@+id/btnSwitchNear"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_surroundings" />
+        <ImageButton
+            android:id="@+id/btnSwitchNear"
+            style="@style/btnCategoriesNavigation"
+            android:src="@drawable/ic_surroundings" />
 
-    <ImageButton
-        android:id="@+id/btnSwitchEvent"
-        style="@style/btnCategoriesNavigation"
-        android:src="@drawable/ic_events" />
+        <ImageButton
+            android:id="@+id/btnSwitchEvent"
+            style="@style/btnCategoriesNavigation"
+            android:src="@drawable/ic_events" />
+
 
 </android.support.v7.widget.LinearLayoutCompat>

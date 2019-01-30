@@ -249,12 +249,6 @@ public class ControllerRemoteDB implements Constants {
 
                     JSONArray jsonArray = new JSONArray( response );
 
-                    if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_LONG ).show();
-                        progressDialog.dismiss();
-                        return;
-                    }
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( i );
@@ -274,15 +268,26 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
                             luogo.setVoto( jsonObject.getInt( "voto" ) );
-                            int order=jsonObject.getInt( "voto" );
-                            if(UserUtils.codPref.contains( luogo.getCod() )) order=order+10;
+                            int order = jsonObject.getInt( "voto" );
+                            if (UserUtils.codPref.contains( luogo.getCod() )) order = order + 10;
                             luogo.setOrder( order );
                             //adding items to itemsList
-                            if (requestCat.equals( REQUEST_GET_EVENTS )){
-                                Evento evento = new Evento(luogo);
+                            if (requestCat.equals( REQUEST_GET_EVENTS )) {
+                                Evento evento = new Evento( luogo );
+
+                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                    evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+                                else evento.setCodLuogo( null );
+
+                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                    evento.setDataInizio( null );
+                                    evento.setDataFine( null );
+                                } else {
+                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                                }
                                 luogoList.add( evento );
-                            }
-                            else luogoList.add( luogo );
+                            } else luogoList.add( luogo );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
