@@ -110,6 +110,14 @@ public class CouponLuogo implements Parcelable {
         }
     }
 
+    public String getDescrizione_it() {
+        return descrizione_it;
+    }
+
+    public String getDescrizione_en() {
+        return descrizione_en;
+    }
+
     public String getSottoCat() {
         return sottoCat;
     }

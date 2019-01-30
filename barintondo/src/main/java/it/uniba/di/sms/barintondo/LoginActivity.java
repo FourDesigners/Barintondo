@@ -33,7 +33,7 @@ import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
+import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
 
 
@@ -43,14 +43,14 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     ImageView imageView;
     Button reset, login;
     TextView register;
-    ProfileOpenHelper openHelper;
+    LocalDBOpenHelper openHelper;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        openHelper = new LocalDBOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         goHomeIfAccount(openHelper);
 
         setContentView(R.layout.activity_login);
@@ -64,10 +64,10 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             Toast.makeText(this, getResources().getString(R.string.notConnected), Toast.LENGTH_SHORT).show();
         }else {
             //Toast.makeText(this, "Connesso alla rete", Toast.LENGTH_SHORT).show();
-            if(ProfileOpenHelper.getLocalAccount(openHelper) != null) {
-                String nickname = ProfileOpenHelper.getLocalAccount(openHelper)[0];
-                String email = ProfileOpenHelper.getLocalAccount(openHelper)[1];
-                String password = ProfileOpenHelper.getLocalAccount(openHelper)[2];
+            if(LocalDBOpenHelper.getLocalAccount(openHelper) != null) {
+                String nickname = LocalDBOpenHelper.getLocalAccount(openHelper)[0];
+                String email = LocalDBOpenHelper.getLocalAccount(openHelper)[1];
+                String password = LocalDBOpenHelper.getLocalAccount(openHelper)[2];
                 //registration(getApplicationContext(), nickname, email, password, openHelper);
             }
         }
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
                 if(connected) {
                     login(email, password);
                 }else {
-                    if(ProfileOpenHelper.isPresent(email, password, openHelper)) {
+                    if(LocalDBOpenHelper.isPresent(email, password, openHelper)) {
                         goHome();
                     }else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalidCredentials), Toast.LENGTH_SHORT).show();
@@ -170,8 +170,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         edit.apply();
     }
 
-    private void goHomeIfAccount(ProfileOpenHelper openHelper) {
-        if(ProfileOpenHelper.isPresent(openHelper)) {
+    private void goHomeIfAccount(LocalDBOpenHelper openHelper) {
+        if(LocalDBOpenHelper.isPresent(openHelper)) {
             goHome();
         }else {
             resetChips();
@@ -314,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ProfileOpenHelper.insertInto(response, email, password, openHelper);
+                LocalDBOpenHelper.insertInto(response, email, password, openHelper);
                 if(flag!=0) goHome();
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.

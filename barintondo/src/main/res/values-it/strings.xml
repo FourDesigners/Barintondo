@@ -163,4 +163,5 @@
     <string name="strInsertReview">Testo recensione</string>
     <string name="str_fail_save_review">Errore nel salvatggio della recensione, riprova più tardi</string>
     <string name="strNearBari">Fuori Bari</string>
+    <string name="offlineCoupons">Connessione internet non disponibile: i coupon potrebbero non essere più valide! Controlla la connessione per mantenerla aggiornata!</string>
 </resources>

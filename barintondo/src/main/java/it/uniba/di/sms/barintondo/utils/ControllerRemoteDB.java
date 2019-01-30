@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +34,7 @@ public class ControllerRemoteDB implements Constants {
 
     public ControllerRemoteDB(Context context) {
         this.context = context;
-        email = ProfileOpenHelper.getEmail( context );
+        email = LocalDBOpenHelper.getEmail( context );
     }
 
     public void checkPref(String itemCod) {
@@ -412,70 +411,85 @@ public class ControllerRemoteDB implements Constants {
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-        final String email = ProfileOpenHelper.getEmail( context );
+        if(InternetConnection.isNetworkAvailable(context)) {
+            //prelievo informazioni aggiornate dal server e aggiornamento DB locale
 
-        //creazione URL
-        String Url = "http://barintondo.altervista.org/get_my_coupons.php";
+            final String email = LocalDBOpenHelper.getEmail(context);
 
-        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
-        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                try {
+            //definizione URL
+            String Url = "http://barintondo.altervista.org/get_my_coupons.php";
 
-                    JSONArray jsonArray = new JSONArray( response );
+            RequestQueue MyRequestQueue = Volley.newRequestQueue(context);
+            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
+                    //This code is executed if the server responds, whether or not the response contains data.
+                    //The String 'response' contains the server's response.
+                    try {
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                        List<CouponLuogo> tempCouponList = new ArrayList<>();
+                        JSONArray jsonArray = new JSONArray(response);
 
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+                        for (int i = 0; i < jsonArray.length(); i++) {
 
-                            CouponLuogo coupon = new CouponLuogo();
-                            coupon.setCod( jsonObject.getString( "codCoupon" ) );
-                            coupon.setCodLuogo( jsonObject.getString( "cod" ) );
-                            coupon.setLuogo( jsonObject.getString( "nome" ) );
-                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
-                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
-                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
+                            try {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                            //adding items to itemsList
-                            couponList.add( coupon );
+                                CouponLuogo coupon = new CouponLuogo();
+                                coupon.setCod(jsonObject.getString("codCoupon"));
+                                coupon.setCodLuogo(jsonObject.getString("cod"));
+                                coupon.setLuogo(jsonObject.getString("nome"));
+                                coupon.setScadenza(jsonObject.getString("scadenza"));
+                                coupon.setSottoCat(jsonObject.getString("sottoCategoria"));
+                                coupon.setDescrizione_it(jsonObject.getString("descrizioneIt"));
+                                coupon.setDescrizione_en(jsonObject.getString("descrizioneEn"));
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                                //adding items to itemsList
+                                tempCouponList.add(coupon);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
+                            }
                         }
+                        LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper(context, Constants.DB_NAME, null, 1);
+                        LocalDBOpenHelper.deleteCoupon(couponOpenHelper);
+                        for(CouponLuogo c : tempCouponList) {
+                            LocalDBOpenHelper.insertCoupon(c, couponOpenHelper);
+                        }
+                    } catch (JSONException e2) {
+                        e2.printStackTrace();
+                        progressDialog.dismiss();
+                        Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e2) {
-                    e2.printStackTrace();
+                    mAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
                 }
-                mAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-                progressDialog.dismiss();
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-            }
-        } ) {
+            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //This code is executed if there is an error.
+                    progressDialog.dismiss();
+                    Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
+                }
+            }) {
 
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "email" , email );
-                return MyData;
-            }
-        };
+                protected Map<String, String> getParams() {
+                    Map<String, String> MyData = new HashMap<String, String>();
+                    MyData.put("email", email);
+                    return MyData;
+                }
+            };
 
 
-        MyRequestQueue.add( MyStringRequest );
+            MyRequestQueue.add(MyStringRequest);
+        } else {
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+        }
+        progressDialog.dismiss();
+        //a prescindere dall'esito del controllo sulla rete, carico i dati dei coupon (aggiornati o meno) dal db locale
+        LocalDBOpenHelper.getCouponList(context, couponList);
 
     }
 

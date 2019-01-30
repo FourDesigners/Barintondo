@@ -29,7 +29,7 @@ import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
+import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 
 public class MyProfileActivity extends AppCompatActivity {
 
@@ -51,7 +51,7 @@ public class MyProfileActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         //prelevo dati dal db
-        ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
+        LocalDBOpenHelper dbHelper = new LocalDBOpenHelper(this, Constants.DB_NAME, null, 1);
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
         //definisco la query
         String[] columns = {Constants.COLUMN_NICKNAME, Constants.COLUMN_EMAIL, Constants.COLUMN_PASSWORD};
@@ -132,7 +132,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 textViewError.setText(getResources().getString(R.string.str_weak_password_min_8_characters_required));
             }else {
                 textViewError.setText("");
-                ProfileOpenHelper dbHelper = new ProfileOpenHelper(this, Constants.DB_NAME, null, 1);
+                LocalDBOpenHelper dbHelper = new LocalDBOpenHelper(this, Constants.DB_NAME, null, 1);
                 SQLiteDatabase myDB = dbHelper.getWritableDatabase();
                 ContentValues newValues = new ContentValues();
                 newValues.put(Constants.COLUMN_NICKNAME, newUser);

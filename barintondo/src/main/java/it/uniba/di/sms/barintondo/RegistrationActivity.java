@@ -1,7 +1,5 @@
 package it.uniba.di.sms.barintondo;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +25,7 @@ import java.util.Map;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
-import it.uniba.di.sms.barintondo.utils.ProfileOpenHelper;
+import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
 
 
@@ -37,14 +34,14 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText editTextNickname, editTextEmail, editTextPassword, editTextRepeatPassword;
     ImageView imageView, imageView2;
     Button reset, register;
-    ProfileOpenHelper openHelper;
+    LocalDBOpenHelper openHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        openHelper = new ProfileOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+        openHelper = new LocalDBOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         textViewNicknameError = findViewById(R.id.textViewNicknameError);
         textViewEmailError = findViewById(R.id.textViewEmailError);
         textViewPasswordError = findViewById(R.id.textViewPasswordError);
@@ -162,8 +159,8 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response.contains("Registration successfull")) {
-                    if(!ProfileOpenHelper.isPresent(email, openHelper)) {
-                        ProfileOpenHelper.insertInto(nickname, email, password, openHelper);
+                    if(!LocalDBOpenHelper.isPresent(email, openHelper)) {
+                        LocalDBOpenHelper.insertInto(nickname, email, password, openHelper);
                     }
                     //Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
