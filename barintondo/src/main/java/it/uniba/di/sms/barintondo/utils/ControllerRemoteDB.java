@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.uniba.di.sms.barintondo.EventoDetailActivity;
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.LuogoReviewsFragment;
@@ -384,8 +385,15 @@ public class ControllerRemoteDB implements Constants {
                     e2.printStackTrace();
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
-                LuogoDetailActivity luogoDetail = (LuogoDetailActivity) context;
-                luogoDetail.onLuogoLoaded( luogo );
+
+                if (context instanceof LuogoDetailActivity) {
+                    LuogoDetailActivity luogoDetail = (LuogoDetailActivity) context;
+                    luogoDetail.onLuogoLoaded( luogo );
+                } else {
+                    EventoDetailActivity eventoDetail= (EventoDetailActivity) context;
+                    eventoDetail.onEventoLoaded( new Evento(  luogo) );
+                }
+
                 progressDialog.dismiss();
 
             }
