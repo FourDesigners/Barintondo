@@ -258,6 +258,16 @@
     <string name="strInfo">Password modified! Control your e-mail account</string>
     <string name="offlineCoupons">Internet connection not available: your coupons may be not valid! Please check
     your internet connection to get updated!</string>
+    <string name="strInProgress">In progress</string>
+
+    <plurals name="EventInDays">
+        <item quantity="one">Starts in %d day</item>
+        <item quantity="other">Starts in %d days</item>
+    </plurals>
+    <plurals name="EventInMonths">
+        <item quantity="one">Starts in %d month</item>
+        <item quantity="other">Starts in %d months</item>
+    </plurals>
 
     <!--COUPON_DETAIL ACTIVITY-->
     <string name="useBtn">Use Coupon</string>
@@ -288,6 +298,7 @@
     <string name="strInsertReview">Review text</string>
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
     <string name="couponDescLabelTxt">Description</string>
+
 
 
 </resources>

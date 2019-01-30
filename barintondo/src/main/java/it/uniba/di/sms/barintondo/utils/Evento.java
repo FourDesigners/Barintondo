@@ -3,12 +3,13 @@ package it.uniba.di.sms.barintondo.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.sql.Date;
 import java.util.Locale;
 
 public class Evento extends Luogo implements Parcelable {
     private String codLuogo;
-    private String dataInizio;
-    private String dataFine;
+    private Date dataInizio;
+    private Date dataFine;
 
 
 
@@ -34,19 +35,20 @@ public class Evento extends Luogo implements Parcelable {
         this.codLuogo = codLuogo;
     }
 
-    public String getDataInizio() {
+    public Date getDataInizio() {
         return dataInizio;
     }
 
     public void setDataInizio(String dataInizio) {
-        this.dataInizio = dataInizio;
+
+            this.dataInizio = Date.valueOf(dataInizio);
     }
 
-    public String getDataFine() {
+    public Date getDataFine() {
         return dataFine;
     }
 
     public void setDataFine(String dataFine) {
-        this.dataFine = dataFine;
+        this.dataFine = Date.valueOf(dataFine);
     }
 }

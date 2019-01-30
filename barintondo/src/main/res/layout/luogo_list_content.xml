@@ -35,7 +35,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/thumbnail"
-        app:layout_constraintTop_toBottomOf="@id/nome" />
+        app:layout_constraintTop_toBottomOf="@id/nome"
+        app:layout_constraintBottom_toTopOf="@id/sottoCat"/>
+
+    <TextView
+        android:id="@+id/start_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/nome"
+        app:layout_constraintBottom_toTopOf="@id/sottoCat"/>
 
 
     <!--ImageView visualizzata solo nella lista degli interessi-->
@@ -52,12 +63,15 @@
     <TextView
         android:id="@+id/sottoCat"
         android:layout_width="wrap_content"
+        android:minWidth="100dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
         android:text="@string/notDefined"
         app:layout_constraintStart_toStartOf="@+id/nome"
-        app:layout_constraintTop_toBottomOf="@+id/luogoVoteLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/start_days"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
     <TextView
         android:id="@+id/stato"
@@ -68,16 +82,6 @@
         android:text="@string/notDefined"
         app:layout_constraintBottom_toBottomOf="@+id/sottoCat"
         app:layout_constraintStart_toEndOf="@+id/sottoCat"
-        app:layout_constraintTop_toTopOf="@+id/sottoCat" />
-
-    <TextView
-        android:id="@+id/dateEvento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sottoCat"
-        app:layout_constraintStart_toEndOf="@+id/stato"
         app:layout_constraintTop_toTopOf="@+id/sottoCat" />
 
     <ImageView
