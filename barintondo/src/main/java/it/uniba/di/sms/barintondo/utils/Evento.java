@@ -11,6 +11,8 @@ public class Evento extends Luogo implements Parcelable {
     private Date dataInizio;
     private Date dataFine;
 
+    public Evento(){}
+
 
 
         public Evento(Luogo luogo){

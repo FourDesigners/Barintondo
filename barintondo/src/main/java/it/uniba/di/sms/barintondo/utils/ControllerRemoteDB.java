@@ -281,8 +281,8 @@ public class ControllerRemoteDB implements Constants {
                                 Evento evento = new Evento( luogo );
 
                                 if (jsonObject.getString( "codLuogo" ).equals( "null" ))
-                                    evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
-                                else evento.setCodLuogo( null );
+                                    evento.setCodLuogo( null );
+                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
 
                                 if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
                                     evento.setDataInizio( null );
@@ -332,7 +332,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getLuogo(final String codLuogo) {
+    public void getLuogo(final String codLuogo, final String requestLuogoType) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -345,10 +345,11 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
+                //Log.i( "Test" , "ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
+                Evento evento = new Evento(  );
                 try {
 
                     JSONArray jsonArray = new JSONArray( response );
@@ -382,6 +383,22 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setVoto( jsonObject.getInt( "voto" ) );
                             }
 
+                            if(requestLuogoType.equals( REQUEST_GET_EVENTS )){
+                                evento=new Evento( luogo );
+
+                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                    evento.setCodLuogo( null );
+                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                    evento.setDataInizio( null );
+                                    evento.setDataFine( null );
+                                } else {
+                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
@@ -398,7 +415,7 @@ public class ControllerRemoteDB implements Constants {
                     luogoDetail.onLuogoLoaded( luogo );
                 } else {
                     EventoDetailActivity eventoDetail = (EventoDetailActivity) context;
-                    eventoDetail.onEventoLoaded( new Evento( luogo ) );
+                    eventoDetail.onEventoLoaded( evento );
                 }
 
                 progressDialog.dismiss();
@@ -417,6 +434,7 @@ public class ControllerRemoteDB implements Constants {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , REQUEST_GET_LUOGO );
                 MyData.put( "request_luogo" , codLuogo );
+                MyData.put("request_luogo_type", requestLuogoType);
                 return MyData;
             }
         };

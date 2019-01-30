@@ -20,6 +20,11 @@
             android:icon="@drawable/ic_coupon"
             android:title="@string/myCoupon_label"
             app:showAsAction="withText" />
+        <item
+            android:id="@+id/contact"
+            android:icon="@drawable/ic_mail_outline"
+            android:title="@string/contacts_label"
+            app:showAsAction="withText" />
 
     </group>
     <group
@@ -61,11 +66,7 @@
             android:icon="@drawable/ic_profile"
             android:title="@string/myProfile_label"
             app:showAsAction="withText" />
-        <item
-            android:id="@+id/contact"
-            android:icon="@drawable/ic_mail_outline"
-            android:title="@string/contacts_label"
-            app:showAsAction="withText" />
+
         <item
             android:id="@+id/feedback"
             android:icon="@drawable/ic_feedback"

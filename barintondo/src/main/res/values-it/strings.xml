@@ -4,7 +4,7 @@
     <string name="myInterests_label">Miei interessi</string>
     <string name="myCoupon_label">Miei coupon</string>
     <string name="app_settings_label">Impostazioni</string>
-    <string name="contacts_label">Contatti</string>
+    <string name="contacts_label">Numeri utili</string>
     <string name="categories_option">Categorie</string>
     <string name="sleeping_option">Dormire</string>
     <string name="eating_option">Mangiare</string>
@@ -178,4 +178,8 @@
         <item quantity="other">Inizia tra %d mesi</item>
     </plurals>
     <string name="strInProgress">In corso</string>
+    <string name="strInterests">Interessi</string>
+    <string name="str_from">"dal "</string>
+    <string name="str_to">"al "</string>
+    <string name="str_event_take_place">L\'evento avrà luogo</string>
 </resources>

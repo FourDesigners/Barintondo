@@ -45,7 +45,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
         controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myLuogoCod );
+        controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
@@ -62,6 +62,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         myFrameVoteStars=new FrameVoteStars( findViewById( R.id.luogoVoteLayout) );
 
     }
+
 
     public void onLuogoLoaded(final Luogo myLuogo) {
         this.luogo=myLuogo;
@@ -130,9 +131,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
     private void attachDescription(Luogo myItem) {
         Bundle arguments = new Bundle();
-        arguments.putString( ITEM_DESCRIPTION , myItem.getDescription() );
-        arguments.putString( ITEM_ORA_A , myItem.getOraA() );
-        arguments.putString( ITEM_ORA_C , myItem.getOraC() );
+        arguments.putParcelable( EXTRA_LUOGO, myItem );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()

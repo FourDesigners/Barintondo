@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
-    Button moreBtn, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn;
+    Button moreBtn, goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
     ControllerRemoteDB controllerRemoteDB;
 
     @Override
@@ -61,11 +61,20 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         moreBtn = findViewById(R.id.moreBtn);
         moreBtn.setOnClickListener(moreBtnListener);
+
+        goInterests = findViewById( R.id.btnHomeGoInterests );
+        goInterests.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( v.getContext(), InterestsListActivity.class );
+                startActivity( intent );
+            }
+        } );
         goAttractionBtn=findViewById( R.id.btnHomeGoAttraction );
         goAttractionBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity(Constants.INTENT_ATTRACTIONS);
+                homeStartActivity(INTENT_ATTRACTIONS);
             }
         } );
 
@@ -73,21 +82,28 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         goFoodBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( Constants.INTENT_EATING );
+                homeStartActivity( INTENT_EATING );
             }
         } );
         goSleepBtn= findViewById( R.id.btnHomeGoSleep );
         goSleepBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( Constants.INTENT_SLEEPING );
+                homeStartActivity( INTENT_SLEEPING );
             }
         } );
         goNearBariBtn=findViewById( R.id.btnHomeGoNearBari );
         goNearBariBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( Constants.INTENT_NEAR );
+                homeStartActivity( INTENT_NEAR );
+            }
+        } );
+        goEvents=findViewById( R.id.btnHomeGoEvents );
+        goEvents.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeStartActivity( INTENT_EVENTS );
             }
         } );
 

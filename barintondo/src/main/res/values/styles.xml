@@ -25,7 +25,7 @@
         <item name="android:paddingTop">10dp</item>
         <item name="android:drawablePadding">0dp</item>
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:drawableTint">@color/colorWhite</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>

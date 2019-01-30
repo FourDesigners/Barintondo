@@ -8,7 +8,7 @@
     <string name="app_settings_label">Settings</string>
     <string name="logout_label" translatable="false">Logout</string>
     <string name="home" translatable="false">Home</string>
-    <string name="contacts_label">Contacts</string>
+    <string name="contacts_label">Utility numbers</string>
     <string name="strBari" translatable="false">Bari</string>
 
     <!--Drawer options MAI USATE tranne categories_option-->
@@ -23,6 +23,8 @@
     <string name="preferences_label">Preferences</string>
     <string name="title_send_feedback">Send feedback</string>
     <string name="choose_email_client">Choose email client</string>
+    <string name="strInterests">Interests</string>
+
 
     <!--Chips attractions-->
     <string-array name="attractions">
@@ -244,6 +246,9 @@
     <string name="strDate">Date: </string>
     <string name="strStartDate">Start Date: </string>
     <string name="strEndDate">End Date: </string>
+    <string name="str_from">from </string>
+    <string name="str_to">to </string>
+    <string name="str_event_take_place">The event wil take place </string>
 
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>

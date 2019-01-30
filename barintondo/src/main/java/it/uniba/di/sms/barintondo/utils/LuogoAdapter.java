@@ -209,7 +209,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 String inDays = context.getResources().getQuantityString(R.plurals.EventInDays, days, days);
                 holder.startDays.setText( inDays);
             }else{
-                days=days/30;
+                if(days%30>=5) days=(days/30)+1;
+                else days=days/30;
                 String inDays = context.getResources().getQuantityString(R.plurals.EventInMonths, days, days);
                 holder.startDays.setText( inDays);
             }
