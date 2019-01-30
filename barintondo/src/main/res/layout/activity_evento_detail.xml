@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventoDetailActivity">
+    android:orientation="vertical"
+    tools:context=".EventoDetailActivity"
+    android:animateLayoutChanges="true">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/luogoDetailToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/luogoDetailImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark">
+
+        <Button
+            android:id="@+id/btn_luogo_info"
+            style="@style/btnLuogoDetail"
+            android:text="@string/pref_header_info"/>
+
+        <Button
+            android:id="@+id/btn_luogo_directions"
+            style="@style/btnLuogoDetail"
+            android:text="@string/strDirections" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:id="@+id/luogo_extra_container">
+
+
+    </FrameLayout>
+
+
+</android.support.v7.widget.LinearLayoutCompat>

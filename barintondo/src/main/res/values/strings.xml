@@ -208,6 +208,7 @@
     <string name="strChurch">Church</string>
     <string name="strBeach">Beach</string>
     <string name="strDisco">Discotheque</string>
+    <string name="strFamiglia">Family</string>
     <string name="strBar" translatable="false">Bar</string>
     <string name="strPizzaHouse" translatable="false">Pizzeria</string>
     <string name="strRestaurant">Restaurant</string>
@@ -240,6 +241,9 @@
     <string name="strNo">No</string>
     <string name="open_maps">Open Map</string>
     <string name="str_located_in">Located in:</string>
+    <string name="strDate">Date: </string>
+    <string name="strStartDate">Start Date: </string>
+    <string name="strEndDate">End Date: </string>
 
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>
@@ -283,6 +287,7 @@
     <string name="testo">Text:</string>
     <string name="strInsertReview">Review text</string>
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
+
 
 
 </resources>

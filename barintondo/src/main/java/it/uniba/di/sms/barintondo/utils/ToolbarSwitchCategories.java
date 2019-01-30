@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoListActivity;
@@ -13,18 +14,12 @@ import it.uniba.di.sms.barintondo.R;
 
 public class ToolbarSwitchCategories implements Constants {
     Activity activity;
-    ImageButton interests, attraction, food, sleep, near, event;
+    ImageButton attraction, food, sleep, near, event;
+
 
     public ToolbarSwitchCategories(final Activity activity , String category) {
         this.activity = activity;
-        interests= activity.findViewById( R.id.btnSwitchInterests );
-        interests.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, InterestsListActivity.class);
-                activity.startActivity(intent);
-            }
-        } );
+
         attraction = activity.findViewById( R.id.btnSwitchAttractions );
         onClickcategory( attraction , INTENT_ATTRACTIONS );
         food = activity.findViewById( R.id.btnSwitchFood );
@@ -49,9 +44,6 @@ public class ToolbarSwitchCategories implements Constants {
                 break;
             case INTENT_NEAR:
                 near.setColorFilter( color );
-                break;
-            case INTENT_INTERESES:
-                interests.setColorFilter( color );
                 break;
             case INTENT_EVENTS:
                 event.setColorFilter( color );
