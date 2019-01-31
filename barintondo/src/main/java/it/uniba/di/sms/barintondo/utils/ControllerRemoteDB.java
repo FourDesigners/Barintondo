@@ -597,6 +597,7 @@ public class ControllerRemoteDB implements Constants {
                 }
 
                 mAdapter.notifyDataSetChanged();
+                mAdapter.onReviewLoaded( reviewsList.size() );
                 progressDialog.dismiss();
 
 

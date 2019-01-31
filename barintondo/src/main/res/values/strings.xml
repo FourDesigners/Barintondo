@@ -249,6 +249,7 @@
     <string name="str_from">from </string>
     <string name="str_to">to </string>
     <string name="str_event_take_place">The event wil take place </string>
+    <string name="strNoReviews">There are no reviews for this place yet</string>
 
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>

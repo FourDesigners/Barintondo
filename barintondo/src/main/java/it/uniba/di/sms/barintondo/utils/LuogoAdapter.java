@@ -145,10 +145,11 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 break;
         }
         Log.i( TAG , "final sottoCat:" + sottoCat );
-        holder.sottoCat.setText( sottoCat );
+        holder.sottoCat.setText( sottoCat);
 
 
         if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
+            holder.sottoCat.setText( sottoCat+",");
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
             String oraC = luogo.getOraC();
@@ -163,6 +164,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             if (formattedDate.compareTo( oraA ) < 0 || formattedDate.compareTo( oraC ) > 0)
                 holder.stato.setText( context.getResources().getString( R.string.closedState ) );
             else holder.stato.setText( context.getResources().getString( R.string.openState ) );
+            holder.stato.setVisibility( View.VISIBLE );
         } else {
             holder.stato.setVisibility( View.GONE );
         }

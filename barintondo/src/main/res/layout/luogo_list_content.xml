@@ -63,7 +63,6 @@
     <TextView
         android:id="@+id/sottoCat"
         android:layout_width="wrap_content"
-        android:minWidth="100dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="@string/notDefined"

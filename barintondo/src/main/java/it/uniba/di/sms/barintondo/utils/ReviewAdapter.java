@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -32,7 +33,7 @@ import it.uniba.di.sms.barintondo.R;
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
-    private Context context;
+    private View parentView;
     private List<Review> reviewList;
 
     private static final String TAG = ReviewAdapter.class.getSimpleName();
@@ -52,8 +53,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     }
 
 
-    public ReviewAdapter(Context context, List<Review> reviewList ) {
-        this.context = context;
+    public ReviewAdapter(View view, List<Review> reviewList ) {
+        this.parentView = view;
         this.reviewList = reviewList;
     }
 
@@ -79,7 +80,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
+
+
+
         return reviewList.size();
+    }
+
+    public void onReviewLoaded(int reviewSize){
+        if (reviewSize==0) {
+            parentView.findViewById( R.id.luogo_reviews_list_recycler_view ).setVisibility( View.GONE );
+            parentView.findViewById( R.id.text_view_no_reviews ).setVisibility( View.VISIBLE );
+        }
+        else {
+            parentView.findViewById( R.id.luogo_reviews_list_recycler_view ).setVisibility( View.VISIBLE );
+            parentView.findViewById( R.id.text_view_no_reviews ).setVisibility( View.GONE );
+        }
     }
 
 }

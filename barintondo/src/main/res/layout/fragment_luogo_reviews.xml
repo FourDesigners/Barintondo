@@ -132,7 +132,14 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/recensione_list_content" />
         <!--le ultime 2 istruzioni serve per far visualizzare correttamente l'ultima recensione e non oscurarla con il fab-->
-
+        <TextView
+            android:id="@+id/text_view_no_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/strNoReviews"
+            android:textSize="@dimen/standardTextSize"
+            android:visibility="gone"/>
         <!--Non esce nell'anteprima ma c'è nell'activity-->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddReview"
@@ -144,6 +151,8 @@
             android:tint="@color/colorWhite"
             app:srcCompat="@android:drawable/ic_input_add" />
     </android.support.design.widget.CoordinatorLayout>
+
+
 
 
 </LinearLayout>

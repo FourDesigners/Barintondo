@@ -49,6 +49,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     EditText reviewEditText;
     LuogoReviewsFragment mLuogoReviewFragment;
     ControllerRemoteDB controllerRemoteDB;
+    CoordinatorLayout reviewLayout;
 
     public LuogoReviewsFragment() {
         // Required empty public constructor
@@ -77,7 +78,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate( R.layout.fragment_luogo_reviews , container , false );
 
-        mAdapter = new ReviewAdapter( rootView.getContext(), reviewList );
+        mAdapter = new ReviewAdapter( rootView, reviewList );
         //recyclerView setup
         recyclerView = rootView.findViewById( R.id.luogo_reviews_list_recycler_view );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( rootView.getContext() );
@@ -92,6 +93,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         btnCancelReview = rootView.findViewById( R.id.btnCancelReview );
         btnSaveReview = rootView.findViewById( R.id.btnSaveReview );
         reviewEditText = rootView.findViewById( R.id.edit_text_review );
+        reviewLayout =rootView.findViewById( R.id.layout_reviews_list );
 
         fabAdReview.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -167,6 +169,8 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         reviewEditText.getText().clear();
         final Resources res = this.getResources();
         starSelected(1, res);
+        reviewLayout.setVisibility( View.VISIBLE );
+
     }
 
 }

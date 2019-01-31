@@ -182,4 +182,5 @@
     <string name="str_from">"dal "</string>
     <string name="str_to">"al "</string>
     <string name="str_event_take_place">L\'evento avrà luogo</string>
+    <string name="strNoReviews">Non sono ancora state inserite delle recensioni per questo luogo</string>
 </resources>
