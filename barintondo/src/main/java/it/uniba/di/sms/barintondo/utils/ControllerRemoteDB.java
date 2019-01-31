@@ -38,6 +38,7 @@ public class ControllerRemoteDB implements Constants {
         email = LocalDBOpenHelper.getEmail( context );
     }
 
+
     public void checkPref(String itemCod) {
         manageInterests( REQUEST_CHECK_PREF , email , itemCod );
     }
@@ -332,7 +333,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getLuogo(final String codLuogo, final String requestLuogoType) {
+    public void getLuogo(final String codLuogo, final String requestLuogoType, final ControllerDBListner listner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -410,13 +411,16 @@ public class ControllerRemoteDB implements Constants {
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
 
+
+
                 if (context instanceof LuogoDetailActivity) {
                     LuogoDetailActivity luogoDetail = (LuogoDetailActivity) context;
                     luogoDetail.onLuogoLoaded( luogo );
-                } else {
+                } else if(context instanceof EventoDetailActivity){
                     EventoDetailActivity eventoDetail = (EventoDetailActivity) context;
                     eventoDetail.onEventoLoaded( evento );
                 }
+                listner.onLuogo( luogo );
 
                 progressDialog.dismiss();
 

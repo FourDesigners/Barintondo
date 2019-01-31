@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -35,6 +37,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     ControllerRemoteDB controller;
     FrameVoteStars myFrameVoteStars;
     Luogo luogo;
+    ControllerDBListner myListner;
 
 
     @Override
@@ -43,9 +46,21 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
+        myListner=new ControllerDBListner() {
+            @Override
+            public void onLuogo(Luogo luogo) {
+
+            }
+
+            @Override
+            public void onEvento(Evento evento) {
+
+            }
+        };
+
         String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
         controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO );
+        controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListner );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
@@ -32,6 +33,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     Button itemInfo, itemDirection;
     ControllerRemoteDB controller;
     Evento evento;
+    ControllerDBListner myListner;
 
 
 
@@ -41,9 +43,21 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         setContentView( R.layout.activity_evento_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
+        myListner = new ControllerDBListner() {
+            @Override
+            public void onLuogo(Luogo luogo) {
+
+            }
+
+            @Override
+            public void onEvento(Evento evento) {
+
+            }
+        };
+
         String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
         controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS );
+        controller.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS, myListner );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
