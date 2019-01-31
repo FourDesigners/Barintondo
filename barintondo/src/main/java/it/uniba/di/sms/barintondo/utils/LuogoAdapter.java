@@ -21,9 +21,11 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.R;
@@ -40,7 +42,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     private static final String TAG = LuogoAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView nome, sottoCat, stato, dataEvento;
+        public TextView nome, sottoCat, stato, startDays;
         public ImageView thumbnail, categIcon;
         public FrameVoteStars mVoteStars;
 
@@ -54,7 +56,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             categIcon = view.findViewById( R.id.icon_categoria );
             View frameVote = view.findViewById( R.id.luogoVoteLayout );
             mVoteStars = new FrameVoteStars( frameVote );
-            dataEvento = view.findViewById( R.id.dateEvento );
+            startDays = view.findViewById( R.id.start_days );
 
             view.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -197,15 +199,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         if(luogo instanceof Evento){
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
-            if(evento.getDataInizio().equals( evento.getDataFine() )){
-                holder.dataEvento.setText( evento.getDataInizio());
-            }
-            else {
-                holder.dataEvento.setText( evento.getDataInizio() + " / "+ evento.getDataFine());
-            }
 
-
-
+            holder.startDays.setText(evento.getDaysToEvent( context ));
 
         }else holder.mVoteStars.setStars( luogo.getVoto() );
 

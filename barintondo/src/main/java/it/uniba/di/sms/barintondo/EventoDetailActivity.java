@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +34,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     Evento evento;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -41,7 +43,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
         String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
         controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myEventCod );
+        controller.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
@@ -54,35 +56,35 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         itemInfo = findViewById( R.id.btn_luogo_info );
         itemDirection = findViewById( R.id.btn_luogo_directions );
 
+
     }
 
-    public void onEventoLoaded(final Evento myLuogo) {
-        this.evento=new Evento(  myLuogo);
+    public void onEventoLoaded(final Evento myEvent) {
+        this.evento=myEvent;
 
-        myToolbar.setTitle( myLuogo.getNome() );
+        myToolbar.setTitle( myEvent.getNome() );
 
         //thumbnail
         Glide.with( this )
-                .load( imagesPath + myLuogo.getThumbnailLink() )
+                .load( imagesPath + myEvent.getThumbnailLink() )
                 .into( myImageView );
 
 
         itemInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attachDescription( myLuogo );
+                attachDescription( myEvent );
             }
         } );
-
 
         itemDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attachDirections( myLuogo );
+                attachDirections( myEvent );
             }
         } );
 
-        attachDescription( myLuogo );
+        attachDescription( myEvent );
 
     }
 
@@ -98,11 +100,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
     }
 
-    private void attachDescription(Luogo myItem) {
+    private void attachDescription(Evento myEvent) {
         Bundle arguments = new Bundle();
-        arguments.putString( ITEM_DESCRIPTION , myItem.getDescription() );
-        arguments.putString( ITEM_ORA_A , myItem.getOraA() );
-        arguments.putString( ITEM_ORA_C , myItem.getOraC() );
+        arguments.putParcelable( EXTRA_LUOGO, myEvent );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()

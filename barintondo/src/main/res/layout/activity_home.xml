@@ -120,6 +120,12 @@
                     android:drawableTop="@drawable/ic_food"
                     android:text="@string/eating_option" />
 
+                <Button
+                    android:id="@+id/btnHomeGoInterests"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_star"
+                    android:text="@string/strInterests" />
+
             </TableRow>
 
 
@@ -137,6 +143,11 @@
                     style="@style/btnHomeStyke"
                     android:drawableTop="@drawable/ic_surroundings"
                     android:text="@string/near_option"/>
+                <Button
+                    android:id="@+id/btnHomeGoEvents"
+                    style="@style/btnHomeStyke"
+                    android:drawableTop="@drawable/ic_events"
+                    android:text="@string/events_option"/>
 
             </TableRow>
 

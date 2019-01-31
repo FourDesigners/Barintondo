@@ -43,6 +43,7 @@ public interface Constants {
     String ITEM_REVIEWS = "reviews";
     String ITEM_ORA_A ="oraA";
     String ITEM_ORA_C="oraC";
+    String EXTRA_LUOGO="extraLuogo";
 
     //stringa per link immagini
     String imagesPath = "http://barintondo.altervista.org/images/";

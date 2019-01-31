@@ -267,17 +267,22 @@ public class ControllerRemoteDB implements Constants {
                             }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            luogo.setVoto( jsonObject.getInt( "voto" ) );
-                            int order = jsonObject.getInt( "voto" );
-                            if (UserUtils.codPref.contains( luogo.getCod() )) order = order + 10;
-                            luogo.setOrder( order );
-                            //adding items to itemsList
+
+                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                                luogo.setVoto( jsonObject.getInt( "voto" ) );
+                                int order = jsonObject.getInt( "voto" );
+                                if (UserUtils.codPref.contains( luogo.getCod() )) order = order + 10;
+                                luogo.setOrder( order );
+                            }
+
+
+
                             if (requestCat.equals( REQUEST_GET_EVENTS )) {
                                 Evento evento = new Evento( luogo );
 
                                 if (jsonObject.getString( "codLuogo" ).equals( "null" ))
-                                    evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
-                                else evento.setCodLuogo( null );
+                                    evento.setCodLuogo( null );
+                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
 
                                 if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
                                     evento.setDataInizio( null );
@@ -286,6 +291,7 @@ public class ControllerRemoteDB implements Constants {
                                     evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
                                     evento.setDataFine( jsonObject.getString( "dataFine" ) );
                                 }
+                                //adding items to itemsList
                                 luogoList.add( evento );
                             } else luogoList.add( luogo );
 
@@ -326,7 +332,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getLuogo(final String codLuogo) {
+    public void getLuogo(final String codLuogo, final String requestLuogoType) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -339,10 +345,11 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( TAG , "ControllerRemoteDB: entered onResponse()" );
+                //Log.i( "Test" , "ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
+                Evento evento = new Evento(  );
                 try {
 
                     JSONArray jsonArray = new JSONArray( response );
@@ -372,7 +379,25 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
                             luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                                luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            }
+
+                            if(requestLuogoType.equals( REQUEST_GET_EVENTS )){
+                                evento=new Evento( luogo );
+
+                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                    evento.setCodLuogo( null );
+                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                    evento.setDataInizio( null );
+                                    evento.setDataFine( null );
+                                } else {
+                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                                }
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -389,8 +414,8 @@ public class ControllerRemoteDB implements Constants {
                     LuogoDetailActivity luogoDetail = (LuogoDetailActivity) context;
                     luogoDetail.onLuogoLoaded( luogo );
                 } else {
-                    EventoDetailActivity eventoDetail= (EventoDetailActivity) context;
-                    eventoDetail.onEventoLoaded( new Evento(  luogo) );
+                    EventoDetailActivity eventoDetail = (EventoDetailActivity) context;
+                    eventoDetail.onEventoLoaded( evento );
                 }
 
                 progressDialog.dismiss();
@@ -409,6 +434,7 @@ public class ControllerRemoteDB implements Constants {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , REQUEST_GET_LUOGO );
                 MyData.put( "request_luogo" , codLuogo );
+                MyData.put("request_luogo_type", requestLuogoType);
                 return MyData;
             }
         };
@@ -424,16 +450,16 @@ public class ControllerRemoteDB implements Constants {
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-        if(InternetConnection.isNetworkAvailable(context)) {
+        if (InternetConnection.isNetworkAvailable( context )) {
             //prelievo informazioni aggiornate dal server e aggiornamento DB locale
 
-            final String email = LocalDBOpenHelper.getEmail(context);
+            final String email = LocalDBOpenHelper.getEmail( context );
 
             //definizione URL
             String Url = "http://barintondo.altervista.org/get_my_coupons.php";
 
-            RequestQueue MyRequestQueue = Volley.newRequestQueue(context);
-            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+            RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+            StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
@@ -442,68 +468,67 @@ public class ControllerRemoteDB implements Constants {
                     try {
 
                         List<CouponLuogo> tempCouponList = new ArrayList<>();
-                        JSONArray jsonArray = new JSONArray(response);
+                        JSONArray jsonArray = new JSONArray( response );
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             try {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                JSONObject jsonObject = jsonArray.getJSONObject( i );
 
                                 CouponLuogo coupon = new CouponLuogo();
-                                coupon.setCod(jsonObject.getString("codCoupon"));
-                                coupon.setCodLuogo(jsonObject.getString("cod"));
-                                coupon.setLuogo(jsonObject.getString("nome"));
-                                coupon.setScadenza(jsonObject.getString("scadenza"));
-                                coupon.setSottoCat(jsonObject.getString("sottoCategoria"));
-                                coupon.setDescrizione_it(jsonObject.getString("descrizioneIt"));
-                                coupon.setDescrizione_en(jsonObject.getString("descrizioneEn"));
+                                coupon.setCod( jsonObject.getString( "codCoupon" ) );
+                                coupon.setCodLuogo( jsonObject.getString( "cod" ) );
+                                coupon.setLuogo( jsonObject.getString( "nome" ) );
+                                coupon.setScadenza( jsonObject.getString( "scadenza" ) );
+                                coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                                coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
+                                coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
 
                                 //adding items to itemsList
-                                tempCouponList.add(coupon);
+                                tempCouponList.add( coupon );
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
+                                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
                             }
                         }
-                        LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper(context, Constants.DB_NAME, null, 1);
-                        LocalDBOpenHelper.deleteCoupon(couponOpenHelper);
-                        for(CouponLuogo c : tempCouponList) {
-                            LocalDBOpenHelper.insertCoupon(c, couponOpenHelper);
+                        LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper( context , Constants.DB_NAME , null , 1 );
+                        LocalDBOpenHelper.deleteCoupon( couponOpenHelper );
+                        for (CouponLuogo c : tempCouponList) {
+                            LocalDBOpenHelper.insertCoupon( c , couponOpenHelper );
                         }
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                         progressDialog.dismiss();
-                        Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
+                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
                     }
-                    //mAdapter.notifyDataSetChanged();
-                    //progressDialog.dismiss();
+                    mAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
                 }
-            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     //This code is executed if there is an error.
                     progressDialog.dismiss();
-                    Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
                 }
-            }) {
+            } ) {
 
                 protected Map<String, String> getParams() {
                     Map<String, String> MyData = new HashMap<String, String>();
-                    MyData.put("email", email);
+                    MyData.put( "email" , email );
                     return MyData;
                 }
             };
 
 
-            MyRequestQueue.add(MyStringRequest);
+            MyRequestQueue.add( MyStringRequest );
         } else {
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+            Toast.makeText( context , "" , Toast.LENGTH_SHORT ).show();
         }
-        //a prescindere dall'esito del controllo sulla rete, carico i dati dei coupon (aggiornati o meno) dal db locale
-        LocalDBOpenHelper.getCouponList(context, couponList);
-        mAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
+        //a prescindere dall'esito del controllo sulla rete, carico i dati dei coupon (aggiornati o meno) dal db locale
+        LocalDBOpenHelper.getCouponList( context , couponList );
 
     }
 
