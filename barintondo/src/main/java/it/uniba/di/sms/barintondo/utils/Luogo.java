@@ -1,7 +1,9 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -12,6 +14,8 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
     private String citta;
     private String categoria;
     private String sottoCat;
+    private float latitudine;
+    private float longitudine;
     private String oraA;
     private String oraC;
     private String thumbnailLink;
@@ -45,6 +49,8 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         citta = in.readString();
         sottoCat = in.readString();
         categoria = in.readString();
+        latitudine = in.readFloat();
+        longitudine = in.readFloat();
         oraA = in.readString();
         oraC = in.readString();
         thumbnailLink = in.readString();
@@ -102,6 +108,22 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
 
     public void setSottoCat(String sottoCat) {
         this.sottoCat = sottoCat;
+    }
+
+    public float getLatitudine() {
+        return latitudine;
+    }
+
+    public void setLatitudine(float latitudine) {
+        this.latitudine = latitudine;
+    }
+
+    public float getLongitudine() {
+        return longitudine;
+    }
+
+    public void setLongitudine(float longitudine) {
+        this.longitudine = longitudine;
     }
 
     public String getOraA() {
@@ -197,6 +219,8 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         dest.writeString( citta );
         dest.writeString( categoria );
         dest.writeString( sottoCat );
+        dest.writeFloat( latitudine );
+        dest.writeFloat( longitudine );
         dest.writeString( oraA );
         dest.writeString( oraC );
         dest.writeString( thumbnailLink );
@@ -213,5 +237,11 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         if(this.order> o.order) return -1;
         if(this.order==o.order) return 0;
         return 1;
+    }
+
+    public float calculateDistanceTo(Location destinazione){
+        float[] results=new float[10];
+        Location.distanceBetween( latitudine, longitudine, destinazione.getLatitude(), destinazione.getLongitude(), results  );
+        return results[0];
     }
 }

@@ -1,13 +1,18 @@
 package it.uniba.di.sms.barintondo;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,6 +23,7 @@ import java.util.List;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -68,12 +74,15 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     ControllerDBListner myDBListner;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_luogo_list);
+        setContentView( R.layout.activity_luogo_list );
         mInstance = this;
+
+
 
         //first time intent reading
         items_type = getIntent().getStringExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE );

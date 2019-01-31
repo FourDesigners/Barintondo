@@ -279,6 +279,10 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setNome( jsonObject.getString( "nome" ) );
                             luogo.setCitta( jsonObject.getString( "citta" ) );
                             luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
+                            }
                             if (jsonObject.getString( "oraA" ).equals( "null" )) {
                                 luogo.setOraA( null );
                                 luogo.setOraC( null );
@@ -286,6 +290,7 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setOraA( jsonObject.getString( "oraA" ) );
                                 luogo.setOraC( jsonObject.getString( "oraC" ) );
                             }
+
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
 

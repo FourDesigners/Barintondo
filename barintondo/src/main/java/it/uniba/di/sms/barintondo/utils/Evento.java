@@ -24,6 +24,8 @@ public class Evento extends Luogo implements Parcelable {
         this.setCitta( luogo.getCitta() );
         this.setSottoCat( luogo.getSottoCat() );
         this.setCategoria( luogo.getCategoria() );
+        this.setLatitudine( luogo.getLatitudine() );
+        this.setLongitudine( luogo.getLongitudine() );
         this.setOraA( luogo.getOraA() );
         this.setOraC( luogo.getOraC() );
         this.setThumbnailLink( luogo.getThumbnailLink() );
