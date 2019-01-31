@@ -2,10 +2,7 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +18,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.R;
@@ -200,7 +195,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
 
-            holder.startDays.setText(evento.getDaysToEvent( context ));
+            holder.startDays.setText(evento.getDaysToEventString( context ));
 
         }else holder.mVoteStars.setStars( luogo.getVoto() );
 

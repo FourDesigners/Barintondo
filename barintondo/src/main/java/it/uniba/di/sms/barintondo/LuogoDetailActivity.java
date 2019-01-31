@@ -54,7 +54,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 onLuogoLoaded( luogo );
             }
             @Override
-            public void onEvento(Evento evento) {}};
+            public void onEvento(Evento evento) {}
+            @Override
+            public void onList() {   }
+        };
 
         interestListner = new InterestsListner() {
             @Override
@@ -65,7 +68,6 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             public void onRemove(Boolean result) {
                 prefRemoved( result );
             }
-
             @Override
             public void onCheck(Boolean result) {
                 checkPrefResult( result );

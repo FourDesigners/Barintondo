@@ -266,12 +266,12 @@
     <string name="strInProgress">In progress</string>
 
     <plurals name="EventInDays">
-        <item quantity="one">Starts in %d day</item>
-        <item quantity="other">Starts in %d days</item>
+        <item quantity="one">In %d day</item>
+        <item quantity="other">In %d days</item>
     </plurals>
     <plurals name="EventInMonths">
-        <item quantity="one">Starts in %d month</item>
-        <item quantity="other">Starts in %d months</item>
+        <item quantity="one">In %d month</item>
+        <item quantity="other">In %d months</item>
     </plurals>
 
     <!--COUPON_DETAIL ACTIVITY-->

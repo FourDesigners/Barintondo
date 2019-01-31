@@ -61,6 +61,8 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 }
                 @Override
                 public void onEvento(Evento evento) { }
+                @Override
+                public void onList() {   }
             };
         }
     }

@@ -57,10 +57,8 @@ public class Evento extends Luogo implements Parcelable {
         this.dataFine = Date.valueOf( dataFine );
     }
 
-    public String getDaysToEvent(Context context){
-        java.util.Date today = new java.util.Date();
-        long diff = dataInizio.getTime() - today.getTime() ;
-        int days= (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    public String getDaysToEventString(Context context){
+        int days = getDaysToEvent();
         String inDays;
         if(days<=0){
             inDays= context.getResources().getString( R.string.strInProgress );
@@ -73,5 +71,12 @@ public class Evento extends Luogo implements Parcelable {
             inDays = context.getResources().getQuantityString(R.plurals.EventInMonths, days, days);
         }
         return inDays;
+    }
+
+    public int getDaysToEvent(){
+        java.util.Date today = new java.util.Date();
+        long diff = dataInizio.getTime() - today.getTime() ;
+        int days= (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return days;
     }
 }

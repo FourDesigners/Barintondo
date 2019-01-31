@@ -37,6 +37,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -64,6 +65,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     String[] arrayRes = null;
     String[] arrayTags = null;
     String[] order = null;
+    ControllerDBListner myDBListner;
 
 
     @Override
@@ -175,10 +177,21 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         // white background notification bar
         whiteNotificationBar( recyclerView );
 
+        myDBListner = new ControllerDBListner() {
+            @Override
+            public void onLuogo(Luogo luogo) {}
+            @Override
+            public void onEvento(Evento evento) {}
+            @Override
+            public void onList() {
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
         //first time populating
         //fetchItems();
         ControllerRemoteDB controller = new ControllerRemoteDB( this );
-        controller.getLuoghiList( requestCat , luogoList, mAdapter);
+        controller.getLuoghiList( requestCat , luogoList, myDBListner);
 
     }
 

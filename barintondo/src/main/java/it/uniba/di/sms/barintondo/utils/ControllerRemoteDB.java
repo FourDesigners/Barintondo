@@ -230,7 +230,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final LuogoAdapter mAdapter) {
+    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final ControllerDBListner mListner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -307,7 +307,7 @@ public class ControllerRemoteDB implements Constants {
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
                 Collections.sort( luogoList );
-                mAdapter.notifyDataSetChanged();
+                mListner.onList(  );
                 progressDialog.dismiss();
 
             }
@@ -494,6 +494,8 @@ public class ControllerRemoteDB implements Constants {
                         for (CouponLuogo c : tempCouponList) {
                             LocalDBOpenHelper.insertCoupon( c , couponOpenHelper );
                         }
+                        LocalDBOpenHelper.getCouponList(context, couponList);
+                        mAdapter.notifyDataSetChanged();
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                         progressDialog.dismiss();
@@ -517,8 +519,6 @@ public class ControllerRemoteDB implements Constants {
                     return MyData;
                 }
             };
-
-
             MyRequestQueue.add( MyStringRequest );
         } else {
             Toast.makeText( context , "" , Toast.LENGTH_SHORT ).show();

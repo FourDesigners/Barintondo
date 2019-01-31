@@ -1,18 +1,15 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.ContentObservable;
-import android.net.Uri;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.MenuCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,13 +22,20 @@ import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
+import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
-import it.uniba.di.sms.barintondo.utils.UserUtils;
+import it.uniba.di.sms.barintondo.utils.SliderAdapter;
+import me.relex.circleindicator.CircleIndicator;
 
 public class HomeActivity extends AppCompatActivity implements Constants {
 
@@ -40,6 +44,12 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     OpenWeatherMapHelper helper;
     Button moreBtn, goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
     ControllerRemoteDB controllerRemoteDB;
+    ControllerDBListner myDBListner;
+
+    //elementi per lo slider
+    private static ViewPager mPager;
+    private static int currentPage = 0;
+    private ArrayList<Luogo> luogoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +117,26 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             }
         } );
 
+        myDBListner=new ControllerDBListner() {
+            @Override
+            public void onLuogo(Luogo luogo) {}
+            @Override
+            public void onEvento(Evento evento) {}
+            @Override
+            public void onList() {
+                final ArrayList<Evento> listEventi= new ArrayList<>(  );
+                for(Luogo l: luogoList){
+                    Evento evento = (Evento) l;
+                    if(evento.getDaysToEvent( )<=30) {
+                        listEventi.add( (Evento) l );
+                    }
+                }
+                setSlider(listEventi);
+            }
+        };
         controllerRemoteDB = new ControllerRemoteDB( this );
         controllerRemoteDB.populateInterestsCod();
+        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , myDBListner);
 
 
 
@@ -205,4 +233,31 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         }
     };
+
+    private void setSlider(final ArrayList<Evento> listEventi) {
+
+
+        mPager = findViewById(R.id.pager);
+        mPager.setAdapter(new SliderAdapter(this,  listEventi));
+        CircleIndicator indicator = findViewById(R.id.indicator);
+        indicator.setViewPager(mPager);
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == listEventi.size()) {
+                    currentPage = 0;
+                }
+                mPager.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 5000, 4000);
+    }
 }

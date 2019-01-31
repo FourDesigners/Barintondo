@@ -80,39 +80,36 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:background="@color/colorPrimaryDark">
+            android:layout_weight="6">
 
-            <TextView
-                android:id="@+id/testotemporaneo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SLIDER EVENTI"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/standardTextSize"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true" />
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <TableRow
-                android:layout_weight="1">
+            <TableRow android:layout_weight="1">
 
                 <Button
                     android:id="@+id/btnHomeGoAttraction"
                     style="@style/btnHomeStyke"
                     android:drawableTop="@drawable/ic_attraction"
-                    android:text="@string/attractions_option"/>
+                    android:text="@string/attractions_option" />
 
                 <Button
                     android:id="@+id/btnHomeGoFood"
@@ -129,25 +126,25 @@
             </TableRow>
 
 
-            <TableRow
-                android:layout_weight="1">
+            <TableRow android:layout_weight="1">
 
                 <Button
                     android:id="@+id/btnHomeGoSleep"
                     style="@style/btnHomeStyke"
                     android:drawableTop="@drawable/ic_stay"
-                    android:text="@string/sleeping_option"/>
+                    android:text="@string/sleeping_option" />
 
                 <Button
                     android:id="@+id/btnHomeGoNearBari"
                     style="@style/btnHomeStyke"
                     android:drawableTop="@drawable/ic_surroundings"
-                    android:text="@string/near_option"/>
+                    android:text="@string/near_option" />
+
                 <Button
                     android:id="@+id/btnHomeGoEvents"
                     style="@style/btnHomeStyke"
                     android:drawableTop="@drawable/ic_events"
-                    android:text="@string/events_option"/>
+                    android:text="@string/events_option" />
 
             </TableRow>
 

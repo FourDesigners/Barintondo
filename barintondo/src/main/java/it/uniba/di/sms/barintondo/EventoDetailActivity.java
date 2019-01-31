@@ -45,14 +45,13 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
         myListner = new ControllerDBListner() {
             @Override
-            public void onLuogo(Luogo luogo) {
-
-            }
-
+            public void onLuogo(Luogo luogo) {}
             @Override
             public void onEvento(Evento evento) {
                 onEventoLoaded( evento );
             }
+            @Override
+            public void onList() {}
         };
 
         String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
