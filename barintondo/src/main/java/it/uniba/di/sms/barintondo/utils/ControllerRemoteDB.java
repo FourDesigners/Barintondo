@@ -527,7 +527,6 @@ public class ControllerRemoteDB implements Constants {
         LocalDBOpenHelper.getCouponList(context, couponList);
         mAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
-        LocalDBOpenHelper.getCouponList( context , couponList );
 
     }
 
