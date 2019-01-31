@@ -494,8 +494,6 @@ public class ControllerRemoteDB implements Constants {
                         for (CouponLuogo c : tempCouponList) {
                             LocalDBOpenHelper.insertCoupon( c , couponOpenHelper );
                         }
-                        LocalDBOpenHelper.getCouponList(context, couponList);
-                        mAdapter.notifyDataSetChanged();
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                         progressDialog.dismiss();
@@ -519,6 +517,7 @@ public class ControllerRemoteDB implements Constants {
                     return MyData;
                 }
             };
+
             MyRequestQueue.add( MyStringRequest );
         } else {
             Toast.makeText( context , "" , Toast.LENGTH_SHORT ).show();
