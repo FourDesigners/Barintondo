@@ -29,6 +29,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
     private static final String TABLE_COUPON = "coupon";
         //riutilizzo la costante COLUMN_ID
     private static final String COLUMN_COD_COUPON = "codCoupon";
+    private static final String COLUMN_COD_LUOGO = "codLuogo";
     private static final String COLUMN_LUOGO = "luogo";
     private static final String COLUMN_SCADENZA = "scadenza";
     private static final String COLUMN_DESC_IT = "descrizioneIt";
@@ -36,8 +37,8 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
     private static final String CREATE_COUPON_TABLE_QUERY =
             "CREATE TABLE " + TABLE_COUPON + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_COD_COUPON + " varchar(4), " +
-                    COLUMN_LUOGO + " varchar(30), " + COLUMN_SCADENZA + " date, "  + COLUMN_DESC_IT + " text, "
-                    + COLUMN_DESC_EN + " text);";
+                    COLUMN_COD_LUOGO + " varchar(4), " + COLUMN_LUOGO + " varchar(30), " + COLUMN_SCADENZA + " date, "
+                    + COLUMN_DESC_IT + " text, " + COLUMN_DESC_EN + " text);";
 
     public LocalDBOpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -118,6 +119,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_COD_COUPON, newCoupon.getCod());
+        values.put(COLUMN_COD_LUOGO, newCoupon.getCodLuogo());
         values.put(COLUMN_LUOGO, newCoupon.getLuogo());
         values.put(COLUMN_SCADENZA, newCoupon.getScadenza());
         values.put(COLUMN_DESC_IT, newCoupon.getDescrizione_it());
@@ -183,7 +185,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
         //definisco la query
-        String[] columns = {COLUMN_COD_COUPON, COLUMN_LUOGO, COLUMN_SCADENZA, COLUMN_DESC_IT, COLUMN_DESC_EN};
+        String[] columns = {COLUMN_COD_COUPON, COLUMN_COD_LUOGO, COLUMN_LUOGO, COLUMN_SCADENZA, COLUMN_DESC_IT, COLUMN_DESC_EN};
         Cursor myCursor;
         //ottengo il cursore
         myCursor = myDB.query( TABLE_COUPON , columns , null , null , null , null , null , null );
@@ -192,6 +194,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
             //Log.i("LocalDBOpenHelper", "i= " + i);
             CouponLuogo mCoupon = new CouponLuogo();
             mCoupon.setCod(myCursor.getString(myCursor.getColumnIndex(COLUMN_COD_COUPON)));
+            mCoupon.setCodLuogo(myCursor.getString(myCursor.getColumnIndex(COLUMN_COD_LUOGO)));
             mCoupon.setLuogo(myCursor.getString(myCursor.getColumnIndex(COLUMN_LUOGO)));
             mCoupon.setScadenza(myCursor.getString(myCursor.getColumnIndex(COLUMN_SCADENZA)));
             mCoupon.setDescrizione_it(myCursor.getString(myCursor.getColumnIndex(COLUMN_DESC_IT)));

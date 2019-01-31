@@ -476,8 +476,8 @@ public class ControllerRemoteDB implements Constants {
                         progressDialog.dismiss();
                         Toast.makeText(context, context.getResources().getString(R.string.str_fail_coupon_managing), Toast.LENGTH_SHORT).show();
                     }
-                    mAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
+                    //mAdapter.notifyDataSetChanged();
+                    //progressDialog.dismiss();
                 }
             }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override
@@ -500,9 +500,10 @@ public class ControllerRemoteDB implements Constants {
         } else {
             Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
         }
-        progressDialog.dismiss();
         //a prescindere dall'esito del controllo sulla rete, carico i dati dei coupon (aggiornati o meno) dal db locale
         LocalDBOpenHelper.getCouponList(context, couponList);
+        mAdapter.notifyDataSetChanged();
+        progressDialog.dismiss();
 
     }
 
