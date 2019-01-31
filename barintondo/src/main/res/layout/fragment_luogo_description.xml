@@ -21,13 +21,13 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/luogo_orari"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/image_clock"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_clock"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -63,16 +63,18 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout_dates"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="5dp"
+                android:visibility="gone"
                 android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/image_calendar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_calendar"
-                    app:layout_constraintEnd_toStartOf="@id/text_event_start"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -84,7 +86,7 @@
                         android:text="@string/notDefined"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/text_event_End"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintStart_toEndOf="@id/image_calendar"/>
 
                     <TextView
                         android:id="@+id/text_event_End"
@@ -105,15 +107,48 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
 
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorBlack"
+            android:layout_margin="5dp"/>
+
+
+
         <LinearLayout
+            android:id="@+id/layout_evetn_luogo_ref"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/text_view_event_luogo_ref"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="@string/notDefined"
+                android:textSize="@dimen/mediumTextSize"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_info_outline"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_luogo_indirizzo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_mark_location"/>
+            android:paddingLeft="5dp">
+
+
+
             <TextView
                 android:id="@+id/text_adress"
                 android:layout_width="wrap_content"
@@ -122,34 +157,20 @@
                 android:text="@string/notDefined"
                 android:textSize="@dimen/mediumTextSize"
                 android:layout_gravity="center"/>
+
             <ImageView
                 android:id="@+id/luogo_icon_direction"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:tint="@color/colorPrimaryBlueVariant"
-                android:src="@drawable/ic_directions"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_evetn_luogo_ref"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_evento_luogo_ref"/>
-            <TextView
-                android:id="@+id/text_view_event_luogo_ref"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/notDefined"
-                android:textSize="@dimen/mediumTextSize"/>
+                android:src="@drawable/ic_directions"/>
+
 
         </LinearLayout>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorBlack"
+            android:layout_margin="5dp"/>
 
         <TextView
             android:id="@+id/text_description"

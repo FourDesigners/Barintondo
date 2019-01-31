@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
     private String orarioA, orarioC;
     TextView textViewDescription, textOrarioA, textOrarioC, eventStart, eventEnd, luogoAdress, textViewLuogoEvento;
     ConstraintLayout frameDate, frameOrari;
-    LinearLayout layoutLuogoEvento;
+    LinearLayout layoutLuogoEvento, layoutLuogoIndirizzo;
     ImageView iconDirection;
     Luogo myLuogo;
     ControllerRemoteDB controllerRemoteDB;
@@ -55,6 +56,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
             myListner = new ControllerDBListner() {
                 @Override
                 public void onLuogo(Luogo luogo) {
+                    Log.i("Test", "Entered onLuogo");
                     onLuogoLoaded( luogo );
                 }
                 @Override
@@ -83,9 +85,10 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
         luogoAdress = rootView.findViewById( R.id.text_adress );
         iconDirection = rootView.findViewById( R.id.luogo_icon_direction );
         layoutLuogoEvento = rootView.findViewById( R.id.layout_evetn_luogo_ref );
+        layoutLuogoIndirizzo = rootView.findViewById( R.id.layout_luogo_indirizzo );
         textViewLuogoEvento = rootView.findViewById( R.id.text_view_event_luogo_ref );
         luogoAdress.setText( myLuogo.getIndirizzo() );
-        iconDirection.setOnClickListener( new View.OnClickListener() {
+        layoutLuogoIndirizzo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri gmmIntentUri = Uri.parse( "geo:0,0?q=" + myLuogo.getIndirizzo() );
@@ -112,6 +115,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
             frameDate.setVisibility( View.VISIBLE );
 
             if (myEvento.getCodLuogo() != null) {
+                layoutLuogoEvento.setVisibility( View.VISIBLE );
                 controllerRemoteDB.getLuogo( myEvento.getCodLuogo() , Constants.REQUEST_GET_LUOGO, myListner );
             }
         }
@@ -119,14 +123,22 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
         return rootView;
     }
 
-    public void onLuogoLoaded(Luogo luogoEvento) {
-        layoutLuogoEvento.setVisibility( View.VISIBLE );
+    public void onLuogoLoaded(final Luogo luogoEvento) {
+
         String luogo = "";
         if (luogoEvento.getSottoCat().equals( "Teatri" )) {
             luogo += getResources().getString( R.string.strTheatre ) + " ";
         }
         luogo += luogoEvento.getNome();
         textViewLuogoEvento.setText( luogo );
+        layoutLuogoEvento.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( getContext(), LuogoDetailActivity.class );
+                intent.putExtra( INTENT_LUOGO_COD, luogoEvento.getCod() );
+                startActivity( intent );
+            }
+        } );
     }
 
 

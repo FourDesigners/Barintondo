@@ -21,6 +21,7 @@ import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
+import it.uniba.di.sms.barintondo.utils.InterestsListner;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
@@ -38,6 +39,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     FrameVoteStars myFrameVoteStars;
     Luogo luogo;
     ControllerDBListner myListner;
+    InterestsListner interestListner;
 
 
     @Override
@@ -49,12 +51,24 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         myListner=new ControllerDBListner() {
             @Override
             public void onLuogo(Luogo luogo) {
+                onLuogoLoaded( luogo );
+            }
+            @Override
+            public void onEvento(Evento evento) {}};
 
+        interestListner = new InterestsListner() {
+            @Override
+            public void onAdd(Boolean result) {
+                prefAdded( result );
+            }
+            @Override
+            public void onRemove(Boolean result) {
+                prefRemoved( result );
             }
 
             @Override
-            public void onEvento(Evento evento) {
-
+            public void onCheck(Boolean result) {
+                checkPrefResult( result );
             }
         };
 
@@ -84,7 +98,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         myToolbar.setTitle( myLuogo.getNome() );
 
-        controller.checkPref( myLuogo.getCod() );
+        controller.checkPref( myLuogo.getCod(), interestListner );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -92,8 +106,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 if (!InternetConnection.isNetworkAvailable( LuogoDetailActivity.this )) {
                     Toast.makeText( LuogoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controller.removePref( myLuogo.getCod() );
-                    else controller.addPref( myLuogo.getCod() );
+                    if (isPref) controller.removePref( myLuogo.getCod(), interestListner );
+                    else controller.addPref( myLuogo.getCod(), interestListner );
                 }
             }
         } );

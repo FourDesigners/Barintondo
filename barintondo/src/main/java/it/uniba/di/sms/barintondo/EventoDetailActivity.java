@@ -51,7 +51,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
             @Override
             public void onEvento(Evento evento) {
-
+                onEventoLoaded( evento );
             }
         };
 

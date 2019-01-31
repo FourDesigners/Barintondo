@@ -39,19 +39,19 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void checkPref(String itemCod) {
-        manageInterests( REQUEST_CHECK_PREF , email , itemCod );
+    public void checkPref(String itemCod, InterestsListner listner) {
+        manageInterests( REQUEST_CHECK_PREF , email , itemCod, listner );
     }
 
-    public void addPref(String itemCod) {
-        manageInterests( REQUEST_ADD_PREF , email , itemCod );
+    public void addPref(String itemCod, InterestsListner listner) {
+        manageInterests( REQUEST_ADD_PREF , email , itemCod, listner );
     }
 
-    public void removePref(String itemCod) {
-        manageInterests( REQUEST_REMOVE_PREF , email , itemCod );
+    public void removePref(String itemCod, InterestsListner listner) {
+        manageInterests( REQUEST_REMOVE_PREF , email , itemCod, listner );
     }
 
-    private void manageInterests(final String requestOp , final String user , final String luogoCod) {
+    private void manageInterests(final String requestOp , final String user , final String luogoCod, final InterestsListner listner) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
         final LuogoDetailActivity luogoDetailActivity = (LuogoDetailActivity) context;
 
@@ -68,15 +68,15 @@ public class ControllerRemoteDB implements Constants {
 
                 switch (result[0]) {
                     case REQUEST_CHECK_PREF:
-                        luogoDetailActivity.checkPrefResult( Boolean.valueOf( result[1] ) );
+                        listner.onCheck( Boolean.valueOf( result[1] ) );
                         break;
                     case REQUEST_ADD_PREF:
                         boolean added = result[1].equals( REQUEST_RESULT_OK );
-                        luogoDetailActivity.prefAdded( added );
+                        listner.onAdd( added );
                         break;
                     case REQUEST_REMOVE_PREF:
                         boolean removed = result[1].equals( REQUEST_RESULT_OK );
-                        luogoDetailActivity.prefRemoved( removed );
+                        listner.onRemove( removed );
                         break;
                 }
             }
@@ -346,7 +346,7 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Log.i( "Test" , "ControllerRemoteDB: entered onResponse()"+response );
+                Log.i( "Test" , requestLuogoType+"ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
@@ -398,7 +398,10 @@ public class ControllerRemoteDB implements Constants {
                                     evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
                                     evento.setDataFine( jsonObject.getString( "dataFine" ) );
                                 }
+
+                                listner.onEvento( evento );
                             }
+                            else listner.onLuogo( luogo );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -411,16 +414,6 @@ public class ControllerRemoteDB implements Constants {
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
                 }
 
-
-
-                if (context instanceof LuogoDetailActivity) {
-                    LuogoDetailActivity luogoDetail = (LuogoDetailActivity) context;
-                    luogoDetail.onLuogoLoaded( luogo );
-                } else if(context instanceof EventoDetailActivity){
-                    EventoDetailActivity eventoDetail = (EventoDetailActivity) context;
-                    eventoDetail.onEventoLoaded( evento );
-                }
-                listner.onLuogo( luogo );
 
                 progressDialog.dismiss();
 
