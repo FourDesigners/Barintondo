@@ -22,6 +22,7 @@ import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
+import it.uniba.di.sms.barintondo.utils.InterestsListner;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
@@ -34,6 +35,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     ControllerRemoteDB controller;
     Evento evento;
     ControllerDBListner myListner;
+    FloatingActionButton fabPref;
+    boolean isPref = false;
+    InterestsListner interestListner;
 
 
 
@@ -54,6 +58,21 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             public void onList() {}
         };
 
+        interestListner = new InterestsListner() {
+            @Override
+            public void onAdd(Boolean result) {
+                prefAdded( result );
+            }
+            @Override
+            public void onRemove(Boolean result) {
+                prefRemoved( result );
+            }
+            @Override
+            public void onCheck(Boolean result) {
+                checkPrefResult( result );
+            }
+        };
+
         String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
         controller = new ControllerRemoteDB( this );
         controller.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS, myListner );
@@ -68,6 +87,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         myImageView = findViewById( R.id.luogoDetailImage );
         itemInfo = findViewById( R.id.btn_luogo_info );
         itemDirection = findViewById( R.id.btn_luogo_directions );
+        fabPref = findViewById( R.id.fab );
 
 
     }
@@ -76,6 +96,20 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         this.evento=myEvent;
 
         myToolbar.setTitle( myEvent.getNome() );
+
+        controller.checkPref( myEvent.getCod(), interestListner );
+
+        fabPref.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!InternetConnection.isNetworkAvailable( EventoDetailActivity.this )) {
+                    Toast.makeText( EventoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+                } else {
+                    if (isPref) controller.removePref( myEvent.getCod(), interestListner );
+                    else controller.addPref( myEvent.getCod(), interestListner );
+                }
+            }
+        } );
 
         //thumbnail
         Glide.with( this )
@@ -152,6 +186,38 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         }
     }
 
+    public void checkPrefResult(boolean result) {
+        if (result) {
+            isPref = true;
+            ImageViewCompat.setImageTintList(
+                    fabPref ,
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorSecondaryBlue ) )
+            );
+        } else {
+            isPref = false;
+            ImageViewCompat.setImageTintList(
+                    fabPref ,
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorWhite ) )
+            );
+        }
+    }
 
+    public void prefAdded(boolean result) {
+        if (result) {
+            checkPrefResult( true );
+            UserUtils.codPref.add( evento.getCod() );
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_added ) , Toast.LENGTH_SHORT ).show();
+        } else
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+    }
+
+    public void prefRemoved(boolean result) {
+        if (result) {
+            checkPrefResult( false );
+            UserUtils.codPref.remove( evento.getCod() );
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_pref_removed ) , Toast.LENGTH_SHORT ).show();
+        } else
+            Toast.makeText( getApplicationContext() , getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+    }
 
 }

@@ -109,7 +109,7 @@ public class ControllerRemoteDB implements Constants {
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.i( TAG ,  "ControllerRemoteDB: entered onResponse()"+response );
+               //Log.i( "Test" ,  "ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 try {
@@ -135,11 +135,31 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setOraC( jsonObject.getString( "oraC" ) );
                             }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            if(jsonObject.getString( "voto" ).equals( "null" )) {
+                                luogo.setOrder( 20 );
+                                luogo.setVoto( 0 );
+                            }
+                            else luogo.setVoto( jsonObject.getInt( "voto" ) );
                             //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
 
-                            //adding items to itemsList
-                            interestsList.add( luogo );
+                            if (!jsonObject.getString( "codEvento" ).equals( "null" )) {
+                                Evento evento = new Evento( luogo );
+
+                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                    evento.setCodLuogo( null );
+                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                    evento.setDataInizio( null );
+                                    evento.setDataFine( null );
+                                } else {
+                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                                }
+                                //adding items to itemsList
+                                interestsList.add( evento );
+                            } else interestsList.add( luogo );
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -346,7 +366,7 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.i( "Test" , requestLuogoType+"ControllerRemoteDB: entered onResponse()"+response );
+                //Log.i( "Test" , requestLuogoType+"ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();

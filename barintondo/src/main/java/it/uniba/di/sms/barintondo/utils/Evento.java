@@ -23,6 +23,7 @@ public class Evento extends Luogo implements Parcelable {
         this.setNome( luogo.getNome() );
         this.setCitta( luogo.getCitta() );
         this.setSottoCat( luogo.getSottoCat() );
+        this.setCategoria( luogo.getCategoria() );
         this.setOraA( luogo.getOraA() );
         this.setOraC( luogo.getOraC() );
         this.setThumbnailLink( luogo.getThumbnailLink() );

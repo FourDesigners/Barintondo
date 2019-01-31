@@ -88,10 +88,14 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     public void setupRecyclerView(ArrayList<Luogo> interestsList) {
         progressDialog.dismiss();
 
+
+
         if (interestsList.size() > 0) {
             noInterests.setVisibility( View.GONE );
             for(int i=0; i<interestsList.size();i++){
-                interestsList.get( i ).setOrder( interestsList.get( i ).getVoto() );
+                if (interestsList.get( i ).getVoto()!=0) { //se il voto è zero si tratta di un evento per cui è già stato settato un ordine
+                    interestsList.get( i ).setOrder( interestsList.get( i ).getVoto() );
+                }
             }
             Collections.sort( interestsList );
         }
@@ -105,6 +109,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
+
     }
 
     @Override

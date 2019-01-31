@@ -81,9 +81,9 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
 
-    @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder , final int position) {
+
         Luogo luogo = itemListFiltered.get( position );
 
         //thumbnail
@@ -147,6 +147,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         Log.i( TAG , "final sottoCat:" + sottoCat );
         holder.sottoCat.setText( sottoCat );
 
+
         if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
@@ -180,10 +181,14 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 case "Mangiare":
                     icon = R.drawable.ic_food;
                     break;
+                case "Evento":
+                    icon = R.drawable.ic_events;
+                    break;
             }
             holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
-        } else {
+        } else {//se non siamo nella lista dei preferidi, cioè siamo in una normale lista di luoghi
             //Se il luogo è tra i preferiti aggiunge una stella
+
             if (UserUtils.codPref.contains( luogo.getCod() )) {
                 holder.categIcon.setImageDrawable( context.getDrawable( R.drawable.ic_star ) );
                 holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryBlue ) );
@@ -191,6 +196,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
+
         if(luogo instanceof Evento){
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
@@ -198,6 +204,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             holder.startDays.setText(evento.getDaysToEventString( context ));
 
         }else holder.mVoteStars.setStars( luogo.getVoto() );
+
 
     }
 
