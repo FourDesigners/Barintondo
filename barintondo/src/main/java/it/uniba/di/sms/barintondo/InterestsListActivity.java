@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +47,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private SearchView searchView;
     private ProgressDialog progressDialog;
     private ToolbarSwitchCategories myToolbarSwitchCategories;
-
+    private ArrayList<Luogo> interestsList;
+    InterestsListner myInterestsListner;
 
 
     @Override
@@ -63,7 +66,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
 
-        myToolbarSwitchCategories = new ToolbarSwitchCategories( this, Constants.INTENT_INTERESES );
+        myToolbarSwitchCategories = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
 
         //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer( this ,
@@ -76,31 +79,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
 
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ControllerRemoteDB controller = new ControllerRemoteDB( this );
-        controller.getAllInterests();
-    }
-
-    public void setupRecyclerView(ArrayList<Luogo> interestsList) {
-        progressDialog.dismiss();
-
-
-
-        if (interestsList.size() > 0) {
-            noInterests.setVisibility( View.GONE );
-            for(int i=0; i<interestsList.size();i++){
-                if (interestsList.get( i ).getVoto()!=0) { //se il voto è zero si tratta di un evento per cui è già stato settato un ordine
-                    interestsList.get( i ).setOrder( interestsList.get( i ).getVoto() );
-                }
-            }
-            Collections.sort( interestsList );
-        }
-        else noInterests.setVisibility( View.VISIBLE );
-
+        interestsList = new ArrayList<>();
         mAdapter = new LuogoAdapter( this , interestsList , this );
         //recyclerView setup
         recyclerView = findViewById( R.id.item_list_recycler_view );
@@ -109,8 +89,44 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
+        myInterestsListner = new InterestsListner() {
+            @Override
+            public void onInterestsLoaded() {
+                mAdapter.notifyDataSetChanged();
+                setupView();
+            }
+        };
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+            ControllerRemoteDB controller = new ControllerRemoteDB( this );
+            controller.getAllInterests( interestsList , myInterestsListner );
+        }else {
+            Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void setupView() {
+        if (interestsList.size() > 0) {
+            noInterests.setVisibility( View.GONE );
+            for (int i = 0; i < interestsList.size(); i++) {
+                if (interestsList.get( i ).getVoto() != 0) { //se il voto è zero si tratta di un evento
+                    interestsList.get( i ).setOrder( interestsList.get( i ).getVoto() );
+                } else
+                    interestsList.get( i ).setOrder( 20 ); //serve per visualizzare per primi gli eventi
+            }
+            Collections.sort( interestsList );
+        } else noInterests.setVisibility( View.VISIBLE );
+        progressDialog.dismiss();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,5 +203,9 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         Intent intent = new Intent( this , LuogoDetailActivity.class );
         intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
         startActivity( intent );
+    }
+
+    public interface InterestsListner {
+        public void onInterestsLoaded();
     }
 }

@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        
+
 
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),

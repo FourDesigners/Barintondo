@@ -99,10 +99,9 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getAllInterests() {
+    public void getAllInterests(final ArrayList<Luogo> interestsList, final InterestsListActivity.InterestsListner interestsListner) {
         Log.i( TAG , "ControllerRemoteDB: entered getAllInterests()" );
-        final ArrayList<Luogo> interestsList = new ArrayList<>();
-
+        interestsList.clear();
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -136,7 +135,6 @@ public class ControllerRemoteDB implements Constants {
                             }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             if(jsonObject.getString( "voto" ).equals( "null" )) {
-                                luogo.setOrder( 20 );
                                 luogo.setVoto( 0 );
                             }
                             else luogo.setVoto( jsonObject.getInt( "voto" ) );
@@ -166,13 +164,13 @@ public class ControllerRemoteDB implements Constants {
                             Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
                         }
                     }
+                    interestsListner.onInterestsLoaded();
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
                     Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
                 }
-                InterestsListActivity interestsListActivity = (InterestsListActivity) context;
-                interestsListActivity.setupRecyclerView( interestsList );
+
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
@@ -180,6 +178,7 @@ public class ControllerRemoteDB implements Constants {
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
                 Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                interestsListner.onInterestsLoaded();
             }
         } ) {
 
