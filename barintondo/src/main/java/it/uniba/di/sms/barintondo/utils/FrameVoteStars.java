@@ -46,4 +46,5 @@ public class FrameVoteStars implements Constants{
     public void hideVoteFrame(){
         view.setVisibility( View.GONE );
     }
+    public void showVoteFrame() {view.setVisibility( View.VISIBLE );}
 }

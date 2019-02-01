@@ -305,6 +305,6 @@
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
     <string name="couponDescLabelTxt">Description</string>
 
-
-
+    <string name="strDistanceMeters" type="id">Distance: %dm</string>
+    <string name="strDistanceKilometers" type="id">Distance: %.1fKm</string>
 </resources>

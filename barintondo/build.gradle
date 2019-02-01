@@ -41,5 +41,6 @@ dependencies {
     // volley http library
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'me.relex:circleindicator:1.2.2@aar'
+    implementation 'me.relex:circleindicator:1.2.2@aar' //indicatori circolari per lo slider foto
+    implementation 'com.google.android.gms:play-services-location:16.0.0' //per ricevere la posizione dal sensore
 }

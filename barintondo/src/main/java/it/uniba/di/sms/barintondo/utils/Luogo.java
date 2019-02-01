@@ -239,9 +239,10 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         return 1;
     }
 
-    public float calculateDistanceTo(Location destinazione){
+    public int calculateDistanceTo(Location destinazione){
         float[] results=new float[10];
         Location.distanceBetween( latitudine, longitudine, destinazione.getLatitude(), destinazione.getLongitude(), results  );
-        return results[0];
+        int distance = (int) results[0];
+        return distance;
     }
 }

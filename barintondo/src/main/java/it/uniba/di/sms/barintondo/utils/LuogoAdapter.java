@@ -37,11 +37,11 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     private static final String TAG = LuogoAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView nome, sottoCat, stato, startDays;
+        public TextView nome, sottoCat, stato, startDays, distance;
         public ImageView thumbnail, categIcon;
         public FrameVoteStars mVoteStars;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super( view );
 
             nome = view.findViewById( R.id.nome );
@@ -52,6 +52,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             View frameVote = view.findViewById( R.id.luogoVoteLayout );
             mVoteStars = new FrameVoteStars( frameVote );
             startDays = view.findViewById( R.id.start_days );
+            distance = view.findViewById( R.id.text_distance );
 
             view.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -91,7 +92,6 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 .load( imagesPath + luogo.getThumbnailLink() )
                 .apply( RequestOptions.circleCropTransform() )
                 .into( holder.thumbnail );
-
         holder.nome.setText( luogo.getNome() );
 
         //scelgo stringa per sottoCat
@@ -117,7 +117,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 sottoCat += context.getResources().getString( R.string.strDisco );
                 break;
             case "Famiglia":
-                sottoCat +=context.getResources().getString( R.string.strFamiglia );
+                sottoCat += context.getResources().getString( R.string.strFamiglia );
                 break;
             case "Bar":
                 sottoCat += context.getResources().getString( R.string.strBar );
@@ -145,11 +145,11 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 break;
         }
         Log.i( TAG , "final sottoCat:" + sottoCat );
-        holder.sottoCat.setText( sottoCat);
+        holder.sottoCat.setText( sottoCat );
 
 
         if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
-            holder.sottoCat.setText( sottoCat+",");
+            holder.sottoCat.setText( sottoCat + "," );
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
             String oraC = luogo.getOraC();
@@ -173,7 +173,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         if (context instanceof InterestsListActivity) {
             switch (luogo.getCategoria()) {
                 case "Attrazione":
-                    if(luogo.getCitta().equals( "Bari" )) {
+                    if (luogo.getCitta().equals( "Bari" )) {
                         icon = R.drawable.ic_attraction;
                     } else icon = R.drawable.ic_surroundings;
                     break;
@@ -194,18 +194,32 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             if (UserUtils.codPref.contains( luogo.getCod() )) {
                 holder.categIcon.setImageDrawable( context.getDrawable( R.drawable.ic_star ) );
                 holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryBlue ) );
-            }
-            else holder.categIcon.setImageDrawable( null );
+            } else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
 
-        if(luogo instanceof Evento){
+        if (luogo instanceof Evento) {
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
+            holder.startDays.setVisibility( View.VISIBLE );
+            holder.startDays.setText( evento.getDaysToEventString( context ) );
 
-            holder.startDays.setText(evento.getDaysToEventString( context ));
+        } else {
+            holder.startDays.setVisibility( View.INVISIBLE ); //usare invisible perchè usando gone modifica i constraint
+            holder.mVoteStars.setStars( luogo.getVoto() );
+            holder.mVoteStars.showVoteFrame();
 
-        }else holder.mVoteStars.setStars( luogo.getVoto() );
+            if (UserUtils.myLocationIsSetted && luogo.getLatitudine()!=0.0f) {
+                String distanceText;
+                int distanceMeters = luogo.calculateDistanceTo( UserUtils.myLocation );
+                if ((distanceMeters/1000)!=0){
+                    float distanceKm = (float)distanceMeters/1000;
+                    distanceText = context.getString( R.string.strDistanceKilometers , distanceKm);
+                }else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters);
+                holder.distance.setText( distanceText );
+                holder.distance.setVisibility( View.VISIBLE );
+            } else holder.distance.setVisibility( View.GONE );
+        }
 
 
     }

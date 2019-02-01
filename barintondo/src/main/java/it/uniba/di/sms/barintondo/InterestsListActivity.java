@@ -92,7 +92,6 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         myInterestsListner = new InterestsListner() {
             @Override
             public void onInterestsLoaded() {
-                mAdapter.notifyDataSetChanged();
                 setupView();
             }
         };
@@ -123,6 +122,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
                     interestsList.get( i ).setOrder( 20 ); //serve per visualizzare per primi gli eventi
             }
             Collections.sort( interestsList );
+            mAdapter.notifyDataSetChanged();
         } else noInterests.setVisibility( View.VISIBLE );
         progressDialog.dismiss();
     }

@@ -91,4 +91,14 @@
         app:layout_constraintStart_toEndOf="@+id/cod"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/text_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sottoCat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sottoCat"
+        android:visibility="gone"/>
+
 </android.support.constraint.ConstraintLayout>

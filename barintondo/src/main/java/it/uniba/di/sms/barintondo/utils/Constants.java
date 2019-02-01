@@ -70,4 +70,12 @@ public interface Constants {
     //BT IDs
     String STRING_TOAST_MSG="toast";
 
+    //Request permission Location
+    int REQUEST_PERMISSION_LOCATION = 1;
+    int REQUEST_CODE_LOCATION_SETTINGS = 2;
+    int REQUEST_RESOLVE_ERROR=3;
+    String DIALOG_ERROR_TAG="1";
+    String RESOLVING_ERROR_STATE_KEY="RESOLVING_ERROR_STATE_KEY";
+    int REQUEST_ACCESS_LOCATION=4;
+
 }

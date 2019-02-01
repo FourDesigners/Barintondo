@@ -1,6 +1,5 @@
 package it.uniba.di.sms.barintondo;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -10,9 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -20,10 +16,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +38,7 @@ import android.widget.CheckBox;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+
 
 import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
@@ -74,7 +71,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     ControllerDBListner myDBListner;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
@@ -83,46 +79,47 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         mInstance = this;
 
 
-
         //first time intent reading
         items_type = getIntent().getStringExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE );
 
+
+
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
-        mySwitchCategory = new ToolbarSwitchCategories( this, items_type );
+        mySwitchCategory = new ToolbarSwitchCategories( this , items_type );
 
         Resources res = getResources();
-        String requestCat="";
+        String requestCat = "";
         //first time URL selection
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
-            requestCat=REQUEST_GET_ATTRACTIONS;
-            arrayRes = res.getStringArray(R.array.attractions);
-            arrayTags = res.getStringArray(R.array.attractionsTags);
+            requestCat = REQUEST_GET_ATTRACTIONS;
+            arrayRes = res.getStringArray( R.array.attractions );
+            arrayTags = res.getStringArray( R.array.attractionsTags );
             myToolbar.setTitle( R.string.attractionsToolbarTitle );
             //URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
         } else if (items_type.equals( Constants.INTENT_EATING )) {
-            requestCat=REQUEST_GET_EAT;
-            arrayRes = res.getStringArray(R.array.eating);
-            arrayTags = res.getStringArray(R.array.eatingTags);
+            requestCat = REQUEST_GET_EAT;
+            arrayRes = res.getStringArray( R.array.eating );
+            arrayTags = res.getStringArray( R.array.eatingTags );
             myToolbar.setTitle( R.string.eating_option );
-           // URL = "http://barintondo.altervista.org/get_all_locali.php";
+            // URL = "http://barintondo.altervista.org/get_all_locali.php";
         } else if (items_type.equals( Constants.INTENT_SLEEPING )) {
-            requestCat= REQUEST_GET_SLEEP;
-            arrayRes = res.getStringArray(R.array.sleeping);
-            arrayTags = res.getStringArray(R.array.sleepingTags);
+            requestCat = REQUEST_GET_SLEEP;
+            arrayRes = res.getStringArray( R.array.sleeping );
+            arrayTags = res.getStringArray( R.array.sleepingTags );
             myToolbar.setTitle( R.string.sleeping_option );
             //URL = "http://barintondo.altervista.org/get_all_rifugi.php";
         } else if (items_type.equals( Constants.INTENT_EVENTS )) {
-            requestCat=REQUEST_GET_EVENTS;
-            arrayRes = res.getStringArray(R.array.events);
-            arrayTags = res.getStringArray(R.array.eventsTags);
+            requestCat = REQUEST_GET_EVENTS;
+            arrayRes = res.getStringArray( R.array.events );
+            arrayTags = res.getStringArray( R.array.eventsTags );
             myToolbar.setTitle( R.string.events_option );
             //URL = "http://barintondo.altervista.org/get_all_eventi.php";
         } else if (items_type.equals( Constants.INTENT_NEAR )) {
-            requestCat=REQUEST_GET_NEAR_BARI;
-            arrayRes = res.getStringArray(R.array.near);
-            arrayTags = res.getStringArray(R.array.nearTags);
-            myToolbar.setTitle( R.string.near_option);
+            requestCat = REQUEST_GET_NEAR_BARI;
+            arrayRes = res.getStringArray( R.array.near );
+            arrayTags = res.getStringArray( R.array.nearTags );
+            myToolbar.setTitle( R.string.near_option );
             //URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
         }
 
@@ -143,26 +140,26 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
 
         //first time chips creation
-        if (items_type.equals(Constants.INTENT_ATTRACTIONS) || items_type.equals(Constants.INTENT_NEAR)) {
-            changeChipsOrder(arrayRes, arrayTags, null);
-        }else {
+        if (items_type.equals( Constants.INTENT_ATTRACTIONS ) || items_type.equals( Constants.INTENT_NEAR )) {
+            changeChipsOrder( arrayRes , arrayTags , null );
+        } else {
             int id = 0;
             for (String s : arrayRes) {
-                final Chip newChip = new Chip(this);
-                newChip.setId(id);
+                final Chip newChip = new Chip( this );
+                newChip.setId( id );
                 assert arrayTags != null;
-                newChip.setTag(arrayTags[id++]);
-                newChip.setChipText(s);
-                newChip.setClickable(true);
-                newChip.setCheckable(true);
-                newChip.setOnClickListener(new View.OnClickListener() {
+                newChip.setTag( arrayTags[id++] );
+                newChip.setChipText( s );
+                newChip.setClickable( true );
+                newChip.setCheckable( true );
+                newChip.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String query;
-                        if(newChip.isChecked())
+                        if (newChip.isChecked())
                             query = newChip.getTag().toString();
                         else query = ""; //stringa vuota così da mostrare tutti i luoghi
-                        Log.i(TAG, "Query=" + query);
+                        Log.i( TAG , "Query=" + query );
                         mAdapter.getFilter().filter( query );
                         //setCounter(arrayRes, arrayTags, newChip.getTag().toString());
                     }
@@ -188,9 +185,13 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
         myDBListner = new ControllerDBListner() {
             @Override
-            public void onLuogo(Luogo luogo) {}
+            public void onLuogo(Luogo luogo) {
+            }
+
             @Override
-            public void onEvento(Evento evento) {}
+            public void onEvento(Evento evento) {
+            }
+
             @Override
             public void onList() {
                 mAdapter.notifyDataSetChanged();
@@ -200,116 +201,119 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         //first time populating
         //fetchItems();
         ControllerRemoteDB controller = new ControllerRemoteDB( this );
-        controller.getLuoghiList( requestCat , luogoList, myDBListner);
+        controller.getLuoghiList( requestCat , luogoList , myDBListner );
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        for(int i=0; i<luogoList.size();i++){
-            int order=luogoList.get( i ).getVoto();
-            if(UserUtils.codPref.contains( luogoList.get( i ).getCod() )) order=order+10;
+        for (int i = 0; i < luogoList.size(); i++) {
+            int order = luogoList.get( i ).getVoto();
+            if (UserUtils.codPref.contains( luogoList.get( i ).getCod() )) order = order + 10;
             luogoList.get( i ).setOrder( order );
         }
         Collections.sort( luogoList );
         mAdapter.notifyDataSetChanged();
+
     }
 
-    private void setCounter(String[] arrayRes, String[] arrayTags, String tag) {
-        SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
+
+
+    private void setCounter(String[] arrayRes , String[] arrayTags , String tag) {
+        SharedPreferences list = getSharedPreferences( PREFS_NAME , 0 );
         SharedPreferences.Editor edit = list.edit();
-        order = list.getString(ORDER, "").split(",");
-        int max = list.getInt(MAX, 0);
-        int val = list.getInt(tag, 0) + 1;
-        edit.putInt(tag, val);
+        order = list.getString( ORDER , "" ).split( "," );
+        int max = list.getInt( MAX , 0 );
+        int val = list.getInt( tag , 0 ) + 1;
+        edit.putInt( tag , val );
         edit.apply();
-        if(val > max) {
-            edit.putInt(MAX, val);
+        if (val > max) {
+            edit.putInt( MAX , val );
             edit.apply();
-            int index = findPos(arrayTags, tag);
-            int pos = findPos(order, String.valueOf(index));
-            boolean skip = list.getBoolean(SKIP, false);
-            if(pos!=0 && !skip) {
-                showDialog(edit, arrayRes, tag, pos);
+            int index = findPos( arrayTags , tag );
+            int pos = findPos( order , String.valueOf( index ) );
+            boolean skip = list.getBoolean( SKIP , false );
+            if (pos != 0 && !skip) {
+                showDialog( edit , arrayRes , tag , pos );
             }
         }
     }
 
-    private void showDialog(final SharedPreferences.Editor edit, final String[] arrayRes, final String tag, final int pos) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.strYouSelected)  + " " + arrayRes[Integer.valueOf(order[pos])] + " " + getResources().getString(R.string.strThisFilter))
-                .setTitle(getResources().getString(R.string.strFilter))
-                .setCancelable(false);
+    private void showDialog(final SharedPreferences.Editor edit , final String[] arrayRes , final String tag , final int pos) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setMessage( getResources().getString( R.string.strYouSelected ) + " " + arrayRes[Integer.valueOf( order[pos] )] + " " + getResources().getString( R.string.strThisFilter ) )
+                .setTitle( getResources().getString( R.string.strFilter ) )
+                .setCancelable( false );
 
-        View view = getLayoutInflater().inflate(R.layout.dialog_app_updates, null);
-        final CheckBox checkBox = view.findViewById(R.id.checkBox);
-        builder.setView(view);
+        View view = getLayoutInflater().inflate( R.layout.dialog_app_updates , null );
+        final CheckBox checkBox = view.findViewById( R.id.checkBox );
+        builder.setView( view );
 
         AlertDialog dialog = builder.create();
-        builder.setPositiveButton(getResources().getString(R.string.strYes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.setPositiveButton( getResources().getString( R.string.strYes ) , new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog , int id) {
                 String temp = order[0];
                 order[0] = order[pos];
                 order[pos] = temp;
                 String o = "";
-                for(int i=0; i<order.length - 1; i++) {
+                for (int i = 0; i < order.length - 1; i++) {
                     o += order[i] + ",";
                 }
-                o += order[order.length-1];
-                edit.putString(ORDER, o);
+                o += order[order.length - 1];
+                edit.putString( ORDER , o );
                 edit.apply();
-                changeChipsOrder(arrayRes, arrayTags, tag);
-                setSkip(edit, checkBox.isChecked());
+                changeChipsOrder( arrayRes , arrayTags , tag );
+                setSkip( edit , checkBox.isChecked() );
             }
-        });
-        builder.setNegativeButton(getResources().getString(R.string.strNo), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                setSkip(edit, checkBox.isChecked());
+        } );
+        builder.setNegativeButton( getResources().getString( R.string.strNo ) , new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog , int id) {
+                setSkip( edit , checkBox.isChecked() );
             }
-        });
+        } );
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    private void setSkip(SharedPreferences.Editor edit, boolean checked) {
-        edit.putBoolean(SKIP, checked);
+    private void setSkip(SharedPreferences.Editor edit , boolean checked) {
+        edit.putBoolean( SKIP , checked );
         edit.apply();
     }
 
-    private int findPos(String[] arrayTags, String tag) {
-        for(int i=0; i<arrayTags.length; i++) {
-            if(arrayTags[i].equals(tag)) {
+    private int findPos(String[] arrayTags , String tag) {
+        for (int i = 0; i < arrayTags.length; i++) {
+            if (arrayTags[i].equals( tag )) {
                 return i;
             }
         }
         return -1;
     }
 
-    private void changeChipsOrder(final String[] arrayRes, final String[] arrayTags, String tag) {
+    private void changeChipsOrder(final String[] arrayRes , final String[] arrayTags , String tag) {
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
         chipGroup.removeAllViews();
-        SharedPreferences list = getSharedPreferences(PREFS_NAME , 0);
-        order = list.getString("order", "").split(",");
-        for(int id=0; id<order.length; id++) {
-            final Chip newChip = new Chip(this);
-            newChip.setId(id);
+        SharedPreferences list = getSharedPreferences( PREFS_NAME , 0 );
+        order = list.getString( "order" , "" ).split( "," );
+        for (int id = 0; id < order.length; id++) {
+            final Chip newChip = new Chip( this );
+            newChip.setId( id );
             assert arrayTags != null;
-            newChip.setTag(arrayTags[Integer.valueOf(order[id])]);
-            newChip.setChipText(arrayRes[Integer.valueOf(order[id])]);
-            newChip.setClickable(true);
-            newChip.setCheckable(true);
-            if(newChip.getTag().toString().equals(tag)) {
-                newChip.setChecked(true);
+            newChip.setTag( arrayTags[Integer.valueOf( order[id] )] );
+            newChip.setChipText( arrayRes[Integer.valueOf( order[id] )] );
+            newChip.setClickable( true );
+            newChip.setCheckable( true );
+            if (newChip.getTag().toString().equals( tag )) {
+                newChip.setChecked( true );
             }
-            newChip.setOnClickListener(new View.OnClickListener() {
+            newChip.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String query;
-                    if(newChip.isChecked()) {
+                    if (newChip.isChecked()) {
                         query = newChip.getTag().toString();
-                        setCounter(arrayRes, arrayTags, newChip.getTag().toString());
-                    }else {
+                        setCounter( arrayRes , arrayTags , newChip.getTag().toString() );
+                    } else {
                         query = "";
                     }
                     mAdapter.getFilter().filter( query );
@@ -455,11 +459,11 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     @Override
     public void onItemsSelected(Luogo item) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        if (item instanceof Evento){
+        if (item instanceof Evento) {
             Intent intent = new Intent( this , EventoDetailActivity.class );
             intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
             startActivity( intent );
-        }else {
+        } else {
             Intent intent = new Intent( this , LuogoDetailActivity.class );
             intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
             startActivity( intent );
@@ -469,4 +473,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     public static synchronized LuogoListActivity getInstance() {
         return mInstance;
     }
+
+
 }
