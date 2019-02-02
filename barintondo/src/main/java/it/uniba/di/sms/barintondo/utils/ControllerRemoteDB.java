@@ -277,6 +277,7 @@ public class ControllerRemoteDB implements Constants {
                             luogo.setCod( jsonObject.getString( "cod" ) );
                             luogo.setNome( jsonObject.getString( "nome" ) );
                             luogo.setCitta( jsonObject.getString( "citta" ) );
+                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
                             luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                             if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
                                 luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
@@ -400,6 +401,10 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setOraA( jsonObject.getString( "oraA" ) );
                                 luogo.setOraC( jsonObject.getString( "oraC" ) );
                             }
+                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
+                            }
                             luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
                             luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
                             luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
@@ -456,6 +461,94 @@ public class ControllerRemoteDB implements Constants {
                 MyData.put( "request_op" , REQUEST_GET_LUOGO );
                 MyData.put( "request_luogo" , codLuogo );
                 MyData.put("request_luogo_type", requestLuogoType);
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add( MyStringRequest );
+    }
+
+    public void getLuoghiNear(final Luogo myLuogo, final List<Luogo> luogoList , final ControllerDBListner mListner) {
+        final ProgressDialog progressDialog = new ProgressDialog( context );
+        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
+        progressDialog.show();
+
+        String Url = "http://barintondo.altervista.org/get_luoghi_near.php";
+        RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                //Log.i( "Test" , "getLuoghiNear onResponse() "+response );
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+
+                try {
+
+                    JSONArray jsonArray = new JSONArray( response );
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
+
+                            Luogo luogo = new Luogo();
+                            luogo.setCod( jsonObject.getString( "cod" ) );
+                            luogo.setNome( jsonObject.getString( "nome" ) );
+                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
+                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            luogo.setCitta( jsonObject.getString( "citta" ) );
+                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                                luogo.setOraA( null );
+                                luogo.setOraC( null );
+                            } else {
+                                luogo.setOraA( jsonObject.getString( "oraA" ) );
+                                luogo.setOraC( jsonObject.getString( "oraC" ) );
+                            }
+                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
+                            }
+                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                                luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            }
+
+                            luogo.setDistance( luogo.calculateDistanceTo( myLuogo ) );
+                             luogoList.add( luogo );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                }
+                mListner.onList();
+                progressDialog.dismiss();
+
+            }
+        } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                //This code is executed if there is an error.
+                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+            }
+        } ) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put( "latitude" , String.valueOf(  myLuogo.getLatitudine()) );
+                MyData.put( "longitude" , String.valueOf(  myLuogo.getLongitudine()) );
+                MyData.put( "luogo_cod", myLuogo.getCod() );
                 return MyData;
             }
         };

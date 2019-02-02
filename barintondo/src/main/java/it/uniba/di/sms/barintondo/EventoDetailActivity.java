@@ -158,9 +158,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         itemOptionSelected( ITEM_DESCRIPTION );
     }
 
-    private void attachDirections(Luogo myItem) {
+    private void attachDirections(Luogo luogo) {
         Bundle arguments = new Bundle();
-        arguments.putString( ITEM_DIRECTIONS , myItem.getIndirizzo() );
+        arguments.putParcelable( EXTRA_LUOGO, luogo );
         LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -181,7 +181,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
                 break;
             case ITEM_DIRECTIONS:
                 itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.VISIBLE );
+                myImageView.setVisibility( View.GONE );
                 break;
         }
     }

@@ -183,4 +183,7 @@
     <string name="str_to">"al "</string>
     <string name="str_event_take_place">L\'evento avrà luogo</string>
     <string name="strNoReviews">Non sono ancora state inserite delle recensioni per questo luogo</string>
+    <string name="strNear">Vicino</string>
+    <string name="strDistanceMeters">Distanza: %dm</string>
+    <string name="strDistanceKilometers">Distanza:  %.1fKm</string>
 </resources>

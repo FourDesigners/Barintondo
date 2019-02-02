@@ -48,7 +48,7 @@
         <Button
             android:id="@+id/btn_luogo_directions"
             style="@style/btnLuogoDetail"
-            android:text="@string/strDirections" />
+            android:text="@string/strNear" />
     </LinearLayout>
 
     <FrameLayout

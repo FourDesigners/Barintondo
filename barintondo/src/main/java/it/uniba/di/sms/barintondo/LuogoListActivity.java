@@ -375,19 +375,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     }
 
 
-    public RequestQueue getRequestQueue() {
-        if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue( getApplicationContext() );
-        }
-
-        return mRequestQueue;
-    }
-
-    public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag( TAG );
-        getRequestQueue().add( req );
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu( menu );

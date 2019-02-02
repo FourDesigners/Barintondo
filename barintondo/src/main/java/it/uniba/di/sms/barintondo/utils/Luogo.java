@@ -5,10 +5,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Luogo implements Parcelable, Comparable<Luogo>{
+public class Luogo implements Parcelable, Comparable<Luogo> {
     private String cod;
     private String nome;
     private String citta;
@@ -24,6 +25,7 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
     private String indirizzo;
     private int voto;
     private int order;
+    private float distance;
 
     public Luogo() {
     }
@@ -59,6 +61,7 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         indirizzo = in.readString();
         voto=in.readInt();
         order=in.readInt();
+        distance = in.readFloat();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -212,6 +215,14 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         return 0;
     }
 
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
     @Override
     public void writeToParcel(Parcel dest , int flags) {
         dest.writeString( cod );
@@ -229,6 +240,7 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         dest.writeString( indirizzo );
         dest.writeInt(voto);
         dest.writeInt( order );
+        dest.writeFloat( distance );
     }
 
 
@@ -244,5 +256,25 @@ public class Luogo implements Parcelable, Comparable<Luogo>{
         Location.distanceBetween( latitudine, longitudine, destinazione.getLatitude(), destinazione.getLongitude(), results  );
         int distance = (int) results[0];
         return distance;
+    }
+
+    public int calculateDistanceTo(Luogo startLuogo){
+        Location startLocation = new Location( "" );
+        startLocation.setLatitude( startLuogo.getLatitudine() );
+        startLocation.setLongitude( startLuogo.getLongitudine() );
+        return calculateDistanceTo( startLocation );
+    }
+
+    public static Comparator<Luogo> getDistanceOrdering(){
+        return new DistanceOrdering();
+    }
+
+    public static class DistanceOrdering implements Comparator<Luogo>{
+
+        @Override
+        public int compare(Luogo o1 , Luogo o2) {
+            int difference = (int) (o1.getDistance()-o2.getDistance());
+            return difference ;
+        }
     }
 }

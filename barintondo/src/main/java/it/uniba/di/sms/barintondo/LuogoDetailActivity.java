@@ -160,9 +160,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
     }
 
-    private void attachDescription(Luogo myItem) {
+    private void attachDescription(Luogo luogo) {
         Bundle arguments = new Bundle();
-        arguments.putParcelable( EXTRA_LUOGO, myItem );
+        arguments.putParcelable( EXTRA_LUOGO, luogo );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -171,9 +171,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemOptionSelected( ITEM_DESCRIPTION );
     }
 
-    private void attachDirections(Luogo myItem) {
+    private void attachDirections(Luogo luogo) {
         Bundle arguments = new Bundle();
-        arguments.putString( ITEM_DIRECTIONS , myItem.getIndirizzo() );
+        arguments.putParcelable( EXTRA_LUOGO, luogo );
         LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -182,9 +182,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemOptionSelected( ITEM_DIRECTIONS );
     }
 
-    private void attachReviews(Luogo myItem) {
+    private void attachReviews(Luogo luogo) {
         Bundle arguments = new Bundle();
-        arguments.putString( ITEM_REVIEWS , myItem.getCod() );
+        arguments.putString( ITEM_REVIEWS , luogo.getCod() );
         LuogoReviewsFragment fragment = new LuogoReviewsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -205,7 +205,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 break;
             case ITEM_DIRECTIONS:
                 itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.VISIBLE );
+                myImageView.setVisibility( View.GONE );
                 break;
             case ITEM_REVIEWS:
                 itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );

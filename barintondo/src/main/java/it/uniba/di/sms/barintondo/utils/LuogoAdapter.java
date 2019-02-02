@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.uniba.di.sms.barintondo.InterestsListActivity;
+import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.R;
 
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
@@ -33,6 +35,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     private List<Luogo> itemList;
     private List<Luogo> itemListFiltered;
     private ItemsAdapterListener listener;
+    private Location sourceLuogo;
+    private boolean isRequestFormLuogoDetail;
 
     private static final String TAG = LuogoAdapter.class.getSimpleName();
 
@@ -170,7 +174,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         }
         //Codice per assegnare l'icona dela corrispondente categoria, attivato solo dentro l'activity degli interessi
         int icon = R.drawable.ic_fiber_smart_record; //icona di default assegnata nel caso andasse storto qualcosa
-        if (context instanceof InterestsListActivity) {
+        if (context instanceof InterestsListActivity || context instanceof LuogoDetailActivity) {
             switch (luogo.getCategoria()) {
                 case "Attrazione":
                     if (luogo.getCitta().equals( "Bari" )) {
@@ -209,20 +213,31 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             holder.mVoteStars.setStars( luogo.getVoto() );
             holder.mVoteStars.showVoteFrame();
 
-            if (UserUtils.myLocationIsSetted && luogo.getLatitudine()!=0.0f) {
-                String distanceText;
-                int distanceMeters = luogo.calculateDistanceTo( UserUtils.myLocation );
-                if ((distanceMeters/1000)!=0){
-                    float distanceKm = (float)distanceMeters/1000;
-                    distanceText = context.getString( R.string.strDistanceKilometers , distanceKm);
-                }else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters);
-                holder.distance.setText( distanceText );
+            if (UserUtils.myLocationIsSetted && luogo.getLatitudine()!=0.0f && !isRequestFormLuogoDetail) {
+
+                holder.distance.setText( calculateDistance( luogo, UserUtils.myLocation ) );
                 holder.distance.setVisibility( View.VISIBLE );
-            } else holder.distance.setVisibility( View.GONE );
+            } else if(isRequestFormLuogoDetail && luogo.getLatitudine()!=0.0f){
+                holder.distance.setText( calculateDistance( luogo, sourceLuogo ) );
+                holder.distance.setVisibility( View.VISIBLE );
+            }else holder.distance.setVisibility( View.GONE );
         }
 
 
     }
+
+
+    private String calculateDistance(Luogo actualLuogo, Location startLocation){
+        String distanceText;
+        int distanceMeters = actualLuogo.calculateDistanceTo( startLocation );
+        if ((distanceMeters/1000)!=0){
+            float distanceKm = (float)distanceMeters/1000;
+            distanceText = context.getString( R.string.strDistanceKilometers , distanceKm);
+        }else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters);
+
+        return distanceText;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -270,5 +285,14 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         void onItemsSelected(Luogo item);
     }
 
+    public void setActualLuogo(Luogo luogo) {
+        Location location = new Location( "" );
+        location.setLatitude( luogo.getLatitudine() );
+        location.setLongitude( luogo.getLongitudine() );
+        this.sourceLuogo = location;
+    }
 
+    public void setIsRequestFormLuogoDetail(boolean requestFormLuogoDetail) {
+        isRequestFormLuogoDetail = requestFormLuogoDetail;
+    }
 }
