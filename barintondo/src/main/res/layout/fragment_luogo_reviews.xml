@@ -126,11 +126,11 @@
             android:id="@+id/luogo_reviews_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="70dp"
             android:scrollbars="vertical"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/recensione_list_content" />
+            tools:listitem="@layout/recensione_list_content"
+            android:clipToPadding="false"
+            android:paddingBottom="70dp"/>
         <!--le ultime 2 istruzioni serve per far visualizzare correttamente l'ultima recensione e non oscurarla con il fab-->
         <TextView
             android:id="@+id/text_view_no_reviews"

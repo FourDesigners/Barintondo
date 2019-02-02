@@ -120,6 +120,24 @@
         <item>118</item>
     </string-array>
 
+    <!--Chips categories-->
+    <string-array name="categories">
+        <item>@string/attractions_option</item>
+        <item>@string/eating_option</item>
+        <item>@string/sleeping_option</item>
+        <item>@string/events_option</item>
+        <item>@string/near_option</item>
+    </string-array>
+
+    <!--Tags near-->
+    <string-array name="categoriesTags">
+        <item>Attrazione</item>
+        <item>Mangiare</item>
+        <item>Dormire</item>
+        <item>Evento</item>
+        <item>Vicino</item>
+    </string-array>
+
 
     <!--Settings-->
     <string name="action_settings">Settings</string>
@@ -253,6 +271,9 @@
     <string name="strDistanceMeters" type="id">Distance: %dm</string>
     <string name="strDistanceKilometers" type="id">Distance: %.1fKm</string>
     <string name="strNear">Near</string>
+    <string name="strNoLuoghiNear">There are no places near</string>
+    <string name="strNextEvents">Upcoming events</string>
+    <string name="placeholderCittaDaysToevent" translatable="false">%s, %s</string>
 
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>
@@ -307,6 +328,7 @@
     <string name="strInsertReview">Review text</string>
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
     <string name="couponDescLabelTxt">Description</string>
+
 
 
 </resources>

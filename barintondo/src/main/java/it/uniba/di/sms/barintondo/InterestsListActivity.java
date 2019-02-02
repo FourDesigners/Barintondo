@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -30,6 +32,7 @@ import java.util.Collections;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
@@ -49,6 +52,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private ToolbarSwitchCategories myToolbarSwitchCategories;
     private ArrayList<Luogo> interestsList;
     InterestsListner myInterestsListner;
+    String[] arrayRes = null;
+    String[] arrayTags = null;
 
 
     @Override
@@ -78,6 +83,35 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         progressDialog = new ProgressDialog( this );
         progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
+
+        //first time chip group setup
+        ChipGroup chipGroup = findViewById( R.id.chipGroup );
+        arrayRes = getResources().getStringArray( R.array.categories );
+        arrayTags = getResources().getStringArray( R.array.categoriesTags );
+
+        int id = 0;
+        for (String s : arrayRes) {
+            final Chip newChip = new Chip( this );
+            newChip.setId( id );
+            assert arrayTags != null;
+            newChip.setTag( arrayTags[id++] );
+            newChip.setChipText( s );
+            newChip.setClickable( true );
+            newChip.setCheckable( true );
+            newChip.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String query;
+                    if (newChip.isChecked())
+                        query = newChip.getTag().toString();
+                    else query = ""; //stringa vuota così da mostrare tutti i luoghi
+                    Log.i( TAG , "Query=" + query );
+                    mAdapter.getFilterCategories().filter( query );
+                    //setCounter(arrayRes, arrayTags, newChip.getTag().toString());
+                }
+            } );
+            chipGroup.addView( newChip );
+        }
 
 
         interestsList = new ArrayList<>();
@@ -147,6 +181,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
                 mAdapter.getFilter().filter( query );
+                myToolbarSwitchCategories.show();
                 return false;
             }
 
@@ -154,6 +189,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
                 mAdapter.getFilter().filter( query );
+                myToolbarSwitchCategories.show();
                 return false;
             }
         } );
@@ -170,6 +206,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             case R.id.home:
                 myNavigationDrawer.openMenu( item );
             case R.id.app_bar_search:
+                myToolbarSwitchCategories.hide();
                 break;
 
         }
@@ -198,10 +235,12 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
 
 
     @Override
-    public void onItemsSelected(Luogo item) {
+    public void onItemsSelected(Luogo luogo) {
         //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
-        Intent intent = new Intent( this , LuogoDetailActivity.class );
-        intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
+        Intent intent;
+        if(luogo instanceof Evento) intent = new Intent( this , EventoDetailActivity.class );
+        else intent = new Intent( this , LuogoDetailActivity.class );
+        intent.putExtra( INTENT_LUOGO_COD , luogo.getCod() );
         startActivity( intent );
     }
 

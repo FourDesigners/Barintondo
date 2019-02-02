@@ -186,4 +186,6 @@
     <string name="strNear">Vicino</string>
     <string name="strDistanceMeters">Distanza: %dm</string>
     <string name="strDistanceKilometers">Distanza:  %.1fKm</string>
+    <string name="strNoLuoghiNear">Non ci sono luoghi nelle vicinanze</string>
+    <string name="strNextEvents">Prossimi eventi</string>
 </resources>

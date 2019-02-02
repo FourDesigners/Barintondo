@@ -52,7 +52,8 @@ public class SliderAdapter extends PagerAdapter implements Constants {
         ImageView myImage = myImageLayout.findViewById(R.id.image);
         TextView eventTitle = myImageLayout.findViewById( R.id.text_slider_event_title );
         TextView eventDays = myImageLayout.findViewById( R.id.slider_event_days );
-        eventDays.setText( eventList.get( position ).getDaysToEventString( myImageLayout.getContext() ) );
+        String daysToEvent= eventList.get( position ).getDaysToEventString( myImageLayout.getContext() );
+        eventDays.setText( activity.getString( R.string.placeholderCittaDaysToevent, eventList.get( position ).getCitta(), daysToEvent.toLowerCase() ) );
         eventTitle.setText( eventList.get( position ).getNome() );
         Glide.with( activity )
                 .load( imagesPath + eventList.get( position ).getThumbnailLink() )

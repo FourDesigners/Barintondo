@@ -149,7 +149,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 sottoCat += "Default";
                 break;
         }
-        Log.i( TAG , "final sottoCat:" + sottoCat );
+        //Log.i( TAG , "final sottoCat:" + sottoCat );
         holder.sottoCat.setText( sottoCat );
 
 
@@ -214,27 +214,27 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             holder.mVoteStars.setStars( luogo.getVoto() );
             holder.mVoteStars.showVoteFrame();
 
-            if (UserUtils.myLocationIsSetted && luogo.getLatitudine()!=0.0f && !isRequestFormLuogoDetail) {
+            if (UserUtils.myLocationIsSetted && luogo.getLatitudine() != 0.0f && !isRequestFormLuogoDetail) {
 
-                holder.distance.setText( calculateDistance( luogo, UserUtils.myLocation ) );
+                holder.distance.setText( calculateDistance( luogo , UserUtils.myLocation ) );
                 holder.distance.setVisibility( View.VISIBLE );
-            } else if(isRequestFormLuogoDetail && luogo.getLatitudine()!=0.0f){
-                holder.distance.setText( calculateDistance( luogo, sourceLuogo ) );
+            } else if (isRequestFormLuogoDetail && luogo.getLatitudine() != 0.0f) {
+                holder.distance.setText( calculateDistance( luogo , sourceLuogo ) );
                 holder.distance.setVisibility( View.VISIBLE );
-            }else holder.distance.setVisibility( View.GONE );
+            } else holder.distance.setVisibility( View.GONE );
         }
 
 
     }
 
 
-    private String calculateDistance(Luogo actualLuogo, Location startLocation){
+    private String calculateDistance(Luogo actualLuogo , Location startLocation) {
         String distanceText;
         int distanceMeters = actualLuogo.calculateDistanceTo( startLocation );
-        if ((distanceMeters/1000)!=0){
-            float distanceKm = (float)distanceMeters/1000;
-            distanceText = context.getString( R.string.strDistanceKilometers , distanceKm);
-        }else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters);
+        if ((distanceMeters / 1000) != 0) {
+            float distanceKm = (float) distanceMeters / 1000;
+            distanceText = context.getString( R.string.strDistanceKilometers , distanceKm );
+        } else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters );
 
         return distanceText;
     }
@@ -262,6 +262,49 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                             + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                         if (row.getNome().toLowerCase().contains( charString.toLowerCase() ) ||
                                 row.getSottoCat().toLowerCase().contains( charString.toLowerCase() )) {
+                            filteredList.add( row );
+                        }
+                    }
+
+                    itemListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence , FilterResults filterResults) {
+                itemListFiltered = (ArrayList<Luogo>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public Filter getFilterCategories() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemListFiltered = itemList;
+                } else {
+                    List<Luogo> filteredList = new ArrayList<>();
+                    for (Luogo row : itemList) {
+
+                        // name match condition
+                            /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
+                            + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
+                        if (charSequence.equals( "Attrazione" )) { //attrazioni con città uguale a bari
+                            if (row.getCategoria().toLowerCase().contains( "attrazione" ) && row.getCitta().equals( "Bari" )) {
+                                filteredList.add( row );
+                            }
+                        } else if (charSequence.equals( "Vicino" )) { //vicino trattato in particolare perchè sono attrazioni con città diversa da bari
+                            if (row.getCategoria().toLowerCase().contains( "attrazione" ) && !row.getCitta().equals( "Bari" )) {
+                                filteredList.add( row );
+                            }
+                        } else if (row.getCategoria().toLowerCase().contains( charString.toLowerCase() )) {
                             filteredList.add( row );
                         }
                     }

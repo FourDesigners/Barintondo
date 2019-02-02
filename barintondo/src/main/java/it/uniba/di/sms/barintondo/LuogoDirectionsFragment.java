@@ -35,6 +35,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     LuogoAdapter.ItemsAdapterListener itemsAdapterListener;
     ControllerDBListner myDBListner;
     String requestCat;
+    TextView textNoLuoghiNear;
 
     public LuogoDirectionsFragment() {
         // Required empty public constructor
@@ -77,7 +78,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate( R.layout.fragment_luogo_directions , container , false );
-
+        textNoLuoghiNear = rootView.findViewById( R.id.text_view_no_luoghi_near );
         //recyclerView setup
         recyclerView = rootView.findViewById( R.id.item_list_recycler_view );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getContext() );
@@ -100,6 +101,9 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
 
                 Collections.sort( luogoList, Luogo.getDistanceOrdering() );
                 mAdapter.notifyDataSetChanged();
+                if (luogoList.size()==0){
+                    textNoLuoghiNear.setVisibility( View.VISIBLE );
+                }
             }
         };
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -15,10 +16,12 @@ import it.uniba.di.sms.barintondo.R;
 public class ToolbarSwitchCategories implements Constants {
     Activity activity;
     ImageButton attraction, food, sleep, near, event;
+    LinearLayoutCompat thisToolbar;
 
 
     public ToolbarSwitchCategories(final Activity activity , String category) {
         this.activity = activity;
+        thisToolbar=activity.findViewById( R.id.toolbar_switch_categories );
 
         attraction = activity.findViewById( R.id.btnSwitchAttractions );
         onClickcategory( attraction , INTENT_ATTRACTIONS );
@@ -65,6 +68,14 @@ public class ToolbarSwitchCategories implements Constants {
             }
         } );
 
+    }
+
+    public void hide(){
+        thisToolbar.setVisibility( View.GONE );
+    }
+
+    public void show(){
+        thisToolbar.setVisibility( View.VISIBLE );
     }
 
 

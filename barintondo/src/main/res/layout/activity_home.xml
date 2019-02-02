@@ -79,17 +79,28 @@
                 app:layout_constraintTop_toTopOf="@+id/weatherDesc" />
 
         </android.support.constraint.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:textSize="@dimen/standardTextSize"
+            android:text="@string/strNextEvents"
+            android:paddingLeft="10dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6">
+            android:layout_weight="6"
+            android:background="@color/colorPrimary">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+                android:layout_margin="10dp"/>
 
             <me.relex.circleindicator.CircleIndicator
                 android:id="@+id/indicator"
@@ -101,7 +112,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:background="@color/colorPrimaryDark">
 
             <TableRow android:layout_weight="1">
 

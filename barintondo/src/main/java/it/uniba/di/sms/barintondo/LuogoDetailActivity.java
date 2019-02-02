@@ -202,14 +202,17 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             case ITEM_DESCRIPTION:
                 itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.VISIBLE );
+                myFrameVoteStars.showVoteFrame();
                 break;
             case ITEM_DIRECTIONS:
                 itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.GONE );
+                myFrameVoteStars.hideVoteFrame();
                 break;
             case ITEM_REVIEWS:
                 itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.GONE );
+                myFrameVoteStars.hideVoteFrame();
                 break;
         }
     }

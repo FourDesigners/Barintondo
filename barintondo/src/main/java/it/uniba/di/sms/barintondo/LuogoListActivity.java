@@ -387,6 +387,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
+        
 
         // listening to search query text change
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
@@ -394,6 +395,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
                 mAdapter.getFilter().filter( query );
+                mySwitchCategory.show();
                 return false;
             }
 
@@ -401,6 +403,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
                 mAdapter.getFilter().filter( query );
+                mySwitchCategory.show();
                 return false;
             }
         } );
@@ -417,6 +420,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
             case R.id.home:
                 myNavigationDrawer.openMenu( item );
             case R.id.app_bar_search:
+                mySwitchCategory.hide();
                 break;
 
         }

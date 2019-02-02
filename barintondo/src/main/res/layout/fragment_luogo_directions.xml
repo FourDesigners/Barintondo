@@ -18,5 +18,14 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/luogo_list_content" />
 
+    <TextView
+        android:id="@+id/text_view_no_luoghi_near"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/strNoLuoghiNear"
+        android:textSize="@dimen/standardTextSize"
+        android:visibility="gone"/>
+
 
 </LinearLayout>

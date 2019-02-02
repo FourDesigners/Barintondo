@@ -53,7 +53,9 @@
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/luogo_list_content" />
 
-            <include layout="@layout/toolbar_switch_categories" />
+            <include
+                android:id="@+id/switchCategories"
+                layout="@layout/toolbar_switch_categories" />
 
 
         </android.support.v7.widget.LinearLayoutCompat>

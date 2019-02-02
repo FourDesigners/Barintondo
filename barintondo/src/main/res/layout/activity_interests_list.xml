@@ -34,6 +34,21 @@
                 android:textSize="@dimen/standardTextSize"
                 android:visibility="gone"/>
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <android.support.design.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/defaultMargin"
+                    app:singleSelection="true">
+
+                </android.support.design.chip.ChipGroup>
+            </HorizontalScrollView>
+
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/item_list_recycler_view"
@@ -44,7 +59,9 @@
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/luogo_list_content" />
 
-            <include layout="@layout/toolbar_switch_categories" />
+            <include
+                android:id="@+id/switchCategories"
+                layout="@layout/toolbar_switch_categories" />
 
 
         </android.support.v7.widget.LinearLayoutCompat>
