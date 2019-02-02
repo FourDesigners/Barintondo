@@ -175,13 +175,13 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
 
+
         // listening to search query text change
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
                 mAdapter.getFilter().filter( query );
-                myToolbarSwitchCategories.show();
                 return false;
             }
 
@@ -189,7 +189,6 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
                 mAdapter.getFilter().filter( query );
-                myToolbarSwitchCategories.show();
                 return false;
             }
         } );
@@ -206,7 +205,6 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             case R.id.home:
                 myNavigationDrawer.openMenu( item );
             case R.id.app_bar_search:
-                myToolbarSwitchCategories.hide();
                 break;
 
         }
