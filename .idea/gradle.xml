@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/barintondo" />
+            <option value="$PROJECT_DIR$/updatedbcoordinates" />
             <option value="$PROJECT_DIR$/utility" />
           </set>
         </option>

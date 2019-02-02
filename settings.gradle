@@ -1,1 +1,1 @@
-include ':barintondo', ':utility'
+include ':barintondo', ':utility', ':updatedbcoordinates'

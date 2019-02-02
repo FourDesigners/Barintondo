@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.uniba.di.sms.barintondo.EventoDetailActivity;
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.R;
@@ -174,7 +175,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         }
         //Codice per assegnare l'icona dela corrispondente categoria, attivato solo dentro l'activity degli interessi
         int icon = R.drawable.ic_fiber_smart_record; //icona di default assegnata nel caso andasse storto qualcosa
-        if (context instanceof InterestsListActivity || context instanceof LuogoDetailActivity) {
+        if (context instanceof InterestsListActivity || context instanceof LuogoDetailActivity || context instanceof EventoDetailActivity) {
             switch (luogo.getCategoria()) {
                 case "Attrazione":
                     if (luogo.getCitta().equals( "Bari" )) {
