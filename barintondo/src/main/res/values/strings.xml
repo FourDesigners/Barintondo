@@ -219,7 +219,7 @@
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
     <string name="notDefined" translatable="false">N/A</string>
-    <string name="title_activity_item_detail" translatable="false">ItemDetailActivity</string>
+    <string name="title_activity_item_detail">ItemDetailActivity</string>
     <string name="strReviews">Reviews</string>
     <string name="strDirections">Directions</string>
     <string name="strTheatre">Theatre</string>
@@ -274,6 +274,7 @@
     <string name="strNoLuoghiNear">There are no places near</string>
     <string name="strNextEvents">Upcoming events</string>
     <string name="placeholderCommaSeparator" translatable="false">%s, %s</string>
+    <string name="strToday">Today</string>
 
     <!--COUPON_LIST ACTIVITY-->
     <string name="expiredString">Expired</string>

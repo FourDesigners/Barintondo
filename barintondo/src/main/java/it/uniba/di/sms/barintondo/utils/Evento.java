@@ -64,7 +64,10 @@ public class Evento extends Luogo implements Parcelable {
         int days = getDaysToEvent();
         String inDays;
         if(days<=0){
-            inDays= context.getResources().getString( R.string.strInProgress );
+            if(dataInizio.equals(dataFine)){
+                inDays = context.getResources().getString( R.string.strToday );
+            }
+            else inDays= context.getResources().getString( R.string.strInProgress );
         } else if(days<=30){
             inDays = context.getResources().getQuantityString(R.plurals.EventInDays, days, days);
 

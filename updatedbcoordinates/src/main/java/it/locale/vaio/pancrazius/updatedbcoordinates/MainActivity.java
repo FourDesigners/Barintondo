@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +33,14 @@ import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TreeMap<String, String> luoghiMap;
+    ArrayList<Luogo> luoghiList;
     Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        luoghiMap = new TreeMap<>();
+        luoghiList=new ArrayList<>(  );
 
         btn = findViewById( R.id.button );
         btn.setOnClickListener( new View.OnClickListener() {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getLuoghiList() {
-        luoghiMap.clear();
+        luoghiList.clear();
         final ProgressDialog progressDialog = new ProgressDialog( this );
         progressDialog.setMessage( "Caricamento" );
         progressDialog.show();
@@ -74,8 +75,16 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject( i );
+                            String cod = jsonObject.getString( "cod" );
+                            String indirizzo = jsonObject.getString( "indirizzo" );
+                            double lat = 0.0d;
+                            double lng = 0.0d;
+                            if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                                lat = jsonObject.getDouble( "latitudine" );
+                                lng = jsonObject.getDouble( "latitudine" );
+                            }
 
-                            luoghiMap.put( jsonObject.getString( "cod" ) , jsonObject.getString( "indirizzo" ) );
+                            luoghiList.add( new Luogo( cod , indirizzo , lat , lng ) );
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i( "Test" , "Errore nel leggere il json" );
@@ -113,18 +122,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void calcolaLocation() {
         Geocoder geocoder = new Geocoder( this , Locale.getDefault() );
-        for (String cod : luoghiMap.keySet()) {
+        for (Luogo l : luoghiList) {
             List<Address> addresses = null;
             try {
-                addresses = geocoder.getFromLocationName( luoghiMap.get( cod ) , 1 );
+                addresses = geocoder.getFromLocationName( l.indirizzo , 1 );
 
                 Address address = addresses.get( 0 );
                 if (addresses.size() > 0) {
                     double latitude = addresses.get( 0 ).getLatitude();
                     double longitude = addresses.get( 0 ).getLongitude();
-                    //Log.i("Test","Luogo "+cod+"("+luoghiMap.get( cod )+"): latitudine="+latitude+", longitudine= "+longitude);
-                    setLocation( cod, latitude, longitude );
-                } else Log.i("Test","Non caricato Luogo "+cod+"("+luoghiMap.get( cod ));
+                    if (l.lat != latitude || l.lng != longitude) {
+                        Log.i( "Test" , "Aggiorno " + l.cod + "(" + l.indirizzo+") ");
+                        setLocation( l.cod , latitude , longitude );
+                    }
+                } else Log.i( "Test" , "Non caricato Luogo " + l.cod + "(" + l.indirizzo +") ");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setLocation(final String cod, final double lat, final double lng) {
+    public void setLocation(final String cod , final double lat , final double lng) {
 
 
         String Url = "http://barintondo.altervista.org/UpdateLocation.php";
@@ -159,14 +170,28 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , "set_location" );
-                MyData.put( "cod" , cod);
-                MyData.put( "lat" , String.valueOf(  lat) );
-                MyData.put( "lng" , String.valueOf(  lng) );
+                MyData.put( "cod" , cod );
+                MyData.put( "lat" , String.valueOf( lat ) );
+                MyData.put( "lng" , String.valueOf( lng ) );
                 return MyData;
             }
         };
 
 
         MyRequestQueue.add( MyStringRequest );
+    }
+
+    class Luogo {
+        String cod;
+        String indirizzo;
+        double lat;
+        double lng;
+
+        public Luogo(String cod , String indirizzo , double lat , double lng) {
+            this.cod = cod;
+            this.indirizzo = indirizzo;
+            this.lat = lat;
+            this.lng = lng;
+        }
     }
 }

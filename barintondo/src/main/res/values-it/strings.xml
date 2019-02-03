@@ -188,4 +188,5 @@
     <string name="strDistanceKilometers">Distanza:  %.1fKm</string>
     <string name="strNoLuoghiNear">Non ci sono luoghi nelle vicinanze</string>
     <string name="strNextEvents">Prossimi eventi</string>
+    <string name="strToday">Oggi</string>
 </resources>

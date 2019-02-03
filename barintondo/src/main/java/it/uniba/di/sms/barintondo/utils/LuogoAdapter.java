@@ -150,14 +150,14 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 break;
         }
         //Log.i( TAG , "final sottoCat:" + sottoCat );
-        if(!luogo.getCitta().equals( "Bari" ) && !(luogo instanceof Evento)){
-            sottoCat=context.getResources().getString( R.string.placeholderCommaSeparator, luogo.getCitta(), sottoCat );
+        if (!luogo.getCitta().equals( "Bari" ) && !(luogo instanceof Evento)) {
+            sottoCat = context.getResources().getString( R.string.placeholderCommaSeparator , luogo.getCitta() , sottoCat );
         }
         holder.sottoCat.setText( sottoCat );
 
 
-        if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
-            holder.sottoCat.setText( context.getResources().getString( R.string.placeholderCommaSeparator, sottoCat, "" ) );
+        if (!isRequestFormLuogoDetail && luogo.getOraA() != null && !(luogo instanceof Evento)) {
+            holder.sottoCat.setText( context.getResources().getString( R.string.placeholderCommaSeparator , sottoCat , "" ) );
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
             String oraC = luogo.getOraC();
@@ -181,9 +181,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         if (context instanceof InterestsListActivity || context instanceof LuogoDetailActivity || context instanceof EventoDetailActivity) {
             switch (luogo.getCategoria()) {
                 case "Attrazione":
-                    if (luogo.getCitta().equals( "Bari" )) {
-                        icon = R.drawable.ic_attraction;
-                    } else icon = R.drawable.ic_surroundings;
+                    icon = R.drawable.ic_attraction;
                     break;
                 case "Dormire":
                     icon = R.drawable.ic_stay;
@@ -264,7 +262,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                             /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
                             + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                         if (row.getNome().toLowerCase().contains( charString.toLowerCase() ) ||
-                                row.getSottoCat().toLowerCase().contains( charString.toLowerCase()) ||
+                                row.getSottoCat().toLowerCase().contains( charString.toLowerCase() ) ||
                                 row.getCitta().toLowerCase().contains( charString.toLowerCase() )) {
                             filteredList.add( row );
                         }

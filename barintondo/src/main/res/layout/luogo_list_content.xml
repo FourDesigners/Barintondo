@@ -14,6 +14,14 @@
     android:paddingRight="@dimen/activity_margin"
     android:paddingBottom="@dimen/row_padding">
 
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cod"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- Name Label -->
     <TextView
         android:id="@+id/nome"
@@ -82,13 +90,7 @@
         app:layout_constraintStart_toEndOf="@+id/sottoCat"
         app:layout_constraintTop_toTopOf="@+id/sottoCat" />
 
-    <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cod"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/text_distance"
