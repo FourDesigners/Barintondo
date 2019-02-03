@@ -104,57 +104,60 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
         Log.i( TAG , "sottoCatItem=" + luogo.getSottoCat() + "-" );
         switch (luogo.getSottoCat()) {
             case "Teatri":
-                sottoCat += context.getResources().getString( R.string.strTheatre );
+                sottoCat = context.getResources().getString( R.string.strTheatre );
                 break;
             case "Monumenti":
-                sottoCat += context.getResources().getString( R.string.strMonument );
+                sottoCat = context.getResources().getString( R.string.strMonument );
                 break;
             case "Musei":
-                sottoCat += context.getResources().getString( R.string.strMuseum );
+                sottoCat = context.getResources().getString( R.string.strMuseum );
                 break;
             case "Chiese":
-                sottoCat += context.getResources().getString( R.string.strChurch );
+                sottoCat = context.getResources().getString( R.string.strChurch );
                 break;
             case "Lidi":
-                sottoCat += context.getResources().getString( R.string.strBeach );
+                sottoCat = context.getResources().getString( R.string.strBeach );
                 break;
             case "Discoteche":
-                sottoCat += context.getResources().getString( R.string.strDisco );
+                sottoCat = context.getResources().getString( R.string.strDisco );
                 break;
             case "Famiglia":
-                sottoCat += context.getResources().getString( R.string.strFamiglia );
+                sottoCat = context.getResources().getString( R.string.strFamiglia );
                 break;
             case "Bar":
-                sottoCat += context.getResources().getString( R.string.strBar );
+                sottoCat = context.getResources().getString( R.string.strBar );
                 break;
             case "Pizzerie":
-                sottoCat += context.getResources().getString( R.string.strPizzaHouse );
+                sottoCat = context.getResources().getString( R.string.strPizzaHouse );
                 break;
             case "Ristoranti":
-                sottoCat += context.getResources().getString( R.string.strRestaurant );
+                sottoCat = context.getResources().getString( R.string.strRestaurant );
                 break;
             case "Hotel":
-                sottoCat += context.getResources().getString( R.string.strHotel );
+                sottoCat = context.getResources().getString( R.string.strHotel );
                 break;
             case "B&B":
-                sottoCat += context.getResources().getString( R.string.strBB );
+                sottoCat = context.getResources().getString( R.string.strBB );
                 break;
             case "Bari":
-                sottoCat += context.getResources().getString( R.string.strBari );
+                sottoCat = context.getResources().getString( R.string.strBari );
                 break;
             case "Fuori":
-                sottoCat += luogo.getCitta();
+                sottoCat = luogo.getCitta();
                 break;
             default:
-                sottoCat += "Default";
+                sottoCat = "Default";
                 break;
         }
         //Log.i( TAG , "final sottoCat:" + sottoCat );
+        if(!luogo.getCitta().equals( "Bari" ) && !(luogo instanceof Evento)){
+            sottoCat=context.getResources().getString( R.string.placeholderCommaSeparator, luogo.getCitta(), sottoCat );
+        }
         holder.sottoCat.setText( sottoCat );
 
 
         if (luogo.getOraA() != null && !(luogo instanceof Evento)) {
-            holder.sottoCat.setText( sottoCat + "," );
+            holder.sottoCat.setText( context.getResources().getString( R.string.placeholderCommaSeparator, sottoCat, "" ) );
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
             String oraC = luogo.getOraC();
@@ -261,7 +264,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                             /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
                             + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                         if (row.getNome().toLowerCase().contains( charString.toLowerCase() ) ||
-                                row.getSottoCat().toLowerCase().contains( charString.toLowerCase() )) {
+                                row.getSottoCat().toLowerCase().contains( charString.toLowerCase()) ||
+                                row.getCitta().toLowerCase().contains( charString.toLowerCase() )) {
                             filteredList.add( row );
                         }
                     }
