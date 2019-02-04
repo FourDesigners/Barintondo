@@ -639,7 +639,7 @@ public class ControllerRemoteDB implements Constants {
 
             MyRequestQueue.add( MyStringRequest );
         } else {
-            Toast.makeText( context , "" , Toast.LENGTH_SHORT ).show();
+            Toast.makeText( context , context.getResources().getString( R.string.offlineCoupons ) , Toast.LENGTH_SHORT ).show();
             couponList.clear();
             LocalDBOpenHelper.getCouponList(context, couponList);
             mAdapter.notifyDataSetChanged();
