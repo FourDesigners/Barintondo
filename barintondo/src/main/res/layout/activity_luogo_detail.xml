@@ -45,20 +45,19 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimaryDark">
+        android:orientation="horizontal">
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/btn_luogo_info"
             style="@style/btnLuogoDetail"
             android:text="@string/pref_header_info"/>
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/btn_luogo_directions"
             style="@style/btnLuogoDetail"
             android:text="@string/strNear" />
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/btn_luogo_reviews"
             style="@style/btnLuogoDetail"
             android:text="@string/strReviews"/>
