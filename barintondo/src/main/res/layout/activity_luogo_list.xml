@@ -13,20 +13,18 @@
         android:layout_height="match_parent">
 
         <!-- LinearLayout that contains the real activity layout -->
-        <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.LinearLayoutCompat
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".LuogoListActivity">
+            android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_activity_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+                app:titleTextColor="@color/colorWhite"
+                style="@style/myToolbar" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"

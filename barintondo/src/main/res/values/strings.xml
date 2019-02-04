@@ -207,7 +207,7 @@
     <string name="bari_longitude" translatable="false">16.85</string>
     <string name="tempUnit" translatable="false">°</string>
     <string name="windUnit" translatable="false">km/h</string>
-    <string name="moreBtn" translatable="false">...</string>
+    <string name="moreBtn">More</string>
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
     <string name="webUrl" translatable="false">https://www.ilmeteo.it/meteo/Bari</string>
 
@@ -219,7 +219,7 @@
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
     <string name="notDefined" translatable="false">N/A</string>
-    <string name="title_activity_item_detail">ItemDetailActivity</string>
+    <string name="title_activity_item_detail" translatable="false">ItemDetailActivity</string>
     <string name="strReviews">Reviews</string>
     <string name="strDirections">Directions</string>
     <string name="strTheatre">Theatre</string>

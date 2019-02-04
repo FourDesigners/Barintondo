@@ -189,4 +189,5 @@
     <string name="strNoLuoghiNear">Non ci sono luoghi nelle vicinanze</string>
     <string name="strNextEvents">Prossimi eventi</string>
     <string name="strToday">Oggi</string>
+    <string name="moreBtn">Più info</string>
 </resources>

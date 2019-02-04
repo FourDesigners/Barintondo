@@ -3,12 +3,13 @@
     <dimen name="heightEye">40dp</dimen>
     <dimen name="widthEye">40dp</dimen>
     <dimen name="tempSize">35dp</dimen>
-    <dimen name="standardTextSize">20dp</dimen>
+    <dimen name="standardTextSize">18sp</dimen>
     <!-- ITEM LIST DIMENS -->
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="row_padding">12dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="defaultMargin">8dp</dimen>
-    <dimen name="mediumTextSize">15dp</dimen>
+    <dimen name="reducedTextSize">13sp</dimen>
+    <dimen name="mediumTextSize">14sp</dimen>
     <dimen name="labelsDimension">20dp</dimen>
 </resources>
