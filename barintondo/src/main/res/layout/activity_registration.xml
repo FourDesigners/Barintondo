@@ -109,27 +109,25 @@
         app:layout_constraintStart_toStartOf="@+id/editTextRepeatPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextRepeatPassword" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:srcCompat="@drawable/closedeye"
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="@dimen/widthEye"
+        android:layout_height="@dimen/heightEye"
         app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/editTextPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextPassword"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="@+id/editTextPassword">
+    </ImageSwitcher>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:srcCompat="@drawable/closedeye"
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher2"
+        android:layout_width="@dimen/widthEye"
+        android:layout_height="@dimen/heightEye"
         app:layout_constraintBottom_toBottomOf="@+id/editTextRepeatPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/editTextRepeatPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextRepeatPassword"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="@+id/editTextRepeatPassword">
+    </ImageSwitcher>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/buttonRegister"
