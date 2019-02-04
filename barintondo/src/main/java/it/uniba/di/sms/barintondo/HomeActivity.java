@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -42,7 +43,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
-    Button moreBtn, goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
+    Button /*moreBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
+    Chip moreBtn;
     ControllerRemoteDB controllerRemoteDB;
     ControllerDBListner myDBListner;
 

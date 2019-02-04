@@ -23,13 +23,13 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.AppCompat.Light" />
+            android:theme="@style/Theme.MaterialComponents.Light" />
         <activity
             android:name=".MyProfileActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/myTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -37,10 +37,11 @@
         <activity
             android:name=".LuogoListActivity"
             android:parentActivityName=".HomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/myTheme">
+
         </activity>
         <activity
             android:name=".RegistrationActivity"
@@ -67,6 +68,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".EventoDetailActivity"
+            android:theme="@style/myTheme"/>
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SplashActivity"

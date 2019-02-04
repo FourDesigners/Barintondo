@@ -4,8 +4,8 @@
     android:id="@+id/toolbar_switch_categories"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/colorPrimaryDark">
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    android:background="@color/colorPrimary">
 
         <ImageButton
             android:id="@+id/btnSwitchAttractions"
@@ -17,10 +17,6 @@
             style="@style/btnCategoriesNavigation"
             android:src="@drawable/ic_food" />
 
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
         <ImageButton
             android:id="@+id/btnSwitchSleep"
             style="@style/btnCategoriesNavigation"
