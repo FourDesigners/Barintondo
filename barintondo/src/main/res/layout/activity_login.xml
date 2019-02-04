@@ -53,18 +53,6 @@
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
-    <!--
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="@dimen/widthEye"
-        android:layout_height="@dimen/heightEye"
-        app:srcCompat="@drawable/closedeye"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/editTextPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextPassword"
-        tools:ignore="ContentDescription" />
-        -->
     <ImageSwitcher
         android:id="@+id/imageSwitcher"
         android:layout_width="@dimen/widthEye"
@@ -104,10 +92,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_don_t_you_have_an_account"
+        android:textSize="@dimen/standardTextSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/textViewRegister"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <TextView
         android:id="@+id/textViewRegister"
@@ -115,11 +104,11 @@
         android:layout_height="wrap_content"
         android:text="@string/str_register_now"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/textViewNoAccount"
+        android:textSize="@dimen/standardTextSize"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewNoAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textViewNoAccount"
-        app:layout_constraintTop_toTopOf="@id/textViewNoAccount"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/textViewNoAccount" />
 
 
 

@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,7 +39,7 @@ import it.uniba.di.sms.barintondo.utils.VerifyString;
 public class RegistrationActivity extends AppCompatActivity {
     TextView textViewNicknameError, textViewEmailError, textViewPasswordError, textViewRepeatPasswordError;
     EditText editTextNickname, editTextEmail, editTextPassword, editTextRepeatPassword;
-    ImageView imageView, imageView2;
+    ImageSwitcher imageSwitcher, imageSwitcher2;
     Button reset, register;
     LocalDBOpenHelper openHelper;
 
@@ -68,26 +72,36 @@ public class RegistrationActivity extends AppCompatActivity {
 
         editTextPassword = findViewById(R.id.editTextPassword);
 
-        imageView = findViewById(R.id.imageView);
-        imageView.setTag(R.drawable.closedeye);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageSwitcher = findViewById(R.id.imageSwitcher);
+        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
+        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView view = new ImageView(getApplicationContext());
+                return view;
+            }
+        });
+        imageSwitcher.setImageResource(R.drawable.closedeye);
+        imageSwitcher.setTag(R.drawable.closedeye);
+        imageSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer integer = (Integer) imageView.getTag();
+                Integer integer = (Integer) imageSwitcher.getTag();
                 integer = integer == null ? 0 : integer;
-
-                //Toast.makeText(getApplicationContext(), integer.toString(), Toast.LENGTH_SHORT).show();
+                imageSwitcher.setInAnimation(in);
+                imageSwitcher.setOutAnimation(out);
                 switch(integer) {
                     case R.drawable.openeye:
-                        imageView.setImageResource(R.drawable.closedeye);
-                        imageView.setTag(R.drawable.closedeye);
+                        imageSwitcher.setImageResource(R.drawable.closedeye);
+                        imageSwitcher.setTag(R.drawable.closedeye);
                         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT |
                                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
                         editTextPassword.setSelection(editTextPassword.getText().length());
                         break;
                     case R.drawable.closedeye:
-                        imageView.setImageResource(R.drawable.openeye);
-                        imageView.setTag(R.drawable.openeye);
+                        imageSwitcher.setImageResource(R.drawable.openeye);
+                        imageSwitcher.setTag(R.drawable.openeye);
                         editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                         editTextPassword.setSelection(editTextPassword.getText().length());
                         break;
@@ -96,26 +110,34 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         editTextRepeatPassword = findViewById(R.id.editTextRepeatPassword);
-        imageView2 = findViewById(R.id.imageView2);
-        imageView2.setTag(R.drawable.closedeye);
-        imageView2.setOnClickListener(new View.OnClickListener() {
+        imageSwitcher2 = findViewById(R.id.imageSwitcher2);
+        imageSwitcher2.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView view = new ImageView(getApplicationContext());
+                return view;
+            }
+        });
+        imageSwitcher2.setImageResource(R.drawable.closedeye);
+        imageSwitcher2.setTag(R.drawable.closedeye);
+        imageSwitcher2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer integer = (Integer) imageView2.getTag();
+                Integer integer = (Integer) imageSwitcher2.getTag();
                 integer = integer == null ? 0 : integer;
-
-                //Toast.makeText(getApplicationContext(), integer.toString(), Toast.LENGTH_SHORT).show();
+                imageSwitcher2.setInAnimation(in);
+                imageSwitcher2.setOutAnimation(out);
                 switch(integer) {
                     case R.drawable.openeye:
-                        imageView2.setImageResource(R.drawable.closedeye);
-                        imageView2.setTag(R.drawable.closedeye);
+                        imageSwitcher2.setImageResource(R.drawable.closedeye);
+                        imageSwitcher2.setTag(R.drawable.closedeye);
                         editTextRepeatPassword.setInputType(InputType.TYPE_CLASS_TEXT |
                                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
                         editTextRepeatPassword.setSelection(editTextRepeatPassword.getText().length());
                         break;
                     case R.drawable.closedeye:
-                        imageView2.setImageResource(R.drawable.openeye);
-                        imageView2.setTag(R.drawable.openeye);
+                        imageSwitcher2.setImageResource(R.drawable.openeye);
+                        imageSwitcher2.setTag(R.drawable.openeye);
                         editTextRepeatPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                         editTextRepeatPassword.setSelection(editTextRepeatPassword.getText().length());
                         break;

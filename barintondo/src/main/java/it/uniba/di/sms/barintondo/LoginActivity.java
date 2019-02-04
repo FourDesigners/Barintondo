@@ -89,36 +89,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         editTextPassword = findViewById(R.id.editTextPassword);
 
-        /*
-        imageView = findViewById(R.id.imageView);
-        imageView.setTag(R.drawable.closedeye);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageView.getTag();
-                integer = integer == null ? 0 : integer;
-
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageView.setImageResource(R.drawable.closedeye);
-                        imageView.setTag(R.drawable.closedeye);
-                        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageView.setImageResource(R.drawable.openeye);
-                        imageView.setTag(R.drawable.openeye);
-                        editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                }
-            }
-        });
-        */
-
-        Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
-        Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
+        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
+        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
         final ImageSwitcher imageSwitcher;
         imageSwitcher = findViewById(R.id.imageSwitcher);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -128,8 +100,6 @@ public class LoginActivity extends AppCompatActivity implements Constants{
                 return view;
             }
         });
-        imageSwitcher.setInAnimation(in);
-        imageSwitcher.setOutAnimation(out);
         imageSwitcher.setImageResource(R.drawable.closedeye);
         imageSwitcher.setTag(R.drawable.closedeye);
         imageSwitcher.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +107,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
             public void onClick(View v) {
                 Integer integer = (Integer) imageSwitcher.getTag();
                 integer = integer == null ? 0 : integer;
-
+                imageSwitcher.setInAnimation(in);
+                imageSwitcher.setOutAnimation(out);
                 switch(integer) {
                     case R.drawable.openeye:
                         imageSwitcher.setImageResource(R.drawable.closedeye);
