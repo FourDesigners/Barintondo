@@ -4,6 +4,7 @@
     <dimen name="widthEye">40dp</dimen>
     <dimen name="tempSize">35dp</dimen>
     <dimen name="standardTextSize">20dp</dimen>
+    <dimen name="splashSize">250dp</dimen>
     <!-- ITEM LIST DIMENS -->
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="row_padding">12dp</dimen>
