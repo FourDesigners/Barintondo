@@ -12,16 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
-import it.uniba.di.sms.barintondo.utils.InterestsListner;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.Constants;
@@ -38,8 +36,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     ControllerRemoteDB controller;
     FrameVoteStars myFrameVoteStars;
     Luogo luogo;
-    ControllerDBListner myListner;
-    InterestsListner interestListner;
+    MyListners.SingleLuogo myListner;
+    MyListners.Interests interestListner;
 
 
     @Override
@@ -48,26 +46,30 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
-        myListner=new ControllerDBListner() {
+        myListner=new MyListners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
                 onLuogoLoaded( luogo );
             }
+
             @Override
-            public void onEvento(Evento evento) {}
-            @Override
-            public void onList() {   }
+            public void onEvento(Evento evento) {
+                // non viene mai restituito un evento
+
+            }
         };
 
-        interestListner = new InterestsListner() {
+        interestListner = new MyListners.Interests() {
             @Override
             public void onAdd(Boolean result) {
                 prefAdded( result );
             }
+
             @Override
             public void onRemove(Boolean result) {
                 prefRemoved( result );
             }
+
             @Override
             public void onCheck(Boolean result) {
                 checkPrefResult( result );

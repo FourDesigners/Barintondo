@@ -12,17 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
-import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
-import it.uniba.di.sms.barintondo.utils.InterestsListner;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
@@ -34,10 +31,10 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     Button itemInfo, itemDirection;
     ControllerRemoteDB controller;
     Evento evento;
-    ControllerDBListner myListner;
     FloatingActionButton fabPref;
     boolean isPref = false;
-    InterestsListner interestListner;
+    MyListners.SingleLuogo myListner;
+    MyListners.Interests interestListner;
 
 
 
@@ -47,26 +44,30 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         setContentView( R.layout.activity_evento_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 
-        myListner = new ControllerDBListner() {
+        myListner = new MyListners.SingleLuogo() {
             @Override
-            public void onLuogo(Luogo luogo) {}
+            public void onLuogo(Luogo luogo) {
+                //non viene mai restituito un luogo a questa activity
+            }
+
             @Override
             public void onEvento(Evento evento) {
                 onEventoLoaded( evento );
             }
-            @Override
-            public void onList() {}
         };
 
-        interestListner = new InterestsListner() {
+
+        interestListner = new MyListners.Interests() {
             @Override
             public void onAdd(Boolean result) {
                 prefAdded( result );
             }
+
             @Override
             public void onRemove(Boolean result) {
                 prefRemoved( result );
             }
+
             @Override
             public void onCheck(Boolean result) {
                 checkPrefResult( result );

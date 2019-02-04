@@ -29,7 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     Button /*moreBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
     Chip moreBtn;
     ControllerRemoteDB controllerRemoteDB;
-    ControllerDBListner myDBListner;
+    MyListners.LuoghiList myDBListner;
 
     //elementi per lo slider
     private static ViewPager mPager;
@@ -121,11 +121,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             }
         } );
 
-        myDBListner=new ControllerDBListner() {
-            @Override
-            public void onLuogo(Luogo luogo) {}
-            @Override
-            public void onEvento(Evento evento) {}
+        myDBListner=new MyListners.LuoghiList() {
             @Override
             public void onList() {
                 final ArrayList<Evento> listEventi= new ArrayList<>(  );

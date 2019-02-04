@@ -2,7 +2,6 @@ package it.uniba.di.sms.barintondo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,15 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -33,7 +30,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     ArrayList<Luogo> luogoList;
     LuogoAdapter mAdapter;
     LuogoAdapter.ItemsAdapterListener itemsAdapterListener;
-    ControllerDBListner myDBListner;
+    MyListners.LuoghiList myDBListner;
     String requestCat;
     TextView textNoLuoghiNear;
 
@@ -87,18 +84,9 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        myDBListner = new ControllerDBListner() {
-            @Override
-            public void onLuogo(Luogo luogo) {
-            }
-
-            @Override
-            public void onEvento(Evento evento) {
-            }
-
+        myDBListner = new MyListners.LuoghiList() {
             @Override
             public void onList() {
-
                 Collections.sort( luogoList, Luogo.getDistanceOrdering() );
                 mAdapter.notifyDataSetChanged();
                 if (luogoList.size()==0){
@@ -106,6 +94,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
                 }
             }
         };
+
 
         //first time populating
         //fetchItems();

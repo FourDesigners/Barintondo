@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 
@@ -29,7 +29,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
     ImageView iconDirection;
     Luogo myLuogo;
     ControllerRemoteDB controllerRemoteDB;
-    ControllerDBListner myListner;
+    MyListners.SingleLuogo myListner;
 
 
     public LuogoDescriptionFragment() {
@@ -53,16 +53,17 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 orarioC = ora[0] + ":" + ora[1];
             }
             controllerRemoteDB = new ControllerRemoteDB( this.getContext() );
-            myListner = new ControllerDBListner() {
+            myListner = new MyListners.SingleLuogo() {
                 @Override
                 public void onLuogo(Luogo luogo) {
                     Log.i("Test", "Entered onLuogo");
                     onLuogoLoaded( luogo );
                 }
+
                 @Override
-                public void onEvento(Evento evento) { }
-                @Override
-                public void onList() {   }
+                public void onEvento(Evento evento) {
+                    //non viene mai restituito un evento
+                }
             };
         }
     }

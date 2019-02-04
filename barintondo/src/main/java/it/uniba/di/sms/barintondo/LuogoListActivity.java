@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -35,12 +33,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 
-import it.uniba.di.sms.barintondo.utils.ControllerDBListner;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -68,7 +64,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     String[] arrayRes = null;
     String[] arrayTags = null;
     String[] order = null;
-    ControllerDBListner myDBListner;
+    MyListners.LuoghiList myDBListner;
 
 
     @Override
@@ -183,15 +179,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         // white background notification bar
         whiteNotificationBar( recyclerView );
 
-        myDBListner = new ControllerDBListner() {
-            @Override
-            public void onLuogo(Luogo luogo) {
-            }
-
-            @Override
-            public void onEvento(Evento evento) {
-            }
-
+        myDBListner = new MyListners.LuoghiList() {
             @Override
             public void onList() {
                 mAdapter.notifyDataSetChanged();

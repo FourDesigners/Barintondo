@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.uniba.di.sms.barintondo.EventoDetailActivity;
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.LuogoReviewsFragment;
@@ -39,19 +38,19 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void checkPref(String itemCod, InterestsListner listner) {
+    public void checkPref(String itemCod, MyListners.Interests listner) {
         manageInterests( REQUEST_CHECK_PREF , email , itemCod, listner );
     }
 
-    public void addPref(String itemCod, InterestsListner listner) {
+    public void addPref(String itemCod, MyListners.Interests listner) {
         manageInterests( REQUEST_ADD_PREF , email , itemCod, listner );
     }
 
-    public void removePref(String itemCod, InterestsListner listner) {
+    public void removePref(String itemCod, MyListners.Interests listner) {
         manageInterests( REQUEST_REMOVE_PREF , email , itemCod, listner );
     }
 
-    private void manageInterests(final String requestOp , final String user , final String luogoCod, final InterestsListner listner) {
+    private void manageInterests(final String requestOp , final String user , final String luogoCod, final MyListners.Interests listner) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
         final LuogoDetailActivity luogoDetailActivity = (LuogoDetailActivity) context;
 
@@ -249,7 +248,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final ControllerDBListner mListner) {
+    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -358,7 +357,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getLuogo(final String codLuogo, final String requestLuogoType, final ControllerDBListner listner) {
+    public void getLuogo(final String codLuogo, final String requestLuogoType, final MyListners.SingleLuogo listner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -469,7 +468,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiNear(final Luogo myLuogo, final List<Luogo> luogoList , final ControllerDBListner mListner) {
+    public void getLuoghiNear(final Luogo myLuogo, final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
