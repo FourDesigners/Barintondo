@@ -53,6 +53,7 @@
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
+    <!--
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/widthEye"
@@ -63,6 +64,16 @@
         app:layout_constraintStart_toEndOf="@id/editTextPassword"
         app:layout_constraintTop_toTopOf="@+id/editTextPassword"
         tools:ignore="ContentDescription" />
+        -->
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="@dimen/widthEye"
+        android:layout_height="@dimen/heightEye"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editTextPassword"
+        app:layout_constraintTop_toTopOf="@+id/editTextPassword">
+    </ImageSwitcher>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/buttonLogin"

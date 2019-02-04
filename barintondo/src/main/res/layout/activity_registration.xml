@@ -10,10 +10,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@id/editTextNickname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,21 +131,25 @@
         app:layout_constraintTop_toTopOf="@+id/editTextRepeatPassword"
         tools:ignore="ContentDescription" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_register"
+        android:backgroundTint="@color/colorPrimaryLight"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonReset"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/buttonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_reset"
+        android:backgroundTint="@color/colorPrimaryLight"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/buttonRegister"
         app:layout_constraintEnd_toStartOf="@+id/buttonRegister"
         app:layout_constraintStart_toStartOf="parent"

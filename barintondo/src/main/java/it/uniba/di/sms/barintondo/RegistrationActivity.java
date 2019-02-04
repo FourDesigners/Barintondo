@@ -1,6 +1,8 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -48,9 +51,13 @@ public class RegistrationActivity extends AppCompatActivity {
         textViewRepeatPasswordError = findViewById(R.id.textViewRepeatPasswordError);
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
+        myToolbar.setLogo(R.mipmap.ic_launcher);
         myToolbar.setTitle(R.string.str_register);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
 

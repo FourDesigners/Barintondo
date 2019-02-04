@@ -8,6 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +20,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +39,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -40,10 +50,11 @@ import it.uniba.di.sms.barintondo.utils.VerifyString;
 public class LoginActivity extends AppCompatActivity implements Constants{
     TextView textViewForgotPassword;
     EditText editTextEmail, editTextPassword;
-    ImageView imageView;
+    //ImageView imageView;
     Button reset, login;
     TextView register;
     LocalDBOpenHelper openHelper;
+    int animationCounter = 1;
 
     @SuppressLint({"NewApi", "ResourceAsColor"})
     @Override
@@ -57,8 +68,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setLogo(R.mipmap.ic_launcher);
         myToolbar.setTitle(R.string.app_name);
-        setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        setSupportActionBar(myToolbar);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
 
         if(!InternetConnection.isNetworkAvailable(LoginActivity.this)) {
@@ -78,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         editTextPassword = findViewById(R.id.editTextPassword);
 
+        /*
         imageView = findViewById(R.id.imageView);
         imageView.setTag(R.drawable.closedeye);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +115,68 @@ public class LoginActivity extends AppCompatActivity implements Constants{
                 }
             }
         });
+        */
+
+        Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
+        Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
+        final ImageSwitcher imageSwitcher;
+        imageSwitcher = findViewById(R.id.imageSwitcher);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView view = new ImageView(getApplicationContext());
+                return view;
+            }
+        });
+        imageSwitcher.setInAnimation(in);
+        imageSwitcher.setOutAnimation(out);
+        imageSwitcher.setImageResource(R.drawable.closedeye);
+        imageSwitcher.setTag(R.drawable.closedeye);
+        imageSwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer integer = (Integer) imageSwitcher.getTag();
+                integer = integer == null ? 0 : integer;
+
+                switch(integer) {
+                    case R.drawable.openeye:
+                        imageSwitcher.setImageResource(R.drawable.closedeye);
+                        imageSwitcher.setTag(R.drawable.closedeye);
+                        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT |
+                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        editTextPassword.setSelection(editTextPassword.getText().length());
+                        break;
+                    case R.drawable.closedeye:
+                        imageSwitcher.setImageResource(R.drawable.openeye);
+                        imageSwitcher.setTag(R.drawable.openeye);
+                        editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        editTextPassword.setSelection(editTextPassword.getText().length());
+                        break;
+                }
+            }
+        });
+
+
+        /*
+        final Handler imageSwitcherHandler;
+        imageSwitcherHandler = new Handler(Looper.getMainLooper());
+        imageSwitcherHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                switch (animationCounter) {
+                    case 0:
+                        imageSwitcher.setImageResource(R.drawable.closedeye);
+                        break;
+                    case 1:
+                        imageSwitcher.setImageResource(R.drawable.openeye);
+                        break;
+                }
+                animationCounter++;
+                animationCounter %= 2;
+                imageSwitcherHandler.postDelayed(this, 3000);
+            }
+        });
+        */
 
         textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
         textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
