@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     TextView register;
     LocalDBOpenHelper openHelper;
 
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         setContentView(R.layout.activity_login);
         Toolbar myToolbar = findViewById(R.id.toolbar);
-        myToolbar.setTitle(R.string.str_login);
+        myToolbar.setLogo(R.mipmap.ic_launcher);
+        myToolbar.setTitle(R.string.app_name);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
