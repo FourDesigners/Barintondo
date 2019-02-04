@@ -60,7 +60,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
     public static void delete(LocalDBOpenHelper openHelper) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
         db.delete(TABLE_UTENTE, null, null);
-        db.delete(CREATE_COUPON_TABLE_QUERY, null, null);
+        db.delete(TABLE_COUPON, null, null);
         db.close();
     }
 
