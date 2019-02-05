@@ -127,6 +127,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemInfo.setAlpha(0.5F);
+                itemInfo.setClickable(false);
+                itemDirection.setAlpha(1F);
+                itemDirection.setClickable(true);
+                itemReview.setAlpha(1F);
+                itemReview.setClickable(true);
                 attachDescription( myLuogo );
             }
         } );
@@ -135,6 +141,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemInfo.setAlpha(1F);
+                itemInfo.setClickable(true);
+                itemDirection.setAlpha(0.5F);
+                itemDirection.setClickable(false);
+                itemReview.setAlpha(1F);
+                itemReview.setClickable(true);
                 attachDirections( myLuogo );
             }
         } );
@@ -142,10 +154,19 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         itemReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemInfo.setAlpha(1F);
+                itemInfo.setClickable(true);
+                itemDirection.setAlpha(1F);
+                itemDirection.setClickable(true);
+                itemReview.setAlpha(0.5F);
+                itemReview.setClickable(false);
                 attachReviews( myLuogo );
             }
         } );
 
+        //imposto la tab INFO di default
+        itemInfo.setAlpha(0.5F);
+        itemInfo.setClickable(false);
         attachDescription( myLuogo );
 
     }
