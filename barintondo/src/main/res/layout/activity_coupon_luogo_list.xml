@@ -28,6 +28,17 @@
                 app:titleTextColor="@color/colorWhite"
                 style="@style/myToolbar" />
 
+            <TextView
+                android:id="@+id/text_view_no_coupons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="50dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/no_coupons"
+                android:textSize="@dimen/standardTextSize"
+                android:visibility="gone"/>
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
