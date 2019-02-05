@@ -444,25 +444,15 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
     @Override
     public void onItemsSelected(Luogo item) {
-        //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
+        Intent intent;
         if (item instanceof Evento) {
-            Intent intent = new Intent( this , EventoDetailActivity.class );
-            intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-            //startActivity( intent );
-
-            View sharedImage = findViewById(R.id.thumbnail);
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedImage, "img");
-            startActivity(intent, options.toBundle());
+            intent = new Intent( this , EventoDetailActivity.class );
         } else {
-            View sharedImage = findViewById(R.id.thumbnail);
-            Intent intent = new Intent( this , LuogoDetailActivity.class );
-            intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-            intent.putExtra("TRANSITION_NAME", ViewCompat.getTransitionName(sharedImage));
-
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedImage, ViewCompat.getTransitionName(sharedImage));
-            startActivity(intent, options.toBundle());
-            //startActivity( intent );
+            intent = new Intent( this , LuogoDetailActivity.class );
         }
+        intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
+        startActivity( intent );
+        overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
     }
 
     public static synchronized LuogoListActivity getInstance() {
