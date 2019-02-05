@@ -68,7 +68,7 @@
             android:theme="@style/myTheme" />
         <activity
             android:name=".EventoDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/FullScreen">
