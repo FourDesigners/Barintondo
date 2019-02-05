@@ -154,7 +154,7 @@
     <string name="notifications_new_message" translatable="false">notifications_new_message</string>
 
     <string name="pref_header_about" translatable="false">About</string>
-    <string name="summary_about">Info on developers</string>
+    <string name="summary_about">Barintodo is an app developed by a group of 4 people named "4Designers". Their name are Graziano Castellano, Davide Di Pierro, Domenico Gigante and Federica Lisco. Contact them on fourdeigners937@gmail.com</string>
     <string name="app_version" translatable="false">3.5</string>
 
     <string name="summary_support">Got any queries? We are happy to help!</string>

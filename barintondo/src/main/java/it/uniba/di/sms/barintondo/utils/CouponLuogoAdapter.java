@@ -74,17 +74,20 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
         CouponLuogo couponL = itemListFiltered.get(position);
 
         //scelgo icona da assegnare
-        HashSet<String> container = new HashSet<>();
-        container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.attractions)));
-        if(container.contains(couponL.getSottoCat()))
-            holder.icona.setImageResource(R.drawable.ic_attractions_coupon);
-        else {
-            container.clear();
-            container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.eating)));
-            if(container.contains(couponL.getSottoCat()))
-                holder.icona.setImageResource(R.drawable.ic_eating_coupon);
-            else holder.icona.setImageResource(R.drawable.ic_sleeping_coupon);
+        if(InternetConnection.isNetworkAvailable(context)) {
+            HashSet<String> container = new HashSet<>();
+            container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.attractions)));
+            if (container.contains(couponL.getSottoCat()))
+                holder.icona.setImageResource(R.drawable.ic_attractions_coupon);
+            else {
+                container.clear();
+                container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.eating)));
+                if (container.contains(couponL.getSottoCat()))
+                    holder.icona.setImageResource(R.drawable.ic_eating_coupon);
+                else holder.icona.setImageResource(R.drawable.ic_sleeping_coupon);
+            }
         }
+        else holder.icona.setImageResource(R.drawable.ic_coupon);
 
         Log.i(TAG, "couponL: " + couponL.getCod() + couponL.getCodLuogo() + couponL.getLuogo());
         holder.luogo.setText(couponL.getLuogo());

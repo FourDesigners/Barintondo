@@ -23,13 +23,13 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.MaterialComponents.Light" />
+            android:theme="@style/settingsTheme" />
         <activity
             android:name=".MyProfileActivity"
-            android:theme="@style/myTheme">
+            android:theme="@style/mainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -37,38 +37,38 @@
         <activity
             android:name=".LuogoListActivity"
             android:parentActivityName=".HomeActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/myTheme">
+            android:theme="@style/mainTheme">
 
         </activity>
         <activity
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".LuogoDetailActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".CouponLuogoListActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".InterestsListActivity"
             android:parentActivityName=".HomeActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".CouponDetailActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".MeteoActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".ContactsActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".EventoDetailActivity"
-            android:theme="@style/myTheme" />
+            android:theme="@style/mainTheme" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/FullScreen">
