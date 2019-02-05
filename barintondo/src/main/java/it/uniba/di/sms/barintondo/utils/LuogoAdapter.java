@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,6 +99,8 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 .apply( RequestOptions.circleCropTransform() )
                 .into( holder.thumbnail );
         holder.nome.setText( luogo.getNome() );
+
+        ViewCompat.setTransitionName(holder.thumbnail, "transition"+position);
 
         //scelgo stringa per sottoCat
         String sottoCat = "";

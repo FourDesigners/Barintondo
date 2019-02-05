@@ -88,7 +88,13 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         actionbar.setDisplayHomeAsUpEnabled( true );
 
         fabPref = findViewById( R.id.fab );
+
+        Bundle extras = getIntent().getExtras();
+        String transitionName = extras.getString("TRANSITION_NAME");
+        //Toast.makeText(this, transitionName, Toast.LENGTH_SHORT).show();
         myImageView = findViewById( R.id.luogoDetailImage );
+        myImageView.setTransitionName(transitionName);
+
         itemInfo = findViewById( R.id.btn_luogo_info );
         itemDirection = findViewById( R.id.btn_luogo_directions );
         itemReview = findViewById( R.id.btn_luogo_reviews );
@@ -155,6 +161,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         switch (item.getItemId()) {
             case android.R.id.home:
+                //supportFinishAfterTransition();
                 onBackPressed();
                 return true;
         }

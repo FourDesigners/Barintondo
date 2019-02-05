@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -21,6 +22,8 @@ import java.util.List;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 
@@ -444,11 +448,20 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         if (item instanceof Evento) {
             Intent intent = new Intent( this , EventoDetailActivity.class );
             intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-            startActivity( intent );
+            //startActivity( intent );
+
+            View sharedImage = findViewById(R.id.thumbnail);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedImage, "img");
+            startActivity(intent, options.toBundle());
         } else {
+            View sharedImage = findViewById(R.id.thumbnail);
             Intent intent = new Intent( this , LuogoDetailActivity.class );
             intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-            startActivity( intent );
+            intent.putExtra("TRANSITION_NAME", ViewCompat.getTransitionName(sharedImage));
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedImage, ViewCompat.getTransitionName(sharedImage));
+            startActivity(intent, options.toBundle());
+            //startActivity( intent );
         }
     }
 
