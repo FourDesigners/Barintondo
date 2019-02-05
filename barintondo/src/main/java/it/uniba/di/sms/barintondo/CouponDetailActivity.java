@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
@@ -27,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Objects;
 import java.util.Set;
 
 import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
@@ -71,10 +75,13 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
         myToolbar = findViewById( R.id.coupon_detail_activity_toolbar );
         myToolbar.setTitle( myCoupon.getLuogo() );
-        setSupportActionBar( myToolbar );
+        setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled( true );
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
         myImageView = findViewById( R.id.luogoDetailImage );
         //thumbnail

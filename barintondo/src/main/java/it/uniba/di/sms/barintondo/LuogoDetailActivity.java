@@ -1,6 +1,8 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ImageViewCompat;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
@@ -82,18 +86,17 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
-        setSupportActionBar( myToolbar );
+        setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled( true );
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
         fabPref = findViewById( R.id.fab );
 
-        Bundle extras = getIntent().getExtras();
-        String transitionName = extras.getString("TRANSITION_NAME");
-        //Toast.makeText(this, transitionName, Toast.LENGTH_SHORT).show();
         myImageView = findViewById( R.id.luogoDetailImage );
-        myImageView.setTransitionName(transitionName);
 
         itemInfo = findViewById( R.id.btn_luogo_info );
         itemDirection = findViewById( R.id.btn_luogo_directions );

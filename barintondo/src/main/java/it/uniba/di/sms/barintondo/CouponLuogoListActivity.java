@@ -4,8 +4,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,11 +63,16 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
-        setSupportActionBar( myToolbar );
+        setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled( true );
-        actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+        actionbar.setDisplayHomeAsUpEnabled(true);
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_hamburger);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorAccent));
+
+        actionbar.setHomeAsUpIndicator(drawable);
 
         //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer( this ,
