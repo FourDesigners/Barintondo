@@ -22,6 +22,7 @@ import java.util.List;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -56,17 +57,14 @@ import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
+    private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
-    MyNavigationDrawer myNavigationDrawer;
+    private MyNavigationDrawer myNavigationDrawer;
     private static String items_type;
-    private RequestQueue mRequestQueue;
-
-    private static final String TAG = LuogoListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private List<Luogo> luogoList;
     private LuogoAdapter mAdapter;
     private SearchView searchView;
-    private static LuogoListActivity mInstance;
     private ToolbarSwitchCategories mySwitchCategory;
     String[] arrayRes = null;
     String[] arrayTags = null;
@@ -76,54 +74,46 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
+        Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_luogo_list );
-        mInstance = this;
-
 
         //first time intent reading
         items_type = getIntent().getStringExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE );
 
-
-
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
+        //setup toolbar per cambiare categoria
         mySwitchCategory = new ToolbarSwitchCategories( this , items_type );
 
         Resources res = getResources();
         String requestCat = "";
-        //first time URL selection
+        //imposta gli array per settare i chips e la variabile che identiica la categoria selezionata
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
             requestCat = REQUEST_GET_ATTRACTIONS;
             arrayRes = res.getStringArray( R.array.attractions );
             arrayTags = res.getStringArray( R.array.attractionsTags );
             myToolbar.setTitle( R.string.attractionsToolbarTitle );
-            //URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
         } else if (items_type.equals( Constants.INTENT_EATING )) {
             requestCat = REQUEST_GET_EAT;
             arrayRes = res.getStringArray( R.array.eating );
             arrayTags = res.getStringArray( R.array.eatingTags );
             myToolbar.setTitle( R.string.eating_option );
-            // URL = "http://barintondo.altervista.org/get_all_locali.php";
         } else if (items_type.equals( Constants.INTENT_SLEEPING )) {
             requestCat = REQUEST_GET_SLEEP;
             arrayRes = res.getStringArray( R.array.sleeping );
             arrayTags = res.getStringArray( R.array.sleepingTags );
             myToolbar.setTitle( R.string.sleeping_option );
-            //URL = "http://barintondo.altervista.org/get_all_rifugi.php";
         } else if (items_type.equals( Constants.INTENT_EVENTS )) {
             requestCat = REQUEST_GET_EVENTS;
             arrayRes = res.getStringArray( R.array.events );
             arrayTags = res.getStringArray( R.array.eventsTags );
             myToolbar.setTitle( R.string.events_option );
-            //URL = "http://barintondo.altervista.org/get_all_eventi.php";
         } else if (items_type.equals( Constants.INTENT_NEAR )) {
             requestCat = REQUEST_GET_NEAR_BARI;
             arrayRes = res.getStringArray( R.array.near );
             arrayTags = res.getStringArray( R.array.nearTags );
             myToolbar.setTitle( R.string.near_option );
-            //URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
         }
 
         setSupportActionBar( myToolbar );
@@ -183,18 +173,31 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        // white background notification bar
-        //whiteNotificationBar( recyclerView );
-
+        //istanzia il listner per il callback del caricamento luoghi
         myDBListner = new MyListners.LuoghiList() {
             @Override
             public void onList() {
                 mAdapter.notifyDataSetChanged();
             }
-        };
 
-        //first time populating
-        //fetchItems();
+            @Override
+            public void onError(String error) {
+
+                switch (error) {
+                    case VOLLEY_ERROR_JSON:
+                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server" );
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error on the server" );
+                        break;
+                }
+                Snackbar.make( findViewById( R.id.drawer_layout ) ,
+                        getResources().getString( R.string.str_fail_get_luoghi ) ,
+                        Snackbar.LENGTH_LONG )
+                        .setAction( "Action" , null ).show();
+            }
+        };
+        //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listner
         ControllerRemoteDB controller = new ControllerRemoteDB( this );
         controller.getLuoghiList( requestCat , luogoList , myDBListner );
 
@@ -203,6 +206,9 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i( TAG , TAG_CLASS + ":entered onStart()" );
+
+        //ordina la lista mettendo per primi i preferiti, e poi ordinando per stelle
         for (int i = 0; i < luogoList.size(); i++) {
             int order = luogoList.get( i ).getVoto();
             if (UserUtils.codPref.contains( luogoList.get( i ).getCod() )) order = order + 10;
@@ -212,7 +218,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         mAdapter.notifyDataSetChanged();
 
     }
-
 
 
     private void setCounter(String[] arrayRes , String[] arrayTags , String tag) {
@@ -318,57 +323,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         }
     }
 
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-
-        //check if intent is changed
-        String new_items_type = getIntent().getStringExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE );
-        if(!(new_items_type.equals(items_type))) {
-            items_type = new_items_type;
-
-            //new chip group setup
-            ChipGroup chipGroup = findViewById(R.id.chipGroup);
-            SharedPreferences categories = getSharedPreferences(PREFS_NAME, 0);
-
-            //new chips creation
-            for(String s : categories.getString(items_type, "").split(",")) {
-                final Chip newChip = new Chip(this);
-                newChip.setChipText(s);
-                newChip.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String query = newChip.getChipText().toString().substring(0, newChip.getChipText().length() - 2);
-                        Log.i(TAG, "Query= " + query);
-                        mAdapter.getFilter().filter(query);
-                        Toast.makeText(getApplicationContext(), newChip.getChipText(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                newChip.setClickable(true);
-                newChip.setCheckable(true);
-                chipGroup.addView(newChip);
-            }
-
-            //new URL selection
-            if (items_type.equals(Constants.INTENT_ATTRACTIONS))
-                URL = "http://barintondo.altervista.org/get_all_attrazioni.php";
-            else if (items_type.equals(Constants.INTENT_EATING))
-                URL = "http://barintondo.altervista.org/get_all_locali.php";
-            else if (items_type.equals(Constants.INTENT_SLEEPING))
-                URL = "http://barintondo.altervista.org/get_all_rifugi.php";
-            else if (items_type.equals(Constants.INTENT_EVENTS))
-                URL = "http://barintondo.altervista.org/get_all_eventi.php";
-            else if (items_type.equals(Constants.INTENT_NEAR))
-                URL = "http://barintondo.altervista.org/get_all_vicinanze.php";
-
-            fetchItems();
-        }
-    }*/
-
-    public String getItems_type() {
-        return items_type;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -382,9 +336,9 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
-        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchAutoComplete.setHintTextColor(getResources().getColor(R.color.colorAccent));
-        searchAutoComplete.setTextColor(getResources().getColor(R.color.colorAccent));
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById( android.support.v7.appcompat.R.id.search_src_text );
+        searchAutoComplete.setHintTextColor( getResources().getColor( R.color.colorAccent ) );
+        searchAutoComplete.setTextColor( getResources().getColor( R.color.colorAccent ) );
 
 
         // listening to search query text change
@@ -443,11 +397,11 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         }
         intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
         startActivity( intent );
-        overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
+        overridePendingTransition( R.anim.slide_in , R.anim.slide_out );
     }
 
-    public static synchronized LuogoListActivity getInstance() {
-        return mInstance;
+    public String getItems_type(){//serve nel drawe per capire se cambiare activy o bloccare l'intent
+        return items_type;
     }
 
 

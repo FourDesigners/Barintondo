@@ -29,6 +29,7 @@ import it.uniba.di.sms.barintondo.R;
 
 public class ControllerRemoteDB implements Constants {
 
+    private String TAG_CLASS = getClass().getSimpleName();
     String email;
     Context context;
 
@@ -38,19 +39,19 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void checkPref(String itemCod, MyListners.Interests listner) {
-        manageInterests( REQUEST_CHECK_PREF , email , itemCod, listner );
+    public void checkPref(String itemCod , MyListners.Interests listner) {
+        manageInterests( REQUEST_CHECK_PREF , email , itemCod , listner );
     }
 
-    public void addPref(String itemCod, MyListners.Interests listner) {
-        manageInterests( REQUEST_ADD_PREF , email , itemCod, listner );
+    public void addPref(String itemCod , MyListners.Interests listner) {
+        manageInterests( REQUEST_ADD_PREF , email , itemCod , listner );
     }
 
-    public void removePref(String itemCod, MyListners.Interests listner) {
-        manageInterests( REQUEST_REMOVE_PREF , email , itemCod, listner );
+    public void removePref(String itemCod , MyListners.Interests listner) {
+        manageInterests( REQUEST_REMOVE_PREF , email , itemCod , listner );
     }
 
-    private void manageInterests(final String requestOp , final String user , final String luogoCod, final MyListners.Interests listner) {
+    private void manageInterests(final String requestOp , final String user , final String luogoCod , final MyListners.Interests listner) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
         final LuogoDetailActivity luogoDetailActivity = (LuogoDetailActivity) context;
 
@@ -98,8 +99,8 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getAllInterests(final ArrayList<Luogo> interestsList, final InterestsListActivity.InterestsListner interestsListner) {
-        Log.i( TAG , "ControllerRemoteDB: entered getAllInterests()" );
+    public void getAllInterests(final ArrayList<Luogo> interestsList , final MyListners.InterestsList interestsListner) {
+        Log.i( TAG , TAG_CLASS + ": entered getAllInterests()" );
         interestsList.clear();
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
 
@@ -107,7 +108,7 @@ public class ControllerRemoteDB implements Constants {
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-               //Log.i( "Test" ,  "ControllerRemoteDB: entered onResponse()"+response );
+                //Log.i( "Test" ,  "ControllerRemoteDB: entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 try {
@@ -116,58 +117,52 @@ public class ControllerRemoteDB implements Constants {
 
                     for (int i = 0; i < jsonArray.length(); i++) {
 
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            Luogo luogo = new Luogo();
-                            luogo.setCod( jsonObject.getString( "cod" ) );
-                            luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setCitta( jsonObject.getString( "citta" ) );
-                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
-                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
-                                luogo.setOraA( null );
-                                luogo.setOraC( null );
-                            } else {
-                                luogo.setOraA( jsonObject.getString( "oraA" ) );
-                                luogo.setOraC( jsonObject.getString( "oraC" ) );
-                            }
-                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            if(jsonObject.getString( "voto" ).equals( "null" )) {
-                                luogo.setVoto( 0 );
-                            }
-                            else luogo.setVoto( jsonObject.getInt( "voto" ) );
-                            //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+                        JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            if (!jsonObject.getString( "codEvento" ).equals( "null" )) {
-                                Evento evento = new Evento( luogo );
-
-                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
-                                    evento.setCodLuogo( null );
-                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
-
-                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
-                                    evento.setDataInizio( null );
-                                    evento.setDataFine( null );
-                                } else {
-                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
-                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
-                                }
-                                //adding items to itemsList
-                                interestsList.add( evento );
-                            } else interestsList.add( luogo );
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                        Luogo luogo = new Luogo();
+                        luogo.setCod( jsonObject.getString( "cod" ) );
+                        luogo.setNome( jsonObject.getString( "nome" ) );
+                        luogo.setCitta( jsonObject.getString( "citta" ) );
+                        luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
+                        luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                        if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                            luogo.setOraA( null );
+                            luogo.setOraC( null );
+                        } else {
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
                         }
+                        luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                        if (jsonObject.getString( "voto" ).equals( "null" )) {
+                            luogo.setVoto( 0 );
+                        } else luogo.setVoto( jsonObject.getInt( "voto" ) );
+                        //Log.i( TAG , "Item" + i + ": " + item.toString() + " sottocat: " + item.getSottoCat() );
+
+                        if (!jsonObject.getString( "codEvento" ).equals( "null" )) {
+                            Evento evento = new Evento( luogo );
+
+                            if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                evento.setCodLuogo( null );
+                            else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                            if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                evento.setDataInizio( null );
+                                evento.setDataFine( null );
+                            } else {
+                                evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                            }
+                            //adding items to itemsList
+                            interestsList.add( evento );
+                        } else interestsList.add( luogo );
                     }
-                    interestsListner.onInterestsLoaded();
+                    interestsListner.onInterestsList();
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                    interestsListner.onError( VOLLEY_ERROR_JSON );
+                    Log.i( TAG , TAG_CLASS + ": entered getAllInterests(), error in pharsing Json" );
                 }
 
 
@@ -176,8 +171,8 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
-                interestsListner.onInterestsLoaded();
+                interestsListner.onError( VOLLEY_ERROR_CONNECTION );
+                Log.i( TAG , TAG_CLASS + ": entered getAllInterests(), error on server" );
             }
         } ) {
 
@@ -194,7 +189,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
     public void populateInterestsCod() {
-        Log.i( TAG , "ControllerRemoteDB: entered getInterestsCod()" );
+        Log.i( TAG , TAG_CLASS + ": entered getInterestsCod()" );
         UserUtils.codPref.clear();
 
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
@@ -211,31 +206,21 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     for (int i = 0; i < jsonArray.length(); i++) {
-
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
-                            UserUtils.codPref.add( jsonObject.getString( "luogo" ) );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
-                        }
+                        JSONObject jsonObject = jsonArray.getJSONObject( i );
+                        UserUtils.codPref.add( jsonObject.getString( "luogo" ) );
                     }
-
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                    Log.i( TAG , TAG_CLASS + ": entered getInterestsCod(), error in pharsing Json" );
                 }
-
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                Log.i( TAG , TAG_CLASS + ": entered getInterestsCod(), error on server" );
             }
         } ) {
-
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , REQUEST_GET_PREF_COD );
@@ -249,10 +234,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
     public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
-        final ProgressDialog progressDialog = new ProgressDialog( context );
-        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
+        Log.i( TAG , TAG_CLASS + ": entered getLuoghiList()" );
         String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
@@ -260,7 +242,7 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Log.i( "Test" , "ControllerRemoteDB: entered onResponse() "+response );
+                //Log.i( TAG, TAG_CLASS + ": entered onResponse() "+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
 
@@ -269,78 +251,72 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            Luogo luogo = new Luogo();
-                            luogo.setCod( jsonObject.getString( "cod" ) );
-                            luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setCitta( jsonObject.getString( "citta" ) );
-                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
-                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
-                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
-                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
-                            }
-                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
-                                luogo.setOraA( null );
-                                luogo.setOraC( null );
-                            } else {
-                                luogo.setOraA( jsonObject.getString( "oraA" ) );
-                                luogo.setOraC( jsonObject.getString( "oraC" ) );
-                            }
+                        JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-
-                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
-                                luogo.setVoto( jsonObject.getInt( "voto" ) );
-                                int order = jsonObject.getInt( "voto" );
-                                if (UserUtils.codPref.contains( luogo.getCod() )) order = order + 10;
-                                luogo.setOrder( order );
-                            }
-
-
-
-                            if (requestCat.equals( REQUEST_GET_EVENTS )) {
-                                Evento evento = new Evento( luogo );
-
-                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
-                                    evento.setCodLuogo( null );
-                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
-
-                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
-                                    evento.setDataInizio( null );
-                                    evento.setDataFine( null );
-                                } else {
-                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
-                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
-                                }
-                                //adding items to itemsList
-                                luogoList.add( evento );
-                            } else luogoList.add( luogo );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        Luogo luogo = new Luogo();
+                        luogo.setCod( jsonObject.getString( "cod" ) );
+                        luogo.setNome( jsonObject.getString( "nome" ) );
+                        luogo.setCitta( jsonObject.getString( "citta" ) );
+                        luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
+                        luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                        if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                            luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                            luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
                         }
+                        if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                            luogo.setOraA( null );
+                            luogo.setOraC( null );
+                        } else {
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
+                        }
+
+                        luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                        luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+
+                        if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
+                            int order = jsonObject.getInt( "voto" );
+                            if (UserUtils.codPref.contains( luogo.getCod() )) order = order + 10;
+                            luogo.setOrder( order );
+                        }
+
+                        //se la richiesta è per un evento, ne crea uno e aggiunge le informazioni in più e lo aggiunge alla lista
+                        if (requestCat.equals( REQUEST_GET_EVENTS )) {
+                            Evento evento = new Evento( luogo );
+
+                            if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                evento.setCodLuogo( null );
+                            else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                            if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                evento.setDataInizio( null );
+                                evento.setDataFine( null );
+                            } else {
+                                evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                            }
+                            //adding items to itemsList
+                            luogoList.add( evento );
+                        } else luogoList.add( luogo );
+
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                    mListner.onError( VOLLEY_ERROR_JSON );
+                    Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error pharsing Json" );
                 }
                 Collections.sort( luogoList );
-                mListner.onList(  );
-                progressDialog.dismiss();
+                mListner.onList();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                mListner.onError( VOLLEY_ERROR_CONNECTION );
+                Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error on server" );
             }
         } ) {
 
@@ -351,13 +327,11 @@ public class ControllerRemoteDB implements Constants {
                 return MyData;
             }
         };
-
-
         MyRequestQueue.add( MyStringRequest );
     }
 
 
-    public void getLuogo(final String codLuogo, final String requestLuogoType, final MyListners.SingleLuogo listner) {
+    public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListners.SingleLuogo listner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -374,7 +348,7 @@ public class ControllerRemoteDB implements Constants {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
-                Evento evento = new Evento(  );
+                Evento evento = new Evento();
                 try {
 
                     JSONArray jsonArray = new JSONArray( response );
@@ -400,7 +374,7 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setOraA( jsonObject.getString( "oraA" ) );
                                 luogo.setOraC( jsonObject.getString( "oraC" ) );
                             }
-                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                            if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
                                 luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
                                 luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
                             }
@@ -412,8 +386,8 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setVoto( jsonObject.getInt( "voto" ) );
                             }
 
-                            if(requestLuogoType.equals( REQUEST_GET_EVENTS )){
-                                evento=new Evento( luogo );
+                            if (requestLuogoType.equals( REQUEST_GET_EVENTS )) {
+                                evento = new Evento( luogo );
 
                                 if (jsonObject.getString( "codLuogo" ).equals( "null" ))
                                     evento.setCodLuogo( null );
@@ -428,8 +402,7 @@ public class ControllerRemoteDB implements Constants {
                                 }
 
                                 listner.onEvento( evento );
-                            }
-                            else listner.onLuogo( luogo );
+                            } else listner.onLuogo( luogo );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -459,7 +432,7 @@ public class ControllerRemoteDB implements Constants {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , REQUEST_GET_LUOGO );
                 MyData.put( "request_luogo" , codLuogo );
-                MyData.put("request_luogo_type", requestLuogoType);
+                MyData.put( "request_luogo_type" , requestLuogoType );
                 return MyData;
             }
         };
@@ -468,7 +441,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiNear(final Luogo myLuogo, final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
+    public void getLuoghiNear(final Luogo myLuogo , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
         final ProgressDialog progressDialog = new ProgressDialog( context );
         progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
         progressDialog.show();
@@ -505,7 +478,7 @@ public class ControllerRemoteDB implements Constants {
                                 luogo.setOraA( jsonObject.getString( "oraA" ) );
                                 luogo.setOraC( jsonObject.getString( "oraC" ) );
                             }
-                            if(!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                            if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
                                 luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
                                 luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
                             }
@@ -518,7 +491,7 @@ public class ControllerRemoteDB implements Constants {
                             }
 
                             luogo.setDistance( luogo.calculateDistanceTo( myLuogo ) );
-                             luogoList.add( luogo );
+                            luogoList.add( luogo );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -545,9 +518,9 @@ public class ControllerRemoteDB implements Constants {
 
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put( "latitude" , String.valueOf(  myLuogo.getLatitudine()) );
-                MyData.put( "longitude" , String.valueOf(  myLuogo.getLongitudine()) );
-                MyData.put( "luogo_cod", myLuogo.getCod() );
+                MyData.put( "latitude" , String.valueOf( myLuogo.getLatitudine() ) );
+                MyData.put( "longitude" , String.valueOf( myLuogo.getLongitudine() ) );
+                MyData.put( "luogo_cod" , myLuogo.getCod() );
                 return MyData;
             }
         };
@@ -616,7 +589,7 @@ public class ControllerRemoteDB implements Constants {
                         Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
                     }
                     couponList.clear();
-                    LocalDBOpenHelper.getCouponList(context, couponList);
+                    LocalDBOpenHelper.getCouponList( context , couponList );
                     mAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
                 }
@@ -640,7 +613,7 @@ public class ControllerRemoteDB implements Constants {
         } else {
             Toast.makeText( context , context.getResources().getString( R.string.offlineCoupons ) , Toast.LENGTH_SHORT ).show();
             couponList.clear();
-            LocalDBOpenHelper.getCouponList(context, couponList);
+            LocalDBOpenHelper.getCouponList( context , couponList );
             mAdapter.notifyDataSetChanged();
             progressDialog.dismiss();
         }

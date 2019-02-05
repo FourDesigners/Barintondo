@@ -32,15 +32,14 @@ import it.uniba.di.sms.barintondo.R;
 import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
 
 public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder>
-        implements Filterable {
+        implements Filterable, Constants {
+    private String TAG_CLASS = getClass().getSimpleName();
     private Context context;
     private List<Luogo> itemList;
     private List<Luogo> itemListFiltered;
     private ItemsAdapterListener listener;
     private Location sourceLuogo;
     private boolean isRequestFormLuogoDetail;
-
-    private static final String TAG = LuogoAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView nome, sottoCat, stato, startDays, distance;
@@ -104,7 +103,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
 
         //scelgo stringa per sottoCat
         String sottoCat = "";
-        Log.i( TAG , "sottoCatItem=" + luogo.getSottoCat() + "-" );
+        //Log.i( TAG , TAG_CLASS+ "sottoCatItem=" + luogo.getSottoCat() + "-" );
         switch (luogo.getSottoCat()) {
             case "Teatri":
                 sottoCat = context.getResources().getString( R.string.strTheatre );
@@ -152,14 +151,18 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 sottoCat = "Default";
                 break;
         }
-        //Log.i( TAG , "final sottoCat:" + sottoCat );
+        //Log.i( TAG , TAG_CLASS+" final sottoCat:" + sottoCat );
         if (!luogo.getCitta().equals( "Bari" ) && !(luogo instanceof Evento)) {
+            // se la cittè non è bari allora inserisci anche il nome della città
             sottoCat = context.getResources().getString( R.string.placeholderCommaSeparator , luogo.getCitta() , sottoCat );
         }
         holder.sottoCat.setText( sottoCat );
 
 
         if (!isRequestFormLuogoDetail && luogo.getOraA() != null && !(luogo instanceof Evento)) {
+            // la prima condizione serve a capire se siamo nell'activity LuogoList o nella sezione "Vicino" del dettaglio luogo
+            //la seconda condizione serve per non fare il calcolo qualora l'informazione dell'orario non sia disponibile
+            //la terza condizione serve perchè per gli eventi viene considerata l'informazione sulla data e non sull'ora
             holder.sottoCat.setText( context.getResources().getString( R.string.placeholderCommaSeparator , sottoCat , "" ) );
             //controllo se il luogo è "aperto" o "chiuso"
             String oraA = luogo.getOraA();
@@ -177,9 +180,12 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             else holder.stato.setText( context.getResources().getString( R.string.openState ) );
             holder.stato.setVisibility( View.VISIBLE );
         } else {
+            //impostare la visibilità serve perchè la vista ricicla le righe, quindi se non messa a visibility gone
+            //si potrebbero portare dietro informazioni di un'altro luogo
             holder.stato.setVisibility( View.GONE );
         }
-        //Codice per assegnare l'icona dela corrispondente categoria, attivato solo dentro l'activity degli interessi
+        //Codice per assegnare l'icona dela corrispondente categoria,
+        //attivato solo dentro l'activity degli interessi e nella sezione vicino del dettaglio Luogo-Evento
         int icon = R.drawable.ic_fiber_smart_record; //icona di default assegnata nel caso andasse storto qualcosa
         if (context instanceof InterestsListActivity || context instanceof LuogoDetailActivity || context instanceof EventoDetailActivity) {
             switch (luogo.getCategoria()) {
@@ -197,7 +203,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                     break;
             }
             holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
-        } else {//se non siamo nella lista dei preferidi, cioè siamo in una normale lista di luoghi
+        } else {//se non siamo nelle activity trattate ptima, cioè siamo in una normale lista di luoghi
             //Se il luogo è tra i preferiti aggiunge una stella
 
             if (UserUtils.codPref.contains( luogo.getCod() )) {
@@ -206,7 +212,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             } else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
-
+        // se l'elemento trattato è un logo, esegue il cast e imposta le informazioni aggiuntive
         if (luogo instanceof Evento) {
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();
@@ -219,13 +225,17 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             holder.mVoteStars.showVoteFrame();
 
             if (UserUtils.myLocationIsSetted && luogo.getLatitudine() != 0.0f && !isRequestFormLuogoDetail) {
-
+                //se non siamo nella sezione "vicino" di un dettaglio, e se la posizone dell'utente è stata caricata
+                // calcola la distanza dal luogo
                 holder.distance.setText( calculateDistance( luogo , UserUtils.myLocation ) );
                 holder.distance.setVisibility( View.VISIBLE );
             } else if (isRequestFormLuogoDetail && luogo.getLatitudine() != 0.0f) {
+                // se siamo nella sezione "Vicino" di un dettaglio, calcola la distanza tra il luogo attualmente analizzato,
+                // e il luogo di cui si sta visualizzando il dettaglio
                 holder.distance.setText( calculateDistance( luogo , sourceLuogo ) );
                 holder.distance.setVisibility( View.VISIBLE );
             } else holder.distance.setVisibility( View.GONE );
+            // se nessuna delle condizioni è vera non si può ottenere informazioni sulla distanza, quindi disattiva la tetxView
         }
 
 
@@ -233,12 +243,15 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
 
 
     private String calculateDistance(Luogo actualLuogo , Location startLocation) {
+        // calcola la distanza tra il luogo e una posizione
         String distanceText;
         int distanceMeters = actualLuogo.calculateDistanceTo( startLocation );
         if ((distanceMeters / 1000) != 0) {
+            // se la distanza è >1000 la converte in chilometri
             float distanceKm = (float) distanceMeters / 1000;
             distanceText = context.getString( R.string.strDistanceKilometers , distanceKm );
         } else distanceText = context.getString( R.string.strDistanceMeters , distanceMeters );
+        // altrimenti la mostra in metri
 
         return distanceText;
     }
@@ -251,6 +264,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
 
     @Override
     public Filter getFilter() {
+        //filtri per sottocategorie
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
@@ -262,7 +276,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                     for (Luogo row : itemList) {
 
                         // name match condition
-                            /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
+                            /*Log.i(TAG, TAG_CLASS+" Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
                             + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                         if (row.getNome().toLowerCase().contains( charString.toLowerCase() ) ||
                                 row.getSottoCat().toLowerCase().contains( charString.toLowerCase() ) ||
@@ -288,6 +302,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
     public Filter getFilterCategories() {
+        //filtri per categorie
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
@@ -297,10 +312,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 } else {
                     List<Luogo> filteredList = new ArrayList<>();
                     for (Luogo row : itemList) {
-
-                        // name match condition
-                            /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
-                            + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
+                        //Attrazione e Vicino trattati in maniera particolare perchè hanno le stesse sottocategorie
                         if (charSequence.equals( "Attrazione" )) { //attrazioni con città uguale a bari
                             if (row.getCategoria().toLowerCase().contains( "attrazione" ) && row.getCitta().equals( "Bari" )) {
                                 filteredList.add( row );
@@ -335,6 +347,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
     public void setActualLuogo(Luogo luogo) {
+        // imposta il luogo di cui si sta attualmente visualizzando un dettaglio per calcolarne la distanza dopo
         Location location = new Location( "" );
         location.setLatitude( luogo.getLatitudine() );
         location.setLongitude( luogo.getLongitudine() );
@@ -342,6 +355,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
     public void setIsRequestFormLuogoDetail(boolean requestFormLuogoDetail) {
+        // la variabile conterrà vero solo se siamo dentro la sezione "vicino" di un dettaglio luogo
         isRequestFormLuogoDetail = requestFormLuogoDetail;
     }
 }

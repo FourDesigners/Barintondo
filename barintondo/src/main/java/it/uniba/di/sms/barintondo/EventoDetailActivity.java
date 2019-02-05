@@ -58,6 +58,11 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             public void onEvento(Evento evento) {
                 onEventoLoaded( evento );
             }
+
+            @Override
+            public void onError(String error) {
+
+            }
         };
 
 
@@ -75,6 +80,11 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             @Override
             public void onCheck(Boolean result) {
                 checkPrefResult( result );
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         };
 

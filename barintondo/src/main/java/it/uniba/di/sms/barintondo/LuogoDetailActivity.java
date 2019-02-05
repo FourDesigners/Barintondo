@@ -61,6 +61,11 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 // non viene mai restituito un evento
 
             }
+
+            @Override
+            public void onError(String error) {
+
+            }
         };
 
         interestListner = new MyListners.Interests() {
@@ -77,6 +82,11 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             @Override
             public void onCheck(Boolean result) {
                 checkPrefResult( result );
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         };
 

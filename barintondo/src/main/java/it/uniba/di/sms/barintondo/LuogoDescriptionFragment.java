@@ -64,6 +64,11 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 public void onEvento(Evento evento) {
                     //non viene mai restituito un evento
                 }
+
+                @Override
+                public void onError(String error) {
+
+                }
             };
         }
     }
