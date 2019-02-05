@@ -177,7 +177,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         recyclerView.setAdapter( mAdapter );
 
         // white background notification bar
-        whiteNotificationBar( recyclerView );
+        //whiteNotificationBar( recyclerView );
 
         myDBListner = new MyListners.LuoghiList() {
             @Override

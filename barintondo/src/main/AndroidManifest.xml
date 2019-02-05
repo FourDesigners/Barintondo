@@ -46,29 +46,28 @@
         <activity
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".LuogoDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".CouponLuogoListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".InterestsListActivity"
             android:parentActivityName=".HomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".CouponDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".MeteoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".ContactsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/myTheme" />
         <activity
             android:name=".EventoDetailActivity"
-            android:theme="@style/myTheme"/>
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SplashActivity"
