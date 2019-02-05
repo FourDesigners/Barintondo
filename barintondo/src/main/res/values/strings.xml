@@ -318,7 +318,7 @@
     <string name="btDisabledMsg">Bluetooth still disabled, turn off application!</string>
     <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Unable to connect device</string>
-    <string name="contacts">Useful contacts</string>
+    <string name="contacts">Useful numbers</string>
 
 
     <!--Recensioni-->
