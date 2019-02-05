@@ -69,7 +69,7 @@ public class ContactsActivity extends AppCompatActivity implements ContactAdapte
         recyclerView.setAdapter( mAdapter );
 
         // white background notification bar
-        whiteNotificationBar( recyclerView );
+        //whiteNotificationBar( recyclerView );
     }
 
     @Override
@@ -77,15 +77,6 @@ public class ContactsActivity extends AppCompatActivity implements ContactAdapte
         String phone = item.getNumero();
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
         startActivity(intent);
-    }
-
-    private void whiteNotificationBar(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility( flags );
-            getWindow().setStatusBarColor( Color.WHITE );
-        }
     }
 
     @Override

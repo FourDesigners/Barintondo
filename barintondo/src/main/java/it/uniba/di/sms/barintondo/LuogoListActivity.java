@@ -433,15 +433,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         super.onBackPressed();
     }
 
-    private void whiteNotificationBar(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility( flags );
-            getWindow().setStatusBarColor( Color.WHITE );
-        }
-    }
-
     @Override
     public void onItemsSelected(Luogo item) {
         Intent intent;
