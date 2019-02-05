@@ -144,6 +144,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     private void startCommunication() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.bluetooth_devices_list);
+        Toolbar title = dialog.findViewById(R.id.bluetooth_list_toolbar);
+        title.setTitle(R.string.devicesDialog);
         dialog.setTitle(getResources().getString(R.string.devicesDialog));
         dialog.setCanceledOnTouchOutside(true);
 

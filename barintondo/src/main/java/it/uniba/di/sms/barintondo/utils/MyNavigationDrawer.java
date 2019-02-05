@@ -173,6 +173,8 @@ public class MyNavigationDrawer implements Constants {
                                 printDialog();
                                 break;
                         }
+                        //cancello la selezione
+                        navigationView.getMenu().getItem(menuItem.getOrder()).setChecked(false);
 
                         return true;
                     }
