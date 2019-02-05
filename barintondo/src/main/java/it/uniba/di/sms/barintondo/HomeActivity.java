@@ -127,22 +127,9 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             }
         } );
 
-        myDBListner=new MyListners.LuoghiList() {
-            @Override
-            public void onList() {
-                final ArrayList<Evento> listEventi= new ArrayList<>(  );
-                for(Luogo l: luogoList){
-                    Evento evento = (Evento) l;
-                    if(evento.getDaysToEvent( )<=30) {
-                        listEventi.add( (Evento) l );
-                    }
-                }
-                setSlider(listEventi);
-            }
-        };
+
         controllerRemoteDB = new ControllerRemoteDB( this );
-        controllerRemoteDB.populateInterestsCod();
-        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , myDBListner);
+
 
 
 
@@ -216,6 +203,24 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             Button moreInfoBtn = findViewById(R.id.moreBtn);
             moreInfoBtn.setVisibility(View.GONE);
         }
+
+        //slider eventi
+        myDBListner=new MyListners.LuoghiList() {
+            @Override
+            public void onList() {
+                final ArrayList<Evento> listEventi= new ArrayList<>(  );
+                for(Luogo l: luogoList){
+                    Evento evento = (Evento) l;
+                    if(evento.getDaysToEvent( )<=30) {
+                        listEventi.add( (Evento) l );
+                    }
+                }
+                setSlider(listEventi);
+            }
+        };
+
+        controllerRemoteDB.populateInterestsCod();
+        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , myDBListner);
     }
 
     //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole

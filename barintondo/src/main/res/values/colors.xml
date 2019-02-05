@@ -3,7 +3,9 @@
     <color name="colorPrimary">#ef5350</color>
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorPrimaryLight">#f57f17</color>
-    <color name="colorAccent">#fafafa</color>
+    <color name="colorAccent">#fcbcbc</color>
+
+    <color name="colorBackground">@color/colorGreyMaterial</color>
     <color name="colorPrimaryBlueVariant">#3700B3</color>
     <color name="colorPrimaryBlue">#6200EE</color>
     <color name="colorSecondaryBlue">#03DAC6</color>
@@ -12,4 +14,5 @@
     <color name="colorYellow">#FFFF00</color>
     <color name="colorOrange">#ff9900</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorGreyMaterial">#fafafa</color>
 </resources>
