@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -47,6 +50,12 @@ public class MyProfileActivity extends AppCompatActivity {
         myToolbar.setTitle(R.string.myProfile_header);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+        assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(myToolbar);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
 

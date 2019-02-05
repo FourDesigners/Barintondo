@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -375,6 +378,9 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(getResources().getColor(R.color.colorAccent));
+        searchAutoComplete.setTextColor(getResources().getColor(R.color.colorAccent));
 
 
         // listening to search query text change

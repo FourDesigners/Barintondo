@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Contact;
 import it.uniba.di.sms.barintondo.utils.ContactAdapter;
@@ -36,10 +39,14 @@ public class ContactsActivity extends AppCompatActivity implements ContactAdapte
         setContentView(R.layout.activity_contacts);
 
         Toolbar myToolbar = findViewById( R.id.contacts_toolbar );
-        setSupportActionBar( myToolbar );
+        myToolbar.setTitle(R.string.contacts);
+        setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled( true );
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
 
         numbers = new ArrayList<>();

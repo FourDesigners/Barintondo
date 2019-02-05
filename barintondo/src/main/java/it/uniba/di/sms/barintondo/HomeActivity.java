@@ -1,9 +1,12 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +29,7 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,7 +65,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_home);
 
 
-
         myNavigationDrawer = new MyNavigationDrawer(this,
                 (NavigationView) findViewById(R.id.nav_view),
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -71,7 +75,12 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_hamburger);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorAccent));
+
+        actionbar.setHomeAsUpIndicator(drawable);
 
         moreBtn = findViewById(R.id.moreBtn);
         moreBtn.setOnClickListener(moreBtnListener);
