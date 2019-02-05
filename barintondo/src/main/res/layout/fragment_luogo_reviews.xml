@@ -96,8 +96,8 @@
                 android:id="@+id/btnCancelReview"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorAccent"
-                android:tint="@color/colorWhite"
+                android:background="@color/colorBackground"
+                android:tint="@color/colorAccent"
                 app:srcCompat="@android:drawable/ic_delete"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnSaveReview"/>
@@ -106,8 +106,8 @@
                 android:id="@+id/btnSaveReview"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorPrimary"
-                android:tint="@color/colorWhite"
+                android:background="@color/colorBackground"
+                android:tint="@color/colorPrimary"
                 app:srcCompat="@android:drawable/ic_menu_send"
                 app:layout_constraintStart_toEndOf="@id/btnCancelReview"
                 app:layout_constraintEnd_toEndOf="parent"/>

@@ -125,9 +125,6 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        // white background notification bar
-        whiteNotificationBar( recyclerView );
-
         //first time populating
         //fetchItems();
         ControllerRemoteDB controller = new ControllerRemoteDB( this );
@@ -274,15 +271,6 @@ public class CouponLuogoListActivity extends AppCompatActivity implements Consta
             return;
         }
         super.onBackPressed();
-    }
-
-    private void whiteNotificationBar(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility( flags );
-            getWindow().setStatusBarColor( Color.WHITE );
-        }
     }
 
     @Override
