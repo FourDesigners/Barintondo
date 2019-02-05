@@ -93,6 +93,11 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
                     textNoLuoghiNear.setVisibility( View.VISIBLE );
                 }
             }
+
+            @Override
+            public void onError(String error) {
+
+            }
         };
 
 

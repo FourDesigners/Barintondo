@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -42,13 +43,14 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class HomeActivity extends AppCompatActivity implements Constants {
 
+    private String TAG_CLASS=getClass().getSimpleName();
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
-    Button /*moreBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
-    Chip moreBtn;
+    Button /*meteoInfoBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
+    Chip meteoInfoBtn;
     ControllerRemoteDB controllerRemoteDB;
-    MyListners.LuoghiList myDBListner;
+    MyListners.LuoghiList luoghiDBlistner;
 
     //elementi per lo slider
     private static ViewPager mPager;
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
+        Log.i(TAG, TAG_CLASS + ":entered onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -79,8 +81,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         actionbar.setHomeAsUpIndicator(drawable);
 
-        moreBtn = findViewById(R.id.moreBtn);
-        moreBtn.setOnClickListener(moreBtnListener);
+        meteoInfoBtn = findViewById(R.id.moreBtn);
+        meteoInfoBtn.setOnClickListener( moreMeteoInfoBtnListener );
 
         goInterests = findViewById( R.id.btnHomeGoInterests );
         goInterests.setOnClickListener( new View.OnClickListener() {
@@ -94,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         goAttractionBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity(INTENT_ATTRACTIONS);
+                setIntentLuoghiListActivity(INTENT_ATTRACTIONS);
             }
         } );
 
@@ -102,40 +104,40 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         goFoodBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( INTENT_EATING );
+                setIntentLuoghiListActivity( INTENT_EATING );
             }
         } );
         goSleepBtn= findViewById( R.id.btnHomeGoSleep );
         goSleepBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( INTENT_SLEEPING );
+                setIntentLuoghiListActivity( INTENT_SLEEPING );
             }
         } );
         goNearBariBtn=findViewById( R.id.btnHomeGoNearBari );
         goNearBariBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( INTENT_NEAR );
+                setIntentLuoghiListActivity( INTENT_NEAR );
             }
         } );
         goEvents=findViewById( R.id.btnHomeGoEvents );
         goEvents.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeStartActivity( INTENT_EVENTS );
+                setIntentLuoghiListActivity( INTENT_EVENTS );
             }
         } );
 
-
+        //istanzia il controller del db
         controllerRemoteDB = new ControllerRemoteDB( this );
 
 
 
 
     }
-
-    private void homeStartActivity(String constCall){
+    //imposta l'intent verso LuoghiListActivity con la categoria passata
+    private void setIntentLuoghiListActivity(String constCall){
         Intent intent = new Intent( this , LuogoListActivity.class );
         intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , constCall );
         startActivity( intent );
@@ -143,33 +145,72 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, getClass().getSimpleName() + ":entered onOptionsItemSelected()");
+        Log.i(TAG, TAG_CLASS + ":entered onOptionsItemSelected()");
         Boolean open = myNavigationDrawer.openMenu(item);
         if (open) return open;
         else return super.onOptionsItemSelected(item);
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, TAG_CLASS + ":entered onStart()");
+        //slider eventi
+        luoghiDBlistner =new MyListners.LuoghiList() {
+            @Override
+            public void onList() {
+                final ArrayList<Evento> listEventi= new ArrayList<>(  );
+                for(Luogo l: luogoList){
+                    Evento evento = (Evento) l;
+                    if(evento.getDaysToEvent( )<=30) {
+                        listEventi.add( (Evento) l );
+                    }
+                }
+                setSlider(listEventi);
+            }
+
+            @Override
+            public void onError(String error) {
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error on the server");
+                        break;
+                }
+//                Snackbar.make( findViewById( R.id.drawer_layout ) ,
+//                        getResources().getString( R.string.str_fail_get_luoghi ) ,
+//                        Snackbar.LENGTH_LONG )
+//                        .setAction( "Action" , null ).show();
+            }
+        };
+
+        controllerRemoteDB.populateInterestsCod();
+        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , luoghiDBlistner );
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-
+        Log.i(TAG, TAG_CLASS + ":entered onResume()");
         //METEO
         boolean connected = InternetConnection.isNetworkAvailable(this);
         if (connected) { //controllo che sia disponibile la connessione internet
             helper = new OpenWeatherMapHelper(); //creo oggetto helper
             helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY)); //imposto l'API KEY
             helper.setUnits(Units.METRIC); //imposto l'unità in modo che mostri i gradi in CELSIUS
-            Log.i(TAG, "lang= " + Locale.getDefault().getLanguage());
+            //Log.i(TAG, TAG_CLASS+" lang= " + Locale.getDefault().getLanguage());
             helper.setLang(Locale.getDefault().getLanguage()); //imposto lingua delle info in base alla lingua del s.o.
             //ottengo info tramite API
             helper.getCurrentWeatherByGeoCoordinates(Double.parseDouble(getResources().getString(R.string.bari_latitude)), Double.parseDouble(getResources().getString(R.string.bari_longitude)), new OpenWeatherMapHelper.CurrentWeatherCallback() {
                 @Override
                 public void onSuccess(CurrentWeather currentWeather) {
-                    Log.i(TAG,
-                            "Weather Description: " + currentWeather.getWeatherArray().get(0).getDescription() + "\n"
-                                    + "Temp: " + currentWeather.getMain().getTemp() + "\n"
-                                    + "Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
-                    );
+//                    Log.i(TAG, TAG_CLASS+
+//                            " Weather Description: " + currentWeather.getWeatherArray().get(0).getDescription() + "\n"
+//                                    + "Temp: " + currentWeather.getMain().getTemp() + "\n"
+//                                    + "Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
+//                    );
 
                     //imposto temperatura
                     TextView temp = findViewById(R.id.temp);
@@ -193,7 +234,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
                 @Override
                 public void onFailure(Throwable throwable) {
-                    Log.i(TAG, throwable.getMessage());
+                    Log.i(TAG, TAG_CLASS+ throwable.getMessage());
                 }
             });
         }
@@ -204,23 +245,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             moreInfoBtn.setVisibility(View.GONE);
         }
 
-        //slider eventi
-        myDBListner=new MyListners.LuoghiList() {
-            @Override
-            public void onList() {
-                final ArrayList<Evento> listEventi= new ArrayList<>(  );
-                for(Luogo l: luogoList){
-                    Evento evento = (Evento) l;
-                    if(evento.getDaysToEvent( )<=30) {
-                        listEventi.add( (Evento) l );
-                    }
-                }
-                setSlider(listEventi);
-            }
-        };
 
-        controllerRemoteDB.populateInterestsCod();
-        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , myDBListner);
     }
 
     //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole
@@ -231,7 +256,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         return originalString.trim().substring(0, 1).toUpperCase() + originalString.substring(1);
     }
 
-    private View.OnClickListener moreBtnListener = new View.OnClickListener() {
+    private View.OnClickListener moreMeteoInfoBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             /*
@@ -246,8 +271,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     };
 
     private void setSlider(final ArrayList<Evento> listEventi) {
-
-
         mPager = findViewById(R.id.pager);
         mPager.setAdapter(new SliderAdapter(this,  listEventi));
         CircleIndicator indicator = findViewById(R.id.indicator);

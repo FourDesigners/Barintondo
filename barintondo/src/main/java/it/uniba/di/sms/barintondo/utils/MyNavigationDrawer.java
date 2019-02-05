@@ -31,6 +31,8 @@ import it.uniba.di.sms.barintondo.SettingsActivity;
 
 public class MyNavigationDrawer implements Constants {
 
+
+    private String TAG_CLASS=getClass().getSimpleName();
     private final Activity activity;
     private final NavigationView navigationView;
     private final DrawerLayout mDrawerLayout;
@@ -50,14 +52,14 @@ public class MyNavigationDrawer implements Constants {
     }
 
     public MyNavigationDrawer build() {
-        Log.i( TAG , getClass().getSimpleName() + ":entered build()" );
+        Log.i( TAG , TAG_CLASS + ":entered build()" );
 
         //imposto il nome dell'utente
         /*con support library >= 23.1.1, bisogna fare riferimento all'header navigation view e, da questo, ottenere il riferimento
         alla textView che mostra il nickname dell'utente attuale*/
         View header = navigationView.getHeaderView( 0 );
         nickname = header.findViewById( R.id.header_nickname );
-        Log.i( TAG , getClass().getSimpleName() + ": nickname = " + nickname );
+        //Log.i( TAG , getClass().getSimpleName() + ": nickname = " + nickname );
         //prelevo dati dal db
         LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( activity , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();

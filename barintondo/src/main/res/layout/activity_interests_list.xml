@@ -23,17 +23,6 @@
                 app:titleTextColor="@color/colorWhite"
                 style="@style/myToolbar" />
 
-            <TextView
-                android:id="@+id/text_view_no_interests"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="50dp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/no_interests"
-                android:textSize="@dimen/standardTextSize"
-                android:visibility="gone"/>
-
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,6 +37,17 @@
 
                 </android.support.design.chip.ChipGroup>
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/text_view_no_interests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="50dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/no_interests"
+                android:textSize="@dimen/standardTextSize"
+                android:visibility="gone"/>
 
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,29 +38,30 @@ import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class InterestsListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
 
+    private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
-    TextView noInterests;
+    private TextView noInterests;
     private RecyclerView recyclerView;
     private LuogoAdapter mAdapter;
     private SearchView searchView;
-    private ProgressDialog progressDialog;
     private ToolbarSwitchCategories myToolbarSwitchCategories;
     private ArrayList<Luogo> interestsList;
-    InterestsListner myInterestsListner;
+    private MyListners.InterestsList myInterestsListner;
     String[] arrayRes = null;
     String[] arrayTags = null;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i( TAG , getClass().getSimpleName() + ": entered onCreate()" );
+        Log.i( TAG , TAG_CLASS + ": entered onCreate()" );
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_interests_list );
 
@@ -81,38 +83,12 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         myNavigationDrawer.build();
 
         noInterests = findViewById( R.id.text_view_no_interests );
-        progressDialog = new ProgressDialog( this );
-        progressDialog.setMessage( getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
 
         //first time chip group setup
         ChipGroup chipGroup = findViewById( R.id.chipGroup );
         arrayRes = getResources().getStringArray( R.array.categories );
         arrayTags = getResources().getStringArray( R.array.categoriesTags );
-
-        int id = 0;
-        for (String s : arrayRes) {
-            final Chip newChip = new Chip( this );
-            newChip.setId( id );
-            assert arrayTags != null;
-            newChip.setTag( arrayTags[id++] );
-            newChip.setChipText( s );
-            newChip.setClickable( true );
-            newChip.setCheckable( true );
-            newChip.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String query;
-                    if (newChip.isChecked())
-                        query = newChip.getTag().toString();
-                    else query = ""; //stringa vuota così da mostrare tutti i luoghi
-                    Log.i( TAG , "Query=" + query );
-                    mAdapter.getFilterCategories().filter( query );
-                    //setCounter(arrayRes, arrayTags, newChip.getTag().toString());
-                }
-            } );
-            chipGroup.addView( newChip );
-        }
+        setChipGroup(chipGroup);
 
 
         interestsList = new ArrayList<>();
@@ -124,10 +100,26 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
-        myInterestsListner = new InterestsListner() {
+        myInterestsListner = new MyListners.InterestsList() {
             @Override
-            public void onInterestsLoaded() {
+            public void onInterestsList() {
                 setupView();
+            }
+
+            @Override
+            public void onError(String error) {
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error on the server");
+                        break;
+                }
+                Snackbar.make( findViewById( R.id.drawer_layout ) ,
+                        getResources().getString( R.string.str_fail_pref_managing ) ,
+                        Snackbar.LENGTH_LONG )
+                        .setAction( "Action" , null ).show();
             }
         };
 
@@ -142,8 +134,11 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             ControllerRemoteDB controller = new ControllerRemoteDB( this );
             controller.getAllInterests( interestsList , myInterestsListner );
         }else {
-            Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
-            progressDialog.dismiss();
+            Snackbar.make( findViewById( R.id.drawer_layout ) ,
+                    getResources().getString( R.string.str_error_not_connected ) ,
+                    Snackbar.LENGTH_LONG )
+                    .setAction( "Action" , null ).show();
+            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
         }
     }
 
@@ -159,7 +154,6 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             Collections.sort( interestsList );
             mAdapter.notifyDataSetChanged();
         } else noInterests.setVisibility( View.VISIBLE );
-        progressDialog.dismiss();
     }
 
 
@@ -252,7 +246,29 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         startActivity( intent );
     }
 
-    public interface InterestsListner {
-        public void onInterestsLoaded();
+    private void setChipGroup(ChipGroup chipGroup){
+        int id = 0;
+        for (String s : arrayRes) {
+            final Chip newChip = new Chip( this );
+            newChip.setId( id );
+            assert arrayTags != null;
+            newChip.setTag( arrayTags[id++] );
+            newChip.setChipText( s );
+            newChip.setClickable( true );
+            newChip.setCheckable( true );
+            newChip.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String query;
+                    if (newChip.isChecked())
+                        query = newChip.getTag().toString();
+                    else query = ""; //stringa vuota così da mostrare tutti i luoghi
+                    Log.i( TAG , "Query=" + query );
+                    mAdapter.getFilterCategories().filter( query );
+                    //setCounter(arrayRes, arrayTags, newChip.getTag().toString());
+                }
+            } );
+            chipGroup.addView( newChip );
+        }
     }
 }
