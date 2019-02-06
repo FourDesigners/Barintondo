@@ -25,11 +25,12 @@ import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 
 public class LuogoDirectionsFragment extends Fragment implements Constants {
+    private String TAG_CLASS = getClass().getSimpleName();
     Luogo myLuogo;
     RecyclerView recyclerView;
     ArrayList<Luogo> luogoList;
     LuogoAdapter mAdapter;
-    LuogoAdapter.ItemsAdapterListener itemsAdapterListener;
+    MyListners.ItemsAdapterListener itemsAdapterListener;
     MyListners.LuoghiList myDBListner;
     String requestCat;
     TextView textNoLuoghiNear;
@@ -44,7 +45,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         myLuogo = getArguments().getParcelable( EXTRA_LUOGO );
         requestCat = REQUEST_GET_ATTRACTIONS;
 
-        itemsAdapterListener = new LuogoAdapter.ItemsAdapterListener() {
+        itemsAdapterListener = new MyListners.ItemsAdapterListener() {
             @Override
             public void onItemsSelected(Luogo item) {
                 //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();

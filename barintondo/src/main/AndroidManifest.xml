@@ -51,7 +51,7 @@
             android:name=".LuogoDetailActivity"
             android:theme="@style/mainTheme" />
         <activity
-            android:name=".CouponLuogoListActivity"
+            android:name=".CouponListActivity"
             android:theme="@style/mainTheme" />
         <activity
             android:name=".InterestsListActivity"

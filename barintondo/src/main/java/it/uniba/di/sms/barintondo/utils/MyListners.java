@@ -30,8 +30,11 @@ public interface MyListners {
         public void onError(String error);
     }
 
-    public interface Coupon{
-        public void onCoupon();
-        public void onError(String error);
+    public interface ItemsAdapterListener {
+        public void onItemsSelected(Luogo item);
+    }
+
+    public interface CouponAdapterListener {
+        public void onItemsSelected(Coupon item);
     }
 }

@@ -31,10 +31,10 @@ import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 
 public class LuogoDetailActivity extends AppCompatActivity implements Constants {
-
+    private String TAG_CLASS = getClass().getSimpleName();
     Toolbar myToolbar;
     ImageView myImageView;
-    Button itemInfo, itemDirection, itemReview;
+    Button btnLuogoInfo, btnLuogoDirection, btnLuogoReview;
     FloatingActionButton fabPref;
     boolean isPref = false;
     ControllerRemoteDB controller;
@@ -48,7 +48,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_luogo_detail );
-        Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
+        Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
 
         myListner=new MyListners.SingleLuogo() {
             @Override
@@ -64,7 +64,14 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
             @Override
             public void onError(String error) {
-
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        break;
+                }
             }
         };
 
@@ -86,7 +93,14 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
             @Override
             public void onError(String error) {
-
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error on the server");
+                        break;
+                }
             }
         };
 
@@ -108,9 +122,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         myImageView = findViewById( R.id.luogoDetailImage );
 
-        itemInfo = findViewById( R.id.btn_luogo_info );
-        itemDirection = findViewById( R.id.btn_luogo_directions );
-        itemReview = findViewById( R.id.btn_luogo_reviews );
+        btnLuogoInfo = findViewById( R.id.btn_luogo_info );
+        btnLuogoDirection = findViewById( R.id.btn_luogo_directions );
+        btnLuogoReview = findViewById( R.id.btn_luogo_reviews );
         myFrameVoteStars=new FrameVoteStars( findViewById( R.id.luogoVoteLayout) );
 
     }
@@ -143,49 +157,49 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 .into( myImageView );
 
 
-        itemInfo.setOnClickListener( new View.OnClickListener() {
+        btnLuogoInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemInfo.setAlpha(0.5F);
-                itemInfo.setClickable(false);
-                itemDirection.setAlpha(1F);
-                itemDirection.setClickable(true);
-                itemReview.setAlpha(1F);
-                itemReview.setClickable(true);
+                btnLuogoInfo.setAlpha(0.5F);
+                btnLuogoInfo.setClickable(false);
+                btnLuogoDirection.setAlpha(1F);
+                btnLuogoDirection.setClickable(true);
+                btnLuogoReview.setAlpha(1F);
+                btnLuogoReview.setClickable(true);
                 attachDescription( myLuogo );
             }
         } );
 
 
-        itemDirection.setOnClickListener( new View.OnClickListener() {
+        btnLuogoDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemInfo.setAlpha(1F);
-                itemInfo.setClickable(true);
-                itemDirection.setAlpha(0.5F);
-                itemDirection.setClickable(false);
-                itemReview.setAlpha(1F);
-                itemReview.setClickable(true);
+                btnLuogoInfo.setAlpha(1F);
+                btnLuogoInfo.setClickable(true);
+                btnLuogoDirection.setAlpha(0.5F);
+                btnLuogoDirection.setClickable(false);
+                btnLuogoReview.setAlpha(1F);
+                btnLuogoReview.setClickable(true);
                 attachDirections( myLuogo );
             }
         } );
 
-        itemReview.setOnClickListener( new View.OnClickListener() {
+        btnLuogoReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemInfo.setAlpha(1F);
-                itemInfo.setClickable(true);
-                itemDirection.setAlpha(1F);
-                itemDirection.setClickable(true);
-                itemReview.setAlpha(0.5F);
-                itemReview.setClickable(false);
+                btnLuogoInfo.setAlpha(1F);
+                btnLuogoInfo.setClickable(true);
+                btnLuogoDirection.setAlpha(1F);
+                btnLuogoDirection.setClickable(true);
+                btnLuogoReview.setAlpha(0.5F);
+                btnLuogoReview.setClickable(false);
                 attachReviews( myLuogo );
             }
         } );
 
         //imposto la tab INFO di default
-        itemInfo.setAlpha(0.5F);
-        itemInfo.setClickable(false);
+        btnLuogoInfo.setAlpha(0.5F);
+        btnLuogoInfo.setClickable(false);
         attachDescription( myLuogo );
 
     }
@@ -237,23 +251,23 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     }
 
     private void itemOptionSelected(String option) {
-        itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
+        btnLuogoInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
+        btnLuogoDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
+        btnLuogoReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
 
         switch (option) {
             case ITEM_DESCRIPTION:
-                itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                btnLuogoInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.VISIBLE );
                 myFrameVoteStars.showVoteFrame();
                 break;
             case ITEM_DIRECTIONS:
-                itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                btnLuogoDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.GONE );
                 myFrameVoteStars.hideVoteFrame();
                 break;
             case ITEM_REVIEWS:
-                itemReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                btnLuogoReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.GONE );
                 myFrameVoteStars.hideVoteFrame();
                 break;

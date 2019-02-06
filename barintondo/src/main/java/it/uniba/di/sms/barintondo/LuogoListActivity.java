@@ -55,7 +55,7 @@ import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
 
-public class LuogoListActivity extends AppCompatActivity implements Constants, LuogoAdapter.ItemsAdapterListener {
+public class LuogoListActivity extends AppCompatActivity implements Constants, MyListners.ItemsAdapterListener {
 
     private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;

@@ -29,11 +29,11 @@ import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class EventoDetailActivity extends AppCompatActivity implements Constants {
-
+    private String TAG_CLASS = getClass().getSimpleName();
     Toolbar myToolbar;
     ImageView myImageView;
-    Button itemInfo, itemDirection;
-    ControllerRemoteDB controller;
+    Button btnEventInfo, btnEventDirection;
+    ControllerRemoteDB controllerRemoteDB;
     Evento evento;
     FloatingActionButton fabPref;
     boolean isPref = false;
@@ -61,7 +61,14 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
             @Override
             public void onError(String error) {
-
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        break;
+                }
             }
         };
 
@@ -84,13 +91,20 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
             @Override
             public void onError(String error) {
-
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error on the server");
+                        break;
+                }
             }
         };
 
         String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
-        controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS, myListner );
+        controllerRemoteDB = new ControllerRemoteDB( this );
+        controllerRemoteDB.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS, myListner );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
@@ -103,8 +117,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         myImageView = findViewById( R.id.luogoDetailImage );
-        itemInfo = findViewById( R.id.btn_luogo_info );
-        itemDirection = findViewById( R.id.btn_luogo_directions );
+        btnEventInfo = findViewById( R.id.btn_luogo_info );
+        btnEventDirection = findViewById( R.id.btn_luogo_directions );
         fabPref = findViewById( R.id.fab );
 
 
@@ -115,7 +129,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
         myToolbar.setTitle( myEvent.getNome() );
 
-        controller.checkPref( myEvent.getCod(), interestListner );
+        controllerRemoteDB.checkPref( myEvent.getCod(), interestListner );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -123,8 +137,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
                 if (!InternetConnection.isNetworkAvailable( EventoDetailActivity.this )) {
                     Toast.makeText( EventoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controller.removePref( myEvent.getCod(), interestListner );
-                    else controller.addPref( myEvent.getCod(), interestListner );
+                    if (isPref) controllerRemoteDB.removePref( myEvent.getCod(), interestListner );
+                    else controllerRemoteDB.addPref( myEvent.getCod(), interestListner );
                 }
             }
         } );
@@ -135,31 +149,31 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
                 .into( myImageView );
 
 
-        itemInfo.setOnClickListener( new View.OnClickListener() {
+        btnEventInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemInfo.setAlpha(0.5F);
-                itemInfo.setClickable(false);
-                itemDirection.setAlpha(1F);
-                itemDirection.setClickable(true);
+                btnEventInfo.setAlpha(0.5F);
+                btnEventInfo.setClickable(false);
+                btnEventDirection.setAlpha(1F);
+                btnEventDirection.setClickable(true);
                 attachDescription( myEvent );
             }
         } );
 
-        itemDirection.setOnClickListener( new View.OnClickListener() {
+        btnEventDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemInfo.setAlpha(1F);
-                itemInfo.setClickable(true);
-                itemDirection.setAlpha(0.5F);
-                itemDirection.setClickable(false);
+                btnEventInfo.setAlpha(1F);
+                btnEventInfo.setClickable(true);
+                btnEventDirection.setAlpha(0.5F);
+                btnEventDirection.setClickable(false);
                 attachDirections( myEvent );
             }
         } );
 
         //imposto la tab INFO di default
-        itemInfo.setAlpha(0.5F);
-        itemInfo.setClickable(false);
+        btnEventInfo.setAlpha(0.5F);
+        btnEventInfo.setClickable(false);
         attachDescription( myEvent );
 
     }
@@ -200,16 +214,16 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
 
     private void itemOptionSelected(String option) {
-        itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
+        btnEventInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
+        btnEventDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
 
         switch (option) {
             case ITEM_DESCRIPTION:
-                itemInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                btnEventInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.VISIBLE );
                 break;
             case ITEM_DIRECTIONS:
-                itemDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
+                btnEventDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
                 myImageView.setVisibility( View.GONE );
                 break;
         }

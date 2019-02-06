@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import it.uniba.di.sms.barintondo.ContactsActivity;
-import it.uniba.di.sms.barintondo.CouponLuogoListActivity;
+import it.uniba.di.sms.barintondo.CouponListActivity;
 import it.uniba.di.sms.barintondo.HomeActivity;
 import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoListActivity;
@@ -156,7 +156,7 @@ public class MyNavigationDrawer implements Constants {
                                 break;
                             case R.id.coupon:
                                 mDrawerLayout.closeDrawers();
-                                activity.startActivity( new Intent( activity , CouponLuogoListActivity.class ) );
+                                activity.startActivity( new Intent( activity , CouponListActivity.class ) );
                                 break;
                             case R.id.contact:
                                 mDrawerLayout.closeDrawers();

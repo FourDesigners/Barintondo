@@ -21,7 +21,7 @@ import it.uniba.di.sms.barintondo.utils.Luogo;
 
 
 public class LuogoDescriptionFragment extends Fragment implements Constants {
-
+    private String TAG_CLASS = getClass().getSimpleName();
     private String orarioA, orarioC;
     TextView textViewDescription, textOrarioA, textOrarioC, eventStart, eventEnd, luogoAdress, textViewLuogoEvento;
     ConstraintLayout frameDate, frameOrari;
@@ -67,7 +67,14 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
 
                 @Override
                 public void onError(String error) {
-
+                    switch (error){
+                        case VOLLEY_ERROR_JSON:
+                            Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                            break;
+                        case VOLLEY_ERROR_CONNECTION:
+                            Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                            break;
+                    }
                 }
             };
         }
