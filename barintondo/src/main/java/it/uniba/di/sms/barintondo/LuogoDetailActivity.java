@@ -62,6 +62,20 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
         } else this.activeOption=1;
 
+        Button button;
+        switch(activeOption) {
+            case DIRECTIONS:
+                button = findViewById(R.id.btn_luogo_directions);
+                break;
+            case REVIEWS:
+                button = findViewById(R.id.btn_luogo_reviews);
+                break;
+            default:
+                button = findViewById(R.id.btn_luogo_info);
+                break;
+        }
+        button.setPressed(true);
+
         myListner=new MyListners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
@@ -157,6 +171,13 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         }
     }
 
+    /*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState( outState );
+        outState.putInt( SELECTED_OPTION, activeOption );
+    }
+    */
 
     public void onLuogoLoaded(final Luogo myLuogo) {
         this.luogo=myLuogo;
