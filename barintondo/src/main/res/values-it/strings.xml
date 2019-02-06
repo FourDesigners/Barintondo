@@ -191,7 +191,7 @@
     <string name="strNextEvents">Prossimi eventi</string>
     <string name="strToday">Oggi</string>
     <string name="moreBtn">Più info</string>
-    <string name="strUntil">fino al giorno</string>
+    <string name="strCouponDescription">%s fino al giorno %s %s</string>
     <string-array name="months">
         <item>Gennaio</item>
         <item>Febbraio</item>

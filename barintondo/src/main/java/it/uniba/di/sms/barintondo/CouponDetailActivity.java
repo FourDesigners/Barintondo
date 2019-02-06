@@ -94,7 +94,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         String day = myCoupon.getScadenza().split("-")[2];
         int m = Integer.valueOf(myCoupon.getScadenza().split("-")[1]);
         String month = getResources().getStringArray(R.array.months)[m-1];
-        String description = myCoupon.getDescription() + " " + getResources().getString(R.string.strUntil) + " " + day + " " + month;
+        String description = getString(R.string.strCouponDescription, myCoupon.getDescription(), day, month);
         desc.setText(description);
 
         useBtn = findViewById( R.id.useBtn );
