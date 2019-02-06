@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -77,6 +79,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     String[] order = null;
     MyListners.LuoghiList myDBListner;
     private boolean arrow = false;
+    private String requestCat;
 
 
     @Override
@@ -94,7 +97,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         mySwitchCategory = new ToolbarSwitchCategories( this , items_type );
 
         Resources res = getResources();
-        String requestCat = "";
         //imposta gli array per settare i chips e la variabile che identiica la categoria selezionata
         if (items_type.equals( Constants.INTENT_ATTRACTIONS )) {
             requestCat = REQUEST_GET_ATTRACTIONS;
@@ -205,9 +207,34 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         };
         //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listner
-        ControllerRemoteDB controller = new ControllerRemoteDB( this );
-        controller.getLuoghiList( requestCat , luogoList , myDBListner );
 
+        reqeustList();
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reqeustList();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    private void reqeustList(){
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+            luogoList.clear();
+            ControllerRemoteDB controller = new ControllerRemoteDB( this );
+            controller.getLuoghiList( requestCat , luogoList , myDBListner );
+        }else {
+            Snackbar.make( findViewById( R.id.drawer_layout ) ,
+                    getResources().getString( R.string.str_error_not_connected ) ,
+                    Snackbar.LENGTH_LONG )
+                    .setAction( "Action" , null ).show();
+            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+        }
     }
 
     @Override

@@ -1,10 +1,13 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -113,9 +116,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             }
         };
 
-        String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
+
         controller = new ControllerRemoteDB( this );
-        controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListner );
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
@@ -136,6 +138,23 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoReview = findViewById( R.id.btn_luogo_reviews );
         myFrameVoteStars=new FrameVoteStars( findViewById( R.id.luogoVoteLayout) );
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+            String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
+            controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListner );
+        }else {
+            Snackbar.make( findViewById( R.id.activity_luogo_detail ) ,
+                    getResources().getString( R.string.str_error_not_connected ) ,
+                    Snackbar.LENGTH_LONG )
+                    .setAction( "Action" , null ).show();
+            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+        }
     }
 
     @Override
@@ -175,8 +194,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             @Override
             public void onClick(View v) {
                 activeOption =INFO;
-                setButtonOption( btnLuogoInfo );
-                attachDescription( myLuogo );
+                switchOption( myLuogo );
             }
         } );
 
@@ -185,8 +203,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             @Override
             public void onClick(View v) {
                 activeOption =DIRECTIONS;
-                setButtonOption( btnLuogoDirection );
-                attachDirections( myLuogo );
+                switchOption( myLuogo );
             }
         } );
 
@@ -194,27 +211,35 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             @Override
             public void onClick(View v) {
                 activeOption =REVIEWS;
-                setButtonOption( btnLuogoReview );
-                attachReviews( myLuogo );
+                switchOption( myLuogo );
             }
         } );
 
+        switchOption( myLuogo );
+
+    }
+
+    private void switchOption(Luogo myLuogo){
         switch (activeOption){
             case 1:
                 attachDescription( myLuogo );
                 setButtonOption( btnLuogoInfo );
+                myImageView.setVisibility( View.VISIBLE );
+                myFrameVoteStars.showVoteFrame();
                 break;
             case 2:
                 attachDirections( myLuogo );
                 setButtonOption( btnLuogoDirection );
+                myImageView.setVisibility( View.GONE );
+                myFrameVoteStars.hideVoteFrame();
                 break;
             case 3:
                 attachReviews( myLuogo );
                 setButtonOption( btnLuogoReview );
+                myImageView.setVisibility( View.GONE );
+                myFrameVoteStars.hideVoteFrame();
                 break;
         }
-
-
     }
 
     private void setButtonOption(Button selectedButton){

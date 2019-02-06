@@ -1,9 +1,12 @@
 package it.uniba.di.sms.barintondo;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,10 +43,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     MyListners.SingleLuogo myListner;
     MyListners.Interests interestListner;
     private int activeOption;
-    final int INFO=1;
-    final int DIRECTIONS=2;
-    final String SELECTED_OPTION="SelectedOption";
-
+    final int INFO = 1;
+    final int DIRECTIONS = 2;
+    final String SELECTED_OPTION = "SelectedOption";
 
 
     @Override
@@ -52,9 +54,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         setContentView( R.layout.activity_evento_detail );
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
 
-        if(savedInstanceState!=null){
-            this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
-        } else this.activeOption=1;
+        if (savedInstanceState != null) {
+            this.activeOption = savedInstanceState.getInt( SELECTED_OPTION );
+        } else this.activeOption = 1;
 
         myListner = new MyListners.SingleLuogo() {
             @Override
@@ -69,12 +71,12 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
             @Override
             public void onError(String error) {
-                switch (error){
+                switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListnerOnError, error on the server" );
                         break;
                 }
             }
@@ -99,30 +101,26 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
             @Override
             public void onError(String error) {
-                switch (error){
+                switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server");
+                        Log.i( TAG , TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error on the server");
+                        Log.i( TAG , TAG_CLASS + ": entered interestListnerOnError, error on the server" );
                         break;
                 }
             }
         };
 
-        String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
-        controllerRemoteDB = new ControllerRemoteDB( this );
-        controllerRemoteDB.getLuogo( myEventCod, Constants.REQUEST_GET_EVENTS, myListner );
-
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
-        setSupportActionBar(myToolbar);
+        setSupportActionBar( myToolbar );
         ActionBar actionbar = getSupportActionBar();
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
-        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+        final Drawable upArrow = getResources().getDrawable( R.drawable.abc_ic_ab_back_material );
+        upArrow.setColorFilter( getResources().getColor( R.color.colorAccent ) , PorterDuff.Mode.SRC_ATOP );
+        Objects.requireNonNull( getSupportActionBar() ).setHomeAsUpIndicator( upArrow );
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled( true );
 
         myImageView = findViewById( R.id.luogoDetailImage );
         btnEventInfo = findViewById( R.id.btn_luogo_info );
@@ -133,17 +131,35 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+            String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
+            controllerRemoteDB = new ControllerRemoteDB( this );
+            controllerRemoteDB.getLuogo( myEventCod , Constants.REQUEST_GET_EVENTS , myListner );
+        } else {
+            Snackbar.make( findViewById( R.id.activity_evento_detail ) ,
+                    getResources().getString( R.string.str_error_not_connected ) ,
+                    Snackbar.LENGTH_LONG )
+                    .setAction( "Action" , null ).show();
+            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState( outState );
-        outState.putInt( SELECTED_OPTION, activeOption );
+        outState.putInt( SELECTED_OPTION , activeOption );
     }
 
     public void onEventoLoaded(final Evento myEvent) {
-        this.evento=myEvent;
+        this.evento = myEvent;
 
         myToolbar.setTitle( myEvent.getNome() );
 
-        controllerRemoteDB.checkPref( myEvent.getCod(), interestListner );
+        controllerRemoteDB.checkPref( myEvent.getCod() , interestListner );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -151,8 +167,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
                 if (!InternetConnection.isNetworkAvailable( EventoDetailActivity.this )) {
                     Toast.makeText( EventoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controllerRemoteDB.removePref( myEvent.getCod(), interestListner );
-                    else controllerRemoteDB.addPref( myEvent.getCod(), interestListner );
+                    if (isPref) controllerRemoteDB.removePref( myEvent.getCod() , interestListner );
+                    else controllerRemoteDB.addPref( myEvent.getCod() , interestListner );
                 }
             }
         } );
@@ -166,40 +182,44 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         btnEventInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeOption=INFO;
-                setButtonOption( btnEventDirection );
-                attachDescription( myEvent );
+                activeOption = INFO;
+                switchOption( myEvent );
             }
         } );
 
         btnEventDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeOption=DIRECTIONS;
-                setButtonOption( btnEventDirection );
-                attachDirections( myEvent );
+                activeOption = DIRECTIONS;
+                switchOption( myEvent );
             }
         } );
 
 
-        switch (activeOption){
+        switchOption( myEvent );
+
+    }
+
+    private void switchOption(Evento myEvent) {
+        switch (activeOption) {
             case 1:
                 attachDescription( myEvent );
                 setButtonOption( btnEventInfo );
+                myImageView.setVisibility( View.VISIBLE );
                 break;
             case 2:
                 attachDirections( myEvent );
                 setButtonOption( btnEventDirection );
+                myImageView.setVisibility( View.GONE );
                 break;
         }
-
     }
 
-    private void setButtonOption(Button selectedButton){
-        btnEventInfo.setAlpha(1F);
-        btnEventInfo.setClickable(true);
-        btnEventDirection.setAlpha(1F);
-        btnEventDirection.setClickable(true);
+    private void setButtonOption(Button selectedButton) {
+        btnEventInfo.setAlpha( 1F );
+        btnEventInfo.setClickable( true );
+        btnEventDirection.setAlpha( 1F );
+        btnEventDirection.setClickable( true );
         selectedButton.setAlpha( 0.5F );
         selectedButton.setClickable( false );
     }
@@ -218,7 +238,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
     private void attachDescription(Evento myEvent) {
         Bundle arguments = new Bundle();
-        arguments.putParcelable( EXTRA_LUOGO, myEvent );
+        arguments.putParcelable( EXTRA_LUOGO , myEvent );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -228,14 +248,13 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
     private void attachDirections(Luogo luogo) {
         Bundle arguments = new Bundle();
-        arguments.putParcelable( EXTRA_LUOGO, luogo );
+        arguments.putParcelable( EXTRA_LUOGO , luogo );
         LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
     }
-
 
 
     public void checkPrefResult(boolean result) {

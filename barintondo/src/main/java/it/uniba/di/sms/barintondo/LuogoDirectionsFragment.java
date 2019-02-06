@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -108,14 +109,26 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
             }
         };
 
-
         //first time populating
         //fetchItems();
-        ControllerRemoteDB controller = new ControllerRemoteDB( getContext() );
-        controller.getLuoghiNear( myLuogo , luogoList , myDBListner );
+        requestList();
+
+        final SwipeRefreshLayout swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestList();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
         return rootView;
+    }
+
+    private void requestList(){
+        ControllerRemoteDB controller = new ControllerRemoteDB( getContext() );
+        controller.getLuoghiNear( myLuogo , luogoList , myDBListner );
     }
 
     @Override

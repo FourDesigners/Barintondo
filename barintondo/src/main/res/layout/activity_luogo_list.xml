@@ -13,18 +13,17 @@
         android:layout_height="match_parent">
 
         <!-- LinearLayout that contains the real activity layout -->
-        <android.support.v7.widget.LinearLayoutCompat
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.v7.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_activity_toolbar"
+                style="@style/myToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:titleTextColor="@color/colorWhite"
-                style="@style/myToolbar" />
+                app:titleTextColor="@color/colorWhite" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -41,15 +40,21 @@
                 </android.support.design.chip.ChipGroup>
             </HorizontalScrollView>
 
-            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/item_list_recycler_view"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scrollbars="vertical"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/luogo_list_content" />
+                android:layout_weight="1">
+
+                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/item_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/luogo_list_content" />
+            </android.support.v4.widget.SwipeRefreshLayout>
 
             <include
                 android:id="@+id/switchCategories"
