@@ -206,4 +206,6 @@
         <item>Novembre</item>
         <item>Dicembre</item>
     </string-array>
+    <string name="strInsertPassword">Inserire password</string>
+    <string name="strVerifyPassword">Verifica account</string>
 </resources>
