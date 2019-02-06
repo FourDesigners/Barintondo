@@ -97,28 +97,6 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         arrayTags = getResources().getStringArray( R.array.categoriesTags );
         setChipGroup(chipGroup);
 
-        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                interestsList = new ArrayList<>();
-                MyListners.ItemsAdapterListener c = new MyListners.ItemsAdapterListener() {
-                    @Override
-                    public void onItemsSelected(Luogo item) {
-
-                    }
-                };
-                mAdapter = new LuogoAdapter( getApplicationContext(), interestsList, c);
-                //recyclerView setup
-                recyclerView = findViewById( R.id.item_list_recycler_view );
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
-                recyclerView.setLayoutManager( mLayoutManager );
-                recyclerView.addItemDecoration( new MyDividerItemDecoration( getApplicationContext() , DividerItemDecoration.VERTICAL , 36 ) );
-                recyclerView.setItemAnimator( new DefaultItemAnimator() );
-                recyclerView.setAdapter( mAdapter );
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         interestsList = new ArrayList<>();
         mAdapter = new LuogoAdapter( this , interestsList , this );
@@ -152,11 +130,25 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             }
         };
 
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestList();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        requestList();
+    }
+
+    private void requestList(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {

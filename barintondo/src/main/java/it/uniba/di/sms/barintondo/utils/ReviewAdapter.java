@@ -80,22 +80,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-
-
-
         return reviewList.size();
     }
 
-    public void onReviewLoaded(int reviewSize){
-        if (reviewSize==0) {
-            parentView.findViewById( R.id.luogo_reviews_list_recycler_view ).setVisibility( View.GONE );
-            parentView.findViewById( R.id.text_view_no_reviews ).setVisibility( View.VISIBLE );
-        }
-        else {
-            parentView.findViewById( R.id.luogo_reviews_list_recycler_view ).setVisibility( View.VISIBLE );
-            parentView.findViewById( R.id.text_view_no_reviews ).setVisibility( View.GONE );
-        }
-    }
 
 }
 
