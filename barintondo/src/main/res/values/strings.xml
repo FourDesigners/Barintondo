@@ -215,7 +215,7 @@
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an attraction</string>
-    <string name="loadingMessage">Loading...</string>
+    <string name="loadingMessage">Loading…</string>
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
     <string name="notDefined" translatable="false">N/A</string>
@@ -303,6 +303,21 @@
     <!--COUPON_DETAIL ACTIVITY-->
     <string name="useBtn">Use Coupon</string>
     <string name="detailBtn">Detail Place</string>
+    <string name="strUntil">until the</string>
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>Dicember</item>
+    </string-array>
 
     <!--bt strings -->
     <string name="nameHidden">Device name not available</string>

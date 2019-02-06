@@ -96,7 +96,7 @@
     <string name="attractionsToolbarTitle">Attrazioni</string>
     <string name="searchTitle">Cerca</string>
     <string name="searchHint">Trova attrazione</string>
-    <string name="loadingMessage">Caricamento...</string>
+    <string name="loadingMessage">Caricamento…</string>
     <string name="closedState">Chiuso</string>
     <string name="openState">Aperto</string>
     <string name="strReviews">Recensioni</string>
@@ -191,4 +191,19 @@
     <string name="strNextEvents">Prossimi eventi</string>
     <string name="strToday">Oggi</string>
     <string name="moreBtn">Più info</string>
+    <string name="strUntil">fino al giorno</string>
+    <string-array name="months">
+        <item>Gennaio</item>
+        <item>Febbraio</item>
+        <item>Marzo</item>
+        <item>Aprile</item>
+        <item>Maggio</item>
+        <item>Giugno</item>
+        <item>Luglio</item>
+        <item>Agosto</item>
+        <item>Settembre</item>
+        <item>Ottobre</item>
+        <item>Novembre</item>
+        <item>Dicembre</item>
+    </string-array>
 </resources>

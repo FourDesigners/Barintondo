@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -77,7 +78,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         myToolbar.setTitle( myCoupon.getLuogo() );
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        @SuppressLint("PrivateResource") final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
@@ -90,7 +91,11 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 .into( myImageView );*/
 
         desc = findViewById( R.id.couponDesc );
-        desc.setText(myCoupon.getDescription());
+        String day = myCoupon.getScadenza().split("-")[2];
+        int m = Integer.valueOf(myCoupon.getScadenza().split("-")[1]);
+        String month = getResources().getStringArray(R.array.months)[m-1];
+        String description = myCoupon.getDescription() + " " + getResources().getString(R.string.strUntil) + " " + day + " " + month;
+        desc.setText(description);
 
         useBtn = findViewById( R.id.useBtn );
         useBtn.setOnClickListener(new View.OnClickListener() {
