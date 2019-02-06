@@ -197,7 +197,7 @@ public class MyNavigationDrawer implements Constants {
                 LocalDBOpenHelper.delete(openHelper);
             }
         });
-        builder.setNegativeButton(getActivity().getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(getActivity().getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }

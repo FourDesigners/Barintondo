@@ -301,8 +301,8 @@
     </plurals>
 
     <!--COUPON_DETAIL ACTIVITY-->
-    <string name="useBtn">Use Coupon</string>
-    <string name="detailBtn">Detail Place</string>
+    <string name="useBtn">Use</string>
+    <string name="detailBtn">Location</string>
     <string name="strCouponDescription">%s until the %s of %s</string>
     <string-array name="months">
         <item>January</item>

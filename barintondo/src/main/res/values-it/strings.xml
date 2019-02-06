@@ -140,8 +140,8 @@
     <string name="strInsert">Inserimento e-mail e password</string>
     <string name="strNoAccount">Account non presente</string>
     <string name="strInfo">Password modificata! Controlla account e-mail</string>
-    <string name="useBtn">Utilizzo Coupon</string>
-    <string name="detailBtn">Dettaglio Luogo</string>
+    <string name="useBtn">Utilizzo</string>
+    <string name="detailBtn">Luogo</string>
     <string name="btNotAvailable">Bluetooth non disponibile su questo dispositivo</string>
     <string name="connectedToMsg">"connesso a: "</string>
     <string name="connectionInterruptedMsg">Comunicazione terminata</string>
@@ -190,7 +190,7 @@
     <string name="strNoLuoghiNear">Non ci sono luoghi nelle vicinanze</string>
     <string name="strNextEvents">Prossimi eventi</string>
     <string name="strToday">Oggi</string>
-    <string name="moreBtn">Più info</string>
+    <string name="moreBtn">Info</string>
     <string name="strCouponDescription">%s fino al giorno %s %s</string>
     <string-array name="months">
         <item>Gennaio</item>
