@@ -1,10 +1,13 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.design.chip.Chip;
@@ -25,12 +28,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
@@ -57,6 +62,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private MyListners.InterestsList myInterestsListner;
     String[] arrayRes = null;
     String[] arrayTags = null;
+    private boolean arrow = false;
 
 
     @Override
@@ -196,24 +202,65 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
                 return false;
             }
         } );
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
+                ActionBar actionbar = getSupportActionBar();
+                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+                upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+                Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled(true);
+                arrow = true;
+            }
+        });
+
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                ActionBar actionbar = getSupportActionBar();
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled( true );
+                actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+                invalidateOptionsMenu();
+                hideKeyboard();
+                arrow = false;
+                return true;
+            }
+        });
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Boolean open = myNavigationDrawer.openMenu( item );
-        if (open) return open;
+        if(!arrow) {
+            Boolean open = myNavigationDrawer.openMenu( item );
+            if (open) return open;
 
-        switch (id) {
-            case R.id.home:
-                myNavigationDrawer.openMenu( item );
-            case R.id.app_bar_search:
-                break;
+            switch (id) {
+                case R.id.home:
+                    myNavigationDrawer.openMenu( item );
+                case R.id.app_bar_search:
+                    break;
 
+            }
+            return super.onOptionsItemSelected( item );
+        }else {
+            arrow = false;
+            ActionBar actionbar = getSupportActionBar();
+            assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+            actionbar.setDisplayHomeAsUpEnabled( true );
+            actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+            mAdapter.getFilter().filter("");
+            invalidateOptionsMenu();
+            hideKeyboard();
+            return true;
         }
-
-        return super.onOptionsItemSelected( item );
     }
 
     @Override
@@ -270,5 +317,10 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             } );
             chipGroup.addView( newChip );
         }
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

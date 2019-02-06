@@ -1,5 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
@@ -38,6 +40,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -71,6 +76,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     String[] arrayTags = null;
     String[] order = null;
     MyListners.LuoghiList myDBListner;
+    private boolean arrow = false;
 
 
     @Override
@@ -347,6 +353,35 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         icon.setColorFilter(Color.WHITE);
         icon2.setColorFilter(Color.WHITE);
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
+                ActionBar actionbar = getSupportActionBar();
+                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+                upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+                Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled(true);
+                arrow = true;
+            }
+        });
+
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                ActionBar actionbar = getSupportActionBar();
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled( true );
+                actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+                invalidateOptionsMenu();
+                hideKeyboard();
+                arrow = false;
+                return true;
+            }
+        });
+
 
         // listening to search query text change
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
@@ -370,18 +405,29 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Boolean open = myNavigationDrawer.openMenu( item );
-        if (open) return open;
+        if(!arrow) {
+            Boolean open = myNavigationDrawer.openMenu( item );
+            if (open) return open;
 
-        switch (id) {
-            case R.id.home:
-                myNavigationDrawer.openMenu( item );
-            case R.id.app_bar_search:
-                break;
+            switch (id) {
+                case R.id.home:
+                    myNavigationDrawer.openMenu( item );
+                case R.id.app_bar_search:
+                    break;
 
+            }
+            return super.onOptionsItemSelected( item );
+        }else {
+            arrow = false;
+            ActionBar actionbar = getSupportActionBar();
+            assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+            actionbar.setDisplayHomeAsUpEnabled( true );
+            actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+            mAdapter.getFilter().filter("");
+            invalidateOptionsMenu();
+            hideKeyboard();
+            return true;
         }
-
-        return super.onOptionsItemSelected( item );
     }
 
     @Override
@@ -411,5 +457,9 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, L
         return items_type;
     }
 
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
 
 }
