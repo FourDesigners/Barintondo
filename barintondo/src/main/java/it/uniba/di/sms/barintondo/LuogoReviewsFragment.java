@@ -61,7 +61,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     final String REVIEW_OPTION_SELECTED = "ReviewOptionSelected";
     private int REVIEW_LIST = 1;
     private int MY_REVIEW = 2;
-    private int activeOpion;
+    public int activeOpion;
     final String MY_REVIEW_VOTE_STAR = "MyReviewVoteStar";
     private int myReviewVoteStar;
     final String MY_REVIEW_WRITTEN_TEXT = "MyReviewTexe";
@@ -229,16 +229,19 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         }
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         Log.i( TAG , TAG_CLASS + ": entered onSavedInstanceState, activeOption=" + activeOpion );
         super.onSaveInstanceState( outState );
         outState.putInt( REVIEW_OPTION_SELECTED , activeOpion );
+        outState.putInt("option", 3);
         if (!reviewEditText.getText().toString().equals( "" )) {
             outState.putInt( MY_REVIEW_VOTE_STAR , myReviewVoteStar );
             outState.putString( MY_REVIEW_WRITTEN_TEXT , myReviewText );
         }
     }
+
 
     /*
     @Override
