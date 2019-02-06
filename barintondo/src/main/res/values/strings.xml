@@ -215,7 +215,7 @@
     <string name="attractionsToolbarTitle">Attractions</string>
     <string name="searchTitle">Search</string>
     <string name="searchHint">Find an attraction</string>
-    <string name="loadingMessage">Loading...</string>
+    <string name="loadingMessage">Loading…</string>
     <string name="closedState">Closed</string>
     <string name="openState">Open</string>
     <string name="notDefined" translatable="false">N/A</string>
@@ -234,7 +234,7 @@
     <string name="strRestaurant">Restaurant</string>
     <string name="strHotel" translatable="false">Hotel</string>
     <string name="strBB" translatable="false">Bed and Breakfast</string>
-    <string name="strNearBari">Outside Bari</string>
+    <string name="strNearBari">Near Bari</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -266,7 +266,7 @@
     <string name="strEndDate">End Date: </string>
     <string name="str_from">from </string>
     <string name="str_to">to </string>
-    <string name="str_event_take_place">The event wil take place </string>
+    <string name="str_event_take_place">The event will take place </string>
     <string name="strNoReviews">There are no reviews for this place yet</string>
     <string name="strDistanceMeters" type="id">Distance: %dm</string>
     <string name="strDistanceKilometers" type="id">Distance: %.1fKm</string>
@@ -280,7 +280,7 @@
     <string name="expiredString">Expired</string>
     <string name="validString">Valid</string>
     <string name="no_interests">You have not selected an interest place</string>
-    <string name="str_fail_get_luoghi">Failed to get places, try again later</string>
+    <string name="str_fail_get_luoghi">Failed to load places, try again later</string>
     <string name="str_fail_coupon_managing">Failed to load coupon, try again later</string>
     <string name="strModified">Account modified</string>
     <string name="strForgotPassword">Forgot password</string>
@@ -303,6 +303,21 @@
     <!--COUPON_DETAIL ACTIVITY-->
     <string name="useBtn">Use Coupon</string>
     <string name="detailBtn">Detail Place</string>
+    <string name="strCouponDescription">%s until the %s of %s</string>
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>Dicember</item>
+    </string-array>
 
     <!--bt strings -->
     <string name="nameHidden">Device name not available</string>
@@ -329,6 +344,7 @@
     <string name="strInsertReview">Review text</string>
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
     <string name="couponDescLabelTxt">Description</string>
+    <string name="no_coupons">You have not coupons</string>
 
 
 </resources>

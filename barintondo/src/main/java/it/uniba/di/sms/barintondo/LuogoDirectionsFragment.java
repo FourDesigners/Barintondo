@@ -48,16 +48,15 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         itemsAdapterListener = new MyListners.ItemsAdapterListener() {
             @Override
             public void onItemsSelected(Luogo item) {
-                //Toast.makeText( getApplicationContext() , "Selected: " + item.getNome() , Toast.LENGTH_LONG ).show();
+                Intent intent;
                 if (item instanceof Evento) {
-                    Intent intent = new Intent( getContext() , EventoDetailActivity.class );
-                    intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-                    startActivity( intent );
+                    intent = new Intent( getContext() , EventoDetailActivity.class );
                 } else {
-                    Intent intent = new Intent( getContext() , LuogoDetailActivity.class );
-                    intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
-                    startActivity( intent );
+                    intent = new Intent( getContext() , LuogoDetailActivity.class );
                 }
+                intent.putExtra( INTENT_LUOGO_COD , item.getCod() );
+                startActivity( intent );
+                getActivity().overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
             }
         };
 

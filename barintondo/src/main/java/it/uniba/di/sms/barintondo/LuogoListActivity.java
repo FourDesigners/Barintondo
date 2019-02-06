@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -267,7 +268,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
                 setSkip( edit , checkBox.isChecked() );
             }
         } );
-        builder.setNegativeButton( getResources().getString( R.string.strNo ) , new DialogInterface.OnClickListener() {
+        builder.setNeutralButton( getResources().getString( R.string.strNo ) , new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog , int id) {
                 setSkip( edit , checkBox.isChecked() );
             }
@@ -339,6 +340,12 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById( android.support.v7.appcompat.R.id.search_src_text );
         searchAutoComplete.setHintTextColor( getResources().getColor( R.color.colorAccent ) );
         searchAutoComplete.setTextColor( getResources().getColor( R.color.colorAccent ) );
+
+        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        ImageView icon = searchView2.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView icon2 = searchView2.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        icon.setColorFilter(Color.WHITE);
+        icon2.setColorFilter(Color.WHITE);
 
 
         // listening to search query text change

@@ -92,7 +92,6 @@
         android:id="@+id/myPassBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPassword"
         android:text="@string/str_name"
@@ -100,6 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/myPassLabel"
         tools:ignore="Autofill,LabelFor" />
 
+    <!--
     <ImageView
         android:id="@+id/imageViewProfile"
         android:layout_width="40dp"
@@ -110,6 +110,17 @@
         app:layout_constraintStart_toEndOf="@id/myPassBox"
         app:layout_constraintTop_toTopOf="@+id/myPassBox"
         tools:ignore="ContentDescription" />
+        -->
+
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="@dimen/widthEye"
+        android:layout_height="@dimen/heightEye"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/myPassBox"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox">
+    </ImageSwitcher>
 
     <TextView
         android:id="@+id/textViewPasswordError"
@@ -127,5 +138,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/colorAccent" />
+        app:titleTextColor="@color/colorWhite" />
 </android.support.constraint.ConstraintLayout>

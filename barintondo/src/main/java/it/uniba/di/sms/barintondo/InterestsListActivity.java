@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -168,6 +169,15 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(getResources().getColor(R.color.colorAccent));
+        searchAutoComplete.setTextColor(getResources().getColor(R.color.colorAccent));
+
+        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        ImageView icon = searchView2.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView icon2 = searchView2.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        icon.setColorFilter(Color.WHITE);
+        icon2.setColorFilter(Color.WHITE);
 
 
         // listening to search query text change

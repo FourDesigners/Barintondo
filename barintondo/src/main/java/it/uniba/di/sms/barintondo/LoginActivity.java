@@ -312,7 +312,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
+        overridePendingTransition(R.anim.slide_up,  R.anim.slide_down);
         finish();
     }
 

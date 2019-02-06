@@ -211,6 +211,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             case android.R.id.home:
                 //supportFinishAfterTransition();
                 onBackPressed();
+                overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
                 return true;
         }
         return super.onOptionsItemSelected( item );
