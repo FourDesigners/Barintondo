@@ -39,6 +39,10 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     boolean isPref = false;
     MyListners.SingleLuogo myListner;
     MyListners.Interests interestListner;
+    private int activeOption;
+    final int INFO=1;
+    final int DIRECTIONS=2;
+    final String SELECTED_OPTION="SelectedOption";
 
 
 
@@ -46,7 +50,11 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_evento_detail );
-        Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
+        Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
+
+        if(savedInstanceState!=null){
+            this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
+        } else this.activeOption=1;
 
         myListner = new MyListners.SingleLuogo() {
             @Override
@@ -124,6 +132,12 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState( outState );
+        outState.putInt( SELECTED_OPTION, activeOption );
+    }
+
     public void onEventoLoaded(final Evento myEvent) {
         this.evento=myEvent;
 
@@ -152,10 +166,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         btnEventInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnEventInfo.setAlpha(0.5F);
-                btnEventInfo.setClickable(false);
-                btnEventDirection.setAlpha(1F);
-                btnEventDirection.setClickable(true);
+                activeOption=INFO;
+                setButtonOption( btnEventDirection );
                 attachDescription( myEvent );
             }
         } );
@@ -163,19 +175,33 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         btnEventDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnEventInfo.setAlpha(1F);
-                btnEventInfo.setClickable(true);
-                btnEventDirection.setAlpha(0.5F);
-                btnEventDirection.setClickable(false);
+                activeOption=DIRECTIONS;
+                setButtonOption( btnEventDirection );
                 attachDirections( myEvent );
             }
         } );
 
-        //imposto la tab INFO di default
-        btnEventInfo.setAlpha(0.5F);
-        btnEventInfo.setClickable(false);
-        attachDescription( myEvent );
 
+        switch (activeOption){
+            case 1:
+                attachDescription( myEvent );
+                setButtonOption( btnEventInfo );
+                break;
+            case 2:
+                attachDirections( myEvent );
+                setButtonOption( btnEventDirection );
+                break;
+        }
+
+    }
+
+    private void setButtonOption(Button selectedButton){
+        btnEventInfo.setAlpha(1F);
+        btnEventInfo.setClickable(true);
+        btnEventDirection.setAlpha(1F);
+        btnEventDirection.setClickable(true);
+        selectedButton.setAlpha( 0.5F );
+        selectedButton.setClickable( false );
     }
 
     @Override
@@ -198,7 +224,6 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
-        itemOptionSelected( ITEM_DESCRIPTION );
     }
 
     private void attachDirections(Luogo luogo) {
@@ -209,25 +234,9 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
-        itemOptionSelected( ITEM_DIRECTIONS );
     }
 
 
-    private void itemOptionSelected(String option) {
-        btnEventInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        btnEventDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-
-        switch (option) {
-            case ITEM_DESCRIPTION:
-                btnEventInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.VISIBLE );
-                break;
-            case ITEM_DIRECTIONS:
-                btnEventDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.GONE );
-                break;
-        }
-    }
 
     public void checkPrefResult(boolean result) {
         if (result) {

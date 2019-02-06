@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +97,14 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
 
             @Override
             public void onError(String error) {
-
+                switch (error){
+                    case VOLLEY_ERROR_JSON:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        break;
+                    case VOLLEY_ERROR_CONNECTION:
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        break;
+                }
             }
         };
 

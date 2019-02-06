@@ -37,4 +37,15 @@ public interface MyListners {
     public interface CouponAdapterListener {
         public void onItemsSelected(Coupon item);
     }
+
+    public interface ReviewsList{
+        public void onReviewList();
+        public void onError(String error);
+    }
+
+    public interface ReviewSave{
+        public void onReviewAdded();
+        public void onError(String error);
+    }
+
 }

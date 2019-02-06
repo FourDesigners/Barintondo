@@ -42,6 +42,11 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     Luogo luogo;
     MyListners.SingleLuogo myListner;
     MyListners.Interests interestListner;
+    private int activeOption;
+    final int INFO=1;
+    final int DIRECTIONS=2;
+    final int REVIEWS=3;
+    final String SELECTED_OPTION="SelectedOption";
 
 
     @Override
@@ -49,6 +54,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
+
+        if(savedInstanceState!=null){
+            this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
+        } else this.activeOption=1;
 
         myListner=new MyListners.SingleLuogo() {
             @Override
@@ -129,6 +138,11 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState( outState );
+        outState.putInt( SELECTED_OPTION, activeOption );
+    }
 
     public void onLuogoLoaded(final Luogo myLuogo) {
         this.luogo=myLuogo;
@@ -160,12 +174,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLuogoInfo.setAlpha(0.5F);
-                btnLuogoInfo.setClickable(false);
-                btnLuogoDirection.setAlpha(1F);
-                btnLuogoDirection.setClickable(true);
-                btnLuogoReview.setAlpha(1F);
-                btnLuogoReview.setClickable(true);
+                activeOption =INFO;
+                setButtonOption( btnLuogoInfo );
                 attachDescription( myLuogo );
             }
         } );
@@ -174,12 +184,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLuogoInfo.setAlpha(1F);
-                btnLuogoInfo.setClickable(true);
-                btnLuogoDirection.setAlpha(0.5F);
-                btnLuogoDirection.setClickable(false);
-                btnLuogoReview.setAlpha(1F);
-                btnLuogoReview.setClickable(true);
+                activeOption =DIRECTIONS;
+                setButtonOption( btnLuogoDirection );
                 attachDirections( myLuogo );
             }
         } );
@@ -187,21 +193,39 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLuogoInfo.setAlpha(1F);
-                btnLuogoInfo.setClickable(true);
-                btnLuogoDirection.setAlpha(1F);
-                btnLuogoDirection.setClickable(true);
-                btnLuogoReview.setAlpha(0.5F);
-                btnLuogoReview.setClickable(false);
+                activeOption =REVIEWS;
+                setButtonOption( btnLuogoReview );
                 attachReviews( myLuogo );
             }
         } );
 
-        //imposto la tab INFO di default
-        btnLuogoInfo.setAlpha(0.5F);
-        btnLuogoInfo.setClickable(false);
-        attachDescription( myLuogo );
+        switch (activeOption){
+            case 1:
+                attachDescription( myLuogo );
+                setButtonOption( btnLuogoInfo );
+                break;
+            case 2:
+                attachDirections( myLuogo );
+                setButtonOption( btnLuogoDirection );
+                break;
+            case 3:
+                attachReviews( myLuogo );
+                setButtonOption( btnLuogoReview );
+                break;
+        }
 
+
+    }
+
+    private void setButtonOption(Button selectedButton){
+        btnLuogoInfo.setAlpha(1F);
+        btnLuogoInfo.setClickable(true);
+        btnLuogoDirection.setAlpha(1F);
+        btnLuogoDirection.setClickable(true);
+        btnLuogoReview.setAlpha(1F);
+        btnLuogoReview.setClickable(true);
+        selectedButton.setAlpha( 0.5F );
+        selectedButton.setClickable( false );
     }
 
     @Override
@@ -219,6 +243,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     }
 
     private void attachDescription(Luogo luogo) {
+        Log.i( TAG , TAG_CLASS + ": entered attachDescription" );
         Bundle arguments = new Bundle();
         arguments.putParcelable( EXTRA_LUOGO, luogo );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
@@ -226,10 +251,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
-        itemOptionSelected( ITEM_DESCRIPTION );
     }
 
     private void attachDirections(Luogo luogo) {
+        Log.i( TAG , TAG_CLASS + ": entered attachDirections" );
         Bundle arguments = new Bundle();
         arguments.putParcelable( EXTRA_LUOGO, luogo );
         LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
@@ -237,43 +262,20 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
-        itemOptionSelected( ITEM_DIRECTIONS );
     }
 
     private void attachReviews(Luogo luogo) {
+        Log.i( TAG , TAG_CLASS + ": entered attachReviews" );
         Bundle arguments = new Bundle();
         arguments.putString( ITEM_REVIEWS , luogo.getCod() );
         LuogoReviewsFragment fragment = new LuogoReviewsFragment();
         fragment.setArguments( arguments );
+        fragment.setRetainInstance(true);
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
-        itemOptionSelected( ITEM_REVIEWS );
     }
 
-    private void itemOptionSelected(String option) {
-        btnLuogoInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        btnLuogoDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-        btnLuogoReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlueVariant ) );
-
-        switch (option) {
-            case ITEM_DESCRIPTION:
-                btnLuogoInfo.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.VISIBLE );
-                myFrameVoteStars.showVoteFrame();
-                break;
-            case ITEM_DIRECTIONS:
-                btnLuogoDirection.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.GONE );
-                myFrameVoteStars.hideVoteFrame();
-                break;
-            case ITEM_REVIEWS:
-                btnLuogoReview.setBackgroundColor( getResources().getColor( R.color.colorSecondaryBlue ) );
-                myImageView.setVisibility( View.GONE );
-                myFrameVoteStars.hideVoteFrame();
-                break;
-        }
-    }
 
     public void checkPrefResult(boolean result) {
         if (result) {

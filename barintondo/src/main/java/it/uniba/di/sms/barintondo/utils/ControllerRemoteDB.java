@@ -63,7 +63,7 @@ public class ControllerRemoteDB implements Constants {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 String[] result = response.split( "," );
-                Log.i( TAG , "ControllerRemoteDB: entered onResponse(), request: " + result[0] + ", result: " + result[1] );
+                //Log.i( TAG , TAG_CLASS + ": entered onResponse(), request: " + result[0] + ", result: " + result[1] );
 
                 switch (result[0]) {
                     case REQUEST_CHECK_PREF:
@@ -83,7 +83,8 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_pref_managing ) , Toast.LENGTH_SHORT ).show();
+                Log.i( TAG , TAG_CLASS + ": entered manageInterests(), error on server" );
+                listner.onError( VOLLEY_ERROR_CONNECTION );
             }
         } ) {
             protected Map<String, String> getParams() {
@@ -331,10 +332,6 @@ public class ControllerRemoteDB implements Constants {
 
 
     public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListners.SingleLuogo listner) {
-        final ProgressDialog progressDialog = new ProgressDialog( context );
-        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
 
         String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -352,78 +349,65 @@ public class ControllerRemoteDB implements Constants {
 
                     JSONArray jsonArray = new JSONArray( response );
 
-                    if (jsonArray.length() == 0) {
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_LONG ).show();
-                        progressDialog.dismiss();
-                        return;
-                    }
-
                     if (jsonArray.length() == 1) {
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( 0 );
+                        JSONObject jsonObject = jsonArray.getJSONObject( 0 );
 
 
-                            luogo.setCod( jsonObject.getString( "cod" ) );
-                            luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
-                                luogo.setOraA( null );
-                                luogo.setOraC( null );
-                            } else {
-                                luogo.setOraA( jsonObject.getString( "oraA" ) );
-                                luogo.setOraC( jsonObject.getString( "oraC" ) );
-                            }
-                            if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
-                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
-                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
-                            }
-                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
-                                luogo.setVoto( jsonObject.getInt( "voto" ) );
-                            }
-
-                            if (requestLuogoType.equals( REQUEST_GET_EVENTS )) {
-                                evento = new Evento( luogo );
-
-                                if (jsonObject.getString( "codLuogo" ).equals( "null" ))
-                                    evento.setCodLuogo( null );
-                                else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
-
-                                if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
-                                    evento.setDataInizio( null );
-                                    evento.setDataFine( null );
-                                } else {
-                                    evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
-                                    evento.setDataFine( jsonObject.getString( "dataFine" ) );
-                                }
-
-                                listner.onEvento( evento );
-                            } else listner.onLuogo( luogo );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        luogo.setCod( jsonObject.getString( "cod" ) );
+                        luogo.setNome( jsonObject.getString( "nome" ) );
+                        luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                        if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                            luogo.setOraA( null );
+                            luogo.setOraC( null );
+                        } else {
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
                         }
+                        if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                            luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                            luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
+                        }
+                        luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                        luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                        luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                        luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                        if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
+                        }
+
+                        if (requestLuogoType.equals( REQUEST_GET_EVENTS )) {
+                            evento = new Evento( luogo );
+
+                            if (jsonObject.getString( "codLuogo" ).equals( "null" ))
+                                evento.setCodLuogo( null );
+                            else evento.setCodLuogo( jsonObject.getString( "codLuogo" ) );
+
+                            if (jsonObject.getString( "dataInizio" ).equals( "null" )) {
+                                evento.setDataInizio( null );
+                                evento.setDataFine( null );
+                            } else {
+                                evento.setDataInizio( jsonObject.getString( "dataInizio" ) );
+                                evento.setDataFine( jsonObject.getString( "dataFine" ) );
+                            }
+
+                            listner.onEvento( evento );
+                        } else listner.onLuogo( luogo );
+
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                    listner.onError( VOLLEY_ERROR_JSON );
+                    Log.i( TAG , TAG_CLASS + ": entered getLuogo(), error on pharsing Json" );
                 }
-
-
-                progressDialog.dismiss();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                listner.onError( VOLLEY_ERROR_CONNECTION );
+                Log.i( TAG , TAG_CLASS + ": entered getLuogo(), error on server" );
             }
         } ) {
 
@@ -441,9 +425,6 @@ public class ControllerRemoteDB implements Constants {
     }
 
     public void getLuoghiNear(final Luogo myLuogo , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
-        final ProgressDialog progressDialog = new ProgressDialog( context );
-        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
 
         String Url = "http://barintondo.altervista.org/get_luoghi_near.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -461,57 +442,54 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            Luogo luogo = new Luogo();
-                            luogo.setCod( jsonObject.getString( "cod" ) );
-                            luogo.setNome( jsonObject.getString( "nome" ) );
-                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
-                            luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                            luogo.setCitta( jsonObject.getString( "citta" ) );
-                            if (jsonObject.getString( "oraA" ).equals( "null" )) {
-                                luogo.setOraA( null );
-                                luogo.setOraC( null );
-                            } else {
-                                luogo.setOraA( jsonObject.getString( "oraA" ) );
-                                luogo.setOraC( jsonObject.getString( "oraC" ) );
-                            }
-                            if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
-                                luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
-                                luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
-                            }
-                            luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
-                            luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
-                            luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
-                            luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
-                            if (!jsonObject.getString( "voto" ).equals( "null" )) {
-                                luogo.setVoto( jsonObject.getInt( "voto" ) );
-                            }
+                        JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            luogo.setDistance( luogo.calculateDistanceTo( myLuogo ) );
-                            luogoList.add( luogo );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                        Luogo luogo = new Luogo();
+                        luogo.setCod( jsonObject.getString( "cod" ) );
+                        luogo.setNome( jsonObject.getString( "nome" ) );
+                        luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
+                        luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                        luogo.setCitta( jsonObject.getString( "citta" ) );
+                        if (jsonObject.getString( "oraA" ).equals( "null" )) {
+                            luogo.setOraA( null );
+                            luogo.setOraC( null );
+                        } else {
+                            luogo.setOraA( jsonObject.getString( "oraA" ) );
+                            luogo.setOraC( jsonObject.getString( "oraC" ) );
                         }
+                        if (!jsonObject.getString( "latitudine" ).equals( "null" )) {
+                            luogo.setLatitudine( Float.valueOf( jsonObject.getString( "latitudine" ) ) );
+                            luogo.setLongitudine( Float.valueOf( jsonObject.getString( "longitudine" ) ) );
+                        }
+                        luogo.setThumbnailLink( jsonObject.getString( "thumbnail" ) );
+                        luogo.setDescrizione_en( jsonObject.getString( "descrizione_en" ) );
+                        luogo.setDescrizione_it( jsonObject.getString( "descrizione_it" ) );
+                        luogo.setIndirizzo( jsonObject.getString( "indirizzo" ) );
+                        if (!jsonObject.getString( "voto" ).equals( "null" )) {
+                            luogo.setVoto( jsonObject.getInt( "voto" ) );
+                        }
+
+                        luogo.setDistance( luogo.calculateDistanceTo( myLuogo ) );
+                        luogoList.add( luogo );
+
+
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                    mListner.onError( VOLLEY_ERROR_JSON );
+                    Log.i( TAG , TAG_CLASS + ": entered getLuoghiNear(), error on pharsing Json" );
                 }
                 mListner.onList();
-                progressDialog.dismiss();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_luoghi ) , Toast.LENGTH_SHORT ).show();
+                mListner.onError( VOLLEY_ERROR_CONNECTION );
+                Log.i( TAG , TAG_CLASS + ": entered getLuoghiNear(), error on server" );
             }
         } ) {
 
@@ -554,19 +532,19 @@ public class ControllerRemoteDB implements Constants {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
-                                JSONObject jsonObject = jsonArray.getJSONObject( i );
+                            JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                                Coupon coupon = new Coupon();
-                                coupon.setCod( jsonObject.getString( "codCoupon" ) );
-                                coupon.setCodLuogo( jsonObject.getString( "cod" ) );
-                                coupon.setLuogo( jsonObject.getString( "nome" ) );
-                                coupon.setScadenza( jsonObject.getString( "scadenza" ) );
-                                coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
-                                coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
-                                coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
+                            Coupon coupon = new Coupon();
+                            coupon.setCod( jsonObject.getString( "codCoupon" ) );
+                            coupon.setCodLuogo( jsonObject.getString( "cod" ) );
+                            coupon.setLuogo( jsonObject.getString( "nome" ) );
+                            coupon.setScadenza( jsonObject.getString( "scadenza" ) );
+                            coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
+                            coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
+                            coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
 
-                                //adding items to itemsList
-                                tempCouponList.add( coupon );
+                            //adding items to itemsList
+                            tempCouponList.add( coupon );
 
 
                         }
@@ -610,13 +588,9 @@ public class ControllerRemoteDB implements Constants {
 
     }
 
-    public void getReviewsList(final String codLuogo , final List<Review> reviewsList , final ReviewAdapter mAdapter) {
-        final ProgressDialog progressDialog = new ProgressDialog( context );
-        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
-
+    public void getReviewsList(final String codLuogo , final List<Review> reviewsList , final MyListners.ReviewsList mReviewListner) {
         reviewsList.clear();
-
+        //Log.i( TAG , TAG_CLASS+": entered getReviewList" );
         String Url = "http://barintondo.altervista.org/manager_review.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
@@ -631,45 +605,37 @@ public class ControllerRemoteDB implements Constants {
                     JSONArray jsonArray = new JSONArray( response );
 
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                            String userName = jsonObject.getString( "nickname" );
-                            String textReview = jsonObject.getString( "commento" );
-                            int vote = jsonObject.getInt( "voto" );
-                            String date = jsonObject.getString( "data" );
-                            Review review = new Review( userName , textReview , vote , date );
-                            //Log.i(TAG, "TEST: "+review.getUserName()+", "+review.getDate()+", "+review.getReviewText()+", "+review.getVote());
-                            //adding items to itemsList
-                            reviewsList.add( review );
-                            Log.i( TAG , "Test" );
+                        JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.i( TAG , "ControllerRemoteDB getReviewsList: entered first catch" );
-                            Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
-                        }
+                        String userName = jsonObject.getString( "nickname" );
+                        String textReview = jsonObject.getString( "commento" );
+                        int vote = jsonObject.getInt( "voto" );
+                        String date = jsonObject.getString( "data" );
+                        Review review = new Review( userName , textReview , vote , date );
+                        //adding items to itemsList
+                        reviewsList.add( review );
+
+
+
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    Log.i( TAG , "ControllerRemoteDB getReviewsList: entered second catch" );
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
+                    Log.i( TAG , TAG_CLASS + ": entered getReviewList(), error on pharsing Json" );
+                    mReviewListner.onError( VOLLEY_ERROR_JSON );
                 }
 
-                mAdapter.notifyDataSetChanged();
-                mAdapter.onReviewLoaded( reviewsList.size() );
-                progressDialog.dismiss();
+                mReviewListner.onReviewList();
 
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 //This code is executed if there is an error.
-                Log.i( TAG , "ControllerRemoteDB getReviewsList: entered onErrorResponse()" );
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_get_review ) , Toast.LENGTH_SHORT ).show();
+                Log.i( TAG , TAG_CLASS + ": entered getReviewList(), error on server" );
+                mReviewListner.onError( VOLLEY_ERROR_CONNECTION );
             }
         } ) {
 
@@ -685,8 +651,8 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void saveReview(final String reviewText , final String codLuogo , final int voto , final LuogoReviewsFragment myReviewFragment) {
-        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
+    public void saveReview(final String reviewText , final String codLuogo , final int voto , final MyListners.ReviewSave mReviewListner) {
+        // Log.i( TAG , TAG_CLASS + ":entered saveReview( )");
 
         String Url = "http://barintondo.altervista.org/manager_review.php";
 
@@ -696,19 +662,22 @@ public class ControllerRemoteDB implements Constants {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Log.i( "Review" , getClass().getSimpleName() + ":entered saveReview( )"+response);
+                //Log.i( TAG , TAG_CLASS + ": entered saveReview( )"+response);
 
                 if (response.equals( REQUEST_RESULT_OK )) {
-                    myReviewFragment.onSaveReviewResult();
-                } else
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
-
+                    mReviewListner.onReviewAdded();
+                } else {
+                    // non dovrebbe mai entrare in questo ramo
+                    Log.i( TAG , TAG_CLASS + ": entered saveReview(), error on savinReview" );
+                    mReviewListner.onError( VOLLEY_ERROR_JSON );
+                }
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText( context , context.getResources().getString( R.string.str_fail_save_review ) , Toast.LENGTH_SHORT ).show();
+                mReviewListner.onError( VOLLEY_ERROR_CONNECTION );
+                Log.i( TAG , TAG_CLASS + ": entered saveReview(), error on server" );
             }
         } ) {
             protected Map<String, String> getParams() {
