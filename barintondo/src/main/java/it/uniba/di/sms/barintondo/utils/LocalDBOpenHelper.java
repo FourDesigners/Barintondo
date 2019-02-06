@@ -178,7 +178,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         return email;
     }
 
-    public void getCouponList(Context context, List<Coupon> couponList){
+    public static void getCouponList(Context context, List<Coupon> couponList){
         couponList.clear();
         //prelevo coupon dal db
         LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );

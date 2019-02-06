@@ -104,7 +104,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         couponListListner = new MyListners.CouponList() {
             @Override
             public void onCouponList() {
-                controllerRemoteDB.getCouponList( couponList, couponListListner );
+                LocalDBOpenHelper.getCouponList( getApplicationContext(), couponList );
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -124,7 +124,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         //first time populating
         //fetchItems();
         controllerRemoteDB = new ControllerRemoteDB( this );
-
+        controllerRemoteDB.getCouponList( couponList, couponListListner );
 
     }
 
