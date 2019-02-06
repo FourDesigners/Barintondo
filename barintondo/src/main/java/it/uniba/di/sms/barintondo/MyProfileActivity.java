@@ -14,10 +14,14 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -79,6 +83,7 @@ public class MyProfileActivity extends AppCompatActivity {
         myCursor.close();
         myDB.close();
 
+        /*
         final ImageView imageView2 = findViewById(R.id.imageViewProfile);
         imageView2.setTag(R.drawable.closedeye);
         imageView2.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +104,45 @@ public class MyProfileActivity extends AppCompatActivity {
                     case R.drawable.closedeye:
                         imageView2.setImageResource(R.drawable.openeye);
                         imageView2.setTag(R.drawable.openeye);
+                        password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        password.setSelection(password.getText().length());
+                        break;
+                }
+            }
+        });
+        */
+
+        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
+        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
+        final ImageSwitcher imageSwitcher;
+        imageSwitcher = findViewById(R.id.imageSwitcher);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView view = new ImageView(getApplicationContext());
+                return view;
+            }
+        });
+        imageSwitcher.setImageResource(R.drawable.closedeye);
+        imageSwitcher.setTag(R.drawable.closedeye);
+        imageSwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer integer = (Integer) imageSwitcher.getTag();
+                integer = integer == null ? 0 : integer;
+                imageSwitcher.setInAnimation(in);
+                imageSwitcher.setOutAnimation(out);
+                switch(integer) {
+                    case R.drawable.openeye:
+                        imageSwitcher.setImageResource(R.drawable.closedeye);
+                        imageSwitcher.setTag(R.drawable.closedeye);
+                        password.setInputType(InputType.TYPE_CLASS_TEXT |
+                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        password.setSelection(password.getText().length());
+                        break;
+                    case R.drawable.closedeye:
+                        imageSwitcher.setImageResource(R.drawable.openeye);
+                        imageSwitcher.setTag(R.drawable.openeye);
                         password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                         password.setSelection(password.getText().length());
                         break;

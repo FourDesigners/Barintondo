@@ -114,6 +114,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         Intent intent = new Intent( this, LuogoDetailActivity.class );
         intent.putExtra( INTENT_LUOGO_COD, myCoupon.getCodLuogo() );
         startActivity( intent );
+        overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
     }
 
     @Override
