@@ -345,6 +345,8 @@
     <string name="str_fail_save_review">Failed to save your review, try again later</string>
     <string name="couponDescLabelTxt">Description</string>
     <string name="no_coupons">You have not coupons</string>
+    <string name="strInsertPassword">Insert password</string>
+    <string name="strVerifyPassword">Verify account</string>
 
 
 </resources>

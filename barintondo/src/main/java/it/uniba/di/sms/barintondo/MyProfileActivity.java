@@ -1,6 +1,9 @@
 package it.uniba.di.sms.barintondo;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,9 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -44,9 +49,13 @@ public class MyProfileActivity extends AppCompatActivity {
     private EditText username;
     private TextView textViewEmail;
     private EditText password;
+    private boolean locked = true;
+    private Animation in;
+    private Animation out;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
@@ -79,6 +88,25 @@ public class MyProfileActivity extends AppCompatActivity {
         textViewEmail.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_EMAIL)));
         password = findViewById(R.id.myPassBox);
         password.setText(myCursor.getString(myCursor.getColumnIndex(Constants.COLUMN_PASSWORD)));
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    if(locked) {
+                        showDialog();
+                    }
+                }
+            }
+        });
+        password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(locked) {
+                    showDialog();
+                }
+            }
+        });
+
         //chiudo db e cursore
         myCursor.close();
         myDB.close();
@@ -111,11 +139,61 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         */
+        in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
+        out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
 
-        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
-        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
         final ImageSwitcher imageSwitcher;
         imageSwitcher = findViewById(R.id.imageSwitcher);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView view = new ImageView(getApplicationContext());
+                return view;
+            }
+        });
+        imageSwitcher.setImageResource(R.drawable.closedeye);
+        imageSwitcher.setTag(R.drawable.closedeye);
+        imageSwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(locked) {
+                    showDialog();
+                }else {
+                    Integer integer = (Integer) imageSwitcher.getTag();
+                    integer = integer == null ? 0 : integer;
+                    imageSwitcher.setInAnimation(in);
+                    imageSwitcher.setOutAnimation(out);
+                    switch(integer) {
+                        case R.drawable.openeye:
+                            imageSwitcher.setImageResource(R.drawable.closedeye);
+                            imageSwitcher.setTag(R.drawable.closedeye);
+                            password.setInputType(InputType.TYPE_CLASS_TEXT |
+                                    InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            password.setSelection(password.getText().length());
+                            break;
+                        case R.drawable.closedeye:
+                            imageSwitcher.setImageResource(R.drawable.openeye);
+                            imageSwitcher.setTag(R.drawable.openeye);
+                            password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            password.setSelection(password.getText().length());
+                            break;
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void showDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setMessage(getString(R.string.strInsertPassword))
+                .setTitle(getString(R.string.strVerifyPassword))
+                .setCancelable( false );
+
+        View view = getLayoutInflater().inflate( R.layout.unlock_password , null );
+
+        final EditText editText = view.findViewById( R.id.editTextPassword );
+        final ImageSwitcher imageSwitcher = view.findViewById(R.id.imageSwitcher);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -136,20 +214,36 @@ public class MyProfileActivity extends AppCompatActivity {
                     case R.drawable.openeye:
                         imageSwitcher.setImageResource(R.drawable.closedeye);
                         imageSwitcher.setTag(R.drawable.closedeye);
-                        password.setInputType(InputType.TYPE_CLASS_TEXT |
+                        editText.setInputType(InputType.TYPE_CLASS_TEXT |
                                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        password.setSelection(password.getText().length());
+                        editText.setSelection(editText.getText().length());
                         break;
                     case R.drawable.closedeye:
                         imageSwitcher.setImageResource(R.drawable.openeye);
                         imageSwitcher.setTag(R.drawable.openeye);
-                        password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        password.setSelection(password.getText().length());
+                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        editText.setSelection(editText.getText().length());
                         break;
                 }
             }
         });
+        builder.setView( view );
 
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton( getResources().getString( R.string.strConfirm ) , new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog , int id) {
+                String email = textViewEmail.getText().toString();
+                String password = editText.getText().toString();
+                verify(email, password);
+            }
+        } );
+        builder.setNeutralButton( getResources().getString( R.string.strCancel ) , new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog , int id) {
+
+            }
+        } );
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -220,6 +314,36 @@ public class MyProfileActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put("nickname", nickname);
+                MyData.put("user", email);
+                MyData.put("pass", password);
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add(MyStringRequest);
+    }
+
+    private void verify(final String email, final String password) {
+        String Url = "http://barintondo.altervista.org/verify.php";
+
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.contains("equals")) {
+                    locked = false;
+                }
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put("user", email);
                 MyData.put("pass", password);
                 return MyData;
