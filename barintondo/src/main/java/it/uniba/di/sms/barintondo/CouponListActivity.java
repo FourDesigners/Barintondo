@@ -1,9 +1,11 @@
 package it.uniba.di.sms.barintondo;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -22,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
@@ -57,6 +61,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
     private static CouponListActivity mInstance;
     ControllerRemoteDB controllerRemoteDB;
+    private boolean arrow = false;
 
 
 
@@ -151,6 +156,35 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         icon.setColorFilter(Color.WHITE);
         icon2.setColorFilter(Color.WHITE);
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
+                ActionBar actionbar = getSupportActionBar();
+                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+                upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+                Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled(true);
+                arrow = true;
+            }
+        });
+
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                ActionBar actionbar = getSupportActionBar();
+                assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+                actionbar.setDisplayHomeAsUpEnabled( true );
+                actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+                invalidateOptionsMenu();
+                hideKeyboard();
+                arrow = false;
+                return true;
+            }
+        });
+
         // listening to search query text change
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
             @Override
@@ -173,18 +207,29 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Boolean open = myNavigationDrawer.openMenu( item );
-        if (open) return open;
+        if(!arrow) {
+            Boolean open = myNavigationDrawer.openMenu( item );
+            if (open) return open;
 
-        switch (id) {
-            case R.id.home:
-                myNavigationDrawer.openMenu( item );
-            case R.id.app_bar_search:
-                break;
+            switch (id) {
+                case R.id.home:
+                    myNavigationDrawer.openMenu( item );
+                case R.id.app_bar_search:
+                    break;
 
+            }
+            return super.onOptionsItemSelected( item );
+        }else {
+            arrow = false;
+            ActionBar actionbar = getSupportActionBar();
+            assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
+            actionbar.setDisplayHomeAsUpEnabled( true );
+            actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
+            mAdapter.getFilter().filter("");
+            invalidateOptionsMenu();
+            hideKeyboard();
+            return true;
         }
-
-        return super.onOptionsItemSelected( item );
     }
 
     @Override
@@ -207,6 +252,11 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
     public static synchronized CouponListActivity getInstance() {
         return mInstance;
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
 }
