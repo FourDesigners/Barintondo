@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyProfileActivity">
+
+    <TextView
+        android:id="@+id/myNicknameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/myUser_label"
+        app:layout_constraintStart_toStartOf="@+id/myUsernameBox"
+        app:layout_constraintTop_toBottomOf="@+id/myProfileToolbar" />
+
+    <EditText
+        android:id="@+id/myUsernameBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/myNicknameLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:id="@+id/myEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/myEmail_label"
+        app:layout_constraintStart_toStartOf="@+id/myNicknameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myUsernameBox" />
+
+    <TextView
+        android:id="@+id/myEmailBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ems="15"
+        app:layout_constraintStart_toStartOf="@+id/myEmailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myEmailLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/myUsernameBox"
+        app:layout_constraintEnd_toStartOf="@+id/myUsernameBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/myUsernameBox"
+        app:srcCompat="@drawable/ic_profile"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/myEmailBox"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/myEmailBox"
+        app:srcCompat="@drawable/ic_mail_outline"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox"
+        app:srcCompat="@drawable/ic_key"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/myPassLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/myPass_label"
+        app:layout_constraintStart_toStartOf="@+id/myEmailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myEmailBox" />
+
+    <EditText
+        android:id="@+id/myPassBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:text="@string/str_name"
+        app:layout_constraintStart_toStartOf="@+id/myPassLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myPassLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <!--
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/closedeye"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/myPassBox"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox"
+        tools:ignore="ContentDescription" />
+        -->
+
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="@dimen/widthEye"
+        android:layout_height="@dimen/heightEye"
+        app:layout_constraintBottom_toBottomOf="@+id/myPassBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/myPassBox"
+        app:layout_constraintTop_toTopOf="@+id/myPassBox">
+    </ImageSwitcher>
+
+    <TextView
+        android:id="@+id/textViewPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="@+id/myPassBox"
+        app:layout_constraintTop_toBottomOf="@+id/myPassBox" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/myProfileToolbar"
+        style="@style/myToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorWhite" />
+</android.support.constraint.ConstraintLayout>
