@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     private static CouponListActivity mInstance;
     ControllerRemoteDB controllerRemoteDB;
     private boolean arrow = false;
+    private TextView textViewNoCoupon;
 
 
 
@@ -91,9 +93,6 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
                 (DrawerLayout) findViewById( R.id.drawer_layout ) );
         myNavigationDrawer.build();
 
-
-
-
         //list and adapter setup
         couponList = new ArrayList<>();
         mAdapter = new CouponAdapter( this , couponList , this );
@@ -110,6 +109,10 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
             @Override
             public void onCouponList() {
                 LocalDBOpenHelper.getCouponList( getApplicationContext(), couponList );
+                if(couponList.isEmpty()) {
+                    textViewNoCoupon = findViewById(R.id.text_view_no_coupons);
+                    textViewNoCoupon.setVisibility(View.VISIBLE);
+                }
                 mAdapter.notifyDataSetChanged();
             }
 

@@ -15,6 +15,7 @@ import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -96,6 +97,28 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         arrayTags = getResources().getStringArray( R.array.categoriesTags );
         setChipGroup(chipGroup);
 
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                interestsList = new ArrayList<>();
+                MyListners.ItemsAdapterListener c = new MyListners.ItemsAdapterListener() {
+                    @Override
+                    public void onItemsSelected(Luogo item) {
+
+                    }
+                };
+                mAdapter = new LuogoAdapter( getApplicationContext(), interestsList, c);
+                //recyclerView setup
+                recyclerView = findViewById( R.id.item_list_recycler_view );
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
+                recyclerView.setLayoutManager( mLayoutManager );
+                recyclerView.addItemDecoration( new MyDividerItemDecoration( getApplicationContext() , DividerItemDecoration.VERTICAL , 36 ) );
+                recyclerView.setItemAnimator( new DefaultItemAnimator() );
+                recyclerView.setAdapter( mAdapter );
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         interestsList = new ArrayList<>();
         mAdapter = new LuogoAdapter( this , interestsList , this );
