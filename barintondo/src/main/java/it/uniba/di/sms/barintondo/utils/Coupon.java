@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.Locale;
 
-public class CouponLuogo implements Parcelable {
+public class Coupon implements Parcelable {
     private String cod;
     private String email;
     private String codLuogo;
@@ -14,11 +14,11 @@ public class CouponLuogo implements Parcelable {
     private String descrizione_en; //DA METTERE PRIVATE
     private String sottoCat;
 
-    public CouponLuogo() {
+    public Coupon() {
     }
 
-    public CouponLuogo(String newCod , String newEmail , String newCodLuogo, String newLuogo , String newScadenza ,
-                       String newDescrizione_it, String newDescrizione_en, String newSottoCat) {
+    public Coupon(String newCod , String newEmail , String newCodLuogo, String newLuogo , String newScadenza ,
+                  String newDescrizione_it, String newDescrizione_en, String newSottoCat) {
         cod = newCod;
         email = newEmail;
         codLuogo = newCodLuogo;
@@ -29,7 +29,7 @@ public class CouponLuogo implements Parcelable {
         sottoCat = newSottoCat;
     }
 
-    protected CouponLuogo(Parcel in) {
+    protected Coupon(Parcel in) {
         cod = in.readString();
         email = in.readString();
         codLuogo = in.readString();
@@ -41,15 +41,15 @@ public class CouponLuogo implements Parcelable {
     }
 
     //Serve per la parcelizzazione negli intent
-    public static final Creator<CouponLuogo> CREATOR = new Creator<CouponLuogo>() {
+    public static final Creator<Coupon> CREATOR = new Creator<Coupon>() {
         @Override
-        public CouponLuogo createFromParcel(Parcel in) {
-            return new CouponLuogo( in );
+        public Coupon createFromParcel(Parcel in) {
+            return new Coupon( in );
         }
 
         @Override
-        public CouponLuogo[] newArray(int size) {
-            return new CouponLuogo[size];
+        public Coupon[] newArray(int size) {
+            return new Coupon[size];
         }
     };
 

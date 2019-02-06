@@ -22,14 +22,15 @@ import java.util.List;
 
 import it.uniba.di.sms.barintondo.R;
 
-public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.MyViewHolder>
+public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHolder>
         implements Filterable {
     private Context context;
-    private List<CouponLuogo> couponList;
-    private List<CouponLuogo> itemListFiltered;
-    private ItemsAdapterListener listener;
+    private List<Coupon> couponList;
+    private List<Coupon> itemListFiltered;
+    private MyListners.CouponAdapterListener couponAdapterListener;
 
-    private static final String TAG = CouponLuogoAdapter.class.getSimpleName();
+
+    private static final String TAG = CouponAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView codLuogo, luogo, scadenza;
@@ -45,17 +46,17 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // send selected CouponLuogo in callback
-                    listener.onItemsSelected(itemListFiltered.get(getAdapterPosition()));
+                    // send selected Coupon in callback
+                    couponAdapterListener.onItemsSelected(itemListFiltered.get(getAdapterPosition()));
                 }
             });
         }
     }
 
 
-    public CouponLuogoAdapter(Context context, List<CouponLuogo> couponList, ItemsAdapterListener listener) {
+    public CouponAdapter(Context context, List<Coupon> couponList, MyListners.CouponAdapterListener listener) {
         this.context = context;
-        this.listener = listener;
+        this.couponAdapterListener = listener;
         this.couponList = couponList;
         this.itemListFiltered = couponList;
     }
@@ -71,7 +72,7 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        CouponLuogo couponL = itemListFiltered.get(position);
+        Coupon couponL = itemListFiltered.get(position);
 
         //scelgo icona da assegnare
         if(InternetConnection.isNetworkAvailable(context)) {
@@ -121,8 +122,8 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
                 if (charString.isEmpty()) {
                     itemListFiltered = couponList;
                 } else {
-                    List<CouponLuogo> filteredList = new ArrayList<>();
-                    for (CouponLuogo row : couponList) {
+                    List<Coupon> filteredList = new ArrayList<>();
+                    for (Coupon row : couponList) {
 
                         if (row.getLuogo().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
@@ -139,14 +140,10 @@ public class CouponLuogoAdapter extends RecyclerView.Adapter<CouponLuogoAdapter.
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemListFiltered = (ArrayList<CouponLuogo>) filterResults.values;
+                itemListFiltered = (ArrayList<Coupon>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
-    }
-
-    public interface ItemsAdapterListener {
-        void onItemsSelected(CouponLuogo item);
     }
 
 }

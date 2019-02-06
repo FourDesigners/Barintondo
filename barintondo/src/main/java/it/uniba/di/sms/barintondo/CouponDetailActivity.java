@@ -14,7 +14,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,16 +35,16 @@ import java.util.Set;
 
 import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.CouponLuogo;
+import it.uniba.di.sms.barintondo.utils.Coupon;
+import it.uniba.di.sms.barintondo.utils.MyListners;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
 
-    private static final String TAG = CouponDetailActivity.class.getSimpleName();
-
+    private String TAG_CLASS=getClass().getSimpleName();
     Toolbar myToolbar;
     ImageView myImageView;
     TextView desc;
-    CouponLuogo myCoupon;
+    Coupon myCoupon;
     Button useBtn, btnDetailLuogo;
 
     //BT

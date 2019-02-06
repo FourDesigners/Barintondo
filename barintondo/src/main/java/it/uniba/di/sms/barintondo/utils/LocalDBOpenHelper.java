@@ -5,11 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocalDBOpenHelper extends SQLiteOpenHelper {
@@ -115,7 +113,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         return found;
     }
 
-    public static void insertCoupon(CouponLuogo newCoupon, LocalDBOpenHelper openHelper) {
+    public static void insertCoupon(Coupon newCoupon, LocalDBOpenHelper openHelper) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_COD_COUPON, newCoupon.getCod());
@@ -180,7 +178,8 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         return email;
     }
 
-    public static void getCouponList(Context context, List<CouponLuogo> couponList){
+    public static void getCouponList(Context context, List<Coupon> couponList){
+        couponList.clear();
         //prelevo coupon dal db
         LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
@@ -192,7 +191,7 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         myCursor.moveToFirst();
         while(!(myCursor.isAfterLast())) { //controllo se il cursore ha oltrepassato l'ultimo elemento
             //Log.i("LocalDBOpenHelper", "i= " + i);
-            CouponLuogo mCoupon = new CouponLuogo();
+            Coupon mCoupon = new Coupon();
             mCoupon.setCod(myCursor.getString(myCursor.getColumnIndex(COLUMN_COD_COUPON)));
             mCoupon.setCodLuogo(myCursor.getString(myCursor.getColumnIndex(COLUMN_COD_LUOGO)));
             mCoupon.setLuogo(myCursor.getString(myCursor.getColumnIndex(COLUMN_LUOGO)));

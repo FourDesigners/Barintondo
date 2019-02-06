@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.LuogoReviewsFragment;
 import it.uniba.di.sms.barintondo.R;
@@ -529,12 +528,9 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getCouponList(final List<CouponLuogo> couponList , final CouponLuogoAdapter mAdapter) {
+    public void getCouponList(final List<Coupon> couponList , final MyListners.CouponList couponListListner) {
         //couponList.clear();
 
-        final ProgressDialog progressDialog = new ProgressDialog( context );
-        progressDialog.setMessage( context.getResources().getString( R.string.loadingMessage ) );
-        progressDialog.show();
 
         if (InternetConnection.isNetworkAvailable( context )) {
             //prelievo informazioni aggiornate dal server e aggiornamento DB locale
@@ -553,15 +549,14 @@ public class ControllerRemoteDB implements Constants {
                     //The String 'response' contains the server's response.
                     try {
 
-                        List<CouponLuogo> tempCouponList = new ArrayList<>();
+                        List<Coupon> tempCouponList = new ArrayList<>();
                         JSONArray jsonArray = new JSONArray( response );
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
-                            try {
                                 JSONObject jsonObject = jsonArray.getJSONObject( i );
 
-                                CouponLuogo coupon = new CouponLuogo();
+                                Coupon coupon = new Coupon();
                                 coupon.setCod( jsonObject.getString( "codCoupon" ) );
                                 coupon.setCodLuogo( jsonObject.getString( "cod" ) );
                                 coupon.setLuogo( jsonObject.getString( "nome" ) );
@@ -573,32 +568,28 @@ public class ControllerRemoteDB implements Constants {
                                 //adding items to itemsList
                                 tempCouponList.add( coupon );
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
-                            }
+
                         }
                         LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper( context , Constants.DB_NAME , null , 1 );
                         LocalDBOpenHelper.deleteCoupon( couponOpenHelper );
-                        for (CouponLuogo c : tempCouponList) {
+                        for (Coupon c : tempCouponList) {
                             LocalDBOpenHelper.insertCoupon( c , couponOpenHelper );
                         }
                     } catch (JSONException e2) {
                         e2.printStackTrace();
-                        progressDialog.dismiss();
-                        Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                        Log.i( TAG , TAG_CLASS + ": entered getCouponList(), error pharsing Json" );
+                        couponListListner.onError( VOLLEY_ERROR_JSON );
                     }
                     couponList.clear();
-                    LocalDBOpenHelper.getCouponList( context , couponList );
-                    mAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
+
+                    couponListListner.onCouponList();
                 }
             } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     //This code is executed if there is an error.
-                    progressDialog.dismiss();
-                    Toast.makeText( context , context.getResources().getString( R.string.str_fail_coupon_managing ) , Toast.LENGTH_SHORT ).show();
+                    Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error on server" );
+                    couponListListner.onError( VOLLEY_ERROR_CONNECTION );
                 }
             } ) {
 
@@ -613,14 +604,9 @@ public class ControllerRemoteDB implements Constants {
         } else {
             Toast.makeText( context , context.getResources().getString( R.string.offlineCoupons ) , Toast.LENGTH_SHORT ).show();
             couponList.clear();
-            LocalDBOpenHelper.getCouponList( context , couponList );
-            mAdapter.notifyDataSetChanged();
-            progressDialog.dismiss();
+            //anche se non sono stati caricati i coupon dal server da il callback per caricare quelli dal db locale
+            couponListListner.onCouponList();
         }
-        //a prescindere dall'esito del controllo sulla rete, carico i dati dei coupon (aggiornati o meno) dal db locale
-//        LocalDBOpenHelper.getCouponList(context, couponList);
-//        mAdapter.notifyDataSetChanged();
-//        progressDialog.dismiss();
 
     }
 

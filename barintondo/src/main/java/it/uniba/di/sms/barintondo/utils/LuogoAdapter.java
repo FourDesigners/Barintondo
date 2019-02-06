@@ -37,7 +37,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     private Context context;
     private List<Luogo> itemList;
     private List<Luogo> itemListFiltered;
-    private ItemsAdapterListener listener;
+    private MyListners.ItemsAdapterListener listener;
     private Location sourceLuogo;
     private boolean isRequestFormLuogoDetail;
 
@@ -70,7 +70,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
 
-    public LuogoAdapter(Context context , List<Luogo> itemList , ItemsAdapterListener listener) {
+    public LuogoAdapter(Context context , List<Luogo> itemList , MyListners.ItemsAdapterListener listener) {
         this.context = context;
         this.listener = listener;
         this.itemList = itemList;
@@ -340,10 +340,6 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                 notifyDataSetChanged();
             }
         };
-    }
-
-    public interface ItemsAdapterListener {
-        void onItemsSelected(Luogo item);
     }
 
     public void setActualLuogo(Luogo luogo) {
