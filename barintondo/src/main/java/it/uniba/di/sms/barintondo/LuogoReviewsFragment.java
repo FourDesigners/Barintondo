@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -211,7 +212,6 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
                 controllerRemoteDB.saveReview( reviewEditText.getText().toString() , itemCod , yourVote , mReviewSaveListner );
             }
         } );
-
         return rootView;
     }
 
@@ -239,6 +239,22 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             outState.putString( MY_REVIEW_WRITTEN_TEXT , myReviewText );
         }
     }
+
+    /*
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            activeOpion = savedInstanceState.getInt( REVIEW_OPTION_SELECTED );
+            myReviewText = savedInstanceState.getString( MY_REVIEW_WRITTEN_TEXT , "" );
+            myReviewVoteStar = savedInstanceState.getInt( MY_REVIEW_VOTE_STAR , 1 );
+        } else {
+            myReviewVoteStar=1;
+            activeOpion = 1;
+        }
+        activateSection(activeOpion);
+    }
+    */
 
     private void starSelected(int j , Resources res) {
         yourVote = j;

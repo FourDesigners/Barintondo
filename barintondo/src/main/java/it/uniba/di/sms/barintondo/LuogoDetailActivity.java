@@ -157,11 +157,6 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState( outState );
-        outState.putInt( SELECTED_OPTION, activeOption );
-    }
 
     public void onLuogoLoaded(final Luogo myLuogo) {
         this.luogo=myLuogo;
