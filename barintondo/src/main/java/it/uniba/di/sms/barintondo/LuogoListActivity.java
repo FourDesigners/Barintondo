@@ -211,11 +211,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
                         switchCategories.animate().translationY(0).setInterpolator(new DecelerateInterpolator(0.1f)).start();
                         switchCategories.setVisibility(View.INVISIBLE);
                         break;
-                    default:
-                        switchCategories.animate().translationY(0).setInterpolator(new DecelerateInterpolator(0.1f)).start();
-                        switchCategories.setVisibility(View.INVISIBLE);
-                        break;
-
                 }
             }
 
