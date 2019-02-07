@@ -208,4 +208,5 @@
     </string-array>
     <string name="strInsertPassword">Inserire password</string>
     <string name="strVerifyPassword">Verifica account</string>
+    <string name="errorReceived">Qualcosa è andato storto. Riprovare più tardi.</string>
 </resources>

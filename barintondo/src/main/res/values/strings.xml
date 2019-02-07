@@ -10,6 +10,7 @@
     <string name="home" translatable="false">Home</string>
     <string name="contacts_label">Utility numbers</string>
     <string name="strBari" translatable="false">Bari</string>
+    <string name="contacts">Useful numbers</string>
 
     <!--Drawer options MAI USATE tranne categories_option-->
     <string name="navigation_label">Navigate</string>
@@ -210,6 +211,7 @@
     <string name="moreBtn">More</string>
     <string name="weatherNotAvailableMsg">Network is not available. Please check your internet connection and try again.</string>
     <string name="webUrl" translatable="false">https://www.ilmeteo.it/meteo/Bari</string>
+    <string name="str_meteo">Meteo</string>
 
     <!--LUOGOLIST ACTIVITY-->
     <string name="attractionsToolbarTitle">Attractions</string>
@@ -331,9 +333,9 @@
     <string name="connectedToMsg">Connected to: </string>
     <string name="connectionInterruptedMsg">Interaction Stopped</string>
     <string name="btDisabledMsg">Bluetooth still disabled, turn off application!</string>
-    <string name="str_meteo">Meteo</string>
     <string name="unableToConnectMsg">Unable to connect device</string>
-    <string name="contacts">Useful numbers</string>
+    <string name="errorReceived">Something went wrong. Please try again later.</string>
+
 
 
     <!--Recensioni-->
