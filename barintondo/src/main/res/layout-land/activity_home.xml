@@ -15,145 +15,158 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/main_activity_toolbar"
+            style="@style/myToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/colorWhite"
-            style="@style/myToolbar" />
+            app:titleTextColor="@color/colorWhite" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/weatherContainer"
+
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:background="@android:color/background_light"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_activity_toolbar">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
 
-            <ImageView
-                android:id="@+id/weatherIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/temp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="@dimen/tempSize"
-                app:layout_constraintBottom_toBottomOf="@+id/weatherIcon"
-                app:layout_constraintEnd_toStartOf="@+id/weatherDesc"
-                app:layout_constraintStart_toEndOf="@+id/weatherIcon"
-                app:layout_constraintTop_toTopOf="@+id/weatherIcon" />
-
-            <TextView
-                android:id="@+id/weatherDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="@dimen/standardTextSize"
-                app:layout_constraintBottom_toBottomOf="@+id/temp"
-                app:layout_constraintEnd_toStartOf="@+id/moreBtn"
-                app:layout_constraintStart_toEndOf="@+id/temp"
-                app:layout_constraintTop_toBottomOf="@+id/temp"
-                app:layout_constraintTop_toTopOf="@+id/temp" />
-
-            <android.support.design.chip.Chip
-                android:id="@+id/moreBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Action"
-                android:text="@string/moreBtn"
-                app:chipIcon="@drawable/ic_info_outline"
-                app:chipIconSize="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/weatherDesc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/weatherDesc" />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="@string/strNextEvents"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/standardTextSize" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_margin="10dp"/>
+                android:layout_weight="5"
+                android:layout_margin="5dp">
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
+
+                <TextView
+                    android:id="@+id/textUpcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/strNextEvents"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/standardTextSize"
+                    android:layout_alignParentTop="true"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="25dp"
+                    />
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"/>
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_weight="7">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4.5"
-            android:layout_marginTop="4dp">
+                <TableRow >
 
-            <TableRow android:layout_weight="1">
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoAttraction"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/attractions_option"
-                    android:textSize="@dimen/reducedTextSize"/>
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoFood"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/eating_option" />
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoInterests"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/strInterests" />
-
-            </TableRow>
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/weatherContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/background_light"
+                        >
 
 
-            <TableRow android:layout_weight="1">
+                        <ImageView
+                            android:id="@+id/weatherIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/temp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoSleep"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/sleeping_option" />
+                        <TextView
+                            android:id="@+id/temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/standardTextSize"
+                            app:layout_constraintBottom_toBottomOf="@+id/weatherIcon"
+                            app:layout_constraintEnd_toStartOf="@+id/weatherDesc"
+                            app:layout_constraintStart_toEndOf="@+id/weatherIcon"
+                            app:layout_constraintTop_toTopOf="@+id/weatherIcon" />
 
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoNearBari"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/near_option" />
+                        <TextView
+                            android:id="@+id/weatherDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/standardTextSize"
+                            app:layout_constraintBottom_toBottomOf="@+id/temp"
+                            app:layout_constraintEnd_toStartOf="@+id/moreBtn"
+                            app:layout_constraintStart_toEndOf="@+id/temp"
+                            app:layout_constraintTop_toBottomOf="@+id/temp"
+                            app:layout_constraintTop_toTopOf="@+id/temp" />
 
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btnHomeGoEvents"
-                    style="@style/btnHomeStyle"
-                    android:text="@string/events_option" />
+                        <android.support.design.chip.Chip
+                            android:id="@+id/moreBtn"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/moreBtn"
+                            app:chipIcon="@drawable/ic_info_outline"
+                            app:chipIconSize="24dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/weatherDesc"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/weatherDesc" />
 
-            </TableRow>
+                    </android.support.constraint.ConstraintLayout>
+                </TableRow>
 
-        </TableLayout>
+                <TableRow android:layout_weight="1">
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoAttraction"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/attractions_option"
+                        android:textSize="@dimen/reducedTextSize" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoFood"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/eating_option" />
+
+                </TableRow>
+
+                <TableRow android:layout_weight="1">
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoSleep"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/sleeping_option" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoNearBari"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/near_option" />
+
+                </TableRow>
+                <TableRow android:layout_weight="1">
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoInterests"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/strInterests" />
+
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/btnHomeGoEvents"
+                        style="@style/btnHomeStyle"
+                        android:text="@string/events_option" />
+                </TableRow>
 
 
+            </TableLayout>
+
+        </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <!-- Container for contents of drawer - use MyNavigationDrawer to make configuration easier -->
