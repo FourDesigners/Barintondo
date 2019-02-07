@@ -128,6 +128,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     }
 
     private void requestList(){
+        luogoList.clear();
         ControllerRemoteDB controller = new ControllerRemoteDB( getContext() );
         controller.getLuoghiNear( myLuogo , luogoList , myDBListner );
     }
@@ -141,12 +142,5 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     public void onDetach() {
         super.onDetach();
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState( outState );
-        outState.putInt("option", 2);
-    }
-
 
 }

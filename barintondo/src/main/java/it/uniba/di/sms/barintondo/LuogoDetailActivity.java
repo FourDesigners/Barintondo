@@ -62,19 +62,6 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
         } else this.activeOption=1;
 
-        Button button;
-        switch(activeOption) {
-            case DIRECTIONS:
-                button = findViewById(R.id.btn_luogo_directions);
-                break;
-            case REVIEWS:
-                button = findViewById(R.id.btn_luogo_reviews);
-                break;
-            default:
-                button = findViewById(R.id.btn_luogo_info);
-                break;
-        }
-        button.setPressed(true);
 
         myListner=new MyListners.SingleLuogo() {
             @Override
@@ -171,13 +158,14 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         }
     }
 
-    /*
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.i(TAG, TAG_CLASS + ": onSaveInstanceState");
         super.onSaveInstanceState( outState );
         outState.putInt( SELECTED_OPTION, activeOption );
     }
-    */
+
 
     public void onLuogoLoaded(final Luogo myLuogo) {
         this.luogo=myLuogo;
@@ -240,20 +228,14 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             case 1:
                 attachDescription( myLuogo );
                 setButtonOption( btnLuogoInfo );
-                myImageView.setVisibility( View.VISIBLE );
-                myFrameVoteStars.showVoteFrame();
                 break;
             case 2:
                 attachDirections( myLuogo );
                 setButtonOption( btnLuogoDirection );
-                myImageView.setVisibility( View.GONE );
-                myFrameVoteStars.hideVoteFrame();
                 break;
             case 3:
                 attachReviews( myLuogo );
                 setButtonOption( btnLuogoReview );
-                myImageView.setVisibility( View.GONE );
-                myFrameVoteStars.hideVoteFrame();
                 break;
         }
     }
@@ -267,6 +249,16 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoReview.setClickable(true);
         selectedButton.setAlpha( 0.5F );
         selectedButton.setClickable( false );
+        switch (activeOption){
+            case 1:
+                myImageView.setVisibility( View.VISIBLE );
+                myFrameVoteStars.showVoteFrame();
+                break;
+            default:
+                myImageView.setVisibility( View.GONE );
+                myFrameVoteStars.hideVoteFrame();
+                break;
+        }
     }
 
     @Override

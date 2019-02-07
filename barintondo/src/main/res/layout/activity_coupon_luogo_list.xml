@@ -63,16 +63,20 @@
             <!--<include layout="@layout/all_attractions" />-->
             <!--</FrameLayout>-->
 
-
-            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/coupon_luogo_list_recycler_view"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:scrollbars="vertical"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/coupon_luogo_list_content" />
-
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/coupon_luogo_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:scrollbars="vertical"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/coupon_luogo_list_content" />
+            </android.support.v4.widget.SwipeRefreshLayout>
 
 
         </android.support.v7.widget.LinearLayoutCompat>

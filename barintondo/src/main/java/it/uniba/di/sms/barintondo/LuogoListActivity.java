@@ -208,19 +208,19 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         };
         //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listner
 
-        reqeustList();
+        requestList();
         final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reqeustList();
+                requestList();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
     }
 
-    private void reqeustList(){
+    private void requestList(){
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
 

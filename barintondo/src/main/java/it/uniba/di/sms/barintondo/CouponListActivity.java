@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -61,7 +63,6 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     private MyListners.CouponList couponListListner;
 
     private static CouponListActivity mInstance;
-    ControllerRemoteDB controllerRemoteDB;
     private boolean arrow = false;
     private TextView textViewNoCoupon;
 
@@ -131,9 +132,31 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
         //first time populating
         //fetchItems();
-        controllerRemoteDB = new ControllerRemoteDB( this );
-        controllerRemoteDB.getCouponList( couponList, couponListListner );
+        requestList();
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestList();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
 
+    private void requestList() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
+            couponList.clear();
+            ControllerRemoteDB controllerRemoteDB = new ControllerRemoteDB( this );
+            controllerRemoteDB.getCouponList( couponList, couponListListner );
+        }else {
+            Snackbar.make( findViewById( R.id.drawer_layout ) ,
+                    getResources().getString( R.string.str_error_not_connected ) ,
+                    Snackbar.LENGTH_LONG )
+                    .setAction( "Action" , null ).show();
+            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
+        }
     }
 
 

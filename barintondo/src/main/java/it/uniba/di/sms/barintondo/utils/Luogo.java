@@ -253,6 +253,8 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
 
     public int calculateDistanceTo(Location destinazione){
         float[] results=new float[10];
+
+        //API Google
         Location.distanceBetween( latitudine, longitudine, destinazione.getLatitude(), destinazione.getLongitude(), results  );
         int distance = (int) results[0];
         return distance;

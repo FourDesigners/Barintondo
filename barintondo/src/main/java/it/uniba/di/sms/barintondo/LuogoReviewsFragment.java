@@ -235,7 +235,6 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         Log.i( TAG , TAG_CLASS + ": entered onSavedInstanceState, activeOption=" + activeOpion );
         super.onSaveInstanceState( outState );
         outState.putInt( REVIEW_OPTION_SELECTED , activeOpion );
-        outState.putInt("option", 3);
         if (!reviewEditText.getText().toString().equals( "" )) {
             outState.putInt( MY_REVIEW_VOTE_STAR , myReviewVoteStar );
             outState.putString( MY_REVIEW_WRITTEN_TEXT , myReviewText );
