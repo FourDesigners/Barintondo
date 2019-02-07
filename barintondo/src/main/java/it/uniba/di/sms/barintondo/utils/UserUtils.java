@@ -10,6 +10,7 @@ public class UserUtils {
 
     public static Location myLocation;
     public static boolean myLocationIsSetted=false;
+    public static boolean positionPermissionRequested=false;
 
 
     public static void setMyLocation(double latitude, double longitude){

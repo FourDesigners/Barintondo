@@ -30,11 +30,11 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
     public Luogo() {
     }
 
-    public Luogo(String newId , String newName , String newCitta, String newSottoCat , String newOraA , String newOraC ,
-                 String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo, int newVoto) {
+    public Luogo(String newId , String newName , String newCitta , String newSottoCat , String newOraA , String newOraC ,
+                 String newThumbnailLink , String newDescEn , String newDescIt , String newIndirizzo , int newVoto) {
         cod = newId;
         nome = newName;
-        citta=newCitta;
+        citta = newCitta;
         sottoCat = newSottoCat;
         oraA = newOraA;
         oraC = newOraC;
@@ -42,7 +42,7 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
         descrizione_en = newDescEn;
         descrizione_it = newDescIt;
         indirizzo = newIndirizzo;
-        voto=newVoto;
+        voto = newVoto;
     }
 
     protected Luogo(Parcel in) {
@@ -59,8 +59,8 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
         descrizione_en = in.readString();
         descrizione_it = in.readString();
         indirizzo = in.readString();
-        voto=in.readInt();
-        order=in.readInt();
+        voto = in.readInt();
+        order = in.readInt();
         distance = in.readFloat();
     }
 
@@ -101,9 +101,13 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
         this.citta = citta;
     }
 
-    public void setCategoria(String categoria) {this.categoria = categoria;}
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 
-    public String getCategoria() {return categoria;}
+    public String getCategoria() {
+        return categoria;
+    }
 
     public String getSottoCat() {
         return sottoCat;
@@ -238,7 +242,7 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
         dest.writeString( descrizione_en );
         dest.writeString( descrizione_it );
         dest.writeString( indirizzo );
-        dest.writeInt(voto);
+        dest.writeInt( voto );
         dest.writeInt( order );
         dest.writeFloat( distance );
     }
@@ -246,36 +250,45 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
 
     @Override
     public int compareTo(Luogo o) {
-        if(this.order> o.order) return -1;
-        if(this.order==o.order) return 0;
+        if (this.order > o.order) return -1;
+        if (this.order == o.order) return 0;
         return 1;
     }
 
-    public int calculateDistanceTo(Location destinazione){
-        float[] results=new float[10];
+    public int calculateDistanceTo(Location destinazione) {
+        float[] results = new float[10];
         //API Google
-        Location.distanceBetween( latitudine, longitudine, destinazione.getLatitude(), destinazione.getLongitude(), results  );
+        Location.distanceBetween( latitudine , longitudine , destinazione.getLatitude() , destinazione.getLongitude() , results );
         int distance = (int) results[0];
         return distance;
     }
 
-    public int calculateDistanceTo(Luogo startLuogo){
+    public int calculateDistanceTo(Luogo startLuogo) {
         Location startLocation = new Location( "" );
         startLocation.setLatitude( startLuogo.getLatitudine() );
         startLocation.setLongitude( startLuogo.getLongitudine() );
         return calculateDistanceTo( startLocation );
     }
 
-    public static Comparator<Luogo> getDistanceOrdering(){
+    public static Comparator<Luogo> getDistanceOrdering() {
         return new DistanceOrdering();
     }
 
-    public static class DistanceOrdering implements Comparator<Luogo>{
+    public static class DistanceOrdering implements Comparator<Luogo> {
+
 
         @Override
         public int compare(Luogo luogo1 , Luogo luogo2) {
-            int difference = (int) (luogo1.getDistance()-luogo2.getDistance());
-            return difference ;
+            int difference;
+            if (UserUtils.codPref.contains( luogo1.getCod() ) && UserUtils.codPref.contains( luogo2.getCod() )) {
+                difference = (int) (luogo1.getDistance() - luogo2.getDistance());
+            } else if (UserUtils.codPref.contains( luogo1.getCod() ) && !UserUtils.codPref.contains( luogo2.getCod() )) {
+                difference = -1;
+            } else if(!UserUtils.codPref.contains( luogo1.getCod() ) && UserUtils.codPref.contains( luogo2.getCod() )){
+                difference=1;
+            }
+            else difference = (int) (luogo1.getDistance() - luogo2.getDistance());
+            return difference;
         }
     }
 }

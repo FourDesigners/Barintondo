@@ -1,5 +1,7 @@
 package it.uniba.di.sms.barintondo.utils;
 
+import android.location.Location;
+
 public interface MyListners {
 
     public interface SingleLuogo {
@@ -46,6 +48,10 @@ public interface MyListners {
     public interface ReviewSave{
         public void onReviewAdded();
         public void onError(String error);
+    }
+
+    public interface UserLocationCallback{
+        public void onLocation(Location location);
     }
 
 }

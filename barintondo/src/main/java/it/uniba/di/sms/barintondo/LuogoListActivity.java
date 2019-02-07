@@ -13,16 +13,19 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -89,6 +92,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     private String requestCat;
     private Toolbar switchCategories;
     private UserLocation myUserLocation;
+    MyListners.UserLocationCallback mLocationListner;
 
 
     @Override
@@ -238,6 +242,17 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         });
 
+        mLocationListner = new MyListners.UserLocationCallback() {
+            @Override
+            public void onLocation(Location location) {
+                for(Luogo luogo:luogoList){
+                    luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
+                }
+                Collections.sort( luogoList, Luogo.getDistanceOrdering() );
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
     }
 
     private void requestList(){
@@ -261,8 +276,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     protected void onStart() {
         super.onStart();
         Log.i( TAG , TAG_CLASS + ":entered onStart()" );
-        myUserLocation = new UserLocation( this );
-
+        myUserLocation = new UserLocation( this , mLocationListner);
+        myUserLocation.startLocationUpdates();
         //ordina la lista mettendo per primi i preferiti, e poi ordinando per stelle
         for (int i = 0; i < luogoList.size(); i++) {
             int order = luogoList.get( i ).getVoto();
@@ -274,6 +289,21 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myUserLocation.stopLocationUpdates();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
+        super.onActivityResult( requestCode , resultCode , data );
+        if(requestCode==UserLocation.REQUEST_CHECK_SETTINGS && resultCode!=RESULT_OK){
+            UserUtils.myLocationIsSetted=false;
+            Collections.sort( luogoList );
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
     private void setCounter(String[] arrayRes , String[] arrayTags , String tag) {
         SharedPreferences list = getSharedPreferences( PREFS_NAME , 0 );
