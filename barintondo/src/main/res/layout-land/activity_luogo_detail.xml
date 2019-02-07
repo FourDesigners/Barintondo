@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_luogo_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LuogoDetailActivity"
+    android:animateLayoutChanges="true">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/luogoDetailToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@color/colorWhite"
+            style="@style/myToolbar"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin_top"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            app:srcCompat="@drawable/ic_star"
+            android:tint="@color/colorWhite"
+            app:layout_anchor="@id/luogoDetailToolbar"
+            app:layout_anchorGravity="bottom|right|end"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include
+        android:id="@+id/luogoVoteLayout"
+        layout="@layout/frame_vote_stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/luogoDetailImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/btn_luogo_info"
+            style="@style/btnLuogoDetail"
+            android:text="@string/pref_header_info"/>
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/btn_luogo_directions"
+            style="@style/btnLuogoDetail"
+            android:text="@string/strNear" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/btn_luogo_reviews"
+            style="@style/btnLuogoDetail"
+            android:text="@string/strReviews"/>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:id="@+id/luogo_extra_container">
+
+
+    </FrameLayout>
+
+
+</android.support.v7.widget.LinearLayoutCompat>
