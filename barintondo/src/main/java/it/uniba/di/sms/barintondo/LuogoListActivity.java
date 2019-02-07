@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
@@ -34,6 +35,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -42,11 +44,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -80,6 +86,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     MyListners.LuoghiList myDBListner;
     private boolean arrow = false;
     private String requestCat;
+    private Toolbar switchCategories;
 
 
     @Override
@@ -93,6 +100,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
+
         //setup toolbar per cambiare categoria
         mySwitchCategory = new ToolbarSwitchCategories( this , items_type );
 
@@ -181,6 +189,41 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
+
+        final LinearLayoutCompat switchCategories = findViewById(R.id.switchCategories);
+        final ImageButton imgButton = switchCategories.findViewById(R.id.btnSwitchAttractions);
+        int state;
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        switchCategories.animate().translationY(0).setInterpolator(new AccelerateInterpolator(0.1f)).start();
+                        switchCategories.setVisibility(View.VISIBLE);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        switchCategories.setVisibility(View.GONE);
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        switchCategories.animate().translationY(0).setInterpolator(new DecelerateInterpolator(0.1f)).start();
+                        switchCategories.setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                        switchCategories.animate().translationY(0).setInterpolator(new DecelerateInterpolator(0.1f)).start();
+                        switchCategories.setVisibility(View.INVISIBLE);
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
         //istanzia il listner per il callback del caricamento luoghi
         myDBListner = new MyListners.LuoghiList() {
