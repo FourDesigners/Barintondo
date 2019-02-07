@@ -52,7 +52,6 @@ public class ControllerRemoteDB implements Constants {
 
     private void manageInterests(final String requestOp , final String user , final String luogoCod , final MyListners.Interests listner) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
-        final LuogoDetailActivity luogoDetailActivity = (LuogoDetailActivity) context;
 
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
 
@@ -522,6 +521,7 @@ public class ControllerRemoteDB implements Constants {
             StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Log.i( TAG , TAG_CLASS + ": entered getCouponList()" + response );
                     //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
                     //This code is executed if the server responds, whether or not the response contains data.
                     //The String 'response' contains the server's response.
@@ -542,6 +542,7 @@ public class ControllerRemoteDB implements Constants {
                             coupon.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                             coupon.setDescrizione_it( jsonObject.getString( "descrizioneIt" ) );
                             coupon.setDescrizione_en( jsonObject.getString( "descrizioneEn" ) );
+                            coupon.setCategoria( jsonObject.getString( "nomeCategoria" ));
 
                             //adding items to itemsList
                             tempCouponList.add( coupon );

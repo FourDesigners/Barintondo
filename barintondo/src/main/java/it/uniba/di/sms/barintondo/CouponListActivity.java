@@ -25,16 +25,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +44,7 @@ import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 
 public class CouponListActivity extends AppCompatActivity implements Constants, MyListners.CouponAdapterListener {
 
@@ -57,6 +54,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     private RequestQueue mRequestQueue;
     private RecyclerView recyclerView;
     private List<Coupon> couponList;
+    private ToolbarSwitchCategories myToolbarSwitchCategories;
 
     private CouponAdapter mAdapter;
     private SearchView searchView;
@@ -72,15 +70,17 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_coupon_luogo_list);
+        setContentView( R.layout.activity_coupon_list );
         mInstance = this;
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
+        myToolbar.setTitle( R.string.myCoupon_label );
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
+        myToolbarSwitchCategories = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
 
         Drawable drawable = getResources().getDrawable(R.drawable.ic_hamburger);
         drawable = DrawableCompat.wrap(drawable);

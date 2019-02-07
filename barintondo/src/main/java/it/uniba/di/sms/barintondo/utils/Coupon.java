@@ -13,12 +13,13 @@ public class Coupon implements Parcelable {
     private String descrizione_it; //DA METTERE PRIVATE
     private String descrizione_en; //DA METTERE PRIVATE
     private String sottoCat;
+    private String categoria;
 
     public Coupon() {
     }
 
     public Coupon(String newCod , String newEmail , String newCodLuogo, String newLuogo , String newScadenza ,
-                  String newDescrizione_it, String newDescrizione_en, String newSottoCat) {
+                  String newDescrizione_it, String newDescrizione_en, String newSottoCat, String newCategoria) {
         cod = newCod;
         email = newEmail;
         codLuogo = newCodLuogo;
@@ -27,6 +28,7 @@ public class Coupon implements Parcelable {
         descrizione_it = newDescrizione_it;
         descrizione_en = newDescrizione_en;
         sottoCat = newSottoCat;
+        categoria = newCategoria;
     }
 
     protected Coupon(Parcel in) {
@@ -38,6 +40,7 @@ public class Coupon implements Parcelable {
         descrizione_it = in.readString();
         descrizione_en = in.readString();
         sottoCat = in.readString();
+        categoria = in.readString();
     }
 
     //Serve per la parcelizzazione negli intent
@@ -126,6 +129,14 @@ public class Coupon implements Parcelable {
         this.sottoCat = sottoCat;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     @Override
     public String toString() {
         return "id= " + cod + " email= " + email;
@@ -146,5 +157,6 @@ public class Coupon implements Parcelable {
         dest.writeString( descrizione_it );
         dest.writeString( descrizione_en );
         dest.writeString( sottoCat );
+        dest.writeString( categoria );
     }
 }

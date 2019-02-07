@@ -283,6 +283,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
                 Toast.makeText( context , "Errore nella richiesta al server" , Toast.LENGTH_SHORT ).show();
+                sendMessage("err");
             }
         } ) {
             protected Map<String, String> getParams() {

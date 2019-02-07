@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class UserUtils {
     public static ArrayList<String> codPref=new ArrayList<>();
+
     public static Location myLocation;
     public static boolean myLocationIsSetted=false;
 

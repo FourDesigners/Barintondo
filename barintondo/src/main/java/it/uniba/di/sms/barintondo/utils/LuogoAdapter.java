@@ -212,7 +212,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
             } else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
-        // se l'elemento trattato è un logo, esegue il cast e imposta le informazioni aggiuntive
+        // se l'elemento trattato è un evento, esegue il cast e imposta le informazioni aggiuntive
         if (luogo instanceof Evento) {
             Evento evento = (Evento) luogo;
             holder.mVoteStars.hideVoteFrame();

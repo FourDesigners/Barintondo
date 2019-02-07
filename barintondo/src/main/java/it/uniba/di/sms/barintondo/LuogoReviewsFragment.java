@@ -190,6 +190,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             public void onReviewAdded() {
                 layourReviewsList.setVisibility( View.VISIBLE );
                 layoutYourReview.setVisibility( View.GONE );
+                activeOpion=1;
                 controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListner );
                 //ripristino della sezione di invio segnalazione
                 reviewEditText.getText().clear();
