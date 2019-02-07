@@ -75,9 +75,11 @@
                     android:layout_height="fill_parent"
                     android:scrollbars="vertical"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    tools:listitem="@layout/coupon_luogo_list_content" />
+                    tools:listitem="@layout/coupon_list_content" />
             </android.support.v4.widget.SwipeRefreshLayout>
-
+            <include
+                android:id="@+id/switchCategories"
+                layout="@layout/toolbar_switch_categories" />
 
         </android.support.v7.widget.LinearLayoutCompat>
     </FrameLayout>

@@ -318,11 +318,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         if (communicationController.getState() != BTCommunicationController.STATE_CONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.connectionInterruptedMsg), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "ricevuto: " + message, Toast.LENGTH_SHORT).show();
             if(message.contains("ok"))
                 communicationController.stop();
             else {
-                Toast.makeText(this, "errore", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.errorReceived), Toast.LENGTH_SHORT).show();
             }
         }
         communicationController.stop();

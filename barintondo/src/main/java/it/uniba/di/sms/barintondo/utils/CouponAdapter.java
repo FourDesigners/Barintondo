@@ -34,27 +34,27 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView codLuogo, luogo, scadenza;
-        public ImageView icona;
+        public ImageView iconaCategoria;
 
         public MyViewHolder(View view) {
-            super(view);
+            super( view );
 
-            luogo = view.findViewById(R.id.luogo);
-            scadenza = view.findViewById(R.id.scadenza);
-            icona = view.findViewById(R.id.icona);
+            luogo = view.findViewById( R.id.luogo );
+            scadenza = view.findViewById( R.id.scadenza );
+            iconaCategoria = view.findViewById( R.id.iconaCategoria );
 
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // send selected Coupon in callback
-                    couponAdapterListener.onItemsSelected(itemListFiltered.get(getAdapterPosition()));
+                    couponAdapterListener.onItemsSelected( itemListFiltered.get( getAdapterPosition() ) );
                 }
-            });
+            } );
         }
     }
 
 
-    public CouponAdapter(Context context, List<Coupon> couponList, MyListners.CouponAdapterListener listener) {
+    public CouponAdapter(Context context , List<Coupon> couponList , MyListners.CouponAdapterListener listener) {
         this.context = context;
         this.couponAdapterListener = listener;
         this.couponList = couponList;
@@ -63,48 +63,53 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.coupon_luogo_list_content, parent, false);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent , int viewType) {
+        View itemView = LayoutInflater.from( parent.getContext() )
+                .inflate( R.layout.coupon_list_content , parent , false );
 
-        return new MyViewHolder(itemView);
+        return new MyViewHolder( itemView );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        Coupon couponL = itemListFiltered.get(position);
+    public void onBindViewHolder(@NonNull MyViewHolder holder , final int position) {
+        Coupon couponL = itemListFiltered.get( position );
 
         //scelgo icona da assegnare
-        if(InternetConnection.isNetworkAvailable(context)) {
-            HashSet<String> container = new HashSet<>();
-            container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.attractions)));
-            if (container.contains(couponL.getSottoCat()))
-                holder.icona.setImageResource(R.drawable.ic_attractions_coupon);
-            else {
-                container.clear();
-                container.addAll(Arrays.asList(context.getResources().getStringArray(R.array.eating)));
-                if (container.contains(couponL.getSottoCat()))
-                    holder.icona.setImageResource(R.drawable.ic_eating_coupon);
-                else holder.icona.setImageResource(R.drawable.ic_sleeping_coupon);
-            }
-        }
-        else holder.icona.setImageResource(R.drawable.ic_coupon);
 
-        Log.i(TAG, "couponL: " + couponL.getCod() + couponL.getCodLuogo() + couponL.getLuogo());
-        holder.luogo.setText(couponL.getLuogo());
+
+        Log.i( TAG , "couponL: " + couponL.getCod() + couponL.getCodLuogo() + couponL.getLuogo() );
+        holder.luogo.setText( couponL.getLuogo() );
 
         //controllo se il coupon è ancora valido
         String scadenza = couponL.getScadenza();
 
         Date date = new Date();
         String strDateFormat = "yyyy/mm/dd";
-        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-        String formattedCurrentDate= dateFormat.format(date);
+        DateFormat dateFormat = new SimpleDateFormat( strDateFormat );
+        String formattedCurrentDate = dateFormat.format( date );
 
         //confronto date
-        if(scadenza.compareTo(formattedCurrentDate) <= 0)
-            holder.scadenza.setText(context.getResources().getString(R.string.validString));
-        else holder.scadenza.setText(context.getResources().getString(R.string.expiredString));
+        if (scadenza.compareTo( formattedCurrentDate ) <= 0)
+            holder.scadenza.setText( context.getResources().getString( R.string.validString ) );
+        else holder.scadenza.setText( context.getResources().getString( R.string.expiredString ) );
+
+        int icon=R.drawable.ic_fiber_smart_record;
+        switch (couponL.getCategoria()) {
+            case "Attrazione":
+                icon = R.drawable.ic_attraction;
+                break;
+            case "Dormire":
+                icon = R.drawable.ic_stay;
+                break;
+            case "Mangiare":
+                icon = R.drawable.ic_food;
+                break;
+            case "Evento":
+                icon = R.drawable.ic_events;
+                break;
+        }
+
+        holder.iconaCategoria.setImageDrawable( context.getResources().getDrawable( icon) );
 
     }
 
@@ -125,8 +130,8 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
                     List<Coupon> filteredList = new ArrayList<>();
                     for (Coupon row : couponList) {
 
-                        if (row.getLuogo().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
+                        if (row.getLuogo().toLowerCase().contains( charString.toLowerCase() )) {
+                            filteredList.add( row );
                         }
                     }
 
@@ -139,7 +144,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
             }
 
             @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            protected void publishResults(CharSequence charSequence , FilterResults filterResults) {
                 itemListFiltered = (ArrayList<Coupon>) filterResults.values;
                 notifyDataSetChanged();
             }

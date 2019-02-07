@@ -25,16 +25,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +44,17 @@ import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 
 public class CouponListActivity extends AppCompatActivity implements Constants, MyListners.CouponAdapterListener {
 
-    private String TAG_CLASS=getClass().getSimpleName();
+    private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     private RequestQueue mRequestQueue;
     private RecyclerView recyclerView;
     private List<Coupon> couponList;
+    private ToolbarSwitchCategories myToolbarSwitchCategories;
 
     private CouponAdapter mAdapter;
     private SearchView searchView;
@@ -65,28 +63,32 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     private static CouponListActivity mInstance;
     private boolean arrow = false;
     private TextView textViewNoCoupon;
-
+    private String luogoName;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_coupon_luogo_list);
+        setContentView( R.layout.activity_coupon_list );
         mInstance = this;
+
+        luogoName = getIntent().getStringExtra( Constants.INTENT_LUOGO_NAME );
 
         //toolbar setup
         myToolbar = findViewById( R.id.main_activity_toolbar );
-        setSupportActionBar(myToolbar);
+        myToolbar.setTitle( R.string.myCoupon_label );
+        setSupportActionBar( myToolbar );
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled( true );
+        myToolbarSwitchCategories = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
 
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_hamburger);
-        drawable = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorAccent));
+        Drawable drawable = getResources().getDrawable( R.drawable.ic_hamburger );
+        drawable = DrawableCompat.wrap( drawable );
+        DrawableCompat.setTint( drawable , getResources().getColor( R.color.colorAccent ) );
 
-        actionbar.setHomeAsUpIndicator(drawable);
+        actionbar.setHomeAsUpIndicator( drawable );
 
         //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer( this ,
@@ -109,22 +111,26 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         couponListListner = new MyListners.CouponList() {
             @Override
             public void onCouponList() {
-                LocalDBOpenHelper.getCouponList( getApplicationContext(), couponList );
-                if(couponList.isEmpty()) {
-                    textViewNoCoupon = findViewById(R.id.text_view_no_coupons);
-                    textViewNoCoupon.setVisibility(View.VISIBLE);
+                LocalDBOpenHelper.getCouponList( getApplicationContext() , couponList );
+                if (couponList.isEmpty()) {
+                    textViewNoCoupon = findViewById( R.id.text_view_no_coupons );
+                    textViewNoCoupon.setVisibility( View.VISIBLE );
+                } else {
+                    mAdapter.notifyDataSetChanged();
+                    if (luogoName != null) {
+                        searchView.setQuery( luogoName , true );
+                    }
                 }
-                mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onError(String error) {
-                switch (error){
+                switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server");
+                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error on the server");
+                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error on the server" );
                         break;
                 }
             }
@@ -133,14 +139,14 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         //first time populating
         //fetchItems();
         requestList();
-        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById( R.id.swipe_refresh );
+        swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 requestList();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing( false );
             }
-        });
+        } );
     }
 
     private void requestList() {
@@ -149,8 +155,8 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             couponList.clear();
             ControllerRemoteDB controllerRemoteDB = new ControllerRemoteDB( this );
-            controllerRemoteDB.getCouponList( couponList, couponListListner );
-        }else {
+            controllerRemoteDB.getCouponList( couponList , couponListListner );
+        } else {
             Snackbar.make( findViewById( R.id.drawer_layout ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
                     Snackbar.LENGTH_LONG )
@@ -158,7 +164,6 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
             //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -172,32 +177,32 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );
         searchView.setMaxWidth( Integer.MAX_VALUE );
-        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchAutoComplete.setHintTextColor(getResources().getColor(R.color.colorAccent));
-        searchAutoComplete.setTextColor(getResources().getColor(R.color.colorAccent));
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById( android.support.v7.appcompat.R.id.search_src_text );
+        searchAutoComplete.setHintTextColor( getResources().getColor( R.color.colorAccent ) );
+        searchAutoComplete.setTextColor( getResources().getColor( R.color.colorAccent ) );
 
-        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-        ImageView icon = searchView2.findViewById(android.support.v7.appcompat.R.id.search_button);
-        ImageView icon2 = searchView2.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        icon.setColorFilter(Color.WHITE);
-        icon2.setColorFilter(Color.WHITE);
+        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem( R.id.app_bar_search ).getActionView();
+        ImageView icon = searchView2.findViewById( android.support.v7.appcompat.R.id.search_button );
+        ImageView icon2 = searchView2.findViewById( android.support.v7.appcompat.R.id.search_close_btn );
+        icon.setColorFilter( Color.WHITE );
+        icon2.setColorFilter( Color.WHITE );
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setOnSearchClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
                 ActionBar actionbar = getSupportActionBar();
-                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-                upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
-                Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+                final Drawable upArrow = getResources().getDrawable( R.drawable.abc_ic_ab_back_material );
+                upArrow.setColorFilter( getResources().getColor( R.color.colorAccent ) , PorterDuff.Mode.SRC_ATOP );
+                Objects.requireNonNull( getSupportActionBar() ).setHomeAsUpIndicator( upArrow );
                 assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-                actionbar.setDisplayHomeAsUpEnabled(true);
+                actionbar.setDisplayHomeAsUpEnabled( true );
                 arrow = true;
             }
-        });
+        } );
 
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        searchView.setOnCloseListener( new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 ActionBar actionbar = getSupportActionBar();
@@ -209,7 +214,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
                 arrow = false;
                 return true;
             }
-        });
+        } );
 
         // listening to search query text change
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
@@ -233,7 +238,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(!arrow) {
+        if (!arrow) {
             Boolean open = myNavigationDrawer.openMenu( item );
             if (open) return open;
 
@@ -245,13 +250,13 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
             }
             return super.onOptionsItemSelected( item );
-        }else {
+        } else {
             arrow = false;
             ActionBar actionbar = getSupportActionBar();
             assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
             actionbar.setDisplayHomeAsUpEnabled( true );
             actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
-            mAdapter.getFilter().filter("");
+            mAdapter.getFilter().filter( "" );
             invalidateOptionsMenu();
             hideKeyboard();
             return true;
@@ -281,8 +286,8 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        InputMethodManager imm = (InputMethodManager) getSystemService( Activity.INPUT_METHOD_SERVICE );
+        imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY , 0 );
     }
 
 }

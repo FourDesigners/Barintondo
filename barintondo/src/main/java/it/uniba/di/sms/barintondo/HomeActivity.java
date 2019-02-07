@@ -187,6 +187,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         };
 
         controllerRemoteDB.populateInterestsCod();
+        luogoList.clear();
         controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , luoghiDBlistner );
     }
 

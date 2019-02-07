@@ -117,8 +117,6 @@
             android:background="@color/colorBlack"
             android:layout_margin="5dp"/>
 
-
-
         <LinearLayout
             android:id="@+id/layout_evetn_luogo_ref"
             android:layout_width="match_parent"
@@ -174,6 +172,38 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorBlack"
+            android:layout_margin="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/layout_your_luogo_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/text_possessed_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/notDefined"
+                android:textSize="@dimen/mediumTextSize"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/luogo_icon_coupon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_attractions_coupon"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_coupon_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            android:background="@color/colorBlack"
+            android:visibility="gone"
             android:layout_margin="5dp"/>
 
         <TextView
