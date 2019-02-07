@@ -203,6 +203,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                     break;
             }
             holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
+            holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryBlue ) );
         } else {//se non siamo nelle activity trattate ptima, cioè siamo in una normale lista di luoghi
             //Se il luogo è tra i preferiti aggiunge una stella
 

@@ -67,6 +67,7 @@ import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
+import it.uniba.di.sms.barintondo.utils.UserLocation;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
 
 public class LuogoListActivity extends AppCompatActivity implements Constants, MyListners.ItemsAdapterListener {
@@ -87,6 +88,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     private boolean arrow = false;
     private String requestCat;
     private Toolbar switchCategories;
+    private UserLocation myUserLocation;
 
 
     @Override
@@ -194,7 +196,17 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         myDBListner = new MyListners.LuoghiList() {
             @Override
             public void onList() {
-                mAdapter.notifyDataSetChanged();
+                if(UserUtils.myLocationIsSetted && !requestCat.equals( REQUEST_GET_EVENTS )){
+                    for(Luogo luogo:luogoList){
+                        luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
+                    }
+                    Collections.sort( luogoList, Luogo.getDistanceOrdering() );
+                    mAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Collections.sort( luogoList );
+                    mAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -249,6 +261,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     protected void onStart() {
         super.onStart();
         Log.i( TAG , TAG_CLASS + ":entered onStart()" );
+        myUserLocation = new UserLocation( this );
 
         //ordina la lista mettendo per primi i preferiti, e poi ordinando per stelle
         for (int i = 0; i < luogoList.size(); i++) {
@@ -495,6 +508,13 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        myUserLocation.onRequestPermissionsResult( requestCode, permissions, grantResults );
     }
 
 }

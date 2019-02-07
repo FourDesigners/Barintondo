@@ -307,7 +307,6 @@ public class ControllerRemoteDB implements Constants {
                     mListner.onError( VOLLEY_ERROR_JSON );
                     Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error pharsing Json" );
                 }
-                Collections.sort( luogoList );
                 mListner.onList();
 
             }
