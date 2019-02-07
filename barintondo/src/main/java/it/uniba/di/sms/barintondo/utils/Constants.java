@@ -7,13 +7,13 @@ public interface Constants {
 
     //intent per LuogoListActivity
     String INTENT_ACTIVITY_ITEM_TYPE = "item_type";
-    String INTENT_ATTRACTIONS = "attractions";
-    String INTENT_SLEEPING = "sleeping";
-    String INTENT_EATING = "eating";
-    String INTENT_EVENTS = "events";
-    String INTENT_NEAR = "near";
+    String INTENT_ATTRACTIONS = "Attrazione";
+    String INTENT_SLEEPING = "Dormire";
+    String INTENT_EATING = "Mangiare";
+    String INTENT_EVENTS = "Evento";
+    String INTENT_NEAR = "Vicino";
     String INTENT_ITEM = "item";
-    String INTENT_LUOGO_COD="luogoCod";
+    String INTENT_LUOGO_COD = "luogoCod";
     String INTENT_INTERESES = "interests";
     String INTENT_LUOGO_NAME = "luogoName";
 

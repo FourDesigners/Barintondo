@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -267,7 +268,9 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         switch (item.getItemId()) {
             case android.R.id.home:
                 //supportFinishAfterTransition();
-                onBackPressed();
+                Intent intent = new Intent(this, LuogoListActivity.class);
+                intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, luogo.getCategoria());
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
                 return true;
         }

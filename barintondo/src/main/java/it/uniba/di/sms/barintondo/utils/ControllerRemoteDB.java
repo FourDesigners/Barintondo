@@ -332,7 +332,7 @@ public class ControllerRemoteDB implements Constants {
 
     public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListners.SingleLuogo listner) {
 
-        String Url = "http://barintondo.altervista.org/get_luoghi.php";
+        String Url = "http://barintondo.altervista.org/get_luoghi2.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
@@ -354,6 +354,7 @@ public class ControllerRemoteDB implements Constants {
 
                         luogo.setCod( jsonObject.getString( "cod" ) );
                         luogo.setNome( jsonObject.getString( "nome" ) );
+                        luogo.setCategoria( jsonObject.getString("nomeCategoria") );
                         luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                         if (jsonObject.getString( "oraA" ).equals( "null" )) {
                             luogo.setOraA( null );
