@@ -190,36 +190,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        final LinearLayoutCompat switchCategories = findViewById(R.id.switchCategories);
-        final ImageButton imgButton = switchCategories.findViewById(R.id.btnSwitchAttractions);
-        int state;
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        switchCategories.animate().translationY(0).setInterpolator(new AccelerateInterpolator(0.1f)).start();
-                        switchCategories.setVisibility(View.VISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        switchCategories.setVisibility(View.GONE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        switchCategories.animate().translationY(0).setInterpolator(new DecelerateInterpolator(0.1f)).start();
-                        switchCategories.setVisibility(View.INVISIBLE);
-                        break;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
         //istanzia il listner per il callback del caricamento luoghi
         myDBListner = new MyListners.LuoghiList() {
             @Override
