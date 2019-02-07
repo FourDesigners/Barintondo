@@ -207,6 +207,22 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
 
         myCursor.close();
         myDB.close();
+    }
 
+    public static int getNumberCouponLuogo(Context context, String codLuogo){
+        LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
+        SQLiteDatabase myDB = dbHelper.getReadableDatabase();
+        Cursor myCursor;
+        String[] columns = {COLUMN_COD_COUPON , COLUMN_COD_LUOGO};
+
+        //ottengo il cursore
+        myCursor = myDB.query( TABLE_COUPON , columns , COLUMN_COD_LUOGO+"='"+codLuogo+"'", null , null , null , null , null );
+        myCursor.moveToFirst();
+        myCursor.moveToNext();
+        int number = myCursor.getCount();
+
+        myCursor.close();
+        myDB.close();
+        return number;
     }
 }

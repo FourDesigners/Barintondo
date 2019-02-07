@@ -299,6 +299,14 @@
         <item quantity="one">In %d month</item>
         <item quantity="other">In %d months</item>
     </plurals>
+    <plurals name="possessedCouponPlace">
+        <item quantity="one">You have %d coupon for this place</item>
+        <item quantity="other">You have %d coupons for this place</item>
+    </plurals>
+    <plurals name="possessedCouponEvent">
+        <item quantity="one">You have %d coupon for this event</item>
+        <item quantity="other">You have %d coupons for this Event</item>
+    </plurals>
 
     <!--COUPON_DETAIL ACTIVITY-->
     <string name="useBtn">Use</string>

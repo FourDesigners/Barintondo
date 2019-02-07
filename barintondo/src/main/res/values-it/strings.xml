@@ -178,6 +178,15 @@
         <item quantity="one">Tra %d mese</item>
         <item quantity="other">Tra %d mesi</item>
     </plurals>
+
+    <plurals name="possessedCouponPlace">
+        <item quantity="one">Hai %d coupon per questo luogo</item>
+        <item quantity="other">Hai %d coupon per questo luogo</item>
+    </plurals>
+    <plurals name="possessedCouponEvent">
+        <item quantity="one">Hai %d coupon per questo evento</item>
+        <item quantity="other">Hai %d coupon per questo evento</item>
+    </plurals>
     <string name="strInProgress">In corso</string>
     <string name="strInterests">Interessi</string>
     <string name="str_from">"dal "</string>

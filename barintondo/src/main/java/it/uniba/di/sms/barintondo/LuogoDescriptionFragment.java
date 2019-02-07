@@ -13,8 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
+import it.uniba.di.sms.barintondo.utils.Coupon;
+import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.MyListners;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -23,10 +28,10 @@ import it.uniba.di.sms.barintondo.utils.Luogo;
 public class LuogoDescriptionFragment extends Fragment implements Constants {
     private String TAG_CLASS = getClass().getSimpleName();
     private String orarioA, orarioC;
-    TextView textViewDescription, textOrarioA, textOrarioC, eventStart, eventEnd, luogoAdress, textViewLuogoEvento;
+    TextView textViewDescription, textOrarioA, textOrarioC, eventStart, eventEnd, luogoAdress, textViewLuogoEvento, textLuogoCoupon;
     ConstraintLayout frameDate, frameOrari;
-    LinearLayout layoutLuogoEvento, layoutLuogoIndirizzo;
-    ImageView iconDirection;
+    LinearLayout layoutLuogoEvento, layoutLuogoIndirizzo, layoutCoupon, layoutCouponSeparator;
+    ImageView iconDirection, iconCoupon;
     Luogo myLuogo;
     ControllerRemoteDB controllerRemoteDB;
     MyListners.SingleLuogo myListner;
@@ -102,7 +107,11 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
         layoutLuogoEvento = rootView.findViewById( R.id.layout_evetn_luogo_ref );
         layoutLuogoIndirizzo = rootView.findViewById( R.id.layout_luogo_indirizzo );
         textViewLuogoEvento = rootView.findViewById( R.id.text_view_event_luogo_ref );
+        layoutCoupon = rootView.findViewById( R.id.layout_your_luogo_coupon );
+        layoutCouponSeparator = rootView.findViewById( R.id.layout_coupon_separator );
         luogoAdress.setText( myLuogo.getIndirizzo() );
+        textLuogoCoupon = rootView.findViewById( R.id.text_possessed_coupon );
+        iconCoupon = rootView.findViewById( R.id.luogo_icon_coupon );
         layoutLuogoIndirizzo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +142,23 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 layoutLuogoEvento.setVisibility( View.VISIBLE );
                 controllerRemoteDB.getLuogo( myEvento.getCodLuogo() , Constants.REQUEST_GET_LUOGO, myListner );
             }
+        }
+        List<Coupon> couponList=new ArrayList<>(  );
+
+        int couponNumber = LocalDBOpenHelper.getNumberCouponLuogo( getContext(), myLuogo.getCod() );
+
+        if(couponNumber>0){
+            textLuogoCoupon.setText(getContext().getResources().getQuantityString(R.plurals.possessedCouponPlace, couponNumber, couponNumber));
+            layoutCoupon.setVisibility( View.VISIBLE );
+            layoutCouponSeparator.setVisibility( View.VISIBLE );
+            iconCoupon.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent( getContext(), CouponListActivity.class );
+                    intent.putExtra( INTENT_LUOGO_NAME, myLuogo.getNome() );
+                    startActivity( intent );
+                }
+            } );
         }
 
         return rootView;
