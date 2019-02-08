@@ -282,4 +282,9 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY , 0 );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestList();
+    }
 }

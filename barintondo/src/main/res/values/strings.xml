@@ -290,6 +290,7 @@
     <string name="strNoAccount">Account does not exist</string>
     <string name="strInfo">Password modified! Control your e-mail account</string>
     <string name="offlineCoupons">Internet connection not available: your coupons may be not valid!</string>
+    <string name="useOk">Coupon used successfully!</string>
     <string name="strInProgress">In progress</string>
 
     <plurals name="EventInDays">
