@@ -94,7 +94,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     private UserLocation myUserLocation;
     MyListners.UserLocationCallback mLocationListner;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
@@ -190,7 +189,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
         //recyclerView setup
         recyclerView = findViewById( R.id.item_list_recycler_view );
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
         recyclerView.setLayoutManager( mLayoutManager );
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this ,
                 DividerItemDecoration.VERTICAL , 36 ) );
@@ -254,6 +253,23 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         };
 
+        final LinearLayoutCompat linearLayoutCompat = findViewById(R.id.switchCategories);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0) {
+                    linearLayoutCompat.setVisibility(View.GONE);
+                }else {
+                    linearLayoutCompat.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void requestList() {
