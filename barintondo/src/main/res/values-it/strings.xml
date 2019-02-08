@@ -83,6 +83,7 @@
     <string name="saveBtnMessage">Modifiche salvate</string>
     <string name="str_repeat_password">Ripeti password</string>
     <string name="str_register">Registra</string>
+    <string name="str_register_toolbar">Registrazione</string>
     <string name="str_don_t_you_have_an_account">Non hai un account?</string>
     <string name="str_register_now">Nuovo account</string>
     <string name="str_name">Nome</string>

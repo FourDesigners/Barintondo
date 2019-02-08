@@ -54,8 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
         textViewRepeatPasswordError = findViewById(R.id.textViewRepeatPasswordError);
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
-        myToolbar.setLogo(R.mipmap.ic_launcher);
-        myToolbar.setTitle(R.string.str_register);
+        myToolbar.setTitle(R.string.str_register_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
 

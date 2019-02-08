@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         setContentView(R.layout.activity_login);
         Toolbar myToolbar = findViewById(R.id.toolbar);
-        myToolbar.setLogo(R.mipmap.ic_launcher);
         myToolbar.setTitle(R.string.app_name);
         ActionBar actionbar = getSupportActionBar();
         setSupportActionBar(myToolbar);
