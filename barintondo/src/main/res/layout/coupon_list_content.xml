@@ -48,15 +48,17 @@
         app:layout_constraintStart_toStartOf="@+id/luogo"
         app:layout_constraintTop_toBottomOf="@+id/luogo" />
 
+
     <ImageView
-        android:id="@+id/iconaCategoria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:id="@+id/icon_categoria"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_fiber_smart_record"
+        android:layout_marginLeft="10dp"
+        android:tint="@color/colorSecondaryBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="10dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

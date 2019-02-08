@@ -115,7 +115,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     }
 
     private void goDettaglioLuogo(){
-        Intent intent = new Intent( this, LuogoDetailActivity.class );
+        Intent intent;
+        if(myCoupon.getCodLuogo().contains( "E" )){
+            intent = new Intent( this, EventoDetailActivity.class );
+        }else intent = new Intent( this, LuogoDetailActivity.class );
         intent.putExtra( INTENT_LUOGO_COD, myCoupon.getCodLuogo() );
         startActivity( intent );
         overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);

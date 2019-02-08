@@ -204,7 +204,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
                     for(Luogo luogo:luogoList){
                         luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
                     }
-                    Collections.sort( luogoList, Luogo.getDistanceOrdering() );
+                    Collections.sort( luogoList, Luogo.getDistanceOrderingWhithPref() );
                     mAdapter.notifyDataSetChanged();
                 }
                 else {
@@ -245,11 +245,13 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         mLocationListner = new MyListners.UserLocationCallback() {
             @Override
             public void onLocation(Location location) {
-                for(Luogo luogo:luogoList){
-                    luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
+                if(!requestCat.equals( REQUEST_GET_EVENTS )) {
+                    for (Luogo luogo : luogoList) {
+                        luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
+                    }
+                    Collections.sort( luogoList , Luogo.getDistanceOrderingWhithPref() );
+                    mAdapter.notifyDataSetChanged();
                 }
-                Collections.sort( luogoList, Luogo.getDistanceOrdering() );
-                mAdapter.notifyDataSetChanged();
             }
         };
 

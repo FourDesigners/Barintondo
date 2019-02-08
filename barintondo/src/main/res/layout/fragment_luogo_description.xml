@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_info_outline"
-                android:tint="@color/colorGrey"/>
+                android:tint="@color/colorPrimaryBlue"/>
 
 
         </LinearLayout>
@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_directions"
-                android:tint="@color/colorPrimaryBlueVariant"/>
+                android:tint="@color/colorPrimaryBlue"/>
 
 
         </LinearLayout>
@@ -200,7 +200,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_attractions_coupon"
-                android:tint="@color/colorGrey"/>
+                android:tint="@color/colorPrimaryBlue"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_coupon_separator"
