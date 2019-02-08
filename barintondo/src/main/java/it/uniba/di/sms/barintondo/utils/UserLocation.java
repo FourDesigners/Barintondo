@@ -144,22 +144,18 @@ public class UserLocation implements Constants {
                     startLocationUpdates();                }
             }
         } );
-
         task.addOnFailureListener( activity , new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException && !UserUtils.positionPermissionRequested) {
-                    // Location settings are not satisfied, but this can be fixed
+                if (e instanceof ResolvableApiException && !UserUtils.positionPermissionRequested) {  // Location settings are not satisfied, but this can be fixed
                     // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
+                    try {  // Show the dialog by calling startResolutionForResult(),
                         // and check the result in onActivityResult().
                         UserUtils.positionPermissionRequested=true;
                         ResolvableApiException resolvable = (ResolvableApiException) e;
                         resolvable.startResolutionForResult( activity ,
                                 REQUEST_CHECK_SETTINGS );
-                    } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
+                    } catch (IntentSender.SendIntentException sendEx) {// Ignore the error.
                     }
                 }
             }

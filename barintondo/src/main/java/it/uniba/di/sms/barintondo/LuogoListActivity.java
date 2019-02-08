@@ -192,7 +192,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         recyclerView = findViewById( R.id.item_list_recycler_view );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
         recyclerView.setLayoutManager( mLayoutManager );
-        recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
+        recyclerView.addItemDecoration( new MyDividerItemDecoration( this ,
+                DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
@@ -200,14 +201,13 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         myDBListner = new MyListners.LuoghiList() {
             @Override
             public void onList() {
-                if(UserUtils.myLocationIsSetted && !requestCat.equals( REQUEST_GET_EVENTS )){
-                    for(Luogo luogo:luogoList){
+                if (UserUtils.myLocationIsSetted && !requestCat.equals( REQUEST_GET_EVENTS )) {
+                    for (Luogo luogo : luogoList) {
                         luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
                     }
-                    Collections.sort( luogoList, Luogo.getDistanceOrderingWhithPref() );
+                    Collections.sort( luogoList , Luogo.getDistanceOrderingWhithPref() );
                     mAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     Collections.sort( luogoList );
                     mAdapter.notifyDataSetChanged();
                 }
@@ -215,7 +215,6 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
             @Override
             public void onError(String error) {
-
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
                         Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server" );
@@ -233,19 +232,19 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listner
 
         requestList();
-        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById( R.id.swipe_refresh );
+        swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 requestList();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing( false );
             }
-        });
+        } );
 
         mLocationListner = new MyListners.UserLocationCallback() {
             @Override
             public void onLocation(Location location) {
-                if(!requestCat.equals( REQUEST_GET_EVENTS )) {
+                if (!requestCat.equals( REQUEST_GET_EVENTS )) {
                     for (Luogo luogo : luogoList) {
                         luogo.setDistance( luogo.calculateDistanceTo( UserUtils.myLocation ) );
                     }
@@ -257,7 +256,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
     }
 
-    private void requestList(){
+    private void requestList() {
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
 
@@ -265,7 +264,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             luogoList.clear();
             ControllerRemoteDB controller = new ControllerRemoteDB( this );
             controller.getLuoghiList( requestCat , luogoList , myDBListner );
-        }else {
+        } else {
             Snackbar.make( findViewById( R.id.drawer_layout ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
                     Snackbar.LENGTH_LONG )
@@ -278,7 +277,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     protected void onStart() {
         super.onStart();
         Log.i( TAG , TAG_CLASS + ":entered onStart()" );
-        myUserLocation = new UserLocation( this , mLocationListner);
+        myUserLocation = new UserLocation( this , mLocationListner );
         myUserLocation.startLocationUpdates();
         //ordina la lista mettendo per primi i preferiti, e poi ordinando per stelle
         for (int i = 0; i < luogoList.size(); i++) {
@@ -300,8 +299,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     @Override
     protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
         super.onActivityResult( requestCode , resultCode , data );
-        if(requestCode==UserLocation.REQUEST_CHECK_SETTINGS && resultCode!=RESULT_OK){
-            UserUtils.myLocationIsSetted=false;
+        if (requestCode == UserLocation.REQUEST_CHECK_SETTINGS && resultCode != RESULT_OK) {
+            UserUtils.myLocationIsSetted = false;
             Collections.sort( luogoList );
             mAdapter.notifyDataSetChanged();
         }
@@ -427,28 +426,28 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         searchAutoComplete.setHintTextColor( getResources().getColor( R.color.colorAccent ) );
         searchAutoComplete.setTextColor( getResources().getColor( R.color.colorAccent ) );
 
-        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-        ImageView icon = searchView2.findViewById(android.support.v7.appcompat.R.id.search_button);
-        ImageView icon2 = searchView2.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        icon.setColorFilter(Color.WHITE);
-        icon2.setColorFilter(Color.WHITE);
+        android.support.v7.widget.SearchView searchView2 = (android.support.v7.widget.SearchView) menu.findItem( R.id.app_bar_search ).getActionView();
+        ImageView icon = searchView2.findViewById( android.support.v7.appcompat.R.id.search_button );
+        ImageView icon2 = searchView2.findViewById( android.support.v7.appcompat.R.id.search_close_btn );
+        icon.setColorFilter( Color.WHITE );
+        icon2.setColorFilter( Color.WHITE );
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setOnSearchClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
                 ActionBar actionbar = getSupportActionBar();
-                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-                upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
-                Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+                final Drawable upArrow = getResources().getDrawable( R.drawable.abc_ic_ab_back_material );
+                upArrow.setColorFilter( getResources().getColor( R.color.colorAccent ) , PorterDuff.Mode.SRC_ATOP );
+                Objects.requireNonNull( getSupportActionBar() ).setHomeAsUpIndicator( upArrow );
                 assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-                actionbar.setDisplayHomeAsUpEnabled(true);
+                actionbar.setDisplayHomeAsUpEnabled( true );
                 arrow = true;
             }
-        });
+        } );
 
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        searchView.setOnCloseListener( new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 ActionBar actionbar = getSupportActionBar();
@@ -460,7 +459,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
                 arrow = false;
                 return true;
             }
-        });
+        } );
 
 
         // listening to search query text change
@@ -485,7 +484,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(!arrow) {
+        if (!arrow) {
             Boolean open = myNavigationDrawer.openMenu( item );
             if (open) return open;
 
@@ -497,13 +496,13 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
 
             }
             return super.onOptionsItemSelected( item );
-        }else {
+        } else {
             arrow = false;
             ActionBar actionbar = getSupportActionBar();
             assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
             actionbar.setDisplayHomeAsUpEnabled( true );
             actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
-            mAdapter.getFilter().filter("");
+            mAdapter.getFilter().filter( "" );
             invalidateOptionsMenu();
             hideKeyboard();
             return true;
@@ -533,20 +532,20 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         overridePendingTransition( R.anim.slide_in , R.anim.slide_out );
     }
 
-    public String getItems_type(){//serve nel drawe per capire se cambiare activy o bloccare l'intent
+    public String getItems_type() {//serve nel drawe per capire se cambiare activy o bloccare l'intent
         return items_type;
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        InputMethodManager imm = (InputMethodManager) getSystemService( Activity.INPUT_METHOD_SERVICE );
+        imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY , 0 );
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode ,
+                                           @NonNull String permissions[] ,
                                            @NonNull int[] grantResults) {
-        myUserLocation.onRequestPermissionsResult( requestCode, permissions, grantResults );
+        myUserLocation.onRequestPermissionsResult( requestCode , permissions , grantResults );
     }
 
 }
