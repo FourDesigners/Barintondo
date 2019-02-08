@@ -41,7 +41,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
 
             luogo = view.findViewById( R.id.luogo );
             scadenza = view.findViewById( R.id.scadenza );
-            iconaCategoria = view.findViewById( R.id.iconaCategoria );
+            iconaCategoria = view.findViewById( R.id.icon_categoria );
 
             view.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -110,7 +110,6 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
         }
 
         holder.iconaCategoria.setImageDrawable( context.getResources().getDrawable( icon) );
-
     }
 
     @Override

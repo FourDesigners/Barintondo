@@ -330,15 +330,15 @@ public class ControllerRemoteDB implements Constants {
 
 
     public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListners.SingleLuogo listner) {
-
-        String Url = "http://barintondo.altervista.org/get_luoghi2.php";
+        Log.i(TAG, TAG_CLASS+": entered getLuogo()");
+        String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
         StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Log.i( "Test" , requestLuogoType+"ControllerRemoteDB: entered onResponse()"+response );
+                Log.i( TAG , TAG_CLASS+" request= "+requestLuogoType+": entered onResponse()"+response );
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 Luogo luogo = new Luogo();
@@ -353,7 +353,9 @@ public class ControllerRemoteDB implements Constants {
 
                         luogo.setCod( jsonObject.getString( "cod" ) );
                         luogo.setNome( jsonObject.getString( "nome" ) );
-                        luogo.setCategoria( jsonObject.getString("nomeCategoria") );
+                        if(!requestLuogoType.equals( REQUEST_GET_EVENTS )) {
+                            luogo.setCategoria( jsonObject.getString( "nomeCategoria" ) );
+                        }
                         luogo.setSottoCat( jsonObject.getString( "sottoCategoria" ) );
                         if (jsonObject.getString( "oraA" ).equals( "null" )) {
                             luogo.setOraA( null );

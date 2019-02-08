@@ -6,7 +6,7 @@
     <color name="colorAccent">#efebe9</color>
     <color name="colorBackground">@color/colorGreyMaterial</color>
     <color name="colorPrimaryBlueVariant">#3700B3</color>
-    <color name="colorPrimaryBlue">#6200EE</color>
+    <color name="colorPrimaryBlue">#6f74e4</color>
     <color name="colorSecondaryBlue">#03DAC6</color>
     <color name="colorSecondaryBlueVariant">#018786</color>
     <color name="colorWhite">#FFFFFF</color>
@@ -14,4 +14,5 @@
     <color name="colorOrange">#ff9900</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGreyMaterial">#fafafa</color>
+    <color name="colorGrey">#847d7d</color>
 </resources>

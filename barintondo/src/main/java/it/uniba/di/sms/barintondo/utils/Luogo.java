@@ -273,8 +273,21 @@ public class Luogo implements Parcelable, Comparable<Luogo> {
     public static Comparator<Luogo> getDistanceOrdering() {
         return new DistanceOrdering();
     }
+    public static Comparator<Luogo> getDistanceOrderingWhithPref() {
+        return new DistanceOrderingWithPref();
+    }
 
     public static class DistanceOrdering implements Comparator<Luogo> {
+
+
+        @Override
+        public int compare(Luogo luogo1 , Luogo luogo2) {
+            int difference = (int) (luogo1.getDistance() - luogo2.getDistance());
+            return difference;
+        }
+    }
+
+    public static class DistanceOrderingWithPref implements Comparator<Luogo> {
 
 
         @Override
