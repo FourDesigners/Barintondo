@@ -5,19 +5,20 @@
     android:id="@+id/activity_luogo_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".LuogoDetailActivity"
-    android:animateLayoutChanges="true">
+    tools:context=".LuogoDetailActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/luogoDetailToolbar"
+            style="@style/myToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@color/colorWhite"
-            style="@style/myToolbar"/>
+            app:titleTextColor="@color/colorWhite" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -25,59 +26,75 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin_top"
             android:layout_marginRight="@dimen/fab_margin_right"
-            app:srcCompat="@drawable/ic_star"
             android:tint="@color/colorWhite"
             app:layout_anchor="@id/luogoDetailToolbar"
-            app:layout_anchorGravity="bottom|right|end"/>
+            app:layout_anchorGravity="bottom|right|end"
+            app:srcCompat="@drawable/ic_star" />
     </android.support.design.widget.CoordinatorLayout>
 
-    <include
-        android:id="@+id/luogoVoteLayout"
-        layout="@layout/frame_vote_stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-
-    <ImageView
-        android:id="@+id/luogoDetailImage"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_luogo_info"
-            style="@style/btnLuogoDetail"
-            android:text="@string/pref_header_info"/>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:orientation="vertical">
 
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_luogo_directions"
-            style="@style/btnLuogoDetail"
-            android:text="@string/strNear" />
+            <include
+                android:id="@+id/luogoVoteLayout"
+                layout="@layout/frame_vote_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_luogo_reviews"
-            style="@style/btnLuogoDetail"
-            android:text="@string/strReviews"/>
+            <ImageView
+                android:id="@+id/luogoDetailImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4" />
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btn_luogo_info"
+                    style="@style/btnLuogoDetail"
+                    android:layout_width="match_parent"
+                    android:text="@string/pref_header_info" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btn_luogo_directions"
+                    style="@style/btnLuogoDetail"
+                    android:layout_width="match_parent"
+                    android:text="@string/strNear" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/btn_luogo_reviews"
+                    style="@style/btnLuogoDetail"
+                    android:layout_width="match_parent"
+                    android:text="@string/strReviews" />
 
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:id="@+id/luogo_extra_container">
+        </android.support.v7.widget.LinearLayoutCompat>
 
+        <FrameLayout
+            android:id="@+id/luogo_extra_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
 
-    </FrameLayout>
+        </FrameLayout>
 
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </android.support.v7.widget.LinearLayoutCompat>
