@@ -289,8 +289,8 @@
     <string name="strInsert">Insert e-mail and new password</string>
     <string name="strNoAccount">Account does not exist</string>
     <string name="strInfo">Password modified! Control your e-mail account</string>
-    <string name="offlineCoupons">Internet connection not available: your coupons may be not valid! Please check
-    your internet connection to get updated!</string>
+    <string name="offlineCoupons">Internet connection not available: your coupons may be not valid!</string>
+    <string name="useOk">Coupon used successfully!</string>
     <string name="strInProgress">In progress</string>
 
     <plurals name="EventInDays">
@@ -328,6 +328,7 @@
         <item>November</item>
         <item>Dicember</item>
     </string-array>
+    <string name="noDetailsOffline">You are currently offline: check your internet connection and try again to load place details.</string>
 
     <!--bt strings -->
     <string name="nameHidden">Device name not available</string>

@@ -251,11 +251,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void removeCoupon(String couponCod) {
-        manageCoupons( REQUEST_REMOVE_COUPON, couponCod,null,  null );
+        Log.i( "homeActivity" , "entered removeCoupon()");
+        manageCoupons( REQUEST_REMOVE_COUPON, couponCod,"null",  "null" );
     }
 
     private void manageCoupons(final String requestOp, final String couponCod, final String luogoCoupon, final String user ) {
-        // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
+        Log.i( "homeActivity" , "cod coupon: " + couponCod + "-" + "request op: " + requestOp);
         String Url = "http://barintondo.altervista.org/gestore_coupon.php";
 
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -265,17 +266,17 @@ public class HomeActivity extends AppCompatActivity {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
                 String[] result = response.split( "," );
-                Log.i( "utilityApp" , "entered onResponse(), request: " + result[0] + ", result: " + result[1] );
+                Log.i( "homeActivity" , "entered onResponse(), request: " + result[0] + ", result: " + result[1] );
 
                 switch (result[0]) {
                     case REQUEST_ADD_COUPON:
                         boolean added = result[1].equals( REQUEST_RESULT_OK );
-                        Log.i("utilityApp", "risultato server:" + result[1] + "-");
+                        Log.i("homeActivity", "risultato server:" + result[1] + "-");
                         couponAdded( added );
                         break;
                     case REQUEST_REMOVE_COUPON:
                         boolean removed = result[1].equals( REQUEST_RESULT_OK );
-                        Log.i("utilityApp", "risultato server:" + result[1] + "-");
+                        Log.i("homeActivity", "risultato server:" + result[1] + "-");
                         couponRemoved( removed );
                         break;
                 }
@@ -284,7 +285,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                Toast.makeText( context , "Errore nella richiesta al server" , Toast.LENGTH_SHORT ).show();
+                Toast.makeText( context , "onError() - Errore nella richiesta al server" , Toast.LENGTH_SHORT ).show();
+                Log.i( "homeActivity" , "entered onError()" + error );
                 sendMessage("err");
             }
         } ) {
