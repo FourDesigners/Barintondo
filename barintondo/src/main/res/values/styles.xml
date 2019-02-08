@@ -24,6 +24,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryLight</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
     <style name="settingsTheme" parent="Theme.MaterialComponents.Light">

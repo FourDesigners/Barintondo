@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //view
     Button useCouponBtn, addCouponBtn;
-    EditText codCoupon, email;
+    EditText codCoupon, email, codLuogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         context = this;
 
         codCoupon = findViewById(R.id.codCoupon);
+        codLuogo = findViewById( R.id.codLuogo );
         email = findViewById(R.id.email);
 
         addCouponBtn = findViewById(R.id.btnAdd);
@@ -244,15 +245,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void addCoupon() {
         String newCod = codCoupon.getText().toString();
+        String couponLuogo = codLuogo.getText().toString();
         String emailAddress = email.getText().toString();
-        manageCoupons( REQUEST_ADD_COUPON , newCod , emailAddress );
+        manageCoupons( REQUEST_ADD_COUPON , newCod , couponLuogo, emailAddress );
     }
 
     public void removeCoupon(String couponCod) {
-        manageCoupons( REQUEST_REMOVE_COUPON, couponCod, null );
+        manageCoupons( REQUEST_REMOVE_COUPON, couponCod,null,  null );
     }
 
-    private void manageCoupons(final String requestOp, final String couponCod, final String user ) {
+    private void manageCoupons(final String requestOp, final String couponCod, final String luogoCoupon, final String user ) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
         String Url = "http://barintondo.altervista.org/gestore_coupon.php";
 
@@ -290,6 +292,7 @@ public class HomeActivity extends AppCompatActivity {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put( "request_op" , requestOp );
                 MyData.put( "couponCod" , couponCod );
+                MyData.put( "codLuogo", luogoCoupon );
                 MyData.put( "email" , user );
                 return MyData;
             }

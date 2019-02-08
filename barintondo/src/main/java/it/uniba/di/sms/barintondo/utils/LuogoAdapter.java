@@ -203,13 +203,13 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
                     break;
             }
             holder.categIcon.setImageDrawable( context.getDrawable( icon ) );
-            holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryBlue ) );
+            holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryVariant ) );
         } else {//se non siamo nelle activity trattate ptima, cioè siamo in una normale lista di luoghi
             //Se il luogo è tra i preferiti aggiunge una stella
 
             if (UserUtils.codPref.contains( luogo.getCod() )) {
                 holder.categIcon.setImageDrawable( context.getDrawable( R.drawable.ic_star ) );
-                holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryBlue ) );
+                holder.categIcon.setColorFilter( context.getColor( R.color.colorSecondaryVariant ) );
             } else holder.categIcon.setImageDrawable( null );
             //serve per eliminare la stella perchè la recycler view la ricicla a un certo punto dello scorrimento
         }
