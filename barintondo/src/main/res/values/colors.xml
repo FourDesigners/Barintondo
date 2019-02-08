@@ -4,7 +4,6 @@
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorPrimaryLight">#f57f17</color>
     <color name="colorAccent">#efebe9</color>
-
     <color name="colorBackground">@color/colorGreyMaterial</color>
     <color name="colorPrimaryBlueVariant">#3700B3</color>
     <color name="colorPrimaryBlue">#6200EE</color>
