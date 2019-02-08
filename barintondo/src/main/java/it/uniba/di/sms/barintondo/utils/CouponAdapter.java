@@ -110,7 +110,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
         }
 
         holder.iconaCategoria.setImageDrawable( context.getResources().getDrawable( icon) );
-
+        holder.iconaCategoria.setColorFilter( R.color.colorSecondaryBlue );
     }
 
     @Override

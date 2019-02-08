@@ -15,4 +15,5 @@
     <color name="colorOrange">#ff9900</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGreyMaterial">#fafafa</color>
+    <color name="colorGrey">#847d7d</color>
 </resources>
