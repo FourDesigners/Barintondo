@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ImageSwitcherController;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
@@ -41,14 +42,12 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText editTextNickname, editTextEmail, editTextPassword, editTextRepeatPassword;
     ImageSwitcher imageSwitcher, imageSwitcher2;
     Button reset, register;
-    LocalDBOpenHelper openHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        openHelper = new LocalDBOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
         textViewNicknameError = findViewById(R.id.textViewNicknameError);
         textViewEmailError = findViewById(R.id.textViewEmailError);
         textViewPasswordError = findViewById(R.id.textViewPasswordError);
@@ -59,6 +58,8 @@ public class RegistrationActivity extends AppCompatActivity {
         myToolbar.setTitle(R.string.str_register);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
+        // Freccia back
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
@@ -71,79 +72,12 @@ public class RegistrationActivity extends AppCompatActivity {
         editTextEmail.setInputType(InputType.TYPE_CLASS_TEXT);
 
         editTextPassword = findViewById(R.id.editTextPassword);
-
         imageSwitcher = findViewById(R.id.imageSwitcher);
-        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
-        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
-        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView view = new ImageView(getApplicationContext());
-                return view;
-            }
-        });
-        imageSwitcher.setImageResource(R.drawable.closedeye);
-        imageSwitcher.setTag(R.drawable.closedeye);
-        imageSwitcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageSwitcher.getTag();
-                integer = integer == null ? 0 : integer;
-                imageSwitcher.setInAnimation(in);
-                imageSwitcher.setOutAnimation(out);
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageSwitcher.setImageResource(R.drawable.closedeye);
-                        imageSwitcher.setTag(R.drawable.closedeye);
-                        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageSwitcher.setImageResource(R.drawable.openeye);
-                        imageSwitcher.setTag(R.drawable.openeye);
-                        editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                }
-            }
-        });
+        ImageSwitcherController.setImageSwitcher(imageSwitcher, editTextPassword, getApplicationContext());
 
         editTextRepeatPassword = findViewById(R.id.editTextRepeatPassword);
         imageSwitcher2 = findViewById(R.id.imageSwitcher2);
-        imageSwitcher2.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView view = new ImageView(getApplicationContext());
-                return view;
-            }
-        });
-        imageSwitcher2.setImageResource(R.drawable.closedeye);
-        imageSwitcher2.setTag(R.drawable.closedeye);
-        imageSwitcher2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageSwitcher2.getTag();
-                integer = integer == null ? 0 : integer;
-                imageSwitcher2.setInAnimation(in);
-                imageSwitcher2.setOutAnimation(out);
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageSwitcher2.setImageResource(R.drawable.closedeye);
-                        imageSwitcher2.setTag(R.drawable.closedeye);
-                        editTextRepeatPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        editTextRepeatPassword.setSelection(editTextRepeatPassword.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageSwitcher2.setImageResource(R.drawable.openeye);
-                        imageSwitcher2.setTag(R.drawable.openeye);
-                        editTextRepeatPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        editTextRepeatPassword.setSelection(editTextRepeatPassword.getText().length());
-                        break;
-                }
-            }
-        });
+        ImageSwitcherController.setImageSwitcher(imageSwitcher2, editTextRepeatPassword, getApplicationContext());
 
         reset = findViewById(R.id.buttonReset);
 
@@ -188,10 +122,9 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response.contains("Registration successfull")) {
-                    if(!LocalDBOpenHelper.isPresent(email, openHelper)) {
-                        LocalDBOpenHelper.insertInto(nickname, email, password, openHelper);
+                    if(!LocalDBOpenHelper.isPresent(email, getApplicationContext())) {
+                        LocalDBOpenHelper.insertInto(nickname, email, password, getApplicationContext());
                     }
-                    //Toast.makeText(context, "Account creato", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                 }else {
@@ -216,10 +149,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         MyRequestQueue.add(MyStringRequest);
-    }
-    private void goHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
     }
 
     private boolean isCorrect(String nickname, String email, String password, String repeatPassword) {

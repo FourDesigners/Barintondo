@@ -61,8 +61,10 @@ public class MyNavigationDrawer implements Constants {
         nickname = header.findViewById( R.id.header_nickname );
         //Log.i( TAG , getClass().getSimpleName() + ": nickname = " + nickname );
         //prelevo dati dal db
+
         LocalDBOpenHelper dbHelper = new LocalDBOpenHelper( activity , DB_NAME , null , 1 );
         SQLiteDatabase myDB = dbHelper.getReadableDatabase();
+
         //definisco la query
         String[] columns = {COLUMN_NICKNAME};
         Cursor myCursor;
@@ -189,12 +191,11 @@ public class MyNavigationDrawer implements Constants {
         builder.setMessage(getActivity().getResources().getString(R.string.strDisconnect))
                 .setTitle(getActivity().getResources().getString(R.string.strLogout));
 
-        AlertDialog dialog = builder.create();
         builder.setPositiveButton(getActivity().getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 LocalDBOpenHelper openHelper = new LocalDBOpenHelper(activity, Constants.DB_NAME, null, 1);
                 goLogin();
-                LocalDBOpenHelper.delete(openHelper);
+                LocalDBOpenHelper.delete(getActivity().getApplicationContext());
             }
         });
         builder.setNeutralButton(getActivity().getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {

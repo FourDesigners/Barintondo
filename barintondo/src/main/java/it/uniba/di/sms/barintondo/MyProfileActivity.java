@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ImageSwitcherController;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 
@@ -49,8 +50,6 @@ public class MyProfileActivity extends AppCompatActivity {
     private EditText username;
     private TextView textViewEmail;
     private EditText password;
-    private Animation in;
-    private Animation out;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -62,11 +61,13 @@ public class MyProfileActivity extends AppCompatActivity {
         myToolbar.setTitle(R.string.myProfile_header);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
+
         setSupportActionBar(myToolbar);
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -93,72 +94,9 @@ public class MyProfileActivity extends AppCompatActivity {
         myCursor.close();
         myDB.close();
 
-        /*
-        final ImageView imageView2 = findViewById(R.id.imageViewProfile);
-        imageView2.setTag(R.drawable.closedeye);
-        imageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageView2.getTag();
-                integer = integer == null ? 0 : integer;
-
-                //Toast.makeText(getApplicationContext(), integer.toString(), Toast.LENGTH_SHORT).show();
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageView2.setImageResource(R.drawable.closedeye);
-                        imageView2.setTag(R.drawable.closedeye);
-                        password.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        password.setSelection(password.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageView2.setImageResource(R.drawable.openeye);
-                        imageView2.setTag(R.drawable.openeye);
-                        password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        password.setSelection(password.getText().length());
-                        break;
-                }
-            }
-        });
-        */
-        in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
-        out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
-
         final ImageSwitcher imageSwitcher;
         imageSwitcher = findViewById(R.id.imageSwitcher);
-        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView view = new ImageView(getApplicationContext());
-                return view;
-            }
-        });
-        imageSwitcher.setImageResource(R.drawable.closedeye);
-        imageSwitcher.setTag(R.drawable.closedeye);
-        imageSwitcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageSwitcher.getTag();
-                integer = integer == null ? 0 : integer;
-                imageSwitcher.setInAnimation(in);
-                imageSwitcher.setOutAnimation(out);
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageSwitcher.setImageResource(R.drawable.closedeye);
-                        imageSwitcher.setTag(R.drawable.closedeye);
-                        password.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        password.setSelection(password.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageSwitcher.setImageResource(R.drawable.openeye);
-                        imageSwitcher.setTag(R.drawable.openeye);
-                        password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        password.setSelection(password.getText().length());
-                        break;
-                }
-            }
-        });
+        ImageSwitcherController.setImageSwitcher(imageSwitcher, password, getApplicationContext());
 
     }
 
@@ -185,6 +123,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     }
 
+    // Salva modifiche in locale
     private void saveEdits() {
         if(InternetConnection.isNetworkAvailable(getApplicationContext())) {
             TextView textViewError = findViewById(R.id.textViewPasswordError);
@@ -210,6 +149,8 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
+
+    // Salva modifiche in remoto
     private void update(final String nickname, final String email, final String password) {
         String Url = "http://barintondo.altervista.org/update.php";
 
@@ -218,7 +159,8 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.strModified), Toast.LENGTH_SHORT).show();
-                goHome();
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
@@ -238,10 +180,5 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
         MyRequestQueue.add(MyStringRequest);
-    }
-
-    private void goHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
     }
 }

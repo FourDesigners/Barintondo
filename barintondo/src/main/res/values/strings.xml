@@ -250,7 +250,7 @@
     <string name="str_pref_added">Added to interests</string>
     <string name="str_fail_pref_managing">Error in managing interests, try again later</string>
     <string name="str_pref_removed">Removed from interests</string>
-    <string name="str_error_not_connected">Not connected,\ncheck your connection tha retry</string>
+    <string name="str_error_not_connected">Not connected,\ncheck your connection then retry</string>
     <string name="strConfirm">Confirm</string>
     <string name="strCancel">Cancel</string>
     <string name="strDisconnect">Are you sure ?</string>

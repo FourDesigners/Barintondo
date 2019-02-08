@@ -550,9 +550,9 @@ public class ControllerRemoteDB implements Constants {
 
                         }
                         LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper( context , Constants.DB_NAME , null , 1 );
-                        LocalDBOpenHelper.deleteCoupon( couponOpenHelper );
+                        LocalDBOpenHelper.deleteCoupon( context );
                         for (Coupon c : tempCouponList) {
-                            LocalDBOpenHelper.insertCoupon( c , couponOpenHelper );
+                            LocalDBOpenHelper.insertCoupon( c , context );
                         }
                     } catch (JSONException e2) {
                         e2.printStackTrace();

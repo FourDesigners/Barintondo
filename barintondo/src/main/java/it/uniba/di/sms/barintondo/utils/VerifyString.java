@@ -9,6 +9,7 @@ public class VerifyString {
         return nickname.equals("");
     }
 
+    // Formato email: caratteri + @ + . + caratteri
     public static boolean isEmailNotValid(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -21,6 +22,7 @@ public class VerifyString {
         return !pat.matcher(email).matches();
     }
 
+    // Formato password: almeno otto caratteri
     public static boolean isPasswordNotValid(String password) {
         return password.length() < MIN_LENGTH;
     }

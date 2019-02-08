@@ -56,22 +56,27 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    public static void delete(LocalDBOpenHelper openHelper) {
+    // Cancellazione unico account locale
+    public static void delete(Context context) {
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getReadableDatabase();
         db.delete( TABLE_UTENTE , null , null );
         db.delete( TABLE_COUPON , null , null );
         db.close();
     }
 
-    public static void deleteCoupon(LocalDBOpenHelper openHelper) {
+    public static void deleteCoupon(Context context) {
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getReadableDatabase();
         db.delete( TABLE_COUPON , null , null );
         db.close();
     }
 
-    public static boolean isPresent(LocalDBOpenHelper openHelper) {
+    // Verifica presenza di un utente locale
+    public static boolean isPresent(Context context) {
         boolean found = false;
 
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getReadableDatabase();
         String[] projection = {COLUMN_EMAIL};
         Cursor cursor = db.query( TABLE_UTENTE , projection , null , null , null , null , null );
@@ -81,9 +86,11 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         return found;
     }
 
-    public static boolean isPresent(String email , LocalDBOpenHelper openHelper) {
+    // Verifica presenza di un utente specifico in locale
+    public static boolean isPresent(String email , Context context) {
         boolean found = false;
 
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getReadableDatabase();
         String[] projection = {COLUMN_EMAIL};
         Cursor cursor = db.query( TABLE_UTENTE , projection , null , null , null , null , null );
@@ -97,24 +104,8 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         return found;
     }
 
-    public static boolean isPresent(String email , String password , LocalDBOpenHelper openHelper) {
-        boolean found = false;
-
-        SQLiteDatabase db = openHelper.getReadableDatabase();
-        String[] projection = {COLUMN_EMAIL , Constants.COLUMN_PASSWORD};
-        Cursor cursor = db.query( TABLE_UTENTE , projection , null , null , null , null , null );
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            String oEmail = cursor.getString( cursor.getColumnIndexOrThrow( Constants.COLUMN_EMAIL ) );
-            String oPassword = cursor.getString( cursor.getColumnIndexOrThrow( Constants.COLUMN_PASSWORD ) );
-            if (email.equals( oEmail ) && password.equals( oPassword )) {
-                found = true;
-            }
-        }
-        return found;
-    }
-
-    public static void insertCoupon(Coupon newCoupon , LocalDBOpenHelper openHelper) {
+    public static void insertCoupon(Coupon newCoupon , Context context) {
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put( COLUMN_COD_COUPON , newCoupon.getCod() );
@@ -128,7 +119,8 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public static void insertInto(String nickname , String email , String password , LocalDBOpenHelper openHelper) {
+    public static void insertInto(String nickname , String email , String password , Context context) {
+        LocalDBOpenHelper openHelper = new LocalDBOpenHelper( context , DB_NAME , null , 1 );
         SQLiteDatabase db = openHelper.getReadableDatabase();
         String[] projection = {Constants.COLUMN_EMAIL};
         Cursor cursor = db.query( Constants.TABLE_UTENTE , projection , null , null , null , null , null );
@@ -142,23 +134,6 @@ public class LocalDBOpenHelper extends SQLiteOpenHelper {
         values.put( COLUMN_PASSWORD , password );
         db.insert( TABLE_UTENTE , null , values );
         db.close();
-    }
-
-    public static String[] getLocalAccount(LocalDBOpenHelper openHelper) {
-        String[] params = new String[3];
-
-        SQLiteDatabase db = openHelper.getReadableDatabase();
-        String[] projection = {Constants.COLUMN_NICKNAME , Constants.COLUMN_EMAIL , Constants.COLUMN_PASSWORD};
-        Cursor cursor = db.query( Constants.TABLE_UTENTE , projection , null , null , null , null , null );
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            params[0] = cursor.getString( cursor.getColumnIndexOrThrow( COLUMN_NICKNAME ) );
-            params[1] = cursor.getString( cursor.getColumnIndexOrThrow( COLUMN_EMAIL ) );
-            params[2] = cursor.getString( cursor.getColumnIndexOrThrow( COLUMN_PASSWORD ) );
-        } else {
-            params = null;
-        }
-        return params;
     }
 
     public static String getEmail(Context context) {

@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.ImageSwitcherController;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.VerifyString;
@@ -50,19 +51,16 @@ import it.uniba.di.sms.barintondo.utils.VerifyString;
 public class LoginActivity extends AppCompatActivity implements Constants{
     TextView textViewForgotPassword;
     EditText editTextEmail, editTextPassword;
-    //ImageView imageView;
     Button reset, login;
     TextView register;
-    LocalDBOpenHelper openHelper;
-    int animationCounter = 1;
 
     @SuppressLint({"NewApi", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        openHelper = new LocalDBOpenHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
-        goHomeIfAccount(openHelper);
+        //Accesso continuato
+        goHomeIfAccount();
 
         setContentView(R.layout.activity_login);
         Toolbar myToolbar = findViewById(R.id.toolbar);
@@ -74,86 +72,24 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         if(!InternetConnection.isNetworkAvailable(LoginActivity.this)) {
             Toast.makeText(this, getResources().getString(R.string.notConnected), Toast.LENGTH_SHORT).show();
-        }else {
-            //Toast.makeText(this, "Connesso alla rete", Toast.LENGTH_SHORT).show();
-            if(LocalDBOpenHelper.getLocalAccount(openHelper) != null) {
-                String nickname = LocalDBOpenHelper.getLocalAccount(openHelper)[0];
-                String email = LocalDBOpenHelper.getLocalAccount(openHelper)[1];
-                String password = LocalDBOpenHelper.getLocalAccount(openHelper)[2];
-                //registration(getApplicationContext(), nickname, email, password, openHelper);
-            }
         }
 
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextEmail.setInputType(InputType.TYPE_CLASS_TEXT);
 
         editTextPassword = findViewById(R.id.editTextPassword);
-
-        final Animation in  = AnimationUtils.loadAnimation(this, R.anim.left_to_right_in);
-        final Animation out = AnimationUtils.loadAnimation(this, R.anim.left_to_right_out);
         final ImageSwitcher imageSwitcher;
         imageSwitcher = findViewById(R.id.imageSwitcher);
-        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView view = new ImageView(getApplicationContext());
-                return view;
-            }
-        });
-        imageSwitcher.setImageResource(R.drawable.closedeye);
-        imageSwitcher.setTag(R.drawable.closedeye);
-        imageSwitcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer integer = (Integer) imageSwitcher.getTag();
-                integer = integer == null ? 0 : integer;
-                imageSwitcher.setInAnimation(in);
-                imageSwitcher.setOutAnimation(out);
-                switch(integer) {
-                    case R.drawable.openeye:
-                        imageSwitcher.setImageResource(R.drawable.closedeye);
-                        imageSwitcher.setTag(R.drawable.closedeye);
-                        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                    case R.drawable.closedeye:
-                        imageSwitcher.setImageResource(R.drawable.openeye);
-                        imageSwitcher.setTag(R.drawable.openeye);
-                        editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        editTextPassword.setSelection(editTextPassword.getText().length());
-                        break;
-                }
-            }
-        });
+        //Animazione sull'occhio
+        ImageSwitcherController.setImageSwitcher(imageSwitcher, editTextPassword, getApplicationContext());
 
-
-        /*
-        final Handler imageSwitcherHandler;
-        imageSwitcherHandler = new Handler(Looper.getMainLooper());
-        imageSwitcherHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                switch (animationCounter) {
-                    case 0:
-                        imageSwitcher.setImageResource(R.drawable.closedeye);
-                        break;
-                    case 1:
-                        imageSwitcher.setImageResource(R.drawable.openeye);
-                        break;
-                }
-                animationCounter++;
-                animationCounter %= 2;
-                imageSwitcherHandler.postDelayed(this, 3000);
-            }
-        });
-        */
 
         textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
         textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(InternetConnection.isNetworkAvailable(getApplicationContext())) {
+                    // Recupero password
                     showDialog();
                 }else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.str_error_not_connected), Toast.LENGTH_SHORT).show();
@@ -182,11 +118,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
                 if(connected) {
                     login(email, password);
                 }else {
-                    if(LocalDBOpenHelper.isPresent(email, password, openHelper)) {
-                        goHome();
-                    }else {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalidCredentials), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.str_error_not_connected), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -211,13 +143,15 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         edit.putInt(LIDI, 0);
         edit.putInt(DISCOTECHE, 0);
         edit.putInt(FAMIGLIA, 0);
+
+        // Per essere messo davanti una categoria deve essere premuta almeno tre volte
         edit.putInt(MAX, 3);
         edit.putBoolean(SKIP, false);
         edit.apply();
     }
 
-    private void goHomeIfAccount(LocalDBOpenHelper openHelper) {
-        if(LocalDBOpenHelper.isPresent(openHelper)) {
+    private void goHomeIfAccount() {
+        if(LocalDBOpenHelper.isPresent(getApplicationContext())) {
             goHome();
         }else {
             resetChips();
@@ -235,7 +169,6 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         final EditText editEmail = view.findViewById(R.id.editEmailForgot);
 
-        AlertDialog dialog = builder.create();
         builder.setPositiveButton(getResources().getString(R.string.strConfirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 String email = editEmail.getText().toString();
@@ -244,9 +177,9 @@ public class LoginActivity extends AppCompatActivity implements Constants{
                 }
             }
         });
-        builder.setNegativeButton(getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(getResources().getString(R.string.strCancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.strCancel), Toast.LENGTH_SHORT).show();
             }
         });
         AlertDialog alert = builder.create();
@@ -285,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements Constants{
     }
 
     private void showNotification() {
-        final Intent intent = new Intent(this, LoginActivity.class);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_profile)
@@ -361,7 +293,7 @@ public class LoginActivity extends AppCompatActivity implements Constants{
         StringRequest MyStringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                LocalDBOpenHelper.insertInto(response, email, password, openHelper);
+                LocalDBOpenHelper.insertInto(response, email, password, getApplicationContext());
                 if(flag!=0) goHome();
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
