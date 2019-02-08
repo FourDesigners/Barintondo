@@ -36,6 +36,7 @@ import java.util.Set;
 import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.Coupon;
+import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.MyListners;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
@@ -115,13 +116,16 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     }
 
     private void goDettaglioLuogo(){
-        Intent intent;
-        if(myCoupon.getCodLuogo().contains( "E" )){
-            intent = new Intent( this, EventoDetailActivity.class );
-        }else intent = new Intent( this, LuogoDetailActivity.class );
-        intent.putExtra( INTENT_LUOGO_COD, myCoupon.getCodLuogo() );
-        startActivity( intent );
-        overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
+        if(InternetConnection.isNetworkAvailable(this)) {
+            Intent intent;
+            if (myCoupon.getCodLuogo().contains("E")) {
+                intent = new Intent(this, EventoDetailActivity.class);
+            } else intent = new Intent(this, LuogoDetailActivity.class);
+            intent.putExtra(INTENT_LUOGO_COD, myCoupon.getCodLuogo());
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+        else Toast.makeText(this, getResources().getString(R.string.noDetailsOffline), Toast.LENGTH_LONG).show();
     }
 
     @Override

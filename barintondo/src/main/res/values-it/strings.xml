@@ -218,4 +218,5 @@
     <string name="strInsertPassword">Inserire password</string>
     <string name="strVerifyPassword">Verifica account</string>
     <string name="errorReceived">Qualcosa è andato storto. Riprovare più tardi.</string>
+    <string name="noDetailsOffline">Connessione internet non disponibile: attivarla per consultare i dettagli sul luogo in cui utilizzare il coupon.</string>
 </resources>

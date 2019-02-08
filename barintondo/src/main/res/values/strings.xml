@@ -328,6 +328,7 @@
         <item>November</item>
         <item>Dicember</item>
     </string-array>
+    <string name="noDetailsOffline">You are currently offline: check your internet connection and try again to load place details.</string>
 
     <!--bt strings -->
     <string name="nameHidden">Device name not available</string>
