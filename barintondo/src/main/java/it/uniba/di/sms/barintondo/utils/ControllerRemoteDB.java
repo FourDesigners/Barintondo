@@ -654,19 +654,17 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void saveReview(final String reviewText , final String codLuogo , final int voto , final MyListners.ReviewSave mReviewListner) {
+    public void saveReview(final String reviewText ,
+                           final String codLuogo ,
+                           final int voto ,
+                           final MyListners.ReviewSave mReviewListner) {
         // Log.i( TAG , TAG_CLASS + ":entered saveReview( )");
-
         String Url = "http://barintondo.altervista.org/manager_review.php";
-
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
-        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
+        StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url ,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                //Log.i( TAG , TAG_CLASS + ": entered saveReview( )"+response);
-
                 if (response.equals( REQUEST_RESULT_OK )) {
                     mReviewListner.onReviewAdded();
                 } else {

@@ -150,19 +150,11 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     }
 
     private void requestList() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
 
-        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
-            couponList.clear();
-            ControllerRemoteDB controllerRemoteDB = new ControllerRemoteDB( this );
-            controllerRemoteDB.getCouponList( couponList , couponListListner );
-        } else {
-            Snackbar.make( findViewById( R.id.drawer_layout ) ,
-                    getResources().getString( R.string.str_error_not_connected ) ,
-                    Snackbar.LENGTH_LONG )
-                    .setAction( "Action" , null ).show();
-            //Toast.makeText( this , this.getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
-        }
+        couponList.clear();
+        ControllerRemoteDB controllerRemoteDB = new ControllerRemoteDB( this );
+        controllerRemoteDB.getCouponList( couponList , couponListListner );
+        
     }
 
     @Override
