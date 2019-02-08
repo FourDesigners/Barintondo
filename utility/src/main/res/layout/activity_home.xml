@@ -36,10 +36,22 @@
         android:ems="10"
         android:hint="codice coupon"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintBottom_toTopOf="@+id/codLuogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/couponBtn" />
+
+    <EditText
+        android:id="@+id/codLuogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="codice luogo"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/codCoupon" />
 
     <EditText
         android:id="@+id/email"
@@ -51,6 +63,6 @@
         app:layout_constraintBottom_toTopOf="@+id/btnAdd"
         app:layout_constraintEnd_toEndOf="@+id/codCoupon"
         app:layout_constraintStart_toStartOf="@+id/codCoupon"
-        app:layout_constraintTop_toBottomOf="@+id/codCoupon" />
+        app:layout_constraintTop_toBottomOf="@+id/codLuogo" />
 
 </android.support.constraint.ConstraintLayout>

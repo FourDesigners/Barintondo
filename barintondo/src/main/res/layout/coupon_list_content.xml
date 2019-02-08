@@ -55,7 +55,7 @@
         android:layout_height="20dp"
         android:src="@drawable/ic_fiber_smart_record"
         android:layout_marginLeft="10dp"
-        android:tint="@color/colorSecondaryBlue"
+        android:tint="@color/colorSecondaryVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

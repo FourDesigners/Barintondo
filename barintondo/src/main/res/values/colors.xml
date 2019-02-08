@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ef5350</color>
-    <color name="colorPrimaryDark">#b71c1c</color>
-    <color name="colorPrimaryLight">#f57f17</color>
+    <color name="colorPrimary">@color/palettePrimary</color>
+    <color name="colorPrimaryDark">@color/paletteDark</color>
+    <color name="colorPrimaryLight">@color/paletteLight</color>
     <color name="colorAccent">#efebe9</color>
+    <color name="colorSecondary">#6cbddf</color>
+    <color name="colorSecondaryVariant">#1565c0</color>
+
+    <color name="palettePrimary">#b71c1c</color>
+    <color name="paletteLight">#f05545</color>
+    <color name="paletteDark">#7f0000</color>
+
+
+
+
+
+
     <color name="colorBackground">@color/colorGreyMaterial</color>
     <color name="colorPrimaryBlueVariant">#3700B3</color>
     <color name="colorPrimaryBlue">#6f74e4</color>

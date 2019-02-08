@@ -262,7 +262,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             isPref = true;
             ImageViewCompat.setImageTintList(
                     fabPref ,
-                    ColorStateList.valueOf( getResources().getColor( R.color.colorSecondaryBlue ) )
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorSecondary ) )
             );
         } else {
             isPref = false;

@@ -83,8 +83,11 @@ public class MainActivity extends AppCompatActivity {
                                 lat = jsonObject.getDouble( "latitudine" );
                                 lng = jsonObject.getDouble( "latitudine" );
                             }
-
-                            luoghiList.add( new Luogo( cod , indirizzo , lat , lng ) );
+                            int locS= Integer.valueOf(  jsonObject.getString( "locationSync" ));
+                            boolean locationSync;
+                            if (locS==1) locationSync=true;
+                            else locationSync=false;
+                            luoghiList.add( new Luogo( cod , indirizzo , lat , lng, locationSync ) );
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i( "Test" , "Errore nel leggere il json" );
@@ -123,22 +126,25 @@ public class MainActivity extends AppCompatActivity {
     private void calcolaLocation() {
         Geocoder geocoder = new Geocoder( this , Locale.getDefault() );
         for (Luogo l : luoghiList) {
-            List<Address> addresses = null;
-            try {
-                addresses = geocoder.getFromLocationName( l.indirizzo , 1 );
+            if (!l.locationSyc) {
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocationName( l.indirizzo , 1 );
 
-                Address address = addresses.get( 0 );
-                if (addresses.size() > 0) {
-                    double latitude = addresses.get( 0 ).getLatitude();
-                    double longitude = addresses.get( 0 ).getLongitude();
-                    if (l.lat != latitude || l.lng != longitude) {
-                        Log.i( "Test" , "Aggiorno " + l.cod + "(" + l.indirizzo+") ");
+                    Address address = addresses.get( 0 );
+                    if (addresses.size() > 0) {
+                        double latitude = addresses.get( 0 ).getLatitude();
+                        double longitude = addresses.get( 0 ).getLongitude();
+
+                        Log.i( "Test" , "Aggiorno " + l.cod + "(" + l.indirizzo + ") " );
                         setLocation( l.cod , latitude , longitude );
-                    }
-                } else Log.i( "Test" , "Non caricato Luogo " + l.cod + "(" + l.indirizzo +") ");
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                    } else
+                        Log.i( "Test" , "Non caricato Luogo " + l.cod + "(" + l.indirizzo + ") " );
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -184,14 +190,16 @@ public class MainActivity extends AppCompatActivity {
     class Luogo {
         String cod;
         String indirizzo;
+        boolean locationSyc;
         double lat;
         double lng;
 
-        public Luogo(String cod , String indirizzo , double lat , double lng) {
+        public Luogo(String cod , String indirizzo , double lat , double lng, boolean locationSync) {
             this.cod = cod;
             this.indirizzo = indirizzo;
             this.lat = lat;
             this.lng = lng;
+            this.locationSyc=locationSync;
         }
     }
 }

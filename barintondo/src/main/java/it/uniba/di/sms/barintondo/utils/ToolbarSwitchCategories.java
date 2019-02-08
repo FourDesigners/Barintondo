@@ -34,7 +34,7 @@ public class ToolbarSwitchCategories implements Constants {
         event=activity.findViewById( R.id.btnSwitchEvent );
         onClickcategory( event, INTENT_EVENTS );
 
-        int color = activity.getResources().getColor( R.color.colorSecondaryBlue );
+        int color = activity.getResources().getColor( R.color.colorSecondary );
         switch (category) {
             case INTENT_ATTRACTIONS:
                 attraction.setColorFilter( color );
