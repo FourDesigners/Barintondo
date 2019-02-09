@@ -1,6 +1,7 @@
 package it.uniba.di.sms.barintondo;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.chip.Chip;
@@ -12,9 +13,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, TAG_CLASS + ":entered onCreate()");
         super.onCreate(savedInstanceState);
+        adjustFontScale(getResources().getConfiguration());
         setContentView(R.layout.activity_home);
 
 
@@ -135,6 +139,16 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
 
     }
+
+    private void adjustFontScale(Configuration configuration) {
+        configuration.fontScale = (float) 1.0;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        getBaseContext().getResources().updateConfiguration(configuration, metrics);
+    }
+
     //imposta l'intent verso LuoghiListActivity con la categoria passata
     private void setIntentLuoghiListActivity(String constCall){
         Intent intent = new Intent( this , LuogoListActivity.class );
