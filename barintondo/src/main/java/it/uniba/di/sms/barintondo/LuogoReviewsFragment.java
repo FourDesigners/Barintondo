@@ -4,8 +4,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,19 +13,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +28,7 @@ import java.util.List;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.Review;
 import it.uniba.di.sms.barintondo.utils.ReviewAdapter;
 
@@ -56,8 +49,8 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     LuogoReviewsFragment mLuogoReviewFragment;
     ControllerRemoteDB controllerRemoteDB;
     CoordinatorLayout reviewLayout;
-    MyListners.ReviewsList mReviewListListner;
-    MyListners.ReviewSave mReviewSaveListner;
+    MyListeners.ReviewsList mReviewListListner;
+    MyListeners.ReviewSave mReviewSaveListner;
     final String REVIEW_OPTION_SELECTED = "ReviewOptionSelected";
     private int REVIEW_LIST = 1;
     private int MY_REVIEW = 2;
@@ -151,7 +144,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         }
 
 
-        mReviewListListner = new MyListners.ReviewsList() {
+        mReviewListListner = new MyListeners.ReviewsList() {
             @Override
             public void onReviewList() {
                 if (activeOpion == 1) {
@@ -185,7 +178,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         reviewEditText.setText( myReviewText );
         controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListner );
 
-        mReviewSaveListner = new MyListners.ReviewSave() {
+        mReviewSaveListner = new MyListeners.ReviewSave() {
             @Override
             public void onReviewAdded() {
                 layourReviewsList.setVisibility( View.VISIBLE );

@@ -1,7 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,15 +10,12 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +26,6 @@ import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -47,21 +41,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
 
 
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -69,11 +54,12 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.MyScrollListener;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 import it.uniba.di.sms.barintondo.utils.UserLocation;
 import it.uniba.di.sms.barintondo.utils.UserUtils;
 
-public class LuogoListActivity extends AppCompatActivity implements Constants, MyListners.ItemsAdapterListener {
+public class LuogoListActivity extends AppCompatActivity implements Constants, MyListeners.ItemsAdapterListener {
 
     private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
@@ -87,12 +73,12 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     String[] arrayRes = null;
     String[] arrayTags = null;
     String[] order = null;
-    MyListners.LuoghiList myDBListner;
+    MyListeners.LuoghiList myDBListner;
     private boolean arrow = false;
     private String requestCat;
     private Toolbar switchCategories;
     private UserLocation myUserLocation;
-    MyListners.UserLocationCallback mLocationListner;
+    MyListeners.UserLocationCallback mLocationListner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -197,7 +183,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         recyclerView.setAdapter( mAdapter );
 
         //istanzia il listner per il callback del caricamento luoghi
-        myDBListner = new MyListners.LuoghiList() {
+        myDBListner = new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 if (UserUtils.myLocationIsSetted && !requestCat.equals( REQUEST_GET_EVENTS )) {
@@ -240,7 +226,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         } );
 
-        mLocationListner = new MyListners.UserLocationCallback() {
+        mLocationListner = new MyListeners.UserLocationCallback() {
             @Override
             public void onLocation(Location location) {
                 if (!requestCat.equals( REQUEST_GET_EVENTS )) {
@@ -253,23 +239,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         };
 
-        final LinearLayoutCompat linearLayoutCompat = findViewById(R.id.switchCategories);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) {
-                    linearLayoutCompat.setVisibility(View.GONE);
-                }else {
-                    linearLayoutCompat.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        MyScrollListener myScrollListener = new MyScrollListener(mySwitchCategory);
+        recyclerView.addOnScrollListener(myScrollListener);
     }
 
     private void requestList() {

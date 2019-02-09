@@ -21,7 +21,7 @@ public class ToolbarSwitchCategories implements Constants {
 
     public ToolbarSwitchCategories(final Activity activity , String category) {
         this.activity = activity;
-        thisToolbar=activity.findViewById( R.id.toolbar_switch_categories );
+        thisToolbar=activity.findViewById( R.id.switchCategories );
 
         attraction = activity.findViewById( R.id.btnSwitchAttractions );
         onClickcategory( attraction , INTENT_ATTRACTIONS );

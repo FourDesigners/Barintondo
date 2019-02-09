@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -32,7 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -50,7 +49,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     Button /*meteoInfoBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
     Chip meteoInfoBtn;
     ControllerRemoteDB controllerRemoteDB;
-    MyListners.LuoghiList luoghiDBlistner;
+    MyListeners.LuoghiList luoghiDBlistner;
 
     //elementi per lo slider
     private static ViewPager mPager;
@@ -156,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         super.onStart();
         Log.i(TAG, TAG_CLASS + ":entered onStart()");
         //slider eventi
-        luoghiDBlistner =new MyListners.LuoghiList() {
+        luoghiDBlistner =new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 final ArrayList<Evento> listEventi= new ArrayList<>(  );

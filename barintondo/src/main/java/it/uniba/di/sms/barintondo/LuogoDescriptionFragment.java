@@ -20,7 +20,7 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Coupon;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 
@@ -34,7 +34,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
     ImageView iconDirection, iconCoupon;
     Luogo myLuogo;
     ControllerRemoteDB controllerRemoteDB;
-    MyListners.SingleLuogo myListner;
+    MyListeners.SingleLuogo myListner;
 
 
     public LuogoDescriptionFragment() {
@@ -58,7 +58,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 orarioC = ora[0] + ":" + ora[1];
             }
             controllerRemoteDB = new ControllerRemoteDB( this.getContext() );
-            myListner = new MyListners.SingleLuogo() {
+            myListner = new MyListeners.SingleLuogo() {
                 @Override
                 public void onLuogo(Luogo luogo) {
                     Log.i("Test", "Entered onLuogo");

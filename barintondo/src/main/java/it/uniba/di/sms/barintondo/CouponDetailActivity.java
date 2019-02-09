@@ -37,7 +37,6 @@ import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.Coupon;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
-import it.uniba.di.sms.barintondo.utils.MyListners;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
 
@@ -180,7 +179,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         discoveredDevicesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        //locate listviews and attatch the adapters
+        //locate listviews and attach the adapters
         ListView listView = dialog.findViewById(R.id.pairedDeviceList);
         ListView listView2 = dialog.findViewById(R.id.discoveredDeviceList);
         listView.setAdapter(pairedDevicesAdapter);

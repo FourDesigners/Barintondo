@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -42,11 +40,12 @@ import it.uniba.di.sms.barintondo.utils.Coupon;
 import it.uniba.di.sms.barintondo.utils.CouponAdapter;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.MyScrollListener;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
 
-public class CouponListActivity extends AppCompatActivity implements Constants, MyListners.CouponAdapterListener {
+public class CouponListActivity extends AppCompatActivity implements Constants, MyListeners.CouponAdapterListener {
 
     private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
@@ -54,11 +53,11 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     private RequestQueue mRequestQueue;
     private RecyclerView recyclerView;
     private List<Coupon> couponList;
-    private ToolbarSwitchCategories myToolbarSwitchCategories;
+    private ToolbarSwitchCategories mySwitchCategory;
 
     private CouponAdapter mAdapter;
     private SearchView searchView;
-    private MyListners.CouponList couponListListner;
+    private MyListeners.CouponList couponListListener;
 
     private static CouponListActivity mInstance;
     private boolean arrow = false;
@@ -82,7 +81,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled( true );
-        myToolbarSwitchCategories = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
+        mySwitchCategory = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
 
         Drawable drawable = getResources().getDrawable( R.drawable.ic_hamburger );
         drawable = DrawableCompat.wrap( drawable );
@@ -107,8 +106,12 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
+        
+        // Disabilitazione toolbar con scroll
+        MyScrollListener myScrollListener = new MyScrollListener(mySwitchCategory);
+        recyclerView.addOnScrollListener(myScrollListener);
 
-        couponListListner = new MyListners.CouponList() {
+        couponListListener = new MyListeners.CouponList() {
             @Override
             public void onCouponList() {
                 LocalDBOpenHelper.getCouponList( getApplicationContext() , couponList );
@@ -127,10 +130,10 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
             public void onError(String error) {
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error on the server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerOnError, error on the server" );
                         break;
                 }
             }
@@ -153,7 +156,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
         couponList.clear();
         ControllerRemoteDB controllerRemoteDB = new ControllerRemoteDB( this );
-        controllerRemoteDB.getCouponList( couponList , couponListListner );
+        controllerRemoteDB.getCouponList( couponList , couponListListener );
         
     }
 
@@ -164,7 +167,7 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService( Context.SEARCH_SERVICE );
-        searchView = (SearchView) menu.findItem( R.id.app_bar_search )
+        SearchView searchView = (SearchView) menu.findItem( R.id.app_bar_search )
                 .getActionView();
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );

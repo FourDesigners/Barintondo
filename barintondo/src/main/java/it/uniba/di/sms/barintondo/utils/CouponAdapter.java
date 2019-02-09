@@ -15,9 +15,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import it.uniba.di.sms.barintondo.R;
@@ -27,7 +25,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
     private Context context;
     private List<Coupon> couponList;
     private List<Coupon> itemListFiltered;
-    private MyListners.CouponAdapterListener couponAdapterListener;
+    private MyListeners.CouponAdapterListener couponAdapterListener;
 
 
     private static final String TAG = CouponAdapter.class.getSimpleName();
@@ -54,7 +52,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
     }
 
 
-    public CouponAdapter(Context context , List<Coupon> couponList , MyListners.CouponAdapterListener listener) {
+    public CouponAdapter(Context context , List<Coupon> couponList , MyListeners.CouponAdapterListener listener) {
         this.context = context;
         this.couponAdapterListener = listener;
         this.couponList = couponList;

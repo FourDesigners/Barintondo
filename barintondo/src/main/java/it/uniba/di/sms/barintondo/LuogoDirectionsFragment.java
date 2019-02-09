@@ -3,7 +3,6 @@ package it.uniba.di.sms.barintondo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
@@ -33,8 +32,8 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     RecyclerView recyclerView;
     ArrayList<Luogo> luogoList;
     LuogoAdapter mAdapter;
-    MyListners.ItemsAdapterListener itemsAdapterListener;
-    MyListners.LuoghiList myDBListner;
+    MyListeners.ItemsAdapterListener itemsAdapterListener;
+    MyListeners.LuoghiList myDBListner;
     String requestCat;
     TextView textNoLuoghiNear;
 
@@ -48,7 +47,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         myLuogo = getArguments().getParcelable( EXTRA_LUOGO );
         requestCat = REQUEST_GET_ATTRACTIONS;
 
-        itemsAdapterListener = new MyListners.ItemsAdapterListener() {
+        itemsAdapterListener = new MyListeners.ItemsAdapterListener() {
             @Override
             public void onItemsSelected(Luogo item) {
                 Intent intent;
@@ -87,7 +86,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        myDBListner = new MyListners.LuoghiList() {
+        myDBListner = new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 Collections.sort( luogoList, Luogo.getDistanceOrdering() );

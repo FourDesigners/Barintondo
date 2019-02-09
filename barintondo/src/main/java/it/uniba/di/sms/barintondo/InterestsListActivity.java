@@ -1,7 +1,6 @@
 package it.uniba.di.sms.barintondo;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +31,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,12 +42,12 @@ import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.MyNavigationDrawer;
+import it.uniba.di.sms.barintondo.utils.MyScrollListener;
 import it.uniba.di.sms.barintondo.utils.ToolbarSwitchCategories;
-import it.uniba.di.sms.barintondo.utils.UserUtils;
 
-public class InterestsListActivity extends AppCompatActivity implements Constants, MyListners.ItemsAdapterListener {
+public class InterestsListActivity extends AppCompatActivity implements Constants, MyListeners.ItemsAdapterListener {
 
     private String TAG_CLASS = getClass().getSimpleName();
     private Toolbar myToolbar;
@@ -58,9 +56,9 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private RecyclerView recyclerView;
     private LuogoAdapter mAdapter;
     private SearchView searchView;
-    private ToolbarSwitchCategories myToolbarSwitchCategories;
+    private ToolbarSwitchCategories mySwitchCategory;
     private ArrayList<Luogo> interestsList;
-    private MyListners.InterestsList myInterestsListner;
+    private MyListeners.InterestsList myInterestsListner;
     String[] arrayRes = null;
     String[] arrayTags = null;
     private boolean arrow = false;
@@ -81,7 +79,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         actionbar.setDisplayHomeAsUpEnabled( true );
         actionbar.setHomeAsUpIndicator( R.drawable.ic_hamburger );
 
-        myToolbarSwitchCategories = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
+        mySwitchCategory = new ToolbarSwitchCategories( this , Constants.INTENT_INTERESES );
 
         //nav drawer setup
         myNavigationDrawer = new MyNavigationDrawer( this ,
@@ -107,7 +105,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
-        myInterestsListner = new MyListners.InterestsList() {
+        myInterestsListner = new MyListeners.InterestsList() {
             @Override
             public void onInterestsList() {
                 setupView();
@@ -139,7 +137,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             }
         });
 
-
+        MyScrollListener myScrollListener = new MyScrollListener(mySwitchCategory);
+        recyclerView.addOnScrollListener(myScrollListener);
     }
 
     @Override
@@ -184,6 +183,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         getMenuInflater().inflate( R.menu.item_list_menu , menu );
 
         // Associate searchable configuration with the SearchView
+
+
         SearchManager searchManager = (SearchManager) getSystemService( Context.SEARCH_SERVICE );
         searchView = (SearchView) menu.findItem( R.id.app_bar_search )
                 .getActionView();

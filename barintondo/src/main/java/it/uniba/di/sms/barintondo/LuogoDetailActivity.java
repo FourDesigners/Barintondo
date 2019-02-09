@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.FrameVoteStars;
@@ -44,8 +44,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     ControllerRemoteDB controller;
     FrameVoteStars myFrameVoteStars;
     Luogo luogo;
-    MyListners.SingleLuogo myListner;
-    MyListners.Interests interestListner;
+    MyListeners.SingleLuogo myListener;
+    MyListeners.Interests interestListener;
     private int activeOption;
     final int INFO=1;
     final int DIRECTIONS=2;
@@ -64,7 +64,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         } else this.activeOption=1;
 
 
-        myListner=new MyListners.SingleLuogo() {
+        myListener=new MyListeners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
                 onLuogoLoaded( luogo );
@@ -80,16 +80,16 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             public void onError(String error) {
                 switch (error){
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server");
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error on the server");
                         break;
                 }
             }
         };
 
-        interestListner = new MyListners.Interests() {
+        interestListener = new MyListeners.Interests() {
             @Override
             public void onAdd(Boolean result) {
                 prefAdded( result );
@@ -109,10 +109,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             public void onError(String error) {
                 switch (error){
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server");
+                        Log.i(TAG, TAG_CLASS + ": entered interestListenerOnError, error in pharsing the Json recieved from server");
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListnerOnError, error on the server");
+                        Log.i(TAG, TAG_CLASS + ": entered interestListenerOnError, error on the server");
                         break;
                 }
             }
@@ -149,7 +149,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
-            controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListner );
+            controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListener );
         }else {
             Snackbar.make( findViewById( R.id.activity_luogo_detail ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
@@ -173,7 +173,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         myToolbar.setTitle( myLuogo.getNome() );
 
-        controller.checkPref( myLuogo.getCod(), interestListner );
+        controller.checkPref( myLuogo.getCod(), interestListener );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -181,8 +181,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 if (!InternetConnection.isNetworkAvailable( LuogoDetailActivity.this )) {
                     Toast.makeText( LuogoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controller.removePref( myLuogo.getCod(), interestListner );
-                    else controller.addPref( myLuogo.getCod(), interestListner );
+                    if (isPref) controller.removePref( myLuogo.getCod(), interestListener );
+                    else controller.addPref( myLuogo.getCod(), interestListener );
                 }
             }
         } );

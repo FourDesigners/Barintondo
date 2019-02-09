@@ -2,7 +2,7 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.location.Location;
 
-public interface MyListners {
+public interface MyListeners {
 
     public interface SingleLuogo {
         public void onLuogo(Luogo luogo);

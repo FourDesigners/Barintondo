@@ -33,7 +33,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
     private List<Contact> itemListFiltered;
     private ItemsAdapterListener listener;
 
-    private static final String TAG = ContactAdapter.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView servizio, number;
@@ -94,10 +93,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
                 } else {
                     List<Contact> filteredList = new ArrayList<>();
                     for (Contact row : itemList) {
-
-                        // name match condition
-                            /*Log.i(TAG, "Compare: Nome=" + row.getNome() + " sottocat=" + row.getSottoCat() + " query=" + charString
-                            + " esito=" + row.getSottoCat().toLowerCase().contains(charString.toLowerCase()));*/
                         if (row.getServizio().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }

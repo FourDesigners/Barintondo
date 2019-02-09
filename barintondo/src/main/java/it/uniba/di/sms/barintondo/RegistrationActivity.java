@@ -121,9 +121,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response.contains("Registration successfull")) {
-                    if(!LocalDBOpenHelper.isPresent(email, getApplicationContext())) {
-                        LocalDBOpenHelper.insertInto(nickname, email, password, getApplicationContext());
-                    }
+                    LocalDBOpenHelper.insertInto(nickname, email, password, getApplicationContext());
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                 }else {

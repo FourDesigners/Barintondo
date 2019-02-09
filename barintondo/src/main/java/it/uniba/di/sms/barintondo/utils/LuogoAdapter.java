@@ -1,12 +1,10 @@
 package it.uniba.di.sms.barintondo.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +27,13 @@ import it.uniba.di.sms.barintondo.InterestsListActivity;
 import it.uniba.di.sms.barintondo.LuogoDetailActivity;
 import it.uniba.di.sms.barintondo.R;
 
-import static it.uniba.di.sms.barintondo.utils.Constants.imagesPath;
-
 public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder>
         implements Filterable, Constants {
     private String TAG_CLASS = getClass().getSimpleName();
     private Context context;
     private List<Luogo> itemList;
     private List<Luogo> itemListFiltered;
-    private MyListners.ItemsAdapterListener listener;
+    private MyListeners.ItemsAdapterListener listener;
     private Location sourceLuogo;
     private boolean isRequestFormLuogoDetail;
 
@@ -70,7 +66,7 @@ public class LuogoAdapter extends RecyclerView.Adapter<LuogoAdapter.MyViewHolder
     }
 
 
-    public LuogoAdapter(Context context , List<Luogo> itemList , MyListners.ItemsAdapterListener listener) {
+    public LuogoAdapter(Context context , List<Luogo> itemList , MyListeners.ItemsAdapterListener listener) {
         this.context = context;
         this.listener = listener;
         this.itemList = itemList;

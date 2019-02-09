@@ -1,6 +1,5 @@
 package it.uniba.di.sms.barintondo.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,13 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.uniba.di.sms.barintondo.LuogoDetailActivity;
-import it.uniba.di.sms.barintondo.LuogoReviewsFragment;
 import it.uniba.di.sms.barintondo.R;
 
 public class ControllerRemoteDB implements Constants {
@@ -38,19 +34,19 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void checkPref(String itemCod , MyListners.Interests listner) {
-        manageInterests( REQUEST_CHECK_PREF , email , itemCod , listner );
+    public void checkPref(String itemCod , MyListeners.Interests listener) {
+        manageInterests( REQUEST_CHECK_PREF , email , itemCod , listener );
     }
 
-    public void addPref(String itemCod , MyListners.Interests listner) {
-        manageInterests( REQUEST_ADD_PREF , email , itemCod , listner );
+    public void addPref(String itemCod , MyListeners.Interests listener) {
+        manageInterests( REQUEST_ADD_PREF , email , itemCod , listener );
     }
 
-    public void removePref(String itemCod , MyListners.Interests listner) {
-        manageInterests( REQUEST_REMOVE_PREF , email , itemCod , listner );
+    public void removePref(String itemCod , MyListeners.Interests listener) {
+        manageInterests( REQUEST_REMOVE_PREF , email , itemCod , listener );
     }
 
-    private void manageInterests(final String requestOp , final String user , final String luogoCod , final MyListners.Interests listner) {
+    private void manageInterests(final String requestOp , final String user , final String luogoCod , final MyListeners.Interests listener) {
         // Log.i( TAG , getClass().getSimpleName() + ":entered manageInterests( )");
 
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
@@ -66,15 +62,15 @@ public class ControllerRemoteDB implements Constants {
 
                 switch (result[0]) {
                     case REQUEST_CHECK_PREF:
-                        listner.onCheck( Boolean.valueOf( result[1] ) );
+                        listener.onCheck( Boolean.valueOf( result[1] ) );
                         break;
                     case REQUEST_ADD_PREF:
                         boolean added = result[1].equals( REQUEST_RESULT_OK );
-                        listner.onAdd( added );
+                        listener.onAdd( added );
                         break;
                     case REQUEST_REMOVE_PREF:
                         boolean removed = result[1].equals( REQUEST_RESULT_OK );
-                        listner.onRemove( removed );
+                        listener.onRemove( removed );
                         break;
                 }
             }
@@ -83,7 +79,7 @@ public class ControllerRemoteDB implements Constants {
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
                 Log.i( TAG , TAG_CLASS + ": entered manageInterests(), error on server" );
-                listner.onError( VOLLEY_ERROR_CONNECTION );
+                listener.onError( VOLLEY_ERROR_CONNECTION );
             }
         } ) {
             protected Map<String, String> getParams() {
@@ -98,7 +94,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getAllInterests(final ArrayList<Luogo> interestsList , final MyListners.InterestsList interestsListner) {
+    public void getAllInterests(final ArrayList<Luogo> interestsList , final MyListeners.InterestsList interestsListener) {
         Log.i( TAG , TAG_CLASS + ": entered getAllInterests()" );
         interestsList.clear();
         String Url = "http://barintondo.altervista.org/gestore_interessi.php";
@@ -156,11 +152,11 @@ public class ControllerRemoteDB implements Constants {
                             interestsList.add( evento );
                         } else interestsList.add( luogo );
                     }
-                    interestsListner.onInterestsList();
+                    interestsListener.onInterestsList();
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    interestsListner.onError( VOLLEY_ERROR_JSON );
+                    interestsListener.onError( VOLLEY_ERROR_JSON );
                     Log.i( TAG , TAG_CLASS + ": entered getAllInterests(), error in pharsing Json" );
                 }
 
@@ -170,7 +166,7 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                interestsListner.onError( VOLLEY_ERROR_CONNECTION );
+                interestsListener.onError( VOLLEY_ERROR_CONNECTION );
                 Log.i( TAG , TAG_CLASS + ": entered getAllInterests(), error on server" );
             }
         } ) {
@@ -232,7 +228,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
+    public void getLuoghiList(final String requestCat , final List<Luogo> luogoList , final MyListeners.LuoghiList mListener) {
         Log.i( TAG , TAG_CLASS + ": entered getLuoghiList()" );
         String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -304,16 +300,16 @@ public class ControllerRemoteDB implements Constants {
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    mListner.onError( VOLLEY_ERROR_JSON );
+                    mListener.onError( VOLLEY_ERROR_JSON );
                     Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error pharsing Json" );
                 }
-                mListner.onList();
+                mListener.onList();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                mListner.onError( VOLLEY_ERROR_CONNECTION );
+                mListener.onError( VOLLEY_ERROR_CONNECTION );
                 Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error on server" );
             }
         } ) {
@@ -329,7 +325,7 @@ public class ControllerRemoteDB implements Constants {
     }
 
 
-    public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListners.SingleLuogo listner) {
+    public void getLuogo(final String codLuogo , final String requestLuogoType , final MyListeners.SingleLuogo listener) {
         Log.i(TAG, TAG_CLASS+": entered getLuogo()");
         String Url = "http://barintondo.altervista.org/get_luoghi.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -391,14 +387,14 @@ public class ControllerRemoteDB implements Constants {
                                 evento.setDataFine( jsonObject.getString( "dataFine" ) );
                             }
 
-                            listner.onEvento( evento );
-                        } else listner.onLuogo( luogo );
+                            listener.onEvento( evento );
+                        } else listener.onLuogo( luogo );
 
                     }
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    listner.onError( VOLLEY_ERROR_JSON );
+                    listener.onError( VOLLEY_ERROR_JSON );
                     Log.i( TAG , TAG_CLASS + ": entered getLuogo(), error on pharsing Json" );
                 }
 
@@ -407,7 +403,7 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                listner.onError( VOLLEY_ERROR_CONNECTION );
+                listener.onError( VOLLEY_ERROR_CONNECTION );
                 Log.i( TAG , TAG_CLASS + ": entered getLuogo(), error on server" );
             }
         } ) {
@@ -425,7 +421,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getLuoghiNear(final Luogo myLuogo , final List<Luogo> luogoList , final MyListners.LuoghiList mListner) {
+    public void getLuoghiNear(final Luogo myLuogo , final List<Luogo> luogoList , final MyListeners.LuoghiList mListener) {
 
         String Url = "http://barintondo.altervista.org/get_luoghi_near.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -479,17 +475,17 @@ public class ControllerRemoteDB implements Constants {
 
                 } catch (JSONException e2) {
                     e2.printStackTrace();
-                    mListner.onError( VOLLEY_ERROR_JSON );
+                    mListener.onError( VOLLEY_ERROR_JSON );
                     Log.i( TAG , TAG_CLASS + ": entered getLuoghiNear(), error on pharsing Json" );
                 }
-                mListner.onList();
+                mListener.onList();
 
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                mListner.onError( VOLLEY_ERROR_CONNECTION );
+                mListener.onError( VOLLEY_ERROR_CONNECTION );
                 Log.i( TAG , TAG_CLASS + ": entered getLuoghiNear(), error on server" );
             }
         } ) {
@@ -507,7 +503,7 @@ public class ControllerRemoteDB implements Constants {
         MyRequestQueue.add( MyStringRequest );
     }
 
-    public void getCouponList(final List<Coupon> couponList , final MyListners.CouponList couponListListner) {
+    public void getCouponList(final List<Coupon> couponList , final MyListeners.CouponList couponListListener) {
         //couponList.clear();
 
 
@@ -559,18 +555,18 @@ public class ControllerRemoteDB implements Constants {
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                         Log.i( TAG , TAG_CLASS + ": entered getCouponList(), error pharsing Json" );
-                        couponListListner.onError( VOLLEY_ERROR_JSON );
+                        couponListListener.onError( VOLLEY_ERROR_JSON );
                     }
                     couponList.clear();
 
-                    couponListListner.onCouponList();
+                    couponListListener.onCouponList();
                 }
             } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     //This code is executed if there is an error.
                     Log.i( TAG , TAG_CLASS + ": entered getLuoghiList(), error on server" );
-                    couponListListner.onError( VOLLEY_ERROR_CONNECTION );
+                    couponListListener.onError( VOLLEY_ERROR_CONNECTION );
                 }
             } ) {
 
@@ -586,12 +582,12 @@ public class ControllerRemoteDB implements Constants {
             Toast.makeText( context , context.getResources().getString( R.string.offlineCoupons ) , Toast.LENGTH_SHORT ).show();
             couponList.clear();
             //anche se non sono stati caricati i coupon dal server da il callback per caricare quelli dal db locale
-            couponListListner.onCouponList();
+            couponListListener.onCouponList();
         }
 
     }
 
-    public void getReviewsList(final String codLuogo , final List<Review> reviewsList , final MyListners.ReviewsList mReviewListner) {
+    public void getReviewsList(final String codLuogo , final List<Review> reviewsList , final MyListeners.ReviewsList mReviewListener) {
         reviewsList.clear();
         //Log.i( TAG , TAG_CLASS+": entered getReviewList" );
         String Url = "http://barintondo.altervista.org/manager_review.php";
@@ -626,10 +622,10 @@ public class ControllerRemoteDB implements Constants {
                 } catch (JSONException e2) {
                     e2.printStackTrace();
                     Log.i( TAG , TAG_CLASS + ": entered getReviewList(), error on pharsing Json" );
-                    mReviewListner.onError( VOLLEY_ERROR_JSON );
+                    mReviewListener.onError( VOLLEY_ERROR_JSON );
                 }
 
-                mReviewListner.onReviewList();
+                mReviewListener.onReviewList();
 
 
             }
@@ -638,7 +634,7 @@ public class ControllerRemoteDB implements Constants {
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
                 Log.i( TAG , TAG_CLASS + ": entered getReviewList(), error on server" );
-                mReviewListner.onError( VOLLEY_ERROR_CONNECTION );
+                mReviewListener.onError( VOLLEY_ERROR_CONNECTION );
             }
         } ) {
 
@@ -657,7 +653,7 @@ public class ControllerRemoteDB implements Constants {
     public void saveReview(final String reviewText ,
                            final String codLuogo ,
                            final int voto ,
-                           final MyListners.ReviewSave mReviewListner) {
+                           final MyListeners.ReviewSave mReviewListener) {
         // Log.i( TAG , TAG_CLASS + ":entered saveReview( )");
         String Url = "http://barintondo.altervista.org/manager_review.php";
         RequestQueue MyRequestQueue = Volley.newRequestQueue( context );
@@ -666,18 +662,18 @@ public class ControllerRemoteDB implements Constants {
             @Override
             public void onResponse(String response) {
                 if (response.equals( REQUEST_RESULT_OK )) {
-                    mReviewListner.onReviewAdded();
+                    mReviewListener.onReviewAdded();
                 } else {
                     // non dovrebbe mai entrare in questo ramo
                     Log.i( TAG , TAG_CLASS + ": entered saveReview(), error on savinReview" );
-                    mReviewListner.onError( VOLLEY_ERROR_JSON );
+                    mReviewListener.onError( VOLLEY_ERROR_JSON );
                 }
             }
         } , new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
                 //This code is executed if there is an error.
-                mReviewListner.onError( VOLLEY_ERROR_CONNECTION );
+                mReviewListener.onError( VOLLEY_ERROR_CONNECTION );
                 Log.i( TAG , TAG_CLASS + ": entered saveReview(), error on server" );
             }
         } ) {

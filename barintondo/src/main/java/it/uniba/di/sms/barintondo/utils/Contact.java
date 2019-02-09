@@ -27,12 +27,6 @@ public class Contact {
         return servizio;
     }
 
-    public void setNumero(String numero) {
-        if(numero.length() == 10) {
-            this.numero = numero;
-        }
-    }
-
     public String getNumero() {
         return numero;
     }

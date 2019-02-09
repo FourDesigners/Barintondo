@@ -2,7 +2,6 @@ package it.uniba.di.sms.barintondo.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -20,7 +19,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,9 +34,9 @@ public class UserLocation implements Constants {
     LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
     private boolean isLocationUpdatesActive;
-    private MyListners.UserLocationCallback mlocationListner;
+    private MyListeners.UserLocationCallback mlocationListner;
 
-    public UserLocation(Activity activity, MyListners.UserLocationCallback locationListner) {
+    public UserLocation(Activity activity, MyListeners.UserLocationCallback locationListner) {
         this.activity = activity;
         mLocationPermissionGranted = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient( activity );

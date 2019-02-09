@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
-import it.uniba.di.sms.barintondo.utils.MyListners;
+import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
@@ -40,8 +40,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     Evento evento;
     FloatingActionButton fabPref;
     boolean isPref = false;
-    MyListners.SingleLuogo myListner;
-    MyListners.Interests interestListner;
+    MyListeners.SingleLuogo myListner;
+    MyListeners.Interests interestListner;
     private int activeOption;
     final int INFO = 1;
     final int DIRECTIONS = 2;
@@ -58,7 +58,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             this.activeOption = savedInstanceState.getInt( SELECTED_OPTION );
         } else this.activeOption = 1;
 
-        myListner = new MyListners.SingleLuogo() {
+        myListner = new MyListeners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
                 //non viene mai restituito un luogo a questa activity
@@ -83,7 +83,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         };
 
 
-        interestListner = new MyListners.Interests() {
+        interestListner = new MyListeners.Interests() {
             @Override
             public void onAdd(Boolean result) {
                 prefAdded( result );
