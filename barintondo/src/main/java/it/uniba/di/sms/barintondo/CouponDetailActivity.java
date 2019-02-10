@@ -36,6 +36,7 @@ import java.util.Set;
 import it.uniba.di.sms.barintondo.utils.BTCommunicationController;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.Coupon;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 
 public class CouponDetailActivity extends AppCompatActivity implements Constants {
@@ -68,6 +69,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_coupon_detail );
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
 

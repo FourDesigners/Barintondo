@@ -49,8 +49,8 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
     LuogoReviewsFragment mLuogoReviewFragment;
     ControllerRemoteDB controllerRemoteDB;
     CoordinatorLayout reviewLayout;
-    MyListeners.ReviewsList mReviewListListner;
-    MyListeners.ReviewSave mReviewSaveListner;
+    MyListeners.ReviewsList mReviewListListener;
+    MyListeners.ReviewSave mReviewSaveListener;
     final String REVIEW_OPTION_SELECTED = "ReviewOptionSelected";
     private int REVIEW_LIST = 1;
     private int MY_REVIEW = 2;
@@ -144,7 +144,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         }
 
 
-        mReviewListListner = new MyListeners.ReviewsList() {
+        mReviewListListener = new MyListeners.ReviewsList() {
             @Override
             public void onReviewList() {
                 if (activeOpion == 1) {
@@ -164,10 +164,10 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
             public void onError(String error) {
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerReviewListOnError, error in pharsing the Json recieved from server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerReviewListOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerReviewOnError, error on the server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerReviewOnError, error on the server" );
                         break;
                 }
             }
@@ -176,15 +176,15 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         activateSection( activeOpion );
         starSelected( myReviewVoteStar , res );
         reviewEditText.setText( myReviewText );
-        controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListner );
+        controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListener );
 
-        mReviewSaveListner = new MyListeners.ReviewSave() {
+        mReviewSaveListener = new MyListeners.ReviewSave() {
             @Override
             public void onReviewAdded() {
                 layourReviewsList.setVisibility( View.VISIBLE );
                 layoutYourReview.setVisibility( View.GONE );
                 activeOpion=1;
-                controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListner );
+                controllerRemoteDB.getReviewsList( itemCod , reviewList , mReviewListListener );
                 //ripristino della sezione di invio segnalazione
                 reviewEditText.getText().clear();
                 final Resources res = getContext().getResources();
@@ -203,7 +203,7 @@ public class LuogoReviewsFragment extends Fragment implements Constants {
         btnSaveReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controllerRemoteDB.saveReview( reviewEditText.getText().toString() , itemCod , yourVote , mReviewSaveListner );
+                controllerRemoteDB.saveReview( reviewEditText.getText().toString() , itemCod , yourVote , mReviewSaveListener );
             }
         } );
         return rootView;

@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.ImageSwitcherController;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
@@ -61,7 +62,8 @@ public class LoginActivity extends AppCompatActivity implements Constants{
 
         //Accesso continuato
         goHomeIfAccount();
-
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView(R.layout.activity_login);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(R.string.app_name);

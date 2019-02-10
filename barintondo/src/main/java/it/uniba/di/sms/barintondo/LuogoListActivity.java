@@ -46,6 +46,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
@@ -73,17 +74,18 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     String[] arrayRes = null;
     String[] arrayTags = null;
     String[] order = null;
-    MyListeners.LuoghiList myDBListner;
+    MyListeners.LuoghiList myDBListener;
     private boolean arrow = false;
     private String requestCat;
-    private Toolbar switchCategories;
     private UserLocation myUserLocation;
-    MyListeners.UserLocationCallback mLocationListner;
+    MyListeners.UserLocationCallback mLocationListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_luogo_list );
 
         //first time intent reading
@@ -182,8 +184,8 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        //istanzia il listner per il callback del caricamento luoghi
-        myDBListner = new MyListeners.LuoghiList() {
+        //istanzia il listener per il callback del caricamento luoghi
+        myDBListener = new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 if (UserUtils.myLocationIsSetted && !requestCat.equals( REQUEST_GET_EVENTS )) {
@@ -202,10 +204,10 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             public void onError(String error) {
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i( TAG , TAG_CLASS + ": entered listnerOnError, error on the server" );
+                        Log.i( TAG , TAG_CLASS + ": entered listenerOnError, error on the server" );
                         break;
                 }
                 Snackbar.make( findViewById( R.id.drawer_layout ) ,
@@ -214,7 +216,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
                         .setAction( "Action" , null ).show();
             }
         };
-        //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listner
+        //richiede i luoghi della categoria scelta e riceve la notifica di caricamento nel listener
 
         requestList();
         final SwipeRefreshLayout swipeRefreshLayout = findViewById( R.id.swipe_refresh );
@@ -226,7 +228,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
             }
         } );
 
-        mLocationListner = new MyListeners.UserLocationCallback() {
+        mLocationListener = new MyListeners.UserLocationCallback() {
             @Override
             public void onLocation(Location location) {
                 if (!requestCat.equals( REQUEST_GET_EVENTS )) {
@@ -250,7 +252,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             luogoList.clear();
             ControllerRemoteDB controller = new ControllerRemoteDB( this );
-            controller.getLuoghiList( requestCat , luogoList , myDBListner );
+            controller.getLuoghiList( requestCat , luogoList , myDBListener );
         } else {
             Snackbar.make( findViewById( R.id.drawer_layout ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
@@ -264,7 +266,7 @@ public class LuogoListActivity extends AppCompatActivity implements Constants, M
     protected void onStart() {
         super.onStart();
         Log.i( TAG , TAG_CLASS + ":entered onStart()" );
-        myUserLocation = new UserLocation( this , mLocationListner );
+        myUserLocation = new UserLocation( this , mLocationListener );
         myUserLocation.startLocationUpdates();
         //ordina la lista mettendo per primi i preferiti, e poi ordinando per stelle
         for (int i = 0; i < luogoList.size(); i++) {

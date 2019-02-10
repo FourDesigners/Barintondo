@@ -38,6 +38,7 @@ import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Coupon;
 import it.uniba.di.sms.barintondo.utils.CouponAdapter;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 import it.uniba.di.sms.barintondo.utils.MyListeners;
@@ -69,6 +70,8 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , getClass().getSimpleName() + ":entered onCreate()" );
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_coupon_list );
         mInstance = this;
 
