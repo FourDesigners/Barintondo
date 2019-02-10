@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_item_reviews"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    tools:context=".LuogoReviewsFragment">
+
+
+    <LinearLayout
+        android:id="@+id/layout_your_review"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/layout_vote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+
+            <TextView
+                android:id="@+id/text_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/str_give_vote"
+                android:textSize="@dimen/standardTextSize"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/yourReviewStar0"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_star"
+                app:layout_constraintLeft_toRightOf="@id/text_vote"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/yourReviewStar1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_star"
+                app:layout_constraintTop_toTopOf="@id/yourReviewStar0" />
+
+            <ImageView
+                android:id="@+id/yourReviewStar2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_star" />
+
+            <ImageView
+                android:id="@+id/yourReviewStar3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_star" />
+
+            <ImageView
+                android:id="@+id/yourReviewStar4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_star" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_text_review"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="15dp"
+            android:gravity="top"
+            android:hint="@string/strInsertReview" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp">
+
+            <ImageButton
+                android:id="@+id/btnCancelReview"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/colorBackground"
+                android:tint="@color/colorPrimaryLight"
+                app:srcCompat="@drawable/ic_close_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnSaveReview"/>
+
+            <ImageButton
+                android:id="@+id/btnSaveReview"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/colorBackground"
+                android:tint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_send_black_24dp"
+                app:layout_constraintStart_toEndOf="@id/btnCancelReview"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/layout_reviews_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/luogo_reviews_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/recensione_list_content"
+            android:clipToPadding="false"
+            android:paddingBottom="70dp"/>
+        <!--le ultime 2 istruzioni serve per far visualizzare correttamente l'ultima recensione e non oscurarla con il fab-->
+        <TextView
+            android:id="@+id/text_view_no_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/strNoReviews"
+            android:textSize="@dimen/standardTextSize"
+            android:visibility="gone"/>
+        <!--Non esce nell'anteprima ma c'è nell'activity-->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@color/colorPrimary"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </android.support.design.widget.CoordinatorLayout>
+
+
+
+
+</LinearLayout>
