@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Contact;
 import it.uniba.di.sms.barintondo.utils.ContactAdapter;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
 
 public class ContactsActivity extends AppCompatActivity implements ContactAdapter.ItemsAdapterListener{
@@ -36,6 +37,8 @@ public class ContactsActivity extends AppCompatActivity implements ContactAdapte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView(R.layout.activity_contacts);
 
         Toolbar myToolbar = findViewById( R.id.contacts_toolbar );

@@ -34,7 +34,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
     ImageView iconDirection, iconCoupon;
     Luogo myLuogo;
     ControllerRemoteDB controllerRemoteDB;
-    MyListeners.SingleLuogo myListner;
+    MyListeners.SingleLuogo myListener;
 
 
     public LuogoDescriptionFragment() {
@@ -58,7 +58,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 orarioC = ora[0] + ":" + ora[1];
             }
             controllerRemoteDB = new ControllerRemoteDB( this.getContext() );
-            myListner = new MyListeners.SingleLuogo() {
+            myListener = new MyListeners.SingleLuogo() {
                 @Override
                 public void onLuogo(Luogo luogo) {
                     Log.i("Test", "Entered onLuogo");
@@ -74,10 +74,10 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
                 public void onError(String error) {
                     switch (error){
                         case VOLLEY_ERROR_JSON:
-                            Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                            Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server");
                             break;
                         case VOLLEY_ERROR_CONNECTION:
-                            Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                            Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error on the server");
                             break;
                     }
                 }
@@ -140,7 +140,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
 
             if (myEvento.getCodLuogo() != null) {
                 layoutLuogoEvento.setVisibility( View.VISIBLE );
-                controllerRemoteDB.getLuogo( myEvento.getCodLuogo() , Constants.REQUEST_GET_LUOGO, myListner );
+                controllerRemoteDB.getLuogo( myEvento.getCodLuogo() , Constants.REQUEST_GET_LUOGO, myListener );
             }
         }
         List<Coupon> couponList=new ArrayList<>(  );

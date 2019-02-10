@@ -13,11 +13,15 @@ import android.webkit.WebView;
 
 import java.util.Objects;
 
+import it.uniba.di.sms.barintondo.utils.FontScale;
+
 public class MeteoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView(R.layout.activity_meteo);
 
         Toolbar myToolbar = findViewById( R.id.meteoToolbar );

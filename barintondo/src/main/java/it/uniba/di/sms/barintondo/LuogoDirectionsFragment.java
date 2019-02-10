@@ -33,7 +33,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     ArrayList<Luogo> luogoList;
     LuogoAdapter mAdapter;
     MyListeners.ItemsAdapterListener itemsAdapterListener;
-    MyListeners.LuoghiList myDBListner;
+    MyListeners.LuoghiList myDBListener;
     String requestCat;
     TextView textNoLuoghiNear;
 
@@ -86,7 +86,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
 
-        myDBListner = new MyListeners.LuoghiList() {
+        myDBListener = new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 Collections.sort( luogoList, Luogo.getDistanceOrdering() );
@@ -100,10 +100,10 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
             public void onError(String error) {
                 switch (error){
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server");
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server");
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListnerOnError, error on the server");
+                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error on the server");
                         break;
                 }
             }
@@ -129,7 +129,7 @@ public class LuogoDirectionsFragment extends Fragment implements Constants {
     private void requestList(){
         luogoList.clear();
         ControllerRemoteDB controller = new ControllerRemoteDB( getContext() );
-        controller.getLuoghiNear( myLuogo , luogoList , myDBListner );
+        controller.getLuoghiNear( myLuogo , luogoList , myDBListener );
     }
 
     @Override

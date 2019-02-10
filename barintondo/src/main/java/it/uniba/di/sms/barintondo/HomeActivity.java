@@ -34,6 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
@@ -49,10 +50,10 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     private Toolbar myToolbar;
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
-    Button /*meteoInfoBtn, */goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
+    Button goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
     Chip meteoInfoBtn;
     ControllerRemoteDB controllerRemoteDB;
-    MyListeners.LuoghiList luoghiDBlistner;
+    MyListeners.LuoghiList luoghiDBlistener;
 
     //elementi per lo slider
     private static ViewPager mPager;
@@ -63,7 +64,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, TAG_CLASS + ":entered onCreate()");
         super.onCreate(savedInstanceState);
-        adjustFontScale(getResources().getConfiguration());
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView(R.layout.activity_home);
 
 
@@ -135,18 +137,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         //istanzia il controller del db
         controllerRemoteDB = new ControllerRemoteDB( this );
 
-
-
-
-    }
-
-    private void adjustFontScale(Configuration configuration) {
-        configuration.fontScale = (float) 1.0;
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        metrics.scaledDensity = configuration.fontScale * metrics.density;
-        getBaseContext().getResources().updateConfiguration(configuration, metrics);
     }
 
     //imposta l'intent verso LuoghiListActivity con la categoria passata
@@ -169,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         super.onStart();
         Log.i(TAG, TAG_CLASS + ":entered onStart()");
         //slider eventi
-        luoghiDBlistner =new MyListeners.LuoghiList() {
+        luoghiDBlistener =new MyListeners.LuoghiList() {
             @Override
             public void onList() {
                 final ArrayList<Evento> listEventi= new ArrayList<>(  );
@@ -186,10 +176,10 @@ public class HomeActivity extends AppCompatActivity implements Constants {
             public void onError(String error) {
                 switch (error){
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server");
+                        Log.i(TAG, TAG_CLASS + ": entered listenerOnError, error in pharsing the Json recieved from server");
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error on the server");
+                        Log.i(TAG, TAG_CLASS + ": entered listenerOnError, error on the server");
                         break;
                 }
 //                Snackbar.make( findViewById( R.id.drawer_layout ) ,
@@ -201,7 +191,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         controllerRemoteDB.populateInterestsCod();
         luogoList.clear();
-        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , luoghiDBlistner );
+        controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , luoghiDBlistener );
     }
 
     @Override

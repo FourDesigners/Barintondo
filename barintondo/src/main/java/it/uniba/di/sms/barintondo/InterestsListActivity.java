@@ -39,6 +39,7 @@ import java.util.Objects;
 import it.uniba.di.sms.barintondo.utils.Constants;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.Luogo;
 import it.uniba.di.sms.barintondo.utils.LuogoAdapter;
 import it.uniba.di.sms.barintondo.utils.MyDividerItemDecoration;
@@ -58,7 +59,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     private SearchView searchView;
     private ToolbarSwitchCategories mySwitchCategory;
     private ArrayList<Luogo> interestsList;
-    private MyListeners.InterestsList myInterestsListner;
+    private MyListeners.InterestsList myInterestsListener;
     String[] arrayRes = null;
     String[] arrayTags = null;
     private boolean arrow = false;
@@ -68,6 +69,8 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
     public void onCreate(Bundle savedInstanceState) {
         Log.i( TAG , TAG_CLASS + ": entered onCreate()" );
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_interests_list );
 
         //toolbar setup
@@ -105,7 +108,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
         recyclerView.addItemDecoration( new MyDividerItemDecoration( this , DividerItemDecoration.VERTICAL , 36 ) );
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
         recyclerView.setAdapter( mAdapter );
-        myInterestsListner = new MyListeners.InterestsList() {
+        myInterestsListener = new MyListeners.InterestsList() {
             @Override
             public void onInterestsList() {
                 setupView();
@@ -115,10 +118,10 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
             public void onError(String error) {
                 switch (error){
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error in pharsing the Json recieved from server");
+                        Log.i(TAG, TAG_CLASS + ": entered listenerOnError, error in pharsing the Json recieved from server");
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered listnerOnError, error on the server");
+                        Log.i(TAG, TAG_CLASS + ": entered listenerOnError, error on the server");
                         break;
                 }
                 Snackbar.make( findViewById( R.id.drawer_layout ) ,
@@ -152,7 +155,7 @@ public class InterestsListActivity extends AppCompatActivity implements Constant
 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             ControllerRemoteDB controller = new ControllerRemoteDB( this );
-            controller.getAllInterests( interestsList , myInterestsListner );
+            controller.getAllInterests( interestsList , myInterestsListener );
         }else {
             Snackbar.make( findViewById( R.id.drawer_layout ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,

@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.ImageSwitcherController;
 import it.uniba.di.sms.barintondo.utils.InternetConnection;
 import it.uniba.di.sms.barintondo.utils.LocalDBOpenHelper;
@@ -55,6 +56,8 @@ public class MyProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView(R.layout.activity_my_profile);
 
         myToolbar = findViewById(R.id.myProfileToolbar);

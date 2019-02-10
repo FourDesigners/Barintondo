@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import java.util.Objects;
 
 import it.uniba.di.sms.barintondo.utils.Constants;
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
@@ -41,8 +42,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     Evento evento;
     FloatingActionButton fabPref;
     boolean isPref = false;
-    MyListeners.SingleLuogo myListner;
-    MyListeners.Interests interestListner;
+    MyListeners.SingleLuogo myListener;
+    MyListeners.Interests interestListener;
     private int activeOption;
     final int INFO = 1;
     final int DIRECTIONS = 2;
@@ -52,6 +53,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_evento_detail );
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
 
@@ -59,7 +62,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             this.activeOption = savedInstanceState.getInt( SELECTED_OPTION );
         } else this.activeOption = 1;
 
-        myListner = new MyListeners.SingleLuogo() {
+        myListener = new MyListeners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
                 //non viene mai restituito un luogo a questa activity
@@ -74,17 +77,17 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             public void onError(String error) {
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i( TAG , TAG_CLASS + ": entered luogoListnerOnError, error in pharsing the Json recieved from server" );
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i( TAG , TAG_CLASS + ": entered luogoListnerOnError, error on the server" );
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListenerOnError, error on the server" );
                         break;
                 }
             }
         };
 
 
-        interestListner = new MyListeners.Interests() {
+        interestListener = new MyListeners.Interests() {
             @Override
             public void onAdd(Boolean result) {
                 prefAdded( result );
@@ -104,10 +107,10 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
             public void onError(String error) {
                 switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i( TAG , TAG_CLASS + ": entered interestListnerOnError, error in pharsing the Json recieved from server" );
+                        Log.i( TAG , TAG_CLASS + ": entered interestListenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i( TAG , TAG_CLASS + ": entered interestListnerOnError, error on the server" );
+                        Log.i( TAG , TAG_CLASS + ": entered interestListenerOnError, error on the server" );
                         break;
                 }
             }
@@ -139,7 +142,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             String myEventCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
             controllerRemoteDB = new ControllerRemoteDB( this );
-            controllerRemoteDB.getLuogo( myEventCod , Constants.REQUEST_GET_EVENTS , myListner );
+            controllerRemoteDB.getLuogo( myEventCod , Constants.REQUEST_GET_EVENTS , myListener );
         } else {
             Snackbar.make( findViewById( R.id.activity_evento_detail ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
@@ -160,7 +163,7 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
 
         myToolbar.setTitle( myEvent.getNome() );
 
-        controllerRemoteDB.checkPref( myEvent.getCod() , interestListner );
+        controllerRemoteDB.checkPref( myEvent.getCod() , interestListener );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -168,8 +171,8 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
                 if (!InternetConnection.isNetworkAvailable( EventoDetailActivity.this )) {
                     Toast.makeText( EventoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controllerRemoteDB.removePref( myEvent.getCod() , interestListner );
-                    else controllerRemoteDB.addPref( myEvent.getCod() , interestListner );
+                    if (isPref) controllerRemoteDB.removePref( myEvent.getCod() , interestListener );
+                    else controllerRemoteDB.addPref( myEvent.getCod() , interestListener );
                 }
             }
         } );

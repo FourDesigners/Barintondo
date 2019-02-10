@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
+import it.uniba.di.sms.barintondo.utils.FontScale;
 import it.uniba.di.sms.barintondo.utils.MyListeners;
 import it.uniba.di.sms.barintondo.utils.ControllerRemoteDB;
 import it.uniba.di.sms.barintondo.utils.Evento;
@@ -57,6 +58,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        // Set fontscale
+        FontScale.adjustFontScale(this, getResources().getConfiguration());
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
 
