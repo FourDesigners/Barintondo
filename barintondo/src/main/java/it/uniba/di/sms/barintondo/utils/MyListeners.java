@@ -54,4 +54,8 @@ public interface MyListeners {
         public void onLocation(Location location);
     }
 
+    public interface SliderSwapCallback{
+        public void onSwap(int position);
+    }
+
 }

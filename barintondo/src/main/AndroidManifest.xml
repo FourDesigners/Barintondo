@@ -18,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:configChanges="fontScale"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">

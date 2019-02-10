@@ -28,6 +28,7 @@ import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Timer;
@@ -54,6 +55,9 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     Chip meteoInfoBtn;
     ControllerRemoteDB controllerRemoteDB;
     MyListeners.LuoghiList luoghiDBlistener;
+    Handler sliderHandler;
+    Runnable UpdateSlider;
+    Timer swipeTimer;
 
     //elementi per lo slider
     private static ViewPager mPager;
@@ -192,6 +196,7 @@ public class HomeActivity extends AppCompatActivity implements Constants {
         controllerRemoteDB.populateInterestsCod();
         luogoList.clear();
         controllerRemoteDB.getLuoghiList( Constants.REQUEST_GET_EVENTS, luogoList , luoghiDBlistener );
+
     }
 
     @Override
@@ -252,6 +257,14 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sliderHandler.removeCallbacks( UpdateSlider );
+        swipeTimer.cancel();
+        swipeTimer.purge();
+    }
+
     //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole
     public String capitalizeFirstLetter(String originalString) {
         if (originalString == null || originalString.length() == 0) {
@@ -275,14 +288,19 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     };
 
     private void setSlider(final ArrayList<Evento> listEventi) {
+        MyListeners.SliderSwapCallback mSliderCallback = new MyListeners.SliderSwapCallback() {
+            @Override
+            public void onSwap(int position) {
+                currentPage=position;
+            }
+        };
         mPager = findViewById(R.id.pager);
-        mPager.setAdapter(new SliderAdapter(this,  listEventi));
+        mPager.setAdapter(new SliderAdapter(this,  listEventi, mSliderCallback));
         CircleIndicator indicator = findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
-
         // Auto start of viewpager
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
+        sliderHandler = new Handler();
+        UpdateSlider = new Runnable() {
             public void run() {
                 if (currentPage == listEventi.size()) {
                     currentPage = 0;
@@ -290,12 +308,13 @@ public class HomeActivity extends AppCompatActivity implements Constants {
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-        Timer swipeTimer = new Timer();
+        swipeTimer = new Timer();
         swipeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                handler.post(Update);
+                sliderHandler.post(UpdateSlider);
             }
         }, 5000, 4000);
+
     }
 }

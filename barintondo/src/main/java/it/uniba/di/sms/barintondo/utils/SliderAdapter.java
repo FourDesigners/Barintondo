@@ -21,11 +21,13 @@ public class SliderAdapter extends PagerAdapter implements Constants {
     private LayoutInflater inflater;
     private Activity activity;
     private ArrayList<Evento> eventList;
+    private MyListeners.SliderSwapCallback mSliderCallback;
 
-    public SliderAdapter(Activity activity, ArrayList<Evento> eventList) {
+    public SliderAdapter(Activity activity, ArrayList<Evento> eventList, MyListeners.SliderSwapCallback mSliderCallback) {
         this.activity = activity;
         this.eventList=eventList;
         inflater = LayoutInflater.from(activity);
+        this.mSliderCallback=mSliderCallback;
     }
 
     @Override
@@ -49,6 +51,7 @@ public class SliderAdapter extends PagerAdapter implements Constants {
                 activity.startActivity(intent);
             }
         } );
+        mSliderCallback.onSwap( position );
         ImageView myImage = myImageLayout.findViewById(R.id.image);
         TextView eventTitle = myImageLayout.findViewById( R.id.text_slider_event_title );
         TextView eventDays = myImageLayout.findViewById( R.id.slider_event_days );
