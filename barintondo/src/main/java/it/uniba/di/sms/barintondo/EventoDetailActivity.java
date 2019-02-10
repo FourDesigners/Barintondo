@@ -2,6 +2,7 @@ package it.uniba.di.sms.barintondo;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -201,17 +202,23 @@ public class EventoDetailActivity extends AppCompatActivity implements Constants
     }
 
     private void switchOption(Evento myEvent) {
+
         switch (activeOption) {
             case 1:
                 attachDescription( myEvent );
                 setButtonOption( btnEventInfo );
-                myImageView.setVisibility( View.VISIBLE );
+                if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+                    myImageView.setVisibility( View.VISIBLE );
+                }
                 break;
             case 2:
                 attachDirections( myEvent );
                 setButtonOption( btnEventDirection );
-                myImageView.setVisibility( View.GONE );
+                if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+                    myImageView.setVisibility( View.GONE );
+                }
                 break;
+
         }
     }
 

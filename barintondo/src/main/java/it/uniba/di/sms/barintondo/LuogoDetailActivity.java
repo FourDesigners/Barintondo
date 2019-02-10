@@ -3,6 +3,7 @@ package it.uniba.di.sms.barintondo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -47,10 +48,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     MyListeners.SingleLuogo myListener;
     MyListeners.Interests interestListener;
     private int activeOption;
-    final int INFO=1;
-    final int DIRECTIONS=2;
-    final int REVIEWS=3;
-    final String SELECTED_OPTION="SelectedOption";
+    final int INFO = 1;
+    final int DIRECTIONS = 2;
+    final int REVIEWS = 3;
+    final String SELECTED_OPTION = "SelectedOption";
 
 
     @Override
@@ -59,12 +60,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         setContentView( R.layout.activity_luogo_detail );
         Log.i( TAG , TAG_CLASS + ":entered onCreate()" );
 
-        if(savedInstanceState!=null){
-            this.activeOption =savedInstanceState.getInt( SELECTED_OPTION);
-        } else this.activeOption=1;
+        if (savedInstanceState != null) {
+            this.activeOption = savedInstanceState.getInt( SELECTED_OPTION );
+        } else this.activeOption = 1;
 
 
-        myListener=new MyListeners.SingleLuogo() {
+        myListener = new MyListeners.SingleLuogo() {
             @Override
             public void onLuogo(Luogo luogo) {
                 onLuogoLoaded( luogo );
@@ -78,12 +79,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
             @Override
             public void onError(String error) {
-                switch (error){
+                switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server");
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered luogoListenerOnError, error on the server");
+                        Log.i( TAG , TAG_CLASS + ": entered luogoListenerOnError, error on the server" );
                         break;
                 }
             }
@@ -107,12 +108,12 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
             @Override
             public void onError(String error) {
-                switch (error){
+                switch (error) {
                     case VOLLEY_ERROR_JSON:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListenerOnError, error in pharsing the Json recieved from server");
+                        Log.i( TAG , TAG_CLASS + ": entered interestListenerOnError, error in pharsing the Json recieved from server" );
                         break;
                     case VOLLEY_ERROR_CONNECTION:
-                        Log.i(TAG, TAG_CLASS + ": entered interestListenerOnError, error on the server");
+                        Log.i( TAG , TAG_CLASS + ": entered interestListenerOnError, error on the server" );
                         break;
                 }
             }
@@ -123,13 +124,13 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         myToolbar = findViewById( R.id.luogoDetailToolbar );
 
-        setSupportActionBar(myToolbar);
+        setSupportActionBar( myToolbar );
         ActionBar actionbar = getSupportActionBar();
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
-        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+        final Drawable upArrow = getResources().getDrawable( R.drawable.abc_ic_ab_back_material );
+        upArrow.setColorFilter( getResources().getColor( R.color.colorAccent ) , PorterDuff.Mode.SRC_ATOP );
+        Objects.requireNonNull( getSupportActionBar() ).setHomeAsUpIndicator( upArrow );
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
-        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled( true );
 
         fabPref = findViewById( R.id.fab );
 
@@ -138,7 +139,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoInfo = findViewById( R.id.btn_luogo_info );
         btnLuogoDirection = findViewById( R.id.btn_luogo_directions );
         btnLuogoReview = findViewById( R.id.btn_luogo_reviews );
-        myFrameVoteStars=new FrameVoteStars( findViewById( R.id.luogoVoteLayout) );
+        myFrameVoteStars = new FrameVoteStars( findViewById( R.id.luogoVoteLayout ) );
 
     }
 
@@ -149,8 +150,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting()) {
             String myLuogoCod = getIntent().getStringExtra( Constants.INTENT_LUOGO_COD );
-            controller.getLuogo( myLuogoCod, Constants.REQUEST_GET_LUOGO, myListener );
-        }else {
+            controller.getLuogo( myLuogoCod , Constants.REQUEST_GET_LUOGO , myListener );
+        } else {
             Snackbar.make( findViewById( R.id.activity_luogo_detail ) ,
                     getResources().getString( R.string.str_error_not_connected ) ,
                     Snackbar.LENGTH_LONG )
@@ -162,18 +163,18 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, TAG_CLASS + ": onSaveInstanceState");
+        Log.i( TAG , TAG_CLASS + ": onSaveInstanceState" );
         super.onSaveInstanceState( outState );
-        outState.putInt( SELECTED_OPTION, activeOption );
+        outState.putInt( SELECTED_OPTION , activeOption );
     }
 
 
     public void onLuogoLoaded(final Luogo myLuogo) {
-        this.luogo=myLuogo;
+        this.luogo = myLuogo;
 
         myToolbar.setTitle( myLuogo.getNome() );
 
-        controller.checkPref( myLuogo.getCod(), interestListener );
+        controller.checkPref( myLuogo.getCod() , interestListener );
 
         fabPref.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -181,8 +182,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
                 if (!InternetConnection.isNetworkAvailable( LuogoDetailActivity.this )) {
                     Toast.makeText( LuogoDetailActivity.this , getResources().getString( R.string.str_error_not_connected ) , Toast.LENGTH_SHORT ).show();
                 } else {
-                    if (isPref) controller.removePref( myLuogo.getCod(), interestListener );
-                    else controller.addPref( myLuogo.getCod(), interestListener );
+                    if (isPref) controller.removePref( myLuogo.getCod() , interestListener );
+                    else controller.addPref( myLuogo.getCod() , interestListener );
                 }
             }
         } );
@@ -198,7 +199,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoInfo.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeOption =INFO;
+                activeOption = INFO;
                 switchOption( myLuogo );
             }
         } );
@@ -207,7 +208,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoDirection.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeOption =DIRECTIONS;
+                activeOption = DIRECTIONS;
                 switchOption( myLuogo );
             }
         } );
@@ -215,7 +216,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         btnLuogoReview.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeOption =REVIEWS;
+                activeOption = REVIEWS;
                 switchOption( myLuogo );
             }
         } );
@@ -224,8 +225,8 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
     }
 
-    private void switchOption(Luogo myLuogo){
-        switch (activeOption){
+    private void switchOption(Luogo myLuogo) {
+        switch (activeOption) {
             case 1:
                 attachDescription( myLuogo );
                 setButtonOption( btnLuogoInfo );
@@ -241,24 +242,26 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         }
     }
 
-    private void setButtonOption(Button selectedButton){
-        btnLuogoInfo.setAlpha(1F);
-        btnLuogoInfo.setClickable(true);
-        btnLuogoDirection.setAlpha(1F);
-        btnLuogoDirection.setClickable(true);
-        btnLuogoReview.setAlpha(1F);
-        btnLuogoReview.setClickable(true);
+    private void setButtonOption(Button selectedButton) {
+        btnLuogoInfo.setAlpha( 1F );
+        btnLuogoInfo.setClickable( true );
+        btnLuogoDirection.setAlpha( 1F );
+        btnLuogoDirection.setClickable( true );
+        btnLuogoReview.setAlpha( 1F );
+        btnLuogoReview.setClickable( true );
         selectedButton.setAlpha( 0.5F );
         selectedButton.setClickable( false );
-        switch (activeOption){
-            case 1:
-                myImageView.setVisibility( View.VISIBLE );
-                myFrameVoteStars.showVoteFrame();
-                break;
-            default:
-                myImageView.setVisibility( View.GONE );
-                myFrameVoteStars.hideVoteFrame();
-                break;
+        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+            switch (activeOption) {
+                case 1:
+                    myImageView.setVisibility( View.VISIBLE );
+                    myFrameVoteStars.showVoteFrame();
+                    break;
+                default:
+                    myImageView.setVisibility( View.GONE );
+                    myFrameVoteStars.hideVoteFrame();
+                    break;
+            }
         }
     }
 
@@ -268,10 +271,10 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         switch (item.getItemId()) {
             case android.R.id.home:
                 //supportFinishAfterTransition();
-                Intent intent = new Intent(this, LuogoListActivity.class);
-                intent.putExtra(Constants.INTENT_ACTIVITY_ITEM_TYPE, luogo.getCategoria());
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in,  R.anim.slide_out);
+                Intent intent = new Intent( this , LuogoListActivity.class );
+                intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , luogo.getCategoria() );
+                startActivity( intent );
+                overridePendingTransition( R.anim.slide_in , R.anim.slide_out );
                 return true;
         }
         return super.onOptionsItemSelected( item );
@@ -281,7 +284,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     private void attachDescription(Luogo luogo) {
         Log.i( TAG , TAG_CLASS + ": entered attachDescription" );
         Bundle arguments = new Bundle();
-        arguments.putParcelable( EXTRA_LUOGO, luogo );
+        arguments.putParcelable( EXTRA_LUOGO , luogo );
         LuogoDescriptionFragment fragment = new LuogoDescriptionFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -292,7 +295,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
     private void attachDirections(Luogo luogo) {
         Log.i( TAG , TAG_CLASS + ": entered attachDirections" );
         Bundle arguments = new Bundle();
-        arguments.putParcelable( EXTRA_LUOGO, luogo );
+        arguments.putParcelable( EXTRA_LUOGO , luogo );
         LuogoDirectionsFragment fragment = new LuogoDirectionsFragment();
         fragment.setArguments( arguments );
         this.getSupportFragmentManager().beginTransaction()
@@ -306,7 +309,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
         arguments.putString( ITEM_REVIEWS , luogo.getCod() );
         LuogoReviewsFragment fragment = new LuogoReviewsFragment();
         fragment.setArguments( arguments );
-        fragment.setRetainInstance(true);
+        fragment.setRetainInstance( true );
         this.getSupportFragmentManager().beginTransaction()
                 .replace( R.id.luogo_extra_container , fragment )
                 .commit();
@@ -318,7 +321,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
             isPref = true;
             ImageViewCompat.setImageTintList(
                     fabPref ,
-                    ColorStateList.valueOf( getResources().getColor( R.color.colorSecondary) )
+                    ColorStateList.valueOf( getResources().getColor( R.color.colorSecondary ) )
             );
         } else {
             isPref = false;
