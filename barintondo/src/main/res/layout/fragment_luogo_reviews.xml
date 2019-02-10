@@ -94,21 +94,21 @@
 
             <ImageButton
                 android:id="@+id/btnCancelReview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@color/colorBackground"
                 android:tint="@color/colorPrimaryLight"
-                app:srcCompat="@android:drawable/ic_delete"
+                app:srcCompat="@drawable/ic_close_black_24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnSaveReview"/>
 
             <ImageButton
                 android:id="@+id/btnSaveReview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@color/colorBackground"
                 android:tint="@color/colorPrimary"
-                app:srcCompat="@android:drawable/ic_menu_send"
+                app:srcCompat="@drawable/ic_send_black_24dp"
                 app:layout_constraintStart_toEndOf="@id/btnCancelReview"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </android.support.constraint.ConstraintLayout>
