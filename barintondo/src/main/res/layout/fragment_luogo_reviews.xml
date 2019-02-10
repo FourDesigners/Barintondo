@@ -97,7 +97,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@color/colorBackground"
-                android:tint="@color/colorAccent"
+                android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@android:drawable/ic_delete"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnSaveReview"/>
