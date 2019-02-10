@@ -298,8 +298,9 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                     break;
                 case MESSAGE_DEVICE_OBJECT:
                     connectingDevice = msg.getData().getParcelable(DEVICE_OBJECT);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.connectedToMsg)
-                                    + connectingDevice.getName(),Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(getApplicationContext(), getResources().getString(R.string.connectedToMsg)
+                                    + connectingDevice.getName(),Toast.LENGTH_SHORT).show();*/
+                    Log.i(TAG, getResources().getString(R.string.connectedToMsg) + connectingDevice.getName());
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(STRING_TOAST_MSG),
