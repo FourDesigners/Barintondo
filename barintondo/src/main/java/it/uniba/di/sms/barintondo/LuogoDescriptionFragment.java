@@ -151,7 +151,7 @@ public class LuogoDescriptionFragment extends Fragment implements Constants {
             textLuogoCoupon.setText(getContext().getResources().getQuantityString(R.plurals.possessedCouponPlace, couponNumber, couponNumber));
             layoutCoupon.setVisibility( View.VISIBLE );
             layoutCouponSeparator.setVisibility( View.VISIBLE );
-            iconCoupon.setOnClickListener( new View.OnClickListener() {
+            layoutCoupon.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent( getContext(), CouponListActivity.class );

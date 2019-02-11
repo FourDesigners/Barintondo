@@ -117,13 +117,14 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
         couponListListener = new MyListeners.CouponList() {
             @Override
             public void onCouponList() {
+                Log.i( TAG, TAG_CLASS+": entered onCouponList()" );
                 LocalDBOpenHelper.getCouponList( getApplicationContext() , couponList );
                 if (couponList.isEmpty()) {
                     textViewNoCoupon = findViewById( R.id.text_view_no_coupons );
                     textViewNoCoupon.setVisibility( View.VISIBLE );
                 } else {
                     mAdapter.notifyDataSetChanged();
-                    if (luogoName != null) {
+                    if (searchView!=null && luogoName != null) {
                         searchView.setQuery( luogoName , true );
                     }
                 }
@@ -165,12 +166,13 @@ public class CouponListActivity extends AppCompatActivity implements Constants, 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i( TAG, TAG_CLASS+": entered onCreateOptionsMenu()" );
         super.onCreateOptionsMenu( menu );
         getMenuInflater().inflate( R.menu.item_list_menu , menu );
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService( Context.SEARCH_SERVICE );
-        SearchView searchView = (SearchView) menu.findItem( R.id.app_bar_search )
+        searchView = (SearchView) menu.findItem( R.id.app_bar_search )
                 .getActionView();
         searchView.setSearchableInfo( searchManager
                 .getSearchableInfo( getComponentName() ) );

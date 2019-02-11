@@ -519,7 +519,7 @@ public class ControllerRemoteDB implements Constants {
             StringRequest MyStringRequest = new StringRequest( Request.Method.POST , Url , new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.i( TAG , TAG_CLASS + ": entered getCouponList()" + response );
+                    //Log.i( TAG , TAG_CLASS + ": entered getCouponList()" + response );
                     //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
                     //This code is executed if the server responds, whether or not the response contains data.
                     //The String 'response' contains the server's response.
