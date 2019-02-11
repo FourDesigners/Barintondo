@@ -273,10 +273,7 @@ public class LuogoDetailActivity extends AppCompatActivity implements Constants 
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                //supportFinishAfterTransition();
-                Intent intent = new Intent( this , LuogoListActivity.class );
-                intent.putExtra( Constants.INTENT_ACTIVITY_ITEM_TYPE , luogo.getCategoria() );
-                startActivity( intent );
+                onBackPressed();
                 overridePendingTransition( R.anim.slide_in , R.anim.slide_out );
                 return true;
         }

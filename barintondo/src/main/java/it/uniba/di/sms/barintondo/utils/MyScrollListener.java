@@ -3,6 +3,7 @@ package it.uniba.di.sms.barintondo.utils;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.view.animation.AccelerateInterpolator;
 
 public class MyScrollListener extends OnScrollListener {
     private ToolbarSwitchCategories switchCategories;

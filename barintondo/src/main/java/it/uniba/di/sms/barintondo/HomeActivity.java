@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -52,7 +53,6 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     MyNavigationDrawer myNavigationDrawer;
     OpenWeatherMapHelper helper;
     Button goInterests, goAttractionBtn, goFoodBtn, goSleepBtn, goNearBariBtn, goEvents;
-    Chip meteoInfoBtn;
     ControllerRemoteDB controllerRemoteDB;
     MyListeners.LuoghiList luoghiDBlistener;
     Handler sliderHandler;
@@ -90,8 +90,8 @@ public class HomeActivity extends AppCompatActivity implements Constants {
 
         actionbar.setHomeAsUpIndicator(drawable);
 
-        meteoInfoBtn = findViewById(R.id.moreBtn);
-        meteoInfoBtn.setOnClickListener( moreMeteoInfoBtnListener );
+        ConstraintLayout weatherLayout = findViewById(R.id.weatherContainer);
+        weatherLayout.setOnClickListener( moreMeteoInfoBtnListener );
 
         goInterests = findViewById( R.id.btnHomeGoInterests );
         goInterests.setOnClickListener( new View.OnClickListener() {
@@ -236,8 +236,10 @@ public class HomeActivity extends AppCompatActivity implements Constants {
                     String formattedString = capitalizeFirstLetter(String.valueOf(currentWeather.getWeatherArray().get(0).getDescription()));
                     desc.setText(formattedString);
                     //mostro btn
+                    /*
                     Button moreInfoBtn = findViewById(R.id.moreBtn);
                     moreInfoBtn.setVisibility(View.VISIBLE);
+                    */
                 }
 
 
