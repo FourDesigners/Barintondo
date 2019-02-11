@@ -43,8 +43,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
     private String TAG_CLASS=getClass().getSimpleName();
     Toolbar myToolbar;
-    ImageView myImageView;
-    TextView desc;
+    ImageView imageView;
+    TextView desc, btError;
     Coupon myCoupon;
     Button useBtn, btnDetailLuogo;
 
@@ -86,18 +86,23 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
         assert actionbar != null; //serve per non far apparire il warning che dice che actionbar potrebbe essere null
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        myImageView = findViewById( R.id.luogoDetailImage );
-        //thumbnail
-        /*Glide.with( this )
-                .load( imagesPath + myCoupon.getThumbnailLink() )
-                .into( myImageView );*/
-
+        imageView = findViewById( R.id.imageView );
+        if(myCoupon.getDescription().contains("€"))
+            imageView.setImageResource(R.drawable.ic_euro);
+        else if(myCoupon.getDescription().contains("%"))
+            imageView.setImageResource(R.drawable.ic_percentual);
+        else if(myCoupon.getDescrizione_it().contains("gratis"))
+            imageView.setImageResource(R.drawable.ic_free);
+        else imageView.setImageResource(R.drawable.ic_coupon_default);
         desc = findViewById( R.id.couponDesc );
         String day = myCoupon.getScadenza().split("-")[2];
         int m = Integer.valueOf(myCoupon.getScadenza().split("-")[1]);
         String month = getResources().getStringArray(R.array.months)[m-1];
         String description = getString(R.string.strCouponDescription, myCoupon.getDescription(), day, month);
         desc.setText(description);
+
+        btError = findViewById(R.id.btErrorMsg);
+        btError.setVisibility(View.INVISIBLE);
 
         useBtn = findViewById( R.id.useBtn );
         useBtn.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +227,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
 
                 // bluetoothAdapter.cancelDiscovery();
                 String info = ((TextView) view).getText().toString();
-                Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
+                //Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
                 String address = info.substring(info.length() - 17);
 
                 connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
@@ -238,7 +243,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 // bluetoothAdapter.cancelDiscovery();
                 String info = ((TextView) view).getText().toString();
                 String address = info.substring(info.length() - 17);
-                Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
+                //Toast.makeText(view.getContext(),info,Toast.LENGTH_LONG).show();
 
                 connectToDevice(address); //CONNESSIONE AL DISPOSITIVO
                 //sendMessage(); //INVIO MESSAGGIO
@@ -333,7 +338,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Constants
                 Toast.makeText(this, getResources().getString(R.string.useOk), Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, getResources().getString(R.string.errorReceived), Toast.LENGTH_SHORT).show();
+                btError.setVisibility(View.VISIBLE);
             }
         }
         communicationController.stop();

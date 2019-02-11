@@ -520,7 +520,7 @@ public class ControllerRemoteDB implements Constants {
                 @Override
                 public void onResponse(String response) {
                     //Log.i( TAG , TAG_CLASS + ": entered getCouponList()" + response );
-                    //Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
+                    Log.i( TAG ,  "VolleyGetCoupon: entered onResponse()"+response );
                     //This code is executed if the server responds, whether or not the response contains data.
                     //The String 'response' contains the server's response.
                     try {
@@ -547,7 +547,6 @@ public class ControllerRemoteDB implements Constants {
 
 
                         }
-                        LocalDBOpenHelper couponOpenHelper = new LocalDBOpenHelper( context , Constants.DB_NAME , null , 1 );
                         LocalDBOpenHelper.deleteCoupon( context );
                         for (Coupon c : tempCouponList) {
                             LocalDBOpenHelper.insertCoupon( c , context );

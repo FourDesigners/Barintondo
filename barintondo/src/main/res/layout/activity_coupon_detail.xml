@@ -2,6 +2,7 @@
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +25,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/infoContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/background_light"
             android:orientation="horizontal"
@@ -40,19 +41,20 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/labelsDimension"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/useBtn"
+                app:layout_constraintBottom_toTopOf="@+id/couponDesc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.056"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
             <TextView
                 android:id="@+id/couponDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
+                android:layout_marginBottom="8dp"
                 android:textSize="@dimen/labelsDimension"
+                app:layout_constraintBottom_toTopOf="@+id/useBtn"
                 app:layout_constraintStart_toStartOf="@+id/descLabel"
                 app:layout_constraintTop_toBottomOf="@+id/descLabel" />
 
@@ -61,10 +63,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/useBtn"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/btErrorMsg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnDettaglioPosto"
-                app:layout_constraintTop_toBottomOf="@+id/descLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/couponDesc" />
 
             <Button
                 android:id="@+id/btnDettaglioPosto"
@@ -75,6 +77,29 @@
                 app:layout_constraintEnd_toStartOf="@+id/useBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/useBtn" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:layout_constraintBottom_toTopOf="@+id/descLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars[0]" />
+
+            <TextView
+                android:id="@+id/btErrorMsg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/errorReceived"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/useBtn"
+                app:layout_constraintVertical_bias="0.503" />
 
         </android.support.constraint.ConstraintLayout>
 

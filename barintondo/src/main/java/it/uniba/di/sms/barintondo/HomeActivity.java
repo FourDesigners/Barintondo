@@ -260,9 +260,11 @@ public class HomeActivity extends AppCompatActivity implements Constants {
     @Override
     protected void onPause() {
         super.onPause();
-        sliderHandler.removeCallbacks( UpdateSlider );
-        swipeTimer.cancel();
-        swipeTimer.purge();
+        if(sliderHandler != null) {
+            sliderHandler.removeCallbacks(UpdateSlider);
+            swipeTimer.cancel();
+            swipeTimer.purge();
+        }
     }
 
     //metodo necessario in quanto le API utilizzate restituiscono una string senza lettere maiuscole

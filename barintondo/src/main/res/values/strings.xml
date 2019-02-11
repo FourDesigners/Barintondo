@@ -293,6 +293,7 @@
     <string name="offlineCoupons">Internet connection not available: your coupons may be not valid!</string>
     <string name="useOk">Coupon used successfully!</string>
     <string name="strInProgress">In progress</string>
+    <string name="errorBT">A problem occurred while using coupon. Please try again later.</string>
 
     <plurals name="EventInDays">
         <item quantity="one">In %d day</item>
