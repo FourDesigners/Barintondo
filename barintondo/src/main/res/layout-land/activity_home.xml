@@ -108,6 +108,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/temp"
                             app:layout_constraintTop_toTopOf="@+id/temp" />
 
+                        <!--
                         <android.support.design.chip.Chip
                             android:id="@+id/moreBtn"
                             style="@style/Widget.MaterialComponents.Chip.Action"
@@ -119,6 +120,17 @@
                             app:chipIcon="@drawable/ic_more_custom"
                             app:chipIconSize="24dp"
                             android:layout_marginLeft="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/weatherDesc"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/weatherDesc" />
+
+                            -->
+                        <ImageView
+                            android:id="@+id/moreBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/ic_more_custom"
                             app:layout_constraintBottom_toBottomOf="@+id/weatherDesc"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/weatherDesc" />
